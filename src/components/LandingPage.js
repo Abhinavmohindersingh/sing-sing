@@ -25,6 +25,9 @@ import {
   Github,
   Twitter,
   Linkedin,
+  AlertTriangle,
+  DollarSign,
+  TrendingDown,
 } from "lucide-react";
 import { cva } from "class-variance-authority";
 import { clsx } from "clsx";
@@ -133,55 +136,151 @@ const translations = {
       },
     ],
 
-    // Case Studies
-    caseStudiesTitle: "Case Studies",
-    caseStudies: [
+    // Real Industry Use Cases
+    caseStudiesTitle: "AI Solutions for Every Industry",
+    caseStudiesSubtitle:
+      "See how businesses like yours solve real problems with AI automation",
+    useCases: [
       {
-        title: "TechFlow: 65% Admin Reduction",
-        industry: "SaaS",
-        result: "+42% Revenue",
-        image: "TF",
+        industry: "Accounting & Finance",
+        challenge:
+          "Manual trust accounting, receipt processing, cross-account reconciliation taking days",
+        solution:
+          "AI agents automate receipt OCR, categorization, account movements, and documentation",
+        processes: [
+          "Automated receipt scanning & data extraction",
+          "Smart account reconciliation",
+          "Real-time trust accounting updates",
+          "Instant document generation",
+        ],
+        metrics: {
+          primary: "95%",
+          secondary: "3 days → 2 hours",
+          label: "Manual Work Eliminated",
+        },
       },
       {
-        title: "Urban Growth: Sustainable Scaling",
+        industry: "Professional Services",
+        challenge: "Client onboarding taking 2+ weeks per account",
+        solution:
+          "AI agents automate document collection, compliance verification, and kickoff coordination",
+        processes: [
+          "Automated document requests",
+          "Smart compliance checking",
+          "Instant kickoff scheduling",
+        ],
+        metrics: {
+          primary: "2 days",
+          secondary: "5x capacity",
+          label: "Onboarding Time",
+        },
+      },
+      {
+        industry: "E-commerce & Retail",
+        challenge: "Customer inquiries waiting 24+ hours, losing sales",
+        solution:
+          "24/7 AI support handling FAQs, order tracking, returns instantly",
+        processes: [
+          "Instant inquiry responses",
+          "Intelligent product matching",
+          "Automated order updates",
+        ],
+        metrics: {
+          primary: "<1 min",
+          secondary: "+40% conversions",
+          label: "Response Time",
+        },
+      },
+      {
+        industry: "Healthcare & Wellness",
+        challenge: "Appointment chaos, frequent no-shows, admin overload",
+        solution:
+          "Smart scheduling AI with automated reminders and rescheduling",
+        processes: [
+          "Intelligent scheduling optimization",
+          "Automated reminder sequences",
+          "Self-service rescheduling",
+        ],
+        metrics: {
+          primary: "60%",
+          secondary: "70% time saved",
+          label: "No-Show Reduction",
+        },
+      },
+      {
         industry: "Real Estate",
-        result: "3x Capacity",
-        image: "UG",
+        challenge: "Lead qualification eating up agent time, low conversion",
+        solution:
+          "AI agents pre-qualify leads, schedule viewings, follow up automatically",
+        processes: [
+          "Instant lead qualification",
+          "Automated viewing coordination",
+          "Smart follow-up sequences",
+        ],
+        metrics: {
+          primary: "3x",
+          secondary: "80% admin reduction",
+          label: "Lead Capacity",
+        },
       },
       {
-        title: "Digital Collective: 38% CAC Drop",
-        industry: "Marketing",
-        result: "94% Forecast",
-        image: "DC",
+        industry: "Marketing Agencies",
+        challenge:
+          "Campaign tracking across platforms, manual client reporting",
+        solution:
+          "Multi-platform analytics aggregation with automated dashboards",
+        processes: [
+          "Cross-platform data sync",
+          "Automated performance reports",
+          "Predictive optimization",
+        ],
+        metrics: {
+          primary: "90%",
+          secondary: "Real-time insights",
+          label: "Time Saved",
+        },
       },
     ],
 
     // Proof Section
-    proofTitle: "Real Results for Real Businesses",
+    proofTitle: "Real Results Across Industries",
+    proofSubtitle: "Proven impact for businesses that choose AI automation",
     stats: [
-      { value: "98%", label: "Client Satisfaction" },
-      { value: "3.2x", label: "Efficiency Gain" },
-      { value: "12", label: "Industries" },
-      { value: "24", label: "Months Retention" },
+      { value: "95%", label: "Avg. Efficiency Gain" },
+      { value: "2-8 weeks", label: "Time to ROI" },
+      { value: "6+", label: "Industries Served" },
+      { value: "24/7", label: "System Uptime" },
     ],
-    testimonials: [
+    industryResults: [
       {
-        name: "Sarah Chen",
-        company: "TechFlow",
-        quote: "Cut admin time by 65% and doubled capacity without hiring.",
-        avatar: "SC",
+        industry: "Accounting",
+        result: "Trust accounting automated end-to-end",
+        impact: "95% manual work eliminated, real-time compliance",
       },
       {
-        name: "Michael Rodriguez",
-        company: "Urban Growth",
-        quote: "Revenue up 42%, team happier, scaling sustainably.",
-        avatar: "MR",
+        industry: "Professional Services",
+        result: "Client onboarding in 2 days vs 2 weeks",
+        impact: "5x capacity increase without new hires",
       },
       {
-        name: "Priya Patel",
-        company: "Digital Collective",
-        quote: "Acquisition costs dropped 38%, forecasting 94% accurate.",
-        avatar: "PP",
+        industry: "E-commerce",
+        result: "24/7 customer support, <1 min response",
+        impact: "40% conversion lift, zero missed inquiries",
+      },
+      {
+        industry: "Healthcare",
+        result: "60% no-show reduction through smart scheduling",
+        impact: "70% admin time saved, better patient flow",
+      },
+      {
+        industry: "Real Estate",
+        result: "3x lead capacity with AI qualification",
+        impact: "80% admin reduction, agents focus on closing",
+      },
+      {
+        industry: "Marketing",
+        result: "Multi-platform analytics automated",
+        impact: "90% reporting time saved, real-time insights",
       },
     ],
 
@@ -225,24 +324,61 @@ const translations = {
       "AI-powered business transformation for ambitious companies.",
     services: ["AI Operations", "Business Intelligence", "Growth Automation"],
     company: ["About", "Careers", "Blog"],
-    contactPhone: "+1 555 123-4567",
-    contactEmail: "hello@sing-singh.com",
-    contactAddress: "San Francisco, CA",
+    contactPhone: "+61402733202",
+    contactEmail: "hello@singsingh.com",
+    contactAddress: "Brisbane, QLD",
     copyright: "© 2025 Sing Singh AI Advisory. All rights reserved.",
 
     // Quiz
+    quizTitle: "AI Readiness Assessment",
     quizGetResults: "Get Your Results",
+    quizCustomRoadmap: "Your Custom AI Roadmap",
+    quizEnterDetails: "Enter your details to see your personalized results",
     quizName: "Full Name",
     quizEmail: "Email Address",
     quizCompany: "Company Name",
     quizBack: "Back",
     quizProcessing: "Processing...",
+    quizSubmitResults: "Get My Results",
     quizYourScore: "Your AI Readiness Score",
     quizClose: "Close",
     quizQuestion: "Question {current} of {total}",
     quizPrevious: "Previous",
     quizNext: "Next",
     quizFinish: "Finish Quiz",
+    quizBookCall: "Book Free Consultation",
+
+    // Quiz Results
+    quizResultsTitle:
+      "Based on your answers, here's where AI can immediately improve your business",
+    quizHoursWasted: "Hours Wasted/Week",
+    quizAnnualSavings: "Annual Savings",
+    quizROI: "ROI Year One",
+    quizPayback: "Payback Period",
+    quizTopFixes: "Your Top 3 Priority Fixes",
+    quizPriority: "PRIORITY {number}: {severity}",
+    quizWeeksToImplement: "{weeks} weeks to implement",
+    quizCurrentState: "Your Current State",
+    quizWastedPerWeek: "wasted per week",
+    quizWithAI: "With AI Agent",
+    quizAutomated: "automated",
+    quizWhatGetsAutomated: "What Gets Automated",
+    quizAnnualSavingsLabel: "Annual Savings",
+    quizAICost: "AI Cost",
+    quizROILabel: "ROI",
+    quizMonthShort: "mo",
+    quizHrsShort: "hrs",
+    quizWeekShort: "week",
+    quizTransformBusiness: "Ready to Transform Your Business?",
+    quizScheduleCall:
+      "Schedule a 15-minute strategy call to review your specific workflows and build your custom implementation plan.",
+    quizTimeWasted: "Time Currently Wasted",
+
+    // Severity levels
+    severityCritical: "CRITICAL",
+    severityHigh: "HIGH",
+    severityMedium: "MEDIUM",
+    severityLow: "LOW",
   },
   zh: {
     // Navigation
@@ -256,7 +392,7 @@ const translations = {
     heroTitle1: "用AI智能",
     heroTitle2: "加速业务增长",
     heroDescription:
-      "停止浪费时间处理手动混乱。Sing Singh 提供智能AI系统，自动化运营、解锁洞察、让您的业务增长3倍更快。",
+      "停止浪费时间处理手动混乱。星星人工智能 提供智能AI系统，自动化运营、解锁洞察、让您的业务增长3倍更快。",
     heroCTA: "获取您的AI评分",
     heroSubtext: "无需信用卡 • 2分钟 • 即时个性化路线图",
 
@@ -331,55 +467,122 @@ const translations = {
       },
     ],
 
-    // Case Studies
-    caseStudiesTitle: "案例研究",
-    caseStudies: [
+    // Case Studies - Real Industry Use Cases
+    caseStudiesTitle: "每个行业的AI解决方案",
+    caseStudiesSubtitle: "看看像您这样的企业如何通过AI自动化解决实际问题",
+    useCases: [
       {
-        title: "TechFlow：65%行政减少",
-        industry: "SaaS",
-        result: "收入+42%",
-        image: "TF",
+        industry: "会计与金融",
+        challenge: "手动信托会计、收据处理、跨账户对账需要数天时间",
+        solution: "AI代理自动化收据OCR、分类、账户移动和文档",
+        processes: [
+          "自动收据扫描和数据提取",
+          "智能账户对账",
+          "实时信托会计更新",
+          "即时文档生成",
+        ],
+        metrics: {
+          primary: "95%",
+          secondary: "3天→2小时",
+          label: "消除手动工作",
+        },
       },
       {
-        title: "Urban Growth：可持续扩展",
+        industry: "专业服务",
+        challenge: "每个账户的客户入职需要2周以上",
+        solution: "AI代理自动化文档收集、合规验证和启动协调",
+        processes: ["自动文档请求", "智能合规检查", "即时启动安排"],
+        metrics: {
+          primary: "2天",
+          secondary: "5倍容量",
+          label: "入职时间",
+        },
+      },
+      {
+        industry: "电子商务和零售",
+        challenge: "客户咨询等待24小时以上，失去销售",
+        solution: "24/7 AI支持即时处理常见问题、订单跟踪、退货",
+        processes: ["即时查询响应", "智能产品匹配", "自动订单更新"],
+        metrics: {
+          primary: "<1分钟",
+          secondary: "+40%转化",
+          label: "响应时间",
+        },
+      },
+      {
+        industry: "医疗保健和健康",
+        challenge: "预约混乱，频繁缺席，管理负担",
+        solution: "智能调度AI，自动提醒和重新安排",
+        processes: ["智能调度优化", "自动提醒序列", "自助重新安排"],
+        metrics: {
+          primary: "60%",
+          secondary: "节省70%时间",
+          label: "缺席减少",
+        },
+      },
+      {
         industry: "房地产",
-        result: "产能3倍",
-        image: "UG",
+        challenge: "潜在客户资格占用代理时间，转化率低",
+        solution: "AI代理预先筛选潜在客户，安排看房，自动跟进",
+        processes: ["即时潜在客户资格", "自动看房协调", "智能跟进序列"],
+        metrics: {
+          primary: "3倍",
+          secondary: "80%管理减少",
+          label: "潜在客户容量",
+        },
       },
       {
-        title: "Digital Collective：38%获客成本下降",
-        industry: "营销",
-        result: "预测94%",
-        image: "DC",
+        industry: "营销机构",
+        challenge: "跨平台活动跟踪，手动客户报告",
+        solution: "多平台分析聚合与自动化仪表板",
+        processes: ["跨平台数据同步", "自动绩效报告", "预测优化"],
+        metrics: {
+          primary: "90%",
+          secondary: "实时洞察",
+          label: "节省时间",
+        },
       },
     ],
 
     // Proof Section
-    proofTitle: "真实企业的真实成果",
+    proofTitle: "跨行业的真实成果",
+    proofSubtitle: "选择AI自动化的企业的已验证影响",
     stats: [
-      { value: "98%", label: "客户满意度" },
-      { value: "3.2倍", label: "效率提升" },
-      { value: "12", label: "行业" },
-      { value: "24", label: "月留存" },
+      { value: "95%", label: "平均效率提升" },
+      { value: "2-8周", label: "投资回报时间" },
+      { value: "6+", label: "服务行业" },
+      { value: "24/7", label: "系统正常运行时间" },
     ],
-    testimonials: [
+    industryResults: [
       {
-        name: "Sarah Chen",
-        company: "TechFlow",
-        quote: "行政时间减少65%，无需招聘就翻倍了产能。",
-        avatar: "SC",
+        industry: "会计",
+        result: "端到端自动化信托会计",
+        impact: "消除95%手动工作，实时合规",
       },
       {
-        name: "Michael Rodriguez",
-        company: "Urban Growth",
-        quote: "收入增长42%，团队更快乐，可持续扩展。",
-        avatar: "MR",
+        industry: "专业服务",
+        result: "2天客户入职 vs 2周",
+        impact: "5倍容量增加，无需新招聘",
       },
       {
-        name: "Priya Patel",
-        company: "Digital Collective",
-        quote: "获取成本下降38%，预测准确率94%。",
-        avatar: "PP",
+        industry: "电子商务",
+        result: "24/7客户支持，<1分钟响应",
+        impact: "40%转化提升，零错过咨询",
+      },
+      {
+        industry: "医疗保健",
+        result: "通过智能调度减少60%缺席",
+        impact: "节省70%管理时间，更好的患者流程",
+      },
+      {
+        industry: "房地产",
+        result: "AI资格筛选3倍潜在客户容量",
+        impact: "80%管理减少，代理专注于成交",
+      },
+      {
+        industry: "营销",
+        result: "多平台分析自动化",
+        impact: "节省90%报告时间，实时洞察",
       },
     ],
 
@@ -415,27 +618,63 @@ const translations = {
 
     // Footer
     footerTitle: "SING SINGH",
-    footerDescription: "为雄心勃勃的公司提供AI驱动的业务转型。",
+    footerDescription: "为雄心勃勃的公司提供AI驱动的业务转型",
     services: ["AI运营", "商业智能", "增长自动化"],
     company: ["关于", "职业", "博客"],
-    contactPhone: "+1 555 123-4567",
-    contactEmail: "hello@sing-singh.com",
-    contactAddress: "旧金山，加州",
+    contactPhone: "+61402733202",
+    contactEmail: "hello@singsingh.com",
+    contactAddress: "布里斯班，昆士兰",
     copyright: "© 2025 Sing Singh AI Advisory。保留所有权利。",
 
     // Quiz
+    quizTitle: "AI准备度评估",
     quizGetResults: "获取您的结果",
+    quizCustomRoadmap: "您的定制AI路线图",
+    quizEnterDetails: "输入您的详细信息以查看您的个性化结果",
     quizName: "全名",
     quizEmail: "电子邮件地址",
     quizCompany: "公司名称",
     quizBack: "返回",
     quizProcessing: "处理中...",
+    quizSubmitResults: "获取我的结果",
     quizYourScore: "您的AI准备度评分",
     quizClose: "关闭",
     quizQuestion: "第{current}题，共{total}题",
     quizPrevious: "上一步",
     quizNext: "下一步",
     quizFinish: "完成测试",
+    quizBookCall: "预订免费咨询",
+
+    // Quiz Results
+    quizResultsTitle: "根据您的答案，这些是AI可以立即改善您业务的地方",
+    quizHoursWasted: "每周浪费小时数",
+    quizAnnualSavings: "年度节省",
+    quizROI: "第一年投资回报率",
+    quizPayback: "回本期",
+    quizTopFixes: "您的前3个优先修复项",
+    quizPriority: "优先级{number}：{severity}",
+    quizWeeksToImplement: "{weeks}周实施",
+    quizCurrentState: "您当前的状态",
+    quizWastedPerWeek: "每周浪费",
+    quizWithAI: "使用AI代理",
+    quizAutomated: "自动化",
+    quizWhatGetsAutomated: "自动化内容",
+    quizAnnualSavingsLabel: "年度节省",
+    quizAICost: "AI成本",
+    quizROILabel: "投资回报率",
+    quizMonthShort: "月",
+    quizHrsShort: "小时",
+    quizWeekShort: "周",
+    quizTransformBusiness: "准备好转型您的业务了吗？",
+    quizScheduleCall:
+      "安排15分钟策略电话，审查您的具体工作流程并构建您的定制实施计划。",
+    quizTimeWasted: "当前浪费的时间",
+
+    // Severity levels
+    severityCritical: "紧急",
+    severityHigh: "高",
+    severityMedium: "中",
+    severityLow: "低",
   },
 };
 
@@ -446,336 +685,620 @@ const SECTION_IDS = {
   faq: "faq",
 };
 
-// 🔴 **COMPLETE QUIZ QUESTIONS (15 QUESTIONS - BOTH LANGUAGES)**
-const quizQuestions = (lang) => [
-  {
-    id: 1,
-    question:
-      lang === "zh"
-        ? "您的团队每周花多少时间在手动重复任务上？"
-        : "How much time does your team spend on manual, repetitive tasks each week?",
-    options:
-      lang === "zh"
-        ? [
-            { text: "少于5小时", score: 1 },
-            { text: "5-15小时", score: 3 },
-            { text: "15-30小时", score: 5 },
-            { text: "超过30小时", score: 7 },
-          ]
-        : [
-            { text: "Less than 5 hours", score: 1 },
-            { text: "5-15 hours", score: 3 },
-            { text: "15-30 hours", score: 5 },
-            { text: "More than 30 hours", score: 7 },
-          ],
+// 🔴 **AI SOLUTIONS DATABASE**
+const AI_SOLUTIONS = {
+  DATA_ENTRY: {
+    name: "Intelligent Data Processing Agent",
+    solves: "Manual data entry, receipt scanning, document processing",
+    features: [
+      "OCR receipt/invoice extraction",
+      "Auto-categorization with ML",
+      "Duplicate detection",
+      "Real-time data validation",
+    ],
+    timeSaved: "90-95% reduction",
+    hoursPerWeek: 32,
+    implementation: "2 weeks",
+    cost: 500,
+    priority: 1,
   },
-  // ... (keeping all 15 questions - same as before)
-  {
-    id: 2,
-    question:
-      lang === "zh"
-        ? "您最大的数据管理挑战是什么？"
-        : "What's your biggest data management challenge?",
-    options:
-      lang === "zh"
-        ? [
-            { text: "一切都已自动化和有组织", score: 1 },
-            { text: "电子表格和手动跟踪", score: 4 },
-            { text: "多个不连接的系统", score: 6 },
-            { text: "完全没有集中数据", score: 8 },
-          ]
-        : [
-            { text: "Everything is automated and organized", score: 1 },
-            { text: "Spreadsheets and manual tracking", score: 4 },
-            { text: "Multiple disconnected systems", score: 6 },
-            { text: "No centralized data at all", score: 8 },
-          ],
-  },
-  {
-    id: 3,
-    question:
-      lang === "zh"
-        ? "您目前如何跟踪业务绩效？"
-        : "How do you currently track business performance?",
-    options:
-      lang === "zh"
-        ? [
-            { text: "实时仪表板", score: 1 },
-            { text: "每周手动报告", score: 3 },
-            { text: "每月电子表格", score: 5 },
-            { text: "没有正式跟踪", score: 7 },
-          ]
-        : [
-            { text: "Real-time dashboards", score: 1 },
-            { text: "Weekly manual reports", score: 3 },
-            { text: "Monthly spreadsheets", score: 5 },
-            { text: "No formal tracking", score: 7 },
-          ],
-  },
-  {
-    id: 4,
-    question:
-      lang === "zh"
-        ? "您的客户入职流程如何？"
-        : "What's your client onboarding process like?",
-    options:
-      lang === "zh"
-        ? [
-            { text: "完全自动化", score: 1 },
-            { text: "半自动化", score: 3 },
-            { text: "大部分手动", score: 5 },
-            { text: "100%手动", score: 7 },
-          ]
-        : [
-            { text: "Fully automated", score: 1 },
-            { text: "Semi-automated", score: 3 },
-            { text: "Mostly manual", score: 5 },
-            { text: "100% manual", score: 7 },
-          ],
-  },
-  {
-    id: 5,
-    question:
-      lang === "zh"
-        ? "您的收入预测准确率如何？"
-        : "How accurate is your revenue forecasting?",
-    options:
-      lang === "zh"
-        ? [
-            { text: "95%+准确", score: 1 },
-            { text: "80-94%准确", score: 3 },
-            { text: "60-79%准确", score: 5 },
-            { text: "低于60%", score: 7 },
-          ]
-        : [
-            { text: "95%+ accurate", score: 1 },
-            { text: "80-94% accurate", score: 3 },
-            { text: "60-79% accurate", score: 5 },
-            { text: "Less than 60%", score: 7 },
-          ],
-  },
-  {
-    id: 6,
-    question:
-      lang === "zh"
-        ? "您有实时客户洞察吗？"
-        : "Do you have real-time customer insights?",
-    options:
-      lang === "zh"
-        ? [
-            { text: "完全可见性", score: 1 },
-            { text: "基本分析", score: 3 },
-            { text: "有限报告", score: 5 },
-            { text: "没有洞察", score: 7 },
-          ]
-        : [
-            { text: "Complete visibility", score: 1 },
-            { text: "Basic analytics", score: 3 },
-            { text: "Limited reports", score: 5 },
-            { text: "No insights", score: 7 },
-          ],
-  },
-  {
-    id: 7,
-    question:
-      lang === "zh"
-        ? "多少时间用于行政 vs. 增长活动？"
-        : "How much time goes to admin vs. growth activities?",
-    options:
-      lang === "zh"
-        ? [
-            { text: "20%行政/80%增长", score: 1 },
-            { text: "40%行政/60%增长", score: 3 },
-            { text: "60%行政/40%增长", score: 5 },
-            { text: "80%+行政", score: 7 },
-          ]
-        : [
-            { text: "20% admin / 80% growth", score: 1 },
-            { text: "40% admin / 60% growth", score: 3 },
-            { text: "60% admin / 40% growth", score: 5 },
-            { text: "80%+ admin", score: 7 },
-          ],
-  },
-  {
-    id: 8,
-    question:
-      lang === "zh"
-        ? "您最大的增长瓶颈是什么？"
-        : "What's your biggest growth bottleneck?",
-    options:
-      lang === "zh"
-        ? [
-            { text: "没有瓶颈", score: 1 },
-            { text: "手动流程", score: 4 },
-            { text: "数据孤岛", score: 6 },
-            { text: "团队容量", score: 8 },
-          ]
-        : [
-            { text: "No bottlenecks", score: 1 },
-            { text: "Manual processes", score: 4 },
-            { text: "Data silos", score: 6 },
-            { text: "Team capacity", score: 8 },
-          ],
-  },
-  {
-    id: 9,
-    question:
-      lang === "zh" ? "您目前使用AI工具吗？" : "Do you use AI tools currently?",
-    options:
-      lang === "zh"
-        ? [
-            { text: "多个AI系统", score: 1 },
-            { text: "基本AI工具", score: 3 },
-            { text: "完全没有AI", score: 5 },
-            { text: "不知道", score: 7 },
-          ]
-        : [
-            { text: "Multiple AI systems", score: 1 },
-            { text: "Basic AI tools", score: 3 },
-            { text: "No AI at all", score: 5 },
-            { text: "Don't know", score: 7 },
-          ],
-  },
-  {
-    id: 10,
-    question:
-      lang === "zh"
-        ? "您对运营效率满意度如何？"
-        : "How satisfied are you with operations efficiency?",
-    options:
-      lang === "zh"
-        ? [
-            { text: "非常满意", score: 1 },
-            { text: "满意", score: 3 },
-            { text: "中立", score: 5 },
-            { text: "不满意", score: 7 },
-          ]
-        : [
-            { text: "Very satisfied", score: 1 },
-            { text: "Satisfied", score: 3 },
-            { text: "Neutral", score: 5 },
-            { text: "Dissatisfied", score: 7 },
-          ],
-  },
-  {
-    id: 11,
-    question:
-      lang === "zh"
-        ? "您的月流失率是多少？"
-        : "What's your monthly churn rate?",
-    options:
-      lang === "zh"
-        ? [
-            { text: "低于2%", score: 1 },
-            { text: "2-5%", score: 3 },
-            { text: "5-10%", score: 5 },
-            { text: "10%+", score: 7 },
-          ]
-        : [
-            { text: "Less than 2%", score: 1 },
-            { text: "2-5%", score: 3 },
-            { text: "5-10%", score: 5 },
-            { text: "10%+", score: 7 },
-          ],
-  },
-  {
-    id: 12,
-    question:
-      lang === "zh" ? "您有自动化报告吗？" : "Do you have automated reporting?",
-    options:
-      lang === "zh"
-        ? [
-            { text: "完全自动化", score: 1 },
-            { text: "部分自动化", score: 3 },
-            { text: "手动报告", score: 5 },
-            { text: "没有报告", score: 7 },
-          ]
-        : [
-            { text: "Fully automated", score: 1 },
-            { text: "Partially automated", score: 3 },
-            { text: "Manual reports", score: 5 },
-            { text: "No reports", score: 7 },
-          ],
-  },
-  {
-    id: 13,
-    question:
-      lang === "zh"
-        ? "您如何处理潜在客户筛选？"
-        : "How do you handle lead qualification?",
-    options:
-      lang === "zh"
-        ? [
-            { text: "AI评分", score: 1 },
-            { text: "基本自动化", score: 3 },
-            { text: "手动审查", score: 5 },
-            { text: "没有筛选", score: 7 },
-          ]
-        : [
-            { text: "AI-powered scoring", score: 1 },
-            { text: "Basic automation", score: 3 },
-            { text: "Manual review", score: 5 },
-            { text: "No qualification", score: 7 },
-          ],
-  },
-  {
-    id: 14,
-    question:
-      lang === "zh"
-        ? "您的客户支持响应时间是？"
-        : "What's your customer support response time?",
-    options:
-      lang === "zh"
-        ? [
-            { text: "1小时以内", score: 1 },
-            { text: "1-4小时", score: 3 },
-            { text: "4-24小时", score: 5 },
-            { text: "24+小时", score: 7 },
-          ]
-        : [
-            { text: "Under 1 hour", score: 1 },
-            { text: "1-4 hours", score: 3 },
-            { text: "4-24 hours", score: 5 },
-            { text: "24+ hours", score: 7 },
-          ],
-  },
-  {
-    id: 15,
-    question:
-      lang === "zh"
-        ? "您计划在未来12个月扩展吗？"
-        : "Are you planning to scale in next 12 months?",
-    options:
-      lang === "zh"
-        ? [
-            { text: "已在扩展", score: 1 },
-            { text: "计划扩展", score: 3 },
-            { text: "考虑中", score: 5 },
-            { text: "没有计划", score: 7 },
-          ]
-        : [
-            { text: "Already scaling", score: 1 },
-            { text: "Planning to scale", score: 3 },
-            { text: "Considering", score: 5 },
-            { text: "No plans", score: 7 },
-          ],
-  },
-];
 
-// 🔴 **FIXED TRANSLATION FUNCTION**
-const t = (key, lang, replacements = {}) => {
-  let text = translations[lang][key] || key;
+  RECONCILIATION: {
+    name: "Smart Reconciliation Agent",
+    solves: "Time-consuming bank reconciliation, account matching",
+    features: [
+      "Automated transaction matching",
+      "Cross-account reconciliation",
+      "Discrepancy flagging",
+      "Audit trail generation",
+    ],
+    timeSaved: "3 days → 2 hours",
+    hoursPerWeek: 28,
+    implementation: "3 weeks",
+    cost: 600,
+    priority: 2,
+  },
 
-  Object.keys(replacements).forEach((repKey) => {
-    const placeholder = `{${repKey}}`;
-    const regex = new RegExp(
-      placeholder.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
-      "g"
-    );
-    text = text.replace(regex, replacements[repKey]);
+  CUSTOMER_SUPPORT: {
+    name: "24/7 Customer Service Agent",
+    solves: "Slow response times, missed inquiries, after-hours support",
+    features: [
+      "Instant response to common questions",
+      "Ticket creation & routing",
+      "Order status lookup",
+      "Escalation to humans when needed",
+    ],
+    timeSaved: "80% inquiries automated",
+    hoursPerWeek: 20,
+    implementation: "3 weeks",
+    cost: 800,
+    priority: 3,
+  },
+
+  TRUST_ACCOUNTING: {
+    name: "Trust Account Management Agent",
+    solves: "Manual trust accounting, compliance tracking",
+    features: [
+      "Real-time balance monitoring",
+      "IOLTA compliance checks",
+      "Client statement generation",
+      "Movement tracking & alerts",
+    ],
+    timeSaved: "90% automated",
+    hoursPerWeek: 25,
+    implementation: "4 weeks",
+    cost: 700,
+    priority: 2,
+  },
+
+  SCHEDULING: {
+    name: "Intelligent Scheduling Agent",
+    solves: "Calendar chaos, no-shows, manual booking",
+    features: [
+      "Smart availability matching",
+      "Automated reminders (SMS/Email)",
+      "Self-service rescheduling",
+      "No-show prediction & prevention",
+    ],
+    timeSaved: "60% no-show reduction",
+    hoursPerWeek: 15,
+    implementation: "2 weeks",
+    cost: 400,
+    priority: 4,
+  },
+
+  REPORTING: {
+    name: "Automated Reporting Agent",
+    solves: "Manual report compilation, data aggregation",
+    features: [
+      "Real-time dashboard updates",
+      "Multi-source data aggregation",
+      "Custom report generation",
+      "Scheduled delivery",
+    ],
+    timeSaved: "90% faster",
+    hoursPerWeek: 12,
+    implementation: "3 weeks",
+    cost: 500,
+    priority: 5,
+  },
+
+  LEAD_QUALIFICATION: {
+    name: "Lead Intelligence Agent",
+    solves: "Time wasted on unqualified leads, slow follow-up",
+    features: [
+      "Auto lead scoring & qualification",
+      "Instant follow-up sequences",
+      "Meeting scheduling",
+      "CRM auto-updates",
+    ],
+    timeSaved: "3x more leads handled",
+    hoursPerWeek: 18,
+    implementation: "2 weeks",
+    cost: 600,
+    priority: 3,
+  },
+
+  DOCUMENT_MANAGEMENT: {
+    name: "Document Intelligence Agent",
+    solves: "Manual filing, document search, compliance docs",
+    features: [
+      "Auto-filing by category",
+      "Smart search & retrieval",
+      "Version control",
+      "Compliance tracking",
+    ],
+    timeSaved: "70% faster retrieval",
+    hoursPerWeek: 10,
+    implementation: "3 weeks",
+    cost: 450,
+    priority: 5,
+  },
+};
+
+// 🔴 **SMART QUIZ QUESTIONS WITH CATEGORIES - BILINGUAL**
+const getSmartQuizQuestions = (lang = "en") => {
+  if (lang === "zh") {
+    return [
+      {
+        id: 1,
+        category: "DATA_ENTRY",
+        question: "您的团队每周花多少时间进行手动数据输入？",
+        options: [
+          { text: "少于5小时", score: 1, hours: 3 },
+          { text: "5-15小时", score: 3, hours: 10 },
+          { text: "15-30小时", score: 5, hours: 22 },
+          { text: "超过30小时", score: 7, hours: 35 },
+        ],
+      },
+      {
+        id: 2,
+        category: "DATA_ENTRY",
+        question: "您目前如何处理收据和发票？",
+        options: [
+          { text: "完全自动化OCR系统", score: 1, hours: 1 },
+          { text: "自动化和手动混合", score: 3, hours: 8 },
+          { text: "主要手动输入", score: 5, hours: 15 },
+          { text: "100%手动，经常延迟", score: 7, hours: 20 },
+        ],
+      },
+      {
+        id: 3,
+        category: "RECONCILIATION",
+        question: "账户对账需要多长时间？",
+        options: [
+          { text: "当天（自动化）", score: 1, hours: 2 },
+          { text: "1-2天", score: 3, hours: 12 },
+          { text: "3-5天", score: 5, hours: 24 },
+          { text: "超过一周", score: 7, hours: 40 },
+        ],
+      },
+      {
+        id: 4,
+        category: "RECONCILIATION",
+        question: "您在对账中发现差异的频率如何？",
+        options: [
+          { text: "很少（系统捕获）", score: 1, hours: 1 },
+          { text: "偶尔（每月）", score: 3, hours: 4 },
+          { text: "频繁（每周）", score: 5, hours: 8 },
+          { text: "不断（每天）", score: 7, hours: 12 },
+        ],
+      },
+      {
+        id: 5,
+        category: "CUSTOMER_SUPPORT",
+        question: "您的平均客户响应时间是多少？",
+        options: [
+          { text: "1小时以内", score: 1, hours: 5 },
+          { text: "1-4小时", score: 3, hours: 10 },
+          { text: "4-24小时", score: 5, hours: 20 },
+          { text: "超过24小时", score: 7, hours: 30 },
+        ],
+      },
+      {
+        id: 6,
+        category: "CUSTOMER_SUPPORT",
+        question: "下班后有多少客户咨询未得到答复？",
+        options: [
+          { text: "无（24/7覆盖）", score: 1, hours: 0 },
+          { text: "少数（第二天处理）", score: 3, hours: 5 },
+          { text: "许多（造成挫败感）", score: 5, hours: 12 },
+          { text: "大多数（失去业务）", score: 7, hours: 20 },
+        ],
+      },
+      {
+        id: 7,
+        category: "TRUST_ACCOUNTING",
+        question: "您如何管理信托账户？（如果不适用请跳过）",
+        options: [
+          { text: "带警报的自动化系统", score: 1, hours: 2 },
+          { text: "软件加手动检查", score: 3, hours: 10 },
+          { text: "电子表格和手动跟踪", score: 5, hours: 20 },
+          { text: "完全手动，合规问题", score: 7, hours: 30 },
+        ],
+      },
+      {
+        id: 8,
+        category: "SCHEDULING",
+        question: "您的预约缺席率是多少？",
+        options: [
+          { text: "低于5%", score: 1, hours: 2 },
+          { text: "5-15%", score: 3, hours: 5 },
+          { text: "15-30%", score: 5, hours: 10 },
+          { text: "超过30%", score: 7, hours: 15 },
+        ],
+      },
+      {
+        id: 9,
+        category: "SCHEDULING",
+        question: "预约协调需要多少时间？",
+        options: [
+          { text: "自动化（1-2小时/周）", score: 1, hours: 1.5 },
+          { text: "半自动化（5-10小时）", score: 3, hours: 7.5 },
+          { text: "主要手动（10-20小时）", score: 5, hours: 15 },
+          { text: "完全手动（20+小时）", score: 7, hours: 25 },
+        ],
+      },
+      {
+        id: 10,
+        category: "REPORTING",
+        question: "生成业务报告需要多长时间？",
+        options: [
+          { text: "实时（自动化仪表板）", score: 1, hours: 1 },
+          { text: "几小时（半自动化）", score: 3, hours: 4 },
+          { text: "1-2天（手动编译）", score: 5, hours: 12 },
+          { text: "一周以上（复杂手动流程）", score: 7, hours: 20 },
+        ],
+      },
+      {
+        id: 11,
+        category: "LEAD_QUALIFICATION",
+        question: "您如何处理潜在客户资格筛选？",
+        options: [
+          { text: "自动评分系统", score: 1, hours: 3 },
+          { text: "基本CRM加手动审核", score: 3, hours: 8 },
+          { text: "电子表格和直觉判断", score: 5, hours: 15 },
+          { text: "完全手动，不一致", score: 7, hours: 25 },
+        ],
+      },
+      {
+        id: 12,
+        category: "LEAD_QUALIFICATION",
+        question: "有多少百分比的潜在客户从未得到跟进？",
+        options: [
+          { text: "少于5%（自动跟进）", score: 1, hours: 2 },
+          { text: "5-15%", score: 3, hours: 5 },
+          { text: "15-30%", score: 5, hours: 10 },
+          { text: "超过30%", score: 7, hours: 15 },
+        ],
+      },
+      {
+        id: 13,
+        category: "DOCUMENT_MANAGEMENT",
+        question: "找到特定文档需要多长时间？",
+        options: [
+          { text: "几秒钟（智能搜索）", score: 1, hours: 1 },
+          { text: "几分钟（有组织的文件夹）", score: 3, hours: 3 },
+          { text: "10-30分钟（搜索中）", score: 5, hours: 8 },
+          { text: "几小时或找不到", score: 7, hours: 15 },
+        ],
+      },
+      {
+        id: 14,
+        category: "REPORTING",
+        question: "您的业务预测准确性如何？",
+        options: [
+          { text: "95%+（AI驱动）", score: 1, hours: 2 },
+          { text: "80-94%（数据驱动）", score: 3, hours: 5 },
+          { text: "60-79%（基于电子表格）", score: 5, hours: 10 },
+          { text: "低于60%（猜测）", score: 7, hours: 15 },
+        ],
+      },
+      {
+        id: 15,
+        category: "DOCUMENT_MANAGEMENT",
+        question: "您如何确保合规文档？",
+        options: [
+          { text: "自动跟踪和警报", score: 1, hours: 2 },
+          { text: "定期手动审核", score: 3, hours: 6 },
+          { text: "临时检查", score: 5, hours: 12 },
+          { text: "被动（仅在需要时）", score: 7, hours: 20 },
+        ],
+      },
+    ];
+  }
+
+  // English questions
+  return [
+    {
+      id: 1,
+      category: "DATA_ENTRY",
+      question:
+        "How much time does your team spend on manual data entry each week?",
+      options: [
+        { text: "Less than 5 hours", score: 1, hours: 3 },
+        { text: "5-15 hours", score: 3, hours: 10 },
+        { text: "15-30 hours", score: 5, hours: 22 },
+        { text: "More than 30 hours", score: 7, hours: 35 },
+      ],
+    },
+    {
+      id: 2,
+      category: "DATA_ENTRY",
+      question: "How do you currently process receipts and invoices?",
+      options: [
+        { text: "Fully automated OCR system", score: 1, hours: 1 },
+        { text: "Mix of automation and manual", score: 3, hours: 8 },
+        { text: "Mostly manual entry", score: 5, hours: 15 },
+        { text: "100% manual, often delayed", score: 7, hours: 20 },
+      ],
+    },
+    {
+      id: 3,
+      category: "RECONCILIATION",
+      question: "How long does account reconciliation take?",
+      options: [
+        { text: "Same day (automated)", score: 1, hours: 2 },
+        { text: "1-2 days", score: 3, hours: 12 },
+        { text: "3-5 days", score: 5, hours: 24 },
+        { text: "More than a week", score: 7, hours: 40 },
+      ],
+    },
+    {
+      id: 4,
+      category: "RECONCILIATION",
+      question: "How often do you find discrepancies in reconciliation?",
+      options: [
+        { text: "Rarely (system catches them)", score: 1, hours: 1 },
+        { text: "Occasionally (monthly)", score: 3, hours: 4 },
+        { text: "Frequently (weekly)", score: 5, hours: 8 },
+        { text: "Constantly (daily)", score: 7, hours: 12 },
+      ],
+    },
+    {
+      id: 5,
+      category: "CUSTOMER_SUPPORT",
+      question: "What's your average customer response time?",
+      options: [
+        { text: "Under 1 hour", score: 1, hours: 5 },
+        { text: "1-4 hours", score: 3, hours: 10 },
+        { text: "4-24 hours", score: 5, hours: 20 },
+        { text: "More than 24 hours", score: 7, hours: 30 },
+      ],
+    },
+    {
+      id: 6,
+      category: "CUSTOMER_SUPPORT",
+      question: "How many customer inquiries go unanswered after hours?",
+      options: [
+        { text: "None (24/7 coverage)", score: 1, hours: 0 },
+        { text: "Few (handled next day)", score: 3, hours: 5 },
+        { text: "Many (causing frustration)", score: 5, hours: 12 },
+        { text: "Most (losing business)", score: 7, hours: 20 },
+      ],
+    },
+    {
+      id: 7,
+      category: "TRUST_ACCOUNTING",
+      question: "How do you manage trust accounts? (Skip if N/A)",
+      options: [
+        { text: "Automated system with alerts", score: 1, hours: 2 },
+        { text: "Software with manual checks", score: 3, hours: 10 },
+        { text: "Spreadsheets and manual tracking", score: 5, hours: 20 },
+        { text: "Fully manual, compliance concerns", score: 7, hours: 30 },
+      ],
+    },
+    {
+      id: 8,
+      category: "SCHEDULING",
+      question: "What's your appointment no-show rate?",
+      options: [
+        { text: "Under 5%", score: 1, hours: 2 },
+        { text: "5-15%", score: 3, hours: 5 },
+        { text: "15-30%", score: 5, hours: 10 },
+        { text: "More than 30%", score: 7, hours: 15 },
+      ],
+    },
+    {
+      id: 9,
+      category: "SCHEDULING",
+      question: "How much time goes into appointment coordination?",
+      options: [
+        { text: "Automated (1-2 hours/week)", score: 1, hours: 1.5 },
+        { text: "Semi-automated (5-10 hours)", score: 3, hours: 7.5 },
+        { text: "Mostly manual (10-20 hours)", score: 5, hours: 15 },
+        { text: "Fully manual (20+ hours)", score: 7, hours: 25 },
+      ],
+    },
+    {
+      id: 10,
+      category: "REPORTING",
+      question: "How long does it take to generate business reports?",
+      options: [
+        { text: "Real-time (automated dashboards)", score: 1, hours: 1 },
+        { text: "Few hours (semi-automated)", score: 3, hours: 4 },
+        { text: "1-2 days (manual compilation)", score: 5, hours: 12 },
+        { text: "Week+ (complex manual process)", score: 7, hours: 20 },
+      ],
+    },
+    {
+      id: 11,
+      category: "LEAD_QUALIFICATION",
+      question: "How do you handle lead qualification?",
+      options: [
+        { text: "Automated scoring system", score: 1, hours: 3 },
+        { text: "Basic CRM with manual review", score: 3, hours: 8 },
+        { text: "Spreadsheets and gut feeling", score: 5, hours: 15 },
+        { text: "Fully manual, inconsistent", score: 7, hours: 25 },
+      ],
+    },
+    {
+      id: 12,
+      category: "LEAD_QUALIFICATION",
+      question: "What percentage of leads never get followed up?",
+      options: [
+        { text: "Less than 5% (automated follow-up)", score: 1, hours: 2 },
+        { text: "5-15%", score: 3, hours: 5 },
+        { text: "15-30%", score: 5, hours: 10 },
+        { text: "More than 30%", score: 7, hours: 15 },
+      ],
+    },
+    {
+      id: 13,
+      category: "DOCUMENT_MANAGEMENT",
+      question: "How long to find a specific document?",
+      options: [
+        { text: "Seconds (smart search)", score: 1, hours: 1 },
+        { text: "Few minutes (organized folders)", score: 3, hours: 3 },
+        { text: "10-30 minutes (searching)", score: 5, hours: 8 },
+        { text: "Hours or can't find it", score: 7, hours: 15 },
+      ],
+    },
+    {
+      id: 14,
+      category: "REPORTING",
+      question: "How accurate is your business forecasting?",
+      options: [
+        { text: "95%+ (AI-powered)", score: 1, hours: 2 },
+        { text: "80-94% (data-driven)", score: 3, hours: 5 },
+        { text: "60-79% (spreadsheet-based)", score: 5, hours: 10 },
+        { text: "Less than 60% (guesswork)", score: 7, hours: 15 },
+      ],
+    },
+    {
+      id: 15,
+      category: "DOCUMENT_MANAGEMENT",
+      question: "How do you ensure compliance documentation?",
+      options: [
+        { text: "Automated tracking and alerts", score: 1, hours: 2 },
+        { text: "Scheduled manual reviews", score: 3, hours: 6 },
+        { text: "Ad-hoc checks", score: 5, hours: 12 },
+        { text: "Reactive (only when needed)", score: 7, hours: 20 },
+      ],
+    },
+  ];
+};
+
+// Keep the old constant for backward compatibility
+const smartQuizQuestions = getSmartQuizQuestions("en");
+
+// 🔴 **GAP ANALYSIS FUNCTION**
+function analyzeGaps(answers) {
+  const categoryScores = {};
+  const hoursWasted = {};
+
+  Object.keys(AI_SOLUTIONS).forEach((category) => {
+    categoryScores[category] = 0;
+    hoursWasted[category] = 0;
   });
 
-  return text;
+  answers.forEach((answer, index) => {
+    const question = smartQuizQuestions[index];
+    if (!question) return;
+
+    const category = question.category;
+    const selectedOption = question.options[answer];
+
+    if (selectedOption) {
+      categoryScores[category] += selectedOption.score;
+      hoursWasted[category] += selectedOption.hours;
+    }
+  });
+
+  const gaps = Object.entries(categoryScores)
+    .map(([category, score]) => ({
+      category,
+      score,
+      hoursWasted: hoursWasted[category],
+      solution: AI_SOLUTIONS[category],
+      severity:
+        score > 18
+          ? "CRITICAL"
+          : score > 12
+            ? "HIGH"
+            : score > 6
+              ? "MEDIUM"
+              : "LOW",
+    }))
+    .filter((gap) => gap.score > 2)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 3);
+
+  const totalHoursWasted = Object.values(hoursWasted).reduce(
+    (sum, hours) => sum + hours,
+    0
+  );
+  const totalScore = Object.values(categoryScores).reduce(
+    (sum, score) => sum + score,
+    0
+  );
+  const totalMonthlyCost = gaps.reduce(
+    (sum, gap) => sum + gap.solution.cost,
+    0
+  );
+  const totalHoursSaved = gaps.reduce(
+    (sum, gap) => sum + gap.solution.hoursPerWeek,
+    0
+  );
+
+  return {
+    gaps,
+    totalHoursWasted,
+    totalScore,
+    totalMonthlyCost,
+    totalHoursSaved,
+    overallSeverity:
+      totalScore > 60
+        ? "CRITICAL"
+        : totalScore > 40
+          ? "HIGH"
+          : totalScore > 20
+            ? "MEDIUM"
+            : "LOW",
+  };
+}
+
+// 🔴 **FIXED TRANSLATION FUNCTION**
+const t = (key, lang = "en", replacements = {}) => {
+  // Ensure valid language
+  const validLang = lang === "zh" ? "zh" : "en";
+
+  // Split key for nested access (e.g., 'Hero Section.heroTitle1' -> ['Hero Section', 'heroTitle1'])
+  const keyParts = key.split(".");
+  let result = translations[validLang];
+
+  // Navigate nested structure safely
+  for (const part of keyParts) {
+    if (result && typeof result === "object" && part in result) {
+      result = result[part];
+    } else {
+      // Fallback to English if Chinese missing
+      result = translations.en;
+      for (const englishPart of keyParts) {
+        if (result && typeof result === "object" && englishPart in result) {
+          result = result[englishPart];
+        } else {
+          break;
+        }
+      }
+      // If still missing, return the key as string for debugging
+      if (result === undefined || result === null) {
+        console.warn(
+          `Missing translation: ${key} for ${validLang} (using: ${key})`
+        );
+        return key; // Shows key instead of undefined
+      }
+      break;
+    }
+  }
+
+  // If result is undefined, return key
+  if (result === undefined || result === null) {
+    console.warn(`Translation not found: ${key} for ${validLang}`);
+    return key;
+  }
+
+  // If result is an array or object (not a string), return it as-is
+  if (
+    Array.isArray(result) ||
+    (typeof result === "object" && result !== null)
+  ) {
+    return result;
+  }
+
+  // If result is a string, do placeholder replacement
+  if (typeof result === "string") {
+    Object.keys(replacements).forEach((repKey) => {
+      const placeholder = `{${repKey}}`;
+      const regex = new RegExp(
+        placeholder.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
+        "g"
+      );
+      result = result.replace(regex, replacements[repKey]);
+    });
+  }
+
+  return result;
 };
 
 // 🔴 **BUTTON COMPONENT**
@@ -835,11 +1358,23 @@ const Card = React.forwardRef(({ className, children, ...props }, ref) => (
 Card.displayName = "Card";
 
 // 🔴 **LANGUAGE TOGGLE**
-const LanguageToggle = ({ lang, onToggle }) => (
-  <Button variant="toggle" onClick={onToggle} className="ml-4">
-    {lang === "en" ? "中文" : "English"}
-  </Button>
-);
+const LanguageToggle = ({ lang, onToggle }) => {
+  const toggleLanguage = () => {
+    const newLang = lang === "en" ? "zh" : "en";
+    console.log("Switching language to:", newLang); // Debug log
+    onToggle(newLang); // This should be setLang(newLang)
+  };
+
+  return (
+    <Button
+      variant="toggle"
+      onClick={toggleLanguage} // Fixed: proper toggle handler
+      className="ml-4"
+    >
+      {lang === "en" ? "中文" : "English"} {/* Fixed: proper toggle text */}
+    </Button>
+  );
+};
 
 // 🔴 **SCORE ANALYSIS**
 const getScoreAnalysis = (score) => {
@@ -942,9 +1477,10 @@ const MobileMenu = ({ isOpen, onClose, onNavClick, lang }) => (
 );
 
 // 🔴 **QUIZ MODAL - FIXED**
+
 const QuizModal = ({ isOpen, onClose, lang }) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState({});
+  const [answers, setAnswers] = useState([]);
   const [showResults, setShowResults] = useState(false);
   const [showContactForm, setShowContactForm] = useState(false);
   const [formData, setFormData] = useState({
@@ -953,51 +1489,124 @@ const QuizModal = ({ isOpen, onClose, lang }) => {
     company: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [gapAnalysis, setGapAnalysis] = useState(null);
 
-  const questions = quizQuestions(lang);
+  const questions = getSmartQuizQuestions(lang); // Use language-aware function
   const currentQ = questions[currentQuestion];
   const progress = ((currentQuestion + 1) / questions.length) * 100;
-  const isAnswered = answers[currentQ?.id] !== undefined;
-  const totalScore = Object.values(answers).reduce(
-    (sum, score) => sum + score,
-    0
-  );
-  const analysis = getScoreAnalysis(totalScore);
+  const isAnswered = answers[currentQuestion] !== undefined;
 
-  const handleAnswer = (questionId, score) =>
-    setAnswers({ ...answers, [questionId]: score });
-  const handleNext = () =>
-    currentQuestion === questions.length - 1
-      ? setShowContactForm(true)
-      : setCurrentQuestion(currentQuestion + 1);
+  const handleAnswer = (optionIndex) => {
+    const newAnswers = [...answers];
+    newAnswers[currentQuestion] = optionIndex;
+    setAnswers(newAnswers);
+  };
+
+  const handleNext = () => {
+    if (currentQuestion === questions.length - 1) {
+      setShowContactForm(true);
+    } else {
+      setCurrentQuestion(currentQuestion + 1);
+    }
+  };
+
   const handlePrevious = () =>
     currentQuestion > 0 && setCurrentQuestion(currentQuestion - 1);
   const handleFormChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
+  // In handleSubmit, after setGapAnalysis(analyzeGaps(answers)) and setShowResults(true)
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+
+    // Call analyzeGaps directly and use the result immediately
+    const gapAnalysis = analyzeGaps(answers); // This returns { gaps, totalHoursWasted, totalScore, ... }
+
+    // Set state for UI (results display) but don't wait for it
+    setGapAnalysis(gapAnalysis);
+
+    try {
+      // Calculate score using the local gapAnalysis (not state)
+      // Total questions per category vary, but use existing totalScore from analyzeGaps
+      // Or compute as: average score across all answered questions (max 7 per question)
+      const answeredCount = answers.filter(
+        (answer) => answer !== undefined
+      ).length;
+      const totalPossibleScore = answeredCount * 7; // 7 is max score per question
+      const overallScorePercent =
+        answeredCount > 0
+          ? Math.round((gapAnalysis.totalScore / totalPossibleScore) * 100)
+          : 0;
+
+      // Send to backend with local data
+      const response = await fetch("/api/send-quiz-results", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          company: formData.company,
+          score: overallScorePercent, // Use calculated/local value
+          gaps: gapAnalysis.gaps || [], // Fallback to empty array if null
+          totalHoursWasted: gapAnalysis.totalHoursWasted || 0,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to send results");
+      }
+
+      console.log("Email sent to team");
+    } catch (error) {
+      console.error("Error sending email:", error);
+      // Optional: Alert user or show error toast without blocking results
+    }
+
+    // Show results after analysis (state will update by now)
     setShowResults(true);
     setIsSubmitting(false);
+    setShowContactForm(false);
   };
 
   const resetQuiz = () => {
     setCurrentQuestion(0);
-    setAnswers({});
+    setAnswers([]);
     setShowResults(false);
     setShowContactForm(false);
     setFormData({ name: "", email: "", company: "" });
+    setGapAnalysis(null);
     onClose();
   };
 
-  const questionText = t("quizQuestion", lang, {
-    current: currentQuestion + 1,
-    total: questions.length,
-  });
-
   if (!isOpen) return null;
+
+  const severityColors = {
+    CRITICAL: {
+      bg: "from-red-900/20",
+      border: "border-red-500/30",
+      text: "text-red-400",
+      icon: "🔴",
+    },
+    HIGH: {
+      bg: "from-orange-900/20",
+      border: "border-orange-500/30",
+      text: "text-orange-400",
+      icon: "🟡",
+    },
+    MEDIUM: {
+      bg: "from-yellow-900/20",
+      border: "border-yellow-500/30",
+      text: "text-yellow-400",
+      icon: "🟡",
+    },
+    LOW: {
+      bg: "from-green-900/20",
+      border: "border-green-500/30",
+      text: "text-green-400",
+      icon: "🟢",
+    },
+  };
 
   return (
     <AnimatePresence>
@@ -1008,114 +1617,310 @@ const QuizModal = ({ isOpen, onClose, lang }) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 bg-black/80"
-            onClick={onClose}
+            onClick={resetQuiz}
           />
           <motion.div
-            initial={{ scale: 0.9, opacity: 0, y: 50 }}
-            animate={{ scale: 1, opacity: 1, y: 0 }}
-            exit={{ scale: 0.9, opacity: 0, y: 50 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4"
-            onClick={(e) => e.stopPropagation()}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
           >
             <div
-              className="relative w-full max-w-4xl max-h-[95vh] overflow-y-auto rounded-2xl"
-              style={{
-                background: "#1E293B",
-                border: "1px solid #334155",
-                boxShadow: "0 25px 50px rgba(0,0,0,0.5)",
-              }}
+              className="bg-[#0F172A] border border-[#475569] rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto pointer-events-auto"
+              onClick={(e) => e.stopPropagation()}
             >
-              <button
-                onClick={onClose}
-                className="absolute right-4 top-4 rounded-full p-2 hover:bg-[#334155]"
-              >
-                <X className="h-6 w-6 text-[#E2E8F0]" />
-              </button>
+              <div className="sticky top-0 bg-[#0F172A] border-b border-[#475569] p-4 flex items-center justify-between z-10">
+                <h1 className="text-xl font-bold text-white">
+                  {t("quizTitle", lang)}
+                </h1>
+                <button
+                  onClick={resetQuiz}
+                  className="w-8 h-8 rounded-full hover:bg-white/10 flex items-center justify-center"
+                >
+                  <X className="w-5 h-5 text-gray-400" />
+                </button>
+              </div>
 
               {showContactForm && !showResults ? (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="space-y-6 p-8"
-                >
-                  <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-[#1E3A8A] to-[#10B981] bg-clip-text text-transparent">
-                    {t("quizGetResults", lang)}
-                  </h2>
-                  <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="p-8 space-y-6">
+                  <div className="text-center mb-6">
+                    <h2 className="text-2xl font-bold text-white mb-2">
+                      {t("quizCustomRoadmap", lang)}
+                    </h2>
+                    <p className="text-gray-400">
+                      {t("quizEnterDetails", lang)}
+                    </p>
+                  </div>
+                  <div className="space-y-4">
                     <input
-                      type="text"
                       name="name"
-                      required
                       value={formData.name}
                       onChange={handleFormChange}
                       placeholder={t("quizName", lang)}
-                      className="w-full px-4 py-3 bg-[#0F172A] border border-[#334155] rounded-xl focus:border-[#0EA5E9] focus:ring-2 focus:ring-[#0EA5E9]/20 transition-all text-white placeholder-gray-400"
+                      required
+                      className="w-full px-4 py-3 rounded-xl bg-[#1E293B] border border-[#334155] text-white placeholder-gray-500 focus:outline-none focus:border-[#0EA5E9]"
                     />
                     <input
-                      type="email"
                       name="email"
-                      required
+                      type="email"
                       value={formData.email}
                       onChange={handleFormChange}
                       placeholder={t("quizEmail", lang)}
-                      className="w-full px-4 py-3 bg-[#0F172A] border border-[#334155] rounded-xl focus:border-[#0EA5E9] focus:ring-2 focus:ring-[#0EA5E9]/20 transition-all text-white placeholder-gray-400"
+                      required
+                      className="w-full px-4 py-3 rounded-xl bg-[#1E293B] border border-[#334155] text-white placeholder-gray-500 focus:outline-none focus:border-[#0EA5E9]"
                     />
                     <input
-                      type="text"
                       name="company"
                       value={formData.company}
                       onChange={handleFormChange}
                       placeholder={t("quizCompany", lang)}
-                      className="w-full px-4 py-3 bg-[#0F172A] border border-[#334155] rounded-xl focus:border-[#0EA5E9] focus:ring-2 focus:ring-[#0EA5E9]/20 transition-all text-white placeholder-gray-400"
+                      required
+                      className="w-full px-4 py-3 rounded-xl bg-[#1E293B] border border-[#334155] text-white placeholder-gray-500 focus:outline-none focus:border-[#0EA5E9]"
                     />
-                    <div className="flex gap-4">
-                      <Button
-                        variant="outline"
-                        type="button"
-                        onClick={() => setShowContactForm(false)}
-                      >
-                        {t("quizBack", lang)}
-                      </Button>
-                      <Button type="submit" disabled={isSubmitting}>
-                        {isSubmitting
-                          ? t("quizProcessing", lang)
-                          : t("quizGetResults", lang)}
+                  </div>
+                  <div className="flex gap-4">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setShowContactForm(false)}
+                    >
+                      {t("quizBack", lang)}
+                    </Button>
+                    <Button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="ml-auto"
+                    >
+                      {isSubmitting
+                        ? t("quizProcessing", lang)
+                        : t("quizSubmitResults", lang)}
+                    </Button>
+                  </div>
+                </form>
+              ) : showResults && gapAnalysis ? (
+                <div className="p-8 space-y-8">
+                  <div className="text-center">
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 0.2, type: "spring" }}
+                      className={`inline-block px-8 py-4 rounded-2xl bg-gradient-to-r ${severityColors[gapAnalysis.overallSeverity].bg} border ${severityColors[gapAnalysis.overallSeverity].border} mb-6`}
+                    >
+                      <div className="text-5xl font-bold text-white mb-2">
+                        {gapAnalysis.totalHoursWasted} {t("quizHrsShort", lang)}
+                        /{t("quizWeekShort", lang)}
+                      </div>
+                      <div className="text-white/90 font-medium">
+                        {severityColors[gapAnalysis.overallSeverity].icon}{" "}
+                        {t("quizTimeWasted", lang)}
+                      </div>
+                    </motion.div>
+                    <h3 className="text-3xl font-bold text-white mb-3">
+                      {t("quizCustomRoadmap", lang)}
+                    </h3>
+                    <p className="text-gray-300 text-lg max-w-2xl mx-auto">
+                      {t("quizResultsTitle", lang)}
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                      <Clock className="w-8 h-8 text-blue-400 mb-2" />
+                      <div className="text-2xl font-bold text-white">
+                        {gapAnalysis.totalHoursWasted}
+                      </div>
+                      <div className="text-sm text-gray-400">
+                        {t("quizHoursWasted", lang)}
+                      </div>
+                    </div>
+                    <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                      <DollarSign className="w-8 h-8 text-green-400 mb-2" />
+                      <div className="text-2xl font-bold text-white">
+                        $
+                        {(
+                          (gapAnalysis.totalHoursWasted * 52 * 50 -
+                            gapAnalysis.totalMonthlyCost * 12) /
+                          1000
+                        ).toFixed(0)}
+                        K
+                      </div>
+                      <div className="text-sm text-gray-400">
+                        {t("quizAnnualSavings", lang)}
+                      </div>
+                    </div>
+                    <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                      <TrendingUp className="w-8 h-8 text-purple-400 mb-2" />
+                      <div className="text-2xl font-bold text-white">
+                        {(
+                          ((gapAnalysis.totalHoursWasted * 52 * 50 -
+                            gapAnalysis.totalMonthlyCost * 12) /
+                            (gapAnalysis.totalMonthlyCost * 12)) *
+                          100
+                        ).toFixed(0)}
+                        %
+                      </div>
+                      <div className="text-sm text-gray-400">
+                        {t("quizROI", lang)}
+                      </div>
+                    </div>
+                    <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                      <Calendar className="w-8 h-8 text-orange-400 mb-2" />
+                      <div className="text-2xl font-bold text-white">
+                        {(
+                          (gapAnalysis.totalMonthlyCost * 12) /
+                          ((gapAnalysis.totalHoursWasted * 52 * 50 -
+                            gapAnalysis.totalMonthlyCost * 12) /
+                            12)
+                        ).toFixed(1)}
+                        {t("quizMonthShort", lang)}
+                      </div>
+                      <div className="text-sm text-gray-400">
+                        {t("quizPayback", lang)}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-6">
+                    <h4 className="text-xl font-bold text-white flex items-center">
+                      <AlertTriangle className="w-6 h-6 mr-2 text-yellow-400" />
+                      {t("quizTopFixes", lang)}
+                    </h4>
+
+                    {gapAnalysis.gaps.map((gap, index) => {
+                      const gapColors = severityColors[gap.severity];
+                      const annualHoursSaved = gap.solution.hoursPerWeek * 52;
+                      const annualCostSavings = annualHoursSaved * 50;
+                      const aiCost = gap.solution.cost * 12;
+                      const netSavings = annualCostSavings - aiCost;
+
+                      return (
+                        <motion.div
+                          key={gap.category}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.3 + index * 0.1 }}
+                          className={`border-2 ${gapColors.border} rounded-2xl p-6 bg-gradient-to-br ${gapColors.bg} to-black`}
+                        >
+                          <div className="flex items-center justify-between mb-4">
+                            <span
+                              className={`text-lg font-bold ${gapColors.text}`}
+                            >
+                              {gapColors.icon}{" "}
+                              {t("quizPriority", lang, {
+                                number: index + 1,
+                                severity: t(
+                                  `severity${gap.severity.charAt(0) + gap.severity.slice(1).toLowerCase()}`,
+                                  lang
+                                ),
+                              })}
+                            </span>
+                            <span className="text-sm px-3 py-1 rounded-full bg-white/10 text-gray-300">
+                              {t("quizWeeksToImplement", lang, {
+                                weeks: gap.solution.implementation.replace(
+                                  /\D/g,
+                                  ""
+                                ),
+                              })}
+                            </span>
+                          </div>
+                          <h5 className="text-2xl font-bold text-white mb-2">
+                            {gap.solution.name}
+                          </h5>
+                          <p className="text-gray-400 mb-4">
+                            {gap.solution.solves}
+                          </p>
+                          <div className="grid md:grid-cols-2 gap-4 mb-4">
+                            <div className="bg-black/40 rounded-xl p-4 border border-red-500/20">
+                              <h6 className="text-sm font-semibold text-red-400 mb-2 flex items-center">
+                                <TrendingDown className="w-4 h-4 mr-1" />
+                                {t("quizCurrentState", lang)}
+                              </h6>
+                              <div className="text-3xl font-bold text-white mb-1">
+                                {gap.hoursWasted} {t("quizHrsShort", lang)}
+                              </div>
+                              <div className="text-xs text-gray-400">
+                                {t("quizWastedPerWeek", lang)}
+                              </div>
+                            </div>
+                            <div className="bg-black/40 rounded-xl p-4 border border-green-500/20">
+                              <h6 className="text-sm font-semibold text-green-400 mb-2 flex items-center">
+                                <TrendingUp className="w-4 h-4 mr-1" />
+                                {t("quizWithAI", lang)}
+                              </h6>
+                              <div className="text-3xl font-bold text-white mb-1">
+                                {gap.solution.timeSaved}
+                              </div>
+                              <div className="text-xs text-gray-400">
+                                {t("quizAutomated", lang)}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="mb-4">
+                            <h6 className="text-sm font-semibold text-gray-400 uppercase mb-3">
+                              {t("quizWhatGetsAutomated", lang)}
+                            </h6>
+                            <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                              {gap.solution.features.map((feature, idx) => (
+                                <li
+                                  key={idx}
+                                  className="flex items-start text-sm"
+                                >
+                                  <CheckCircle className="w-4 h-4 text-green-400 mr-2 mt-0.5 flex-shrink-0" />
+                                  <span className="text-gray-300">
+                                    {feature}
+                                  </span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                          <div className="pt-4 border-t border-white/10">
+                            <div className="grid grid-cols-3 gap-4 text-center">
+                              <div>
+                                <div className="text-lg font-bold text-green-400">
+                                  ${(netSavings / 1000).toFixed(0)}K
+                                </div>
+                                <div className="text-xs text-gray-400">
+                                  {t("quizAnnualSavingsLabel", lang)}
+                                </div>
+                              </div>
+                              <div>
+                                <div className="text-lg font-bold text-blue-400">
+                                  ${gap.solution.cost}/
+                                  {t("quizMonthShort", lang)}
+                                </div>
+                                <div className="text-xs text-gray-400">
+                                  {t("quizAICost", lang)}
+                                </div>
+                              </div>
+                              <div>
+                                <div className="text-lg font-bold text-purple-400">
+                                  {((netSavings / aiCost) * 100).toFixed(0)}%
+                                </div>
+                                <div className="text-xs text-gray-400">
+                                  {t("quizROILabel", lang)}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+
+                  <div className="bg-gradient-to-r from-blue-900/20 to-purple-900/20 rounded-2xl p-8 border border-blue-500/20 text-center">
+                    <h4 className="text-2xl font-bold text-white mb-4">
+                      {t("quizTransformBusiness", lang)}
+                    </h4>
+                    <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
+                      {t("quizScheduleCall", lang)}
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                      <Button variant="outline" onClick={resetQuiz}>
+                        {lang === "zh" ? "重新评估" : "Retake Assessment"}
                       </Button>
                     </div>
-                  </form>
-                </motion.div>
-              ) : showResults ? (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="p-8 text-center space-y-6"
-                >
-                  <CheckCircle2
-                    className="w-16 h-16 mx-auto"
-                    style={{ color: analysis.color }}
-                  />
-                  <h2 className="text-3xl font-bold text-white">
-                    {t("quizYourScore", lang)}
-                  </h2>
-                  <div
-                    className="text-6xl font-bold"
-                    style={{ color: analysis.color }}
-                  >
-                    {totalScore}/225
                   </div>
-                  <div
-                    className="inline-flex px-6 py-3 rounded-full border border-[#475569]"
-                    style={{ background: "#0F172A" }}
-                  >
-                    <span className="font-mono text-sm uppercase text-white">
-                      {analysis.level}
-                    </span>
-                  </div>
-                  <p className="text-xl max-w-2xl mx-auto text-[#E2E8F0]">
-                    {analysis.message}
-                  </p>
-                  <Button onClick={resetQuiz}>{t("quizClose", lang)}</Button>
-                </motion.div>
+                </div>
               ) : (
                 <motion.div
                   initial={{ opacity: 0 }}
@@ -1124,7 +1929,16 @@ const QuizModal = ({ isOpen, onClose, lang }) => {
                 >
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm font-mono text-gray-400">
-                      <span>{questionText}</span>
+                      <span>
+                        {t("quizQuestion", lang, {
+                          current: currentQuestion + 1,
+                          total: questions.length,
+                        })}
+                      </span>
+                      <span>
+                        {Math.round(progress)}%{" "}
+                        {lang === "zh" ? "完成" : "Complete"}
+                      </span>
                     </div>
                     <div className="w-full h-2 bg-[#334155] rounded-full">
                       <motion.div
@@ -1141,28 +1955,40 @@ const QuizModal = ({ isOpen, onClose, lang }) => {
                     {currentQ.options.map((option, i) => (
                       <motion.button
                         key={i}
-                        onClick={() => handleAnswer(currentQ.id, option.score)}
+                        onClick={() => handleAnswer(i)}
                         className={cn(
-                          "w-full p-4 rounded-xl border-2 transition-all",
-                          answers[currentQ.id] === option.score
+                          "w-full p-4 rounded-xl border-2 transition-all text-left",
+                          answers[currentQuestion] === i
                             ? "border-[#1E3A8A] bg-[#1E3A8A]/20"
                             : "border-[#334155] hover:border-[#0EA5E9]/50 hover:bg-[#0EA5E9]/10"
                         )}
                         whileHover={
-                          answers[currentQ.id] === option.score
-                            ? {}
-                            : { scale: 1.02 }
+                          answers[currentQuestion] === i ? {} : { scale: 1.02 }
                         }
                       >
-                        <span
-                          className={
-                            answers[currentQ.id] === option.score
-                              ? "text-[#1E3A8A]"
-                              : "text-[#E2E8F0]"
-                          }
-                        >
-                          {option.text}
-                        </span>
+                        <div className="flex items-center">
+                          <div
+                            className={cn(
+                              "w-6 h-6 rounded-full border-2 mr-4 flex items-center justify-center",
+                              answers[currentQuestion] === i
+                                ? "border-blue-500 bg-blue-500"
+                                : "border-white/30"
+                            )}
+                          >
+                            {answers[currentQuestion] === i && (
+                              <CheckCircle className="w-4 h-4 text-white" />
+                            )}
+                          </div>
+                          <span
+                            className={
+                              answers[currentQuestion] === i
+                                ? "text-white font-medium"
+                                : "text-[#E2E8F0]"
+                            }
+                          >
+                            {option.text}
+                          </span>
+                        </div>
                       </motion.button>
                     ))}
                   </div>
@@ -1193,46 +2019,112 @@ const QuizModal = ({ isOpen, onClose, lang }) => {
 };
 
 // 🔴 **CASE STUDIES SECTION**
-const CaseStudiesSection = ({ t }) => (
-  <section
-    id={SECTION_IDS.caseStudies}
-    className="py-24 px-4 relative bg-gradient-to-b from-[#0F172A]/50 to-[#111827]/50"
-  >
-    <div className="max-w-7xl mx-auto">
-      <motion.div className="text-center mb-20">
-        <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-[#0EA5E9] to-[#1E3A8A] bg-clip-text text-transparent">
-          {t("caseStudiesTitle")}
-        </h2>
-      </motion.div>
-      <div className="grid md:grid-cols-3 gap-8">
-        {t("caseStudies").map((study, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1 }}
-          >
-            <Card className="group hover:-translate-y-2">
-              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#0EA5E9] to-[#1E3A8A] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <span className="text-white font-bold">{study.image}</span>
-              </div>
-              <h3 className="text-2xl font-bold mb-4 text-white">
-                {study.title}
-              </h3>
-              <p className="text-[#E2E8F0] mb-4">{study.industry}</p>
-              <div className="text-3xl font-bold text-[#10B981] mb-4">
-                {study.result}
-              </div>
-              <Button variant="outline" size="default" className="mt-auto">
-                View Case Study
-              </Button>
-            </Card>
-          </motion.div>
-        ))}
+const CaseStudiesSection = ({ t }) => {
+  const useCases = t("useCases");
+
+  return (
+    <section
+      id={SECTION_IDS.caseStudies}
+      className="py-24 px-4 relative bg-gradient-to-b from-[#0F172A]/50 to-[#111827]/50"
+    >
+      <div className="max-w-7xl mx-auto">
+        <motion.div className="text-center mb-20">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-[#0EA5E9] to-[#1E3A8A] bg-clip-text text-transparent">
+            {t("caseStudiesTitle")}
+          </h2>
+          <p className="text-xl text-[#E2E8F0] max-w-3xl mx-auto">
+            {t("caseStudiesSubtitle")}
+          </p>
+        </motion.div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {useCases.map((useCase, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1 }}
+              viewport={{ once: true }}
+            >
+              <Card className="h-full hover:border-[#0EA5E9]/40 transition-all duration-300 hover:scale-105">
+                {/* Industry Badge */}
+                <div className="flex items-center justify-between mb-6">
+                  <span className="text-xs px-4 py-2 rounded-full bg-gradient-to-r from-[#1E3A8A]/20 to-[#10B981]/20 text-[#0EA5E9] font-medium border border-[#0EA5E9]/30">
+                    {useCase.industry}
+                  </span>
+                </div>
+
+                {/* Challenge */}
+                <div className="mb-6">
+                  <h4 className="text-sm text-[#94A3B8] uppercase tracking-wide mb-2 font-semibold">
+                    The Challenge
+                  </h4>
+                  <p className="text-white font-medium leading-relaxed">
+                    {useCase.challenge}
+                  </p>
+                </div>
+
+                {/* Solution */}
+                <div className="mb-6">
+                  <h4 className="text-sm text-[#94A3B8] uppercase tracking-wide mb-2 font-semibold">
+                    AI Solution
+                  </h4>
+                  <p className="text-[#E2E8F0] text-sm leading-relaxed">
+                    {useCase.solution}
+                  </p>
+                </div>
+
+                {/* Automated Processes */}
+                <div className="mb-6">
+                  <h4 className="text-sm text-[#94A3B8] uppercase tracking-wide mb-3 font-semibold">
+                    What Gets Automated
+                  </h4>
+                  <ul className="space-y-2">
+                    {useCase.processes.map((process, idx) => (
+                      <li key={idx} className="flex items-start text-sm">
+                        <CheckCircle className="w-4 h-4 text-[#10B981] mr-2 mt-0.5 flex-shrink-0" />
+                        <span className="text-[#E2E8F0]">{process}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Metrics */}
+                <div className="pt-6 border-t border-white/10">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <div className="text-3xl font-bold text-[#0EA5E9] mb-1">
+                        {useCase.metrics.primary}
+                      </div>
+                      <div className="text-xs text-[#94A3B8]">
+                        {useCase.metrics.label}
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-xl font-bold text-white mb-1">
+                        {useCase.metrics.secondary}
+                      </div>
+                      <div className="text-xs text-[#94A3B8]">
+                        Additional Impact
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Industry Not Listed CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-16 text-center"
+        ></motion.div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 // 🔴 **HERO, PROBLEM, SOLUTION, HOW IT WORKS, PROOF, FAQ, CTA SECTIONS**
 // (Same as before - keeping them unchanged for brevity)
@@ -1528,26 +2420,7 @@ const HowItWorksSection = ({ t }) => {
 };
 
 const ProofSection = ({ t }) => {
-  const testimonials = [
-    {
-      name: t("testimonials")[0].name,
-      company: t("testimonials")[0].company,
-      quote: t("testimonials")[0].quote,
-      avatar: t("testimonials")[0].avatar,
-    },
-    {
-      name: t("testimonials")[1].name,
-      company: t("testimonials")[1].company,
-      quote: t("testimonials")[1].quote,
-      avatar: t("testimonials")[1].avatar,
-    },
-    {
-      name: t("testimonials")[2].name,
-      company: t("testimonials")[2].company,
-      quote: t("testimonials")[2].quote,
-      avatar: t("testimonials")[2].avatar,
-    },
-  ];
+  const industryResults = t("industryResults");
 
   return (
     <section className="py-24 px-4 relative bg-gradient-to-b from-[#0F172A]/50 to-[#111827]/50">
@@ -1556,6 +2429,9 @@ const ProofSection = ({ t }) => {
           <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-[#0EA5E9] to-[#1E3A8A] bg-clip-text text-transparent">
             {t("proofTitle")}
           </h2>
+          <p className="text-xl text-[#E2E8F0] max-w-3xl mx-auto">
+            {t("proofSubtitle")}
+          </p>
         </motion.div>
         <div className="grid md:grid-cols-4 gap-8 mb-16">
           {t("stats").map((stat, i) => (
@@ -1574,36 +2450,29 @@ const ProofSection = ({ t }) => {
             </motion.div>
           ))}
         </div>
-        <div className="grid md:grid-cols-3 gap-8">
-          {testimonials.map((testimonial, i) => (
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {industryResults.map((result, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
             >
-              <Card>
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#0EA5E9] to-[#1E3A8A] flex items-center justify-center text-white font-bold">
-                    {testimonial.avatar}
-                  </div>
-                  <div>
-                    <div className="font-bold text-white">
-                      {testimonial.name}
-                    </div>
-                    <div className="text-gray-400">{testimonial.company}</div>
-                  </div>
+              <Card className="h-full hover:border-[#0EA5E9]/40 transition-all">
+                <div className="flex items-start justify-between mb-4">
+                  <span className="text-sm px-3 py-1 rounded-full bg-gradient-to-r from-[#1E3A8A]/20 to-[#10B981]/20 text-[#0EA5E9] font-medium border border-[#0EA5E9]/30">
+                    {result.industry}
+                  </span>
+                  <CheckCircle className="w-6 h-6 text-[#10B981]" />
                 </div>
-                <p className="text-[#E2E8F0] italic mb-6">
-                  "{testimonial.quote}"
+
+                <h3 className="text-xl font-bold text-white mb-3">
+                  {result.result}
+                </h3>
+
+                <p className="text-[#E2E8F0] text-sm leading-relaxed">
+                  {result.impact}
                 </p>
-                <div className="flex gap-1 mb-4">
-                  {Array(5)
-                    .fill()
-                    .map((_, j) => (
-                      <CheckCircle key={j} className="w-5 h-5 text-[#F59E0B]" />
-                    ))}
-                </div>
               </Card>
             </motion.div>
           ))}
