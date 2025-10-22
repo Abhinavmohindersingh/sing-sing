@@ -2575,16 +2575,7 @@ const Footer = ({ t }) => (
           {t("footerTitle")}
         </div>
         <p className="text-[#E2E8F0] mb-6">{t("footerDescription")}</p>
-        <div className="flex space-x-4">
-          <a className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-gradient-to-r hover:from-[#1E3A8A]/20 hover:to-[#10B981]/20">
-            <Twitter className="w-5 h-5" />
-          </a>
-          <a className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-gradient-to-r hover:from-[#1E3A8A]/20 hover:to-[#10B981]/20">
-            <Linkedin className="w-5 h-5" />
-          </a>
-          <a className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-gradient-to-r hover:from-[#1E3A8A]/20 hover:to-[#10B981]/20">
-            <Github className="w-5 h-5" />
-          </a>
+        \
         </div>
       </div>
       <div>
@@ -2599,16 +2590,7 @@ const Footer = ({ t }) => (
           ))}
         </ul>
       </div>
-      <div>
-        <h3 className="font-bold mb-4 text-white">Company</h3>
-        <ul className="space-y-2 text-[#E2E8F0] text-sm">
-          {t("company").map((item, i) => (
-            <li key={i}>
-              <a className="hover:text-[#0EA5E9] transition-colors">{item}</a>
-            </li>
-          ))}
-        </ul>
-      </div>
+
       <div>
         <h3 className="font-bold mb-4 text-white">Contact</h3>
         <div className="space-y-2 text-[#E2E8F0] text-sm">
