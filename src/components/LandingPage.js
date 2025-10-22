@@ -1420,7 +1420,13 @@ const getScoreAnalysis = (score) => {
 };
 
 // 🔴 **MOBILE MENU**
-const MobileMenu = ({ isOpen, onClose, onNavClick, lang }) => (
+const MobileMenu = ({
+  isOpen,
+  onClose,
+  onNavClick,
+  lang,
+  onLanguageToggle,
+}) => (
   <AnimatePresence>
     {isOpen && (
       <motion.div
@@ -1470,6 +1476,18 @@ const MobileMenu = ({ isOpen, onClose, onNavClick, lang }) => (
           >
             {t("navStartQuiz", lang)}
           </Button>
+          <div className="pt-4 border-t border-white/10">
+            <Button
+              variant="toggle"
+              onClick={() => {
+                onLanguageToggle();
+                onClose();
+              }}
+              className="w-full"
+            >
+              {lang === "en" ? "中文" : "English"}
+            </Button>
+          </div>
         </div>
       </motion.div>
     )}
@@ -2690,6 +2708,7 @@ const LandingPage = () => {
         onClose={() => setMobileMenuOpen(false)}
         onNavClick={handleNavClick}
         lang={lang}
+        onLanguageToggle={() => setLang(lang === "en" ? "zh" : "en")}
       />
 
       <main>
