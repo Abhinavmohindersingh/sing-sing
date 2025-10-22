@@ -2575,8 +2575,6 @@ const Footer = ({ t }) => (
           {t("footerTitle")}
         </div>
         <p className="text-[#E2E8F0] mb-6">{t("footerDescription")}</p>
-        \
-        </div>
       </div>
       <div>
         <h3 className="font-bold mb-4 text-white">Services</h3>
