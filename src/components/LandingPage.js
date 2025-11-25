@@ -1542,6 +1542,8 @@ const MobileMenu = ({
 const QuizModal = ({ isOpen, onClose, lang }) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState([]);
+  const [status, setStatus] = useState(null);
+
   const [showResults, setShowResults] = useState(false);
   const [showContactForm, setShowContactForm] = useState(false);
   const [formData, setFormData] = useState({
