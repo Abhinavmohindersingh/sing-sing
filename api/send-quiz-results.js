@@ -1,13 +1,14 @@
 const { Resend } = require("resend");
 
 module.exports = async (req, res) => {
-  // Enable CORS if needed
+  // Enable CORS
+  res.setHeader("Content-Type", "application/json");
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   if (req.method === "OPTIONS") {
-    return res.status(200).end();
+    return res.status(200).json({ ok: true });
   }
 
   if (req.method !== "POST") {
@@ -30,6 +31,13 @@ module.exports = async (req, res) => {
 
     const resend = new Resend(process.env.RESEND_API_KEY);
 
+    console.log("Sending quiz results via Resend...", {
+      name,
+      email,
+      company,
+      score,
+    });
+
     // Format gaps array for email
     const gapsHTML =
       Array.isArray(gaps) && gaps.length > 0
@@ -48,7 +56,8 @@ module.exports = async (req, res) => {
             .join("")
         : "<p>No gaps identified</p>";
 
-    const emailResponse = await resend.emails.send({
+    // ✅ CRITICAL FIX: Destructure { data, error } from Resend response
+    const { data, error } = await resend.emails.send({
       from: "Quiz Lead <onboarding@resend.dev>",
       to: ["abhinavsinghkanwal@gmail.com"],
       subject: `🎯 New Quiz Lead: ${name} from ${company} (Score: ${score}%)`,
@@ -136,11 +145,27 @@ module.exports = async (req, res) => {
       `,
     });
 
-    console.log("Email sent successfully:", emailResponse);
-    return res.status(200).json({ success: true, id: emailResponse.id });
+    // ✅ CHECK FOR RESEND API ERRORS
+    if (error) {
+      console.error("❌ Resend API returned an error:", error);
+      return res.status(400).json({
+        success: false,
+        error: error.message || "Resend API error",
+        details: error,
+      });
+    }
+
+    console.log("✅ Quiz results email sent successfully:", data);
+
+    return res.status(200).json({
+      success: true,
+      message: "Results sent successfully",
+      emailId: data.id,
+    });
   } catch (err) {
-    console.error("Resend API error:", err);
+    console.error("❌ Unexpected error:", err);
     return res.status(500).json({
+      success: false,
       error: err.message || "Failed to send email",
       details: err.response?.data || err.toString(),
     });

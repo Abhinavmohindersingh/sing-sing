@@ -3,8 +3,8 @@ const { Resend } = require("resend");
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 module.exports = async (req, res) => {
-  // Handle CORS
-  res.setHeader("Access-Control-Allow-Credentials", true);
+  res.setHeader("Content-Type", "application/json");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
     "Access-Control-Allow-Methods",
@@ -16,8 +16,7 @@ module.exports = async (req, res) => {
   );
 
   if (req.method === "OPTIONS") {
-    res.status(200).end();
-    return;
+    return res.status(200).json({ ok: true });
   }
 
   if (req.method !== "POST") {
@@ -28,14 +27,20 @@ module.exports = async (req, res) => {
     const { name, email, company, message } = req.body;
 
     if (!name || !email || !company || !message) {
+      console.log("Missing fields:", { name, email, company, message });
       return res.status(400).json({ error: "Missing required fields" });
     }
 
-    console.log("Sending contact email via Resend...");
+    console.log("Sending contact email via Resend...", {
+      name,
+      email,
+      company,
+    });
 
-    const data = await resend.emails.send({
+    // ✅ CRITICAL FIX: Destructure { data, error } from Resend response
+    const { data, error } = await resend.emails.send({
       from: "Sing Singh AI <onboarding@resend.dev>",
-      to: ["henry.ho@singsinghai.com.au", "abhinav.singh@singsinghai.com.au"],
+      to: ["abhinavsinghkanwal@gmail.com"],
       subject: `New Contact Form: ${company}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px;">
@@ -51,14 +56,31 @@ module.exports = async (req, res) => {
           <p style="color: #6b7280; font-size: 14px;">Reply to: ${email}</p>
         </div>
       `,
-      reply_to: email,
+      replyTo: email,
     });
 
-    console.log("Contact email sent successfully");
-    return res.status(200).json({ success: true, data });
+    // ✅ CHECK FOR RESEND API ERRORS
+    if (error) {
+      console.error("❌ Resend API returned an error:", error);
+      return res.status(400).json({
+        success: false,
+        error: error.message || "Resend API error",
+        details: error,
+      });
+    }
+
+    console.log("✅ Contact email sent successfully:", data);
+
+    return res.status(200).json({
+      success: true,
+      message: "Email sent successfully",
+      emailId: data.id,
+    });
   } catch (error) {
-    console.error("Resend error:", error);
+    console.error("❌ Unexpected error:", error);
+
     return res.status(500).json({
+      success: false,
       error: error.message || "Failed to send email",
     });
   }

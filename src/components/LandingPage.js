@@ -1581,55 +1581,52 @@ const QuizModal = ({ isOpen, onClose, lang }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-
-    // Call analyzeGaps directly and use the result immediately
-    const analysis = analyzeGaps(answers);
-
-    // Set state for UI (results display)
-    setGapAnalysis(analysis);
+    setStatus(null);
 
     try {
-      // Calculate score using the local analysis
-      const answeredCount = answers.filter(
-        (answer) => answer !== undefined
-      ).length;
-      const totalPossibleScore = answeredCount * 7;
-      const overallScorePercent =
-        answeredCount > 0
-          ? Math.round((analysis.totalScore / totalPossibleScore) * 100)
-          : 0;
+      console.log("Sending contact form:", formData);
 
-      // Send to backend with local data
-      const response = await fetch("/api/send-quiz-results", {
+      const response = await fetch("/api/send-contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          company: formData.company,
-          mobile: formData.mobile,
-          score: overallScorePercent,
-          gaps: analysis.gaps || [],
-          totalHoursWasted: analysis.totalHoursWasted || 0,
-        }),
+        body: JSON.stringify(formData),
       });
 
+      console.log("Response status:", response.status);
+      console.log("Response headers:", response.headers);
+
+      // ✅ FIX 1: Check if response is ok first
       if (!response.ok) {
-        throw new Error("Failed to send results");
+        // Try to get error message from response
+        const text = await response.text();
+        console.error("Error response:", text);
+        throw new Error(`Server error: ${response.status}`);
       }
 
-      console.log("Email sent to team");
+      // ✅ FIX 2: Check content-type before parsing JSON
+      const contentType = response.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        const text = await response.text();
+        console.error("Non-JSON response:", text);
+        throw new Error("Server returned non-JSON response");
+      }
+
+      // ✅ FIX 3: Now safe to parse JSON
+      const responseData = await response.json();
+      console.log("Response data:", responseData);
+
+      setStatus("success");
+      setFormData({ name: "", email: "", company: "", message: "" });
+
+      setTimeout(() => {
+        onClose();
+        setStatus(null);
+      }, 2000);
     } catch (error) {
-      console.error("Full error sending email:", {
-        message: error.message,
-        error: error,
-        stack: error.stack,
-      });
+      console.error("Full error sending contact form:", error);
+      setStatus("error");
     } finally {
-      // Always show results and reset UI state
-      setShowResults(true);
       setIsSubmitting(false);
-      setShowContactForm(false);
     }
   };
 
