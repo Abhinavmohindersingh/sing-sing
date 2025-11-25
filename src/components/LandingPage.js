@@ -38,12 +38,25 @@ const cn = (...inputs) => twMerge(clsx(inputs.filter(Boolean)));
 // 🔴 **COMPLETE TRANSLATIONS**
 const translations = {
   en: {
+    brandName: "SING SINGH",
+    tagline: "Smarter AI, Scalable Businesses",
     // Navigation
     navHowItWorks: "How It Works",
     navCaseStudies: "Case Studies",
     navFAQ: "FAQ",
     navStartQuiz: "Start Quiz",
-
+    navContact: "Contact Us",
+    contactTitle: "Get In Touch",
+    contactDescription:
+      "Tell us about your business challenges and we'll show you how AI can help.",
+    contactName: "Full Name",
+    contactEmail: "Email Address",
+    contactCompany: "Company Name",
+    contactMessage: "Tell us about your challenges",
+    contactSubmit: "Send Message",
+    contactSending: "Sending...",
+    contactSuccess: "Message sent! We'll get back to you within 24 hours.",
+    contactError: "Failed to send message. Please try again.",
     // Hero Section
     badge: "AI-Powered Growth Engine",
     heroTitle1: "Grow Your Business",
@@ -289,7 +302,7 @@ const translations = {
     faqs: [
       {
         q: "How quickly can we see results?",
-        a: "Most clients see improvements within 30 days. Quick wins first, full transformation follows.",
+        a: "Most clients see improvements within 30 to 90 days. Quick wins first, full transformation follows.",
       },
       {
         q: "Will this disrupt operations?",
@@ -297,7 +310,7 @@ const translations = {
       },
       {
         q: "What industries do you serve?",
-        a: "Professional services, real estate, marketing, consulting, healthcare, e-commerce.",
+        a: "Professional services, real estate, marketing, consulting, healthcare, e-commerce, energy.",
       },
       {
         q: "Do I need technical expertise?",
@@ -325,7 +338,9 @@ const translations = {
     services: ["AI Operations", "Business Intelligence", "Growth Automation"],
     company: ["About", "Careers", "Blog"],
     contactPhone: "+61402733202",
-    contactEmail: "hello@singsingh.com",
+    contactEmail1: "henry.ho@singsinghai.com.au",
+    contactEmail2: "abhinav.singh@singsinghai.com.au",
+
     contactAddress: "Brisbane, QLD",
     copyright: "© 2025 Sing Singh AI Advisory. All rights reserved.",
 
@@ -336,6 +351,9 @@ const translations = {
     quizEnterDetails: "Enter your details to see your personalized results",
     quizName: "Full Name",
     quizEmail: "Email Address",
+    quizMobile: "Mobile Number (Optional)",
+    quizBookingInfo: "Book a 15-minute brief meeting via Zoom or Google Meet",
+
     quizCompany: "Company Name",
     quizBack: "Back",
     quizProcessing: "Processing...",
@@ -381,12 +399,24 @@ const translations = {
     severityLow: "LOW",
   },
   zh: {
+    brandName: "SING SINGH",
+    tagline: "更智能的AI，可扩展的业务",
     // Navigation
     navHowItWorks: "工作原理",
     navCaseStudies: "案例研究",
     navFAQ: "常见问题",
     navStartQuiz: "开始测试",
-
+    navContact: "联系我们",
+    contactTitle: "联系我们",
+    contactDescription: "告诉我们您的业务挑战，我们将向您展示AI如何提供帮助。",
+    contactName: "全名",
+    contactEmail: "电子邮件地址",
+    contactCompany: "公司名称",
+    contactMessage: "告诉我们您的挑战",
+    contactSubmit: "发送消息",
+    contactSending: "发送中...",
+    contactSuccess: "消息已发送！我们将在24小时内回复您。",
+    contactError: "发送失败。请重试。",
     // Hero Section
     badge: "AI驱动增长引擎",
     heroTitle1: "用AI智能",
@@ -622,7 +652,8 @@ const translations = {
     services: ["AI运营", "商业智能", "增长自动化"],
     company: ["关于", "职业", "博客"],
     contactPhone: "+61402733202",
-    contactEmail: "hello@singsingh.com",
+    contactEmail1: "henry.ho@singsinghai.com.au",
+    contactEmail2: "abhinav.singh@singsinghai.com.au",
     contactAddress: "布里斯班，昆士兰",
     copyright: "© 2025 Sing Singh AI Advisory。保留所有权利。",
 
@@ -649,6 +680,8 @@ const translations = {
     quizResultsTitle: "根据您的答案，这些是AI可以立即改善您业务的地方",
     quizHoursWasted: "每周浪费小时数",
     quizAnnualSavings: "年度节省",
+    quizMobile: "手机号码（可选）",
+    quizBookingInfo: "通过 Zoom 或 Google Meet 预订 15 分钟简短会议",
     quizROI: "第一年投资回报率",
     quizPayback: "回本期",
     quizTopFixes: "您的前3个优先修复项",
@@ -1466,6 +1499,17 @@ const MobileMenu = ({
           >
             {t("navFAQ", lang)}
           </Button>
+          {/* ADD THIS CONTACT BUTTON */}
+          <Button
+            variant="secondary"
+            onClick={() => {
+              onNavClick("contact");
+              onClose();
+            }}
+            className="w-full justify-start"
+          >
+            {t("navContact", lang)}
+          </Button>
           <Button
             variant="primary"
             onClick={() => {
@@ -1495,7 +1539,6 @@ const MobileMenu = ({
 );
 
 // 🔴 **QUIZ MODAL - FIXED**
-
 const QuizModal = ({ isOpen, onClose, lang }) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState([]);
@@ -1505,6 +1548,7 @@ const QuizModal = ({ isOpen, onClose, lang }) => {
     name: "",
     email: "",
     company: "",
+    mobile: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [gapAnalysis, setGapAnalysis] = useState(null);
@@ -1533,28 +1577,26 @@ const QuizModal = ({ isOpen, onClose, lang }) => {
   const handleFormChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  // In handleSubmit, after setGapAnalysis(analyzeGaps(answers)) and setShowResults(true)
+  // Fixed handleSubmit function
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     // Call analyzeGaps directly and use the result immediately
-    const gapAnalysis = analyzeGaps(answers); // This returns { gaps, totalHoursWasted, totalScore, ... }
+    const analysis = analyzeGaps(answers);
 
-    // Set state for UI (results display) but don't wait for it
-    setGapAnalysis(gapAnalysis);
+    // Set state for UI (results display)
+    setGapAnalysis(analysis);
 
     try {
-      // Calculate score using the local gapAnalysis (not state)
-      // Total questions per category vary, but use existing totalScore from analyzeGaps
-      // Or compute as: average score across all answered questions (max 7 per question)
+      // Calculate score using the local analysis
       const answeredCount = answers.filter(
         (answer) => answer !== undefined
       ).length;
-      const totalPossibleScore = answeredCount * 7; // 7 is max score per question
+      const totalPossibleScore = answeredCount * 7;
       const overallScorePercent =
         answeredCount > 0
-          ? Math.round((gapAnalysis.totalScore / totalPossibleScore) * 100)
+          ? Math.round((analysis.totalScore / totalPossibleScore) * 100)
           : 0;
 
       // Send to backend with local data
@@ -1565,9 +1607,10 @@ const QuizModal = ({ isOpen, onClose, lang }) => {
           name: formData.name,
           email: formData.email,
           company: formData.company,
-          score: overallScorePercent, // Use calculated/local value
-          gaps: gapAnalysis.gaps || [], // Fallback to empty array if null
-          totalHoursWasted: gapAnalysis.totalHoursWasted || 0,
+          mobile: formData.mobile,
+          score: overallScorePercent,
+          gaps: analysis.gaps || [],
+          totalHoursWasted: analysis.totalHoursWasted || 0,
         }),
       });
 
@@ -1577,22 +1620,26 @@ const QuizModal = ({ isOpen, onClose, lang }) => {
 
       console.log("Email sent to team");
     } catch (error) {
-      console.error("Error sending email:", error);
-      // Optional: Alert user or show error toast without blocking results
+      console.error("Full error sending email:", {
+        message: error.message,
+        error: error,
+        stack: error.stack,
+      });
+    } finally {
+      // Always show results and reset UI state
+      setShowResults(true);
+      setIsSubmitting(false);
+      setShowContactForm(false);
     }
-
-    // Show results after analysis (state will update by now)
-    setShowResults(true);
-    setIsSubmitting(false);
-    setShowContactForm(false);
   };
 
+  // Fixed resetQuiz function - properly placed inside component
   const resetQuiz = () => {
     setCurrentQuestion(0);
     setAnswers([]);
     setShowResults(false);
     setShowContactForm(false);
-    setFormData({ name: "", email: "", company: "" });
+    setFormData({ name: "", email: "", company: "", mobile: "" });
     setGapAnalysis(null);
     onClose();
   };
@@ -1693,6 +1740,14 @@ const QuizModal = ({ isOpen, onClose, lang }) => {
                       onChange={handleFormChange}
                       placeholder={t("quizCompany", lang)}
                       required
+                      className="w-full px-4 py-3 rounded-xl bg-[#1E293B] border border-[#334155] text-white placeholder-gray-500 focus:outline-none focus:border-[#0EA5E9]"
+                    />
+                    <input
+                      name="mobile"
+                      type="tel"
+                      value={formData.mobile}
+                      onChange={handleFormChange}
+                      placeholder={t("quizMobile", lang)}
                       className="w-full px-4 py-3 rounded-xl bg-[#1E293B] border border-[#334155] text-white placeholder-gray-500 focus:outline-none focus:border-[#0EA5E9]"
                     />
                   </div>
@@ -2035,7 +2090,188 @@ const QuizModal = ({ isOpen, onClose, lang }) => {
     </AnimatePresence>
   );
 };
+// 🔴 **CONTACT MODAL**
+const ContactModal = ({ isOpen, onClose, lang }) => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    company: "",
+    message: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [status, setStatus] = useState(null); // 'success' | 'error' | null
 
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setStatus(null);
+
+    try {
+      console.log("Sending contact form:", formData); // Debug log
+
+      const response = await fetch("/api/send-contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      console.log("Response status:", response.status); // Debug log
+
+      const responseData = await response.json();
+      console.log("Response data:", responseData); // Debug log
+
+      if (!response.ok) {
+        throw new Error(responseData.error || "Failed to send");
+      }
+
+      setStatus("success");
+      setFormData({ name: "", email: "", company: "", message: "" });
+
+      setTimeout(() => {
+        onClose();
+        setStatus(null);
+      }, 2000);
+    } catch (error) {
+      console.error("Full error sending contact form:", error);
+      setStatus("error");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-black/80"
+            onClick={onClose}
+          />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
+          >
+            <div
+              className="bg-[#0F172A] border border-[#475569] rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto pointer-events-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="sticky top-0 bg-[#0F172A] border-b border-[#475569] p-4 flex items-center justify-between z-10">
+                <h1 className="text-xl font-bold text-white">
+                  {t("contactTitle", lang)}
+                </h1>
+                <button
+                  onClick={onClose}
+                  className="w-8 h-8 rounded-full hover:bg-white/10 flex items-center justify-center"
+                >
+                  <X className="w-5 h-5 text-gray-400" />
+                </button>
+              </div>
+
+              <form onSubmit={handleSubmit} className="p-8 space-y-6">
+                <div className="text-center mb-6">
+                  <Mail className="w-16 h-16 mx-auto mb-4 text-[#0EA5E9]" />
+                  <p className="text-gray-400">
+                    {t("contactDescription", lang)}
+                  </p>
+                </div>
+
+                {status === "success" && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="bg-green-500/20 border border-green-500/50 rounded-xl p-4 flex items-center gap-3"
+                  >
+                    <CheckCircle className="w-5 h-5 text-green-400" />
+                    <p className="text-green-300">
+                      {t("contactSuccess", lang)}
+                    </p>
+                  </motion.div>
+                )}
+
+                {status === "error" && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="bg-red-500/20 border border-red-500/50 rounded-xl p-4 flex items-center gap-3"
+                  >
+                    <X className="w-5 h-5 text-red-400" />
+                    <p className="text-red-300">{t("contactError", lang)}</p>
+                  </motion.div>
+                )}
+
+                <div className="space-y-4">
+                  <input
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    placeholder={t("contactName", lang)}
+                    required
+                    className="w-full px-4 py-3 rounded-xl bg-[#1E293B] border border-[#334155] text-white placeholder-gray-500 focus:outline-none focus:border-[#0EA5E9]"
+                  />
+                  <input
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder={t("contactEmail", lang)}
+                    required
+                    className="w-full px-4 py-3 rounded-xl bg-[#1E293B] border border-[#334155] text-white placeholder-gray-500 focus:outline-none focus:border-[#0EA5E9]"
+                  />
+                  <input
+                    name="company"
+                    value={formData.company}
+                    onChange={handleChange}
+                    placeholder={t("contactCompany", lang)}
+                    required
+                    className="w-full px-4 py-3 rounded-xl bg-[#1E293B] border border-[#334155] text-white placeholder-gray-500 focus:outline-none focus:border-[#0EA5E9]"
+                  />
+                  <textarea
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    placeholder={t("contactMessage", lang)}
+                    required
+                    rows={5}
+                    className="w-full px-4 py-3 rounded-xl bg-[#1E293B] border border-[#334155] text-white placeholder-gray-500 focus:outline-none focus:border-[#0EA5E9] resize-none"
+                  />
+                </div>
+
+                <Button
+                  type="submit"
+                  disabled={isSubmitting || status === "success"}
+                  className="w-full"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <span className="animate-spin mr-2">⏳</span>
+                      {t("contactSending", lang)}
+                    </>
+                  ) : (
+                    <>
+                      {t("contactSubmit", lang)}
+                      <ArrowRight className="w-5 h-5 ml-2" />
+                    </>
+                  )}
+                </Button>
+              </form>
+            </div>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
+};
 // 🔴 **CASE STUDIES SECTION**
 const CaseStudiesSection = ({ t }) => {
   const useCases = t("useCases");
@@ -2144,8 +2380,7 @@ const CaseStudiesSection = ({ t }) => {
   );
 };
 
-// 🔴 **HERO, PROBLEM, SOLUTION, HOW IT WORKS, PROOF, FAQ, CTA SECTIONS**
-// (Same as before - keeping them unchanged for brevity)
+// 🔴 **HERO SECTION**
 const HeroSection = ({ onStartQuiz, t }) => (
   <section className="min-h-screen flex items-center justify-center text-center px-4 pt-32 pb-20 relative overflow-hidden">
     <div
@@ -2596,8 +2831,12 @@ const Footer = ({ t }) => (
             <Phone className="w-4 h-4" /> {t("contactPhone")}
           </div>
           <div className="flex items-center gap-2">
-            <Mail className="w-4 h-4" /> {t("contactEmail")}
+            <Mail className="w-4 h-4" /> {t("contactEmail1")}
           </div>
+          <div className="flex items-center gap-2">
+            <Mail className="w-4 h-4" /> {t("contactEmail2")}
+          </div>
+
           <div className="flex items-center gap-2">
             <MapPin className="w-4 h-4" /> {t("contactAddress")}
           </div>
@@ -2613,6 +2852,8 @@ const Footer = ({ t }) => (
 // 🔴 **COMPLETE LANDING PAGE WITH FULL NAVIGATION**
 const LandingPage = () => {
   const [isQuizOpen, setIsQuizOpen] = useState(false);
+  const [isContactOpen, setIsContactOpen] = useState(false); // ADD THIS
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [lang, setLang] = useState("en");
 
@@ -2629,6 +2870,9 @@ const LandingPage = () => {
   const handleNavClick = (section) => {
     if (section === "quiz") {
       setIsQuizOpen(true);
+    } else if (section === "contact") {
+      // ADD THIS
+      setIsContactOpen(true);
     } else {
       scrollToSection(SECTION_IDS[section]);
     }
@@ -2640,8 +2884,13 @@ const LandingPage = () => {
       {/* HEADER WITH FULL NAVIGATION */}
       <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-2xl border-b border-white/10 bg-white/5">
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between py-4">
-          <div className="font-mono text-2xl font-bold bg-gradient-to-r from-[#1E3A8A] to-[#10B981] bg-clip-text text-transparent">
-            SING SINGH
+          <div className="flex flex-col">
+            <div className="font-mono text-2xl font-bold bg-gradient-to-r from-[#1E3A8A] to-[#10B981] bg-clip-text text-transparent">
+              {translate("brandName")}
+            </div>
+            <div className="text-xs font-semibold text-[#0EA5E9]/80 tracking-wide">
+              {translate("tagline")}
+            </div>
           </div>
           <nav className="hidden md:flex items-center gap-8">
             <Button variant="nav" onClick={() => handleNavClick("howItWorks")}>
@@ -2653,13 +2902,16 @@ const LandingPage = () => {
             <Button variant="nav" onClick={() => handleNavClick("faq")}>
               {translate("navFAQ")}
             </Button>
+            <Button
+              variant="secondary"
+              onClick={() => handleNavClick("contact")}
+            >
+              {translate("navContact")}
+            </Button>
             <Button variant="primary" onClick={() => handleNavClick("quiz")}>
               {translate("navStartQuiz")}
             </Button>
-            <LanguageToggle
-              lang={lang}
-              onToggle={() => setLang(lang === "en" ? "zh" : "en")}
-            />
+            <LanguageToggle lang={lang} onToggle={setLang} />
           </nav>
           <button
             className="md:hidden p-2"
@@ -2707,6 +2959,13 @@ const LandingPage = () => {
         onClose={() => setIsQuizOpen(false)}
         lang={lang}
       />
+
+      <ContactModal
+        isOpen={isContactOpen}
+        onClose={() => setIsContactOpen(false)}
+        lang={lang}
+      />
+
       <Footer t={translate} />
     </div>
   );
