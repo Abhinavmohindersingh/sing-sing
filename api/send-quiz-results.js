@@ -1,35 +1,41 @@
 const { Resend } = require("resend");
 
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+// ✅ Vercel serverless function handler
 module.exports = async (req, res) => {
-  // Enable CORS
-  res.setHeader("Content-Type", "application/json");
+  // Set CORS headers BEFORE any logic
+  res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET,OPTIONS,PATCH,DELETE,POST,PUT"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
+  );
 
+  // Handle preflight
   if (req.method === "OPTIONS") {
-    return res.status(200).json({ ok: true });
+    res.status(200).end();
+    return;
   }
 
+  // Only allow POST
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
-  }
-
-  const { name, email, company, mobile, score, gaps, totalHoursWasted } =
-    req.body;
-
-  // Validation
-  if (!name || !email || !company) {
-    return res.status(400).json({ error: "Missing required fields" });
+    res.status(405).json({ error: "Method not allowed" });
+    return;
   }
 
   try {
-    // Check API key
-    if (!process.env.RESEND_API_KEY) {
-      throw new Error("RESEND_API_KEY not configured");
-    }
+    const { name, email, company, mobile, score, gaps, totalHoursWasted } =
+      req.body;
 
-    const resend = new Resend(process.env.RESEND_API_KEY);
+    if (!name || !email || !company) {
+      res.status(400).json({ error: "Missing required fields" });
+      return;
+    }
 
     console.log("Sending quiz results via Resend...", {
       name,
@@ -38,7 +44,6 @@ module.exports = async (req, res) => {
       score,
     });
 
-    // Format gaps array for email
     const gapsHTML =
       Array.isArray(gaps) && gaps.length > 0
         ? gaps
@@ -56,7 +61,6 @@ module.exports = async (req, res) => {
             .join("")
         : "<p>No gaps identified</p>";
 
-    // ✅ CRITICAL FIX: Destructure { data, error } from Resend response
     const { data, error } = await resend.emails.send({
       from: "Quiz Lead <onboarding@resend.dev>",
       to: ["abhinavsinghkanwal@gmail.com"],
@@ -145,29 +149,27 @@ module.exports = async (req, res) => {
       `,
     });
 
-    // ✅ CHECK FOR RESEND API ERRORS
     if (error) {
-      console.error("❌ Resend API returned an error:", error);
-      return res.status(400).json({
+      console.error("❌ Resend API error:", error);
+      res.status(400).json({
         success: false,
         error: error.message || "Resend API error",
         details: error,
       });
+      return;
     }
 
     console.log("✅ Quiz results email sent successfully:", data);
-
-    return res.status(200).json({
+    res.status(200).json({
       success: true,
       message: "Results sent successfully",
-      emailId: data.id,
+      emailId: data?.id,
     });
   } catch (err) {
     console.error("❌ Unexpected error:", err);
-    return res.status(500).json({
+    res.status(500).json({
       success: false,
       error: err.message || "Failed to send email",
-      details: err.response?.data || err.toString(),
     });
   }
 };
