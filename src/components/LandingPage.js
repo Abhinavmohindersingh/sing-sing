@@ -1542,7 +1542,6 @@ const MobileMenu = ({
 const QuizModal = ({ isOpen, onClose, lang }) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState([]);
-  const [status, setStatus] = useState(null);
 
   const [showResults, setShowResults] = useState(false);
   const [showContactForm, setShowContactForm] = useState(false);
@@ -1554,6 +1553,7 @@ const QuizModal = ({ isOpen, onClose, lang }) => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [gapAnalysis, setGapAnalysis] = useState(null);
+  const [status, setStatus] = useState(null);
 
   const questions = getSmartQuizQuestions(lang); // Use language-aware function
   const currentQ = questions[currentQuestion];
@@ -1564,15 +1564,24 @@ const QuizModal = ({ isOpen, onClose, lang }) => {
     const newAnswers = [...answers];
     newAnswers[currentQuestion] = optionIndex;
     setAnswers(newAnswers);
+
+    // ✅ AUTO-ADVANCE after short delay
+    setTimeout(() => {
+      if (currentQuestion === questions.length - 1) {
+        setShowContactForm(true);
+      } else {
+        setCurrentQuestion(currentQuestion + 1);
+      }
+    }, 300); // 300ms delay so user sees their selection
   };
 
-  const handleNext = () => {
-    if (currentQuestion === questions.length - 1) {
-      setShowContactForm(true);
-    } else {
-      setCurrentQuestion(currentQuestion + 1);
-    }
-  };
+  // const handleNext = () => {
+  //   if (currentQuestion === questions.length - 1) {
+  //     setShowContactForm(true);
+  //   } else {
+  //     setCurrentQuestion(currentQuestion + 1);
+  //   }
+  // };
 
   const handlePrevious = () =>
     currentQuestion > 0 && setCurrentQuestion(currentQuestion - 1);
@@ -1588,24 +1597,28 @@ const QuizModal = ({ isOpen, onClose, lang }) => {
     try {
       console.log("Sending contact form:", formData);
 
+      // ✅ ADD message field with quiz context
+      const submissionData = {
+        ...formData,
+        message: formData.mobile
+          ? `Quiz submission. Mobile: ${formData.mobile}. ${formData.bookingInfo || ""}`
+          : `Quiz submission. ${formData.bookingInfo || "Interested in AI assessment"}`,
+      };
+
       const response = await fetch("/api/send-contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(submissionData), // ✅ Use submissionData instead
       });
 
       console.log("Response status:", response.status);
-      console.log("Response headers:", response.headers);
 
-      // ✅ FIX 1: Check if response is ok first
       if (!response.ok) {
-        // Try to get error message from response
         const text = await response.text();
         console.error("Error response:", text);
         throw new Error(`Server error: ${response.status}`);
       }
 
-      // ✅ FIX 2: Check content-type before parsing JSON
       const contentType = response.headers.get("content-type");
       if (!contentType || !contentType.includes("application/json")) {
         const text = await response.text();
@@ -1613,17 +1626,16 @@ const QuizModal = ({ isOpen, onClose, lang }) => {
         throw new Error("Server returned non-JSON response");
       }
 
-      // ✅ FIX 3: Now safe to parse JSON
       const responseData = await response.json();
       console.log("Response data:", responseData);
 
       setStatus("success");
-      setFormData({ name: "", email: "", company: "", message: "" });
 
-      setTimeout(() => {
-        onClose();
-        setStatus(null);
-      }, 2000);
+      // ✅ NOW show results after successful submission
+      const analysis = analyzeGaps(answers);
+      setGapAnalysis(analysis);
+      setShowResults(true);
+      setShowContactForm(false);
     } catch (error) {
       console.error("Full error sending contact form:", error);
       setStatus("error");
@@ -2070,7 +2082,7 @@ const QuizModal = ({ isOpen, onClose, lang }) => {
                         {t("quizPrevious", lang)}
                       </Button>
                     )}
-                    <Button
+                    {/* <Button
                       onClick={handleNext}
                       disabled={!isAnswered}
                       className="ml-auto"
@@ -2078,7 +2090,7 @@ const QuizModal = ({ isOpen, onClose, lang }) => {
                       {currentQuestion === questions.length - 1
                         ? t("quizFinish", lang)
                         : t("quizNext", lang)}
-                    </Button>
+                    </Button> */}
                   </div>
                 </motion.div>
               )}
