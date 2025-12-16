@@ -58,13 +58,13 @@ const translations = {
     contactSuccess: "Message sent! We'll get back to you within 24 hours.",
     contactError: "Failed to send message. Please try again.",
     // Hero Section
-    badge: "AI-Powered Growth Engine",
+    badge: "Scale 5X faster with SingSinghAI ",
     heroTitle1: "Grow Your Business",
     heroTitle2: "with AI Intelligence",
     heroDescription:
-      "Stop wasting time on manual chaos. Sing Singh delivers intelligent AI systems that automate operations, unlock insights, and scale your business 3x faster.",
-    heroCTA: "Get Your AI Score",
-    heroSubtext: "No credit card • 2 minutes • Instant personalized roadmap",
+      "SingSingh AI builds custom AI that saves you loads of hours & boost your business efficiency by 3x.",
+    heroCTA: "Book my free consultation",
+    // heroSubtext: "No credit card • 2 minutes • Instant personalised roadmap",
 
     // Problem Section
     problemTitle: "Why Scaling Feels Impossible",
@@ -105,7 +105,7 @@ const translations = {
         description: "AI automates 80% of manual tasks with full visibility.",
         features: [
           "Client onboarding",
-          "Task prioritization",
+          "Task prioritisation",
           "Performance tracking",
         ],
       },
@@ -121,136 +121,152 @@ const translations = {
       {
         title: "Scalable Growth",
         description: "AI systems adapt automatically as you grow.",
-        features: ["Resource allocation", "Scaling triggers", "Optimization"],
+        features: ["Resource allocation", "Scaling triggers", "Optimisation"],
       },
     ],
 
     // How It Works
-    howItWorksTitle: "How We Transform Your Business",
-    howItWorksSubtitle: "Proven 3-phase approach with zero disruption.",
+    howItWorksTitle: "How It Works",
+    howItWorksSubtitle: "Simple 4-step process to get you started.",
     phases: [
       {
-        step: "1. Discovery",
-        description: "Deep analysis of operations and growth bottlenecks.",
-        details: ["AI audit", "Process mapping", "ROI analysis"],
-        duration: "Week 1-2",
+        step: "1. Tell Us About You",
+        description: "Share your goals and challenges with us.",
+        details: ["Quick chat", "Understand your needs", "Find opportunities"],
+        duration: "Week 1",
       },
       {
-        step: "2. Implementation",
-        description: "Phased deployment of custom AI solutions.",
-        details: ["Model training", "Integration", "Dashboards"],
-        duration: "Week 3-8",
+        step: "2. We Build For You",
+        description: "Our team creates AI tools tailored to your business.",
+        details: ["Custom setup", "Easy integration", "Live dashboards"],
+        duration: "Week 2-4",
       },
       {
-        step: "3. Optimization",
-        description: "Ongoing refinement and expansion.",
-        details: ["Monitoring", "A/B testing", "Analytics"],
-        duration: "Week 9+",
+        step: "3. See Results",
+        description: "Watch your business run smoother and faster.",
+        details: ["Track progress", "Measure savings", "Get reports"],
+        duration: "Week 5+",
+      },
+      {
+        step: "4. AI That Learns You",
+        description:
+          "Your AI gets smarter and understands you better over time.",
+        details: ["Learns your style", "Adapts to you", "Always improving"],
+        duration: "Ongoing",
       },
     ],
 
     // Real Industry Use Cases
-    caseStudiesTitle: "AI Solutions for Every Industry",
+    caseStudiesTitle: "We Help Businesses Like Yours",
     caseStudiesSubtitle:
-      "See how businesses like yours solve real problems with AI automation",
+      "Real solutions for real problems. See how we make work easier.",
     useCases: [
       {
         industry: "Accounting & Finance",
         challenge:
-          "Manual trust accounting, receipt processing, cross-account reconciliation taking days",
+          "Drowning in receipts, spending days on reconciliation, and still worried about mistakes",
         solution:
-          "AI agents automate receipt OCR, categorization, account movements, and documentation",
+          "We scan your receipts, sort everything automatically, and keep your books perfect — so you can sleep at night",
         processes: [
-          "Automated receipt scanning & data extraction",
-          "Smart account reconciliation",
-          "Real-time trust accounting updates",
-          "Instant document generation",
+          "Receipts scanned and sorted for you",
+          "Accounts matched automatically",
+          "Trust accounting always up to date",
+          "Documents ready when you need them",
         ],
         metrics: {
-          primary: "95%",
-          secondary: "3 days → 2 hours",
-          label: "Manual Work Eliminated",
+          primary: "20+",
+          secondary: "More Work in less time",
+          label: "Hours Saved",
         },
       },
       {
         industry: "Professional Services",
-        challenge: "Client onboarding taking 2+ weeks per account",
+        challenge:
+          "New clients take forever to onboard, and your team is stuck chasing paperwork",
         solution:
-          "AI agents automate document collection, compliance verification, and kickoff coordination",
+          "We collect documents, check compliance, and get new clients started — while you focus on the real work",
         processes: [
-          "Automated document requests",
-          "Smart compliance checking",
-          "Instant kickoff scheduling",
+          "Documents collected automatically",
+          "Compliance checked instantly",
+          "Kickoff meetings scheduled for you",
         ],
         metrics: {
           primary: "2 days",
           secondary: "5x capacity",
-          label: "Onboarding Time",
+          label: "To Get Started",
+          secondaryLabel: "Per Person",
         },
       },
       {
         industry: "E-commerce & Retail",
-        challenge: "Customer inquiries waiting 24+ hours, losing sales",
+        challenge:
+          "Hard to know what products will sell, and reaching customers feels like guesswork",
         solution:
-          "24/7 AI support handling FAQs, order tracking, returns instantly",
+          "We help you understand your market, find winning products, and connect with the right customers",
         processes: [
-          "Instant inquiry responses",
-          "Intelligent product matching",
-          "Automated order updates",
+          "Market research done for you",
+          "Find products people actually want",
+          "Reach customers who are ready to buy",
         ],
         metrics: {
-          primary: "<1 min",
-          secondary: "+40% conversions",
-          label: "Response Time",
+          primary: "40%",
+          secondary: "2x faster",
+          label: "More Sales",
+          secondaryLabel: "To Market",
         },
       },
       {
-        industry: "Healthcare & Wellness",
-        challenge: "Appointment chaos, frequent no-shows, admin overload",
+        industry: "Healthcare & Clinics",
+        challenge:
+          "Patients don't show up, paperwork piles up, and your staff is overwhelmed",
         solution:
-          "Smart scheduling AI with automated reminders and rescheduling",
+          "We remind patients, handle scheduling, and take care of the admin — so your team can focus on patient care",
         processes: [
-          "Intelligent scheduling optimization",
-          "Automated reminder sequences",
-          "Self-service rescheduling",
+          "Patients reminded automatically",
+          "Easy rescheduling for everyone",
+          "Paperwork handled behind the scenes",
         ],
         metrics: {
           primary: "60%",
-          secondary: "70% time saved",
-          label: "No-Show Reduction",
+          secondary: "70% less work",
+          label: "Fewer No-Shows",
+          secondaryLabel: "Per Staff",
         },
       },
       {
-        industry: "Real Estate",
-        challenge: "Lead qualification eating up agent time, low conversion",
+        industry: "Property Management",
+        challenge:
+          "Managing rentals is exhausting — tenant questions, booking chaos, endless follow-ups",
         solution:
-          "AI agents pre-qualify leads, schedule viewings, follow up automatically",
+          "We handle inquiries, manage bookings, and keep tenants happy — whether it's short-term or long-term rentals",
         processes: [
-          "Instant lead qualification",
-          "Automated viewing coordination",
-          "Smart follow-up sequences",
+          "Guest and tenant questions answered 24/7",
+          "Bookings managed automatically",
+          "Follow-ups that feel personal",
         ],
         metrics: {
           primary: "3x",
-          secondary: "80% admin reduction",
-          label: "Lead Capacity",
+          secondary: "Happier tenants",
+          label: "More Bookings",
+          secondaryLabel: "Less Stress",
         },
       },
       {
         industry: "Marketing Agencies",
         challenge:
-          "Campaign tracking across platforms, manual client reporting",
+          "Data scattered everywhere, hours spent making reports, clients asking 'what's working?'",
         solution:
-          "Multi-platform analytics aggregation with automated dashboards",
+          "We pull all your data together, build reports automatically, and show you what's actually driving results",
         processes: [
-          "Cross-platform data sync",
-          "Automated performance reports",
-          "Predictive optimization",
+          "All your platforms in one view",
+          "Reports that build themselves",
+          "Clear insights on what's working",
         ],
         metrics: {
           primary: "90%",
-          secondary: "Real-time insights",
+          secondary: "Live updates",
           label: "Time Saved",
+          secondaryLabel: "Always Fresh",
         },
       },
     ],
@@ -261,39 +277,39 @@ const translations = {
     stats: [
       { value: "95%", label: "Avg. Efficiency Gain" },
       { value: "2-8 weeks", label: "Time to ROI" },
-      { value: "6+", label: "Industries Served" },
+      // { value: "6+", label: "Industries Served" },
       { value: "24/7", label: "System Uptime" },
     ],
     industryResults: [
       {
         industry: "Accounting",
-        result: "Trust accounting automated end-to-end",
-        impact: "95% manual work eliminated, real-time compliance",
+        result: "Your books done automatically, every time",
+        impact: "95% less manual work, always audit-ready",
       },
       {
         industry: "Professional Services",
-        result: "Client onboarding in 2 days vs 2 weeks",
-        impact: "5x capacity increase without new hires",
+        result: "New clients onboarded in days, not weeks",
+        impact: "Handle 5x more clients without hiring",
       },
       {
-        industry: "E-commerce",
-        result: "24/7 customer support, <1 min response",
-        impact: "40% conversion lift, zero missed inquiries",
+        industry: "E-commerce & Retail",
+        result: "Know what your customers want before they do",
+        impact: "Find winning products faster, reach your market smarter",
       },
       {
-        industry: "Healthcare",
-        result: "60% no-show reduction through smart scheduling",
-        impact: "70% admin time saved, better patient flow",
+        industry: "Healthcare & Clinics",
+        result: "Patients show up, paperwork disappears",
+        impact: "60% fewer no-shows, your staff focuses on care",
       },
       {
-        industry: "Real Estate",
-        result: "3x lead capacity with AI qualification",
-        impact: "80% admin reduction, agents focus on closing",
+        industry: "Property Management",
+        result: "Your rentals run themselves, short or long term",
+        impact: "Happy tenants, fewer headaches, more bookings",
       },
       {
         industry: "Marketing",
-        result: "Multi-platform analytics automated",
-        impact: "90% reporting time saved, real-time insights",
+        result: "All your data in one place, insights that matter",
+        impact: "90% less time on reports, know what's working",
       },
     ],
 
@@ -301,31 +317,31 @@ const translations = {
     faqTitle: "Frequently Asked Questions",
     faqs: [
       {
-        q: "How quickly can we see results?",
-        a: "Most clients see improvements within 30 to 90 days. Quick wins first, full transformation follows.",
+        q: "How fast do we see results?",
+        a: "Right when you talk to us and we start building your AI helpers, you'll see quick wins fast. Most people notice real changes in just 30 days!",
       },
       {
-        q: "Will this disrupt operations?",
-        a: "Zero disruption. Systems run in parallel during transition with full continuity.",
+        q: "Will this mess up my work?",
+        a: "Nope! We run everything side-by-side so your business keeps going smooth - no interruptions at all.",
       },
       {
-        q: "What industries do you serve?",
-        a: "Professional services, real estate, marketing, consulting, healthcare, e-commerce, energy.",
+        q: "What businesses do you help?",
+        a: "We help accountants, real estate agents, marketing teams, doctors, online stores, and anyone stuck doing boring repeat work.",
       },
       {
-        q: "Do I need technical expertise?",
-        a: "No. Intuitive dashboards and automated workflows for any team member.",
+        q: "Do I need to be techy?",
+        a: "No way! Our screens are easy to use and everything runs automatically - anyone on your team can do it.",
       },
       {
-        q: "What about data security?",
-        a: "Enterprise-grade encryption, GDPR/CCPA compliant, financial institution standards.",
+        q: "Is my info safe?",
+        a: "Totally safe! We use bank-level protection that's ready for all the big privacy rules.",
       },
     ],
 
     // CTA Section
     ctaTitle: "Ready to Grow Smarter?",
     ctaDescription:
-      "Start your free AI assessment. 2 minutes to personalized growth roadmap.",
+      "Start your free AI assessment. 2 minutes to personalised growth roadmap.",
     ctaButton: "Start Free Assessment",
     ctaQuick: "2 min",
     ctaFree: "100% free",
@@ -348,7 +364,7 @@ const translations = {
     quizTitle: "AI Readiness Assessment",
     quizGetResults: "Get Your Results",
     quizCustomRoadmap: "Your Custom AI Roadmap",
-    quizEnterDetails: "Enter your details to see your personalized results",
+    quizEnterDetails: "Enter your details to see your personalised results",
     quizName: "Full Name",
     quizEmail: "Email Address",
     quizMobile: "Mobile Number (Optional)",
@@ -418,13 +434,13 @@ const translations = {
     contactSuccess: "消息已发送！我们将在24小时内回复您。",
     contactError: "发送失败。请重试。",
     // Hero Section
-    badge: "AI驱动增长引擎",
-    heroTitle1: "用AI智能",
-    heroTitle2: "加速业务增长",
+    // Chinese translations (translations.zh)
+    badge: "SingSinghAI让您业务增长5倍快。",
+    heroTitle1: "Grow Your Business",
+    heroTitle2: "with AI Intelligence",
     heroDescription:
-      "停止浪费时间处理手动混乱。星星人工智能 提供智能AI系统，自动化运营、解锁洞察、让您的业务增长3倍更快。",
-    heroCTA: "获取您的AI评分",
-    heroSubtext: "无需信用卡 • 2分钟 • 即时个性化路线图",
+      "SingSingh AI打造专属AI，帮您省下大量时间，同时提升业务效率3倍。",
+    heroCTA: "预约免费咨询",
 
     // Problem Section
     problemTitle: "为什么扩展如此困难",
@@ -474,102 +490,121 @@ const translations = {
     ],
 
     // How It Works
-    howItWorksTitle: "我们如何改造您的业务",
-    howItWorksSubtitle: "零干扰的3阶段方法。",
+    howItWorksTitle: "如何运作",
+    howItWorksSubtitle: "简单4步流程，轻松开始。",
     phases: [
       {
-        step: "1. 发现",
-        description: "深入分析运营和增长瓶颈。",
-        details: ["AI审计", "流程映射", "ROI分析"],
-        duration: "第1-2周",
+        step: "1. 告诉我们您的需求",
+        description: "与我们分享您的目标和挑战。",
+        details: ["快速沟通", "了解需求", "发现机会"],
+        duration: "第1周",
       },
       {
-        step: "2. 实施",
-        description: "分阶段部署定制AI解决方案。",
-        details: ["模型训练", "集成", "仪表板"],
-        duration: "第3-8周",
+        step: "2. 我们为您构建",
+        description: "我们的团队为您的业务打造定制AI工具。",
+        details: ["定制设置", "轻松集成", "实时仪表板"],
+        duration: "第2-4周",
       },
       {
-        step: "3. 优化",
-        description: "持续改进和扩展。",
-        details: ["监控", "A/B测试", "分析"],
-        duration: "第9周+",
+        step: "3. 看到成果",
+        description: "见证您的业务运行更顺畅、更高效。",
+        details: ["追踪进度", "衡量节省", "获取报告"],
+        duration: "第5周+",
+      },
+      {
+        step: "4. AI越来越懂您",
+        description: "您的AI会随着时间变得更智能，更了解您。",
+        details: ["学习您的风格", "适应您的需求", "持续改进"],
+        duration: "持续进行",
       },
     ],
 
     // Case Studies - Real Industry Use Cases
-    caseStudiesTitle: "每个行业的AI解决方案",
-    caseStudiesSubtitle: "看看像您这样的企业如何通过AI自动化解决实际问题",
+    caseStudiesTitle: "我们帮助像您这样的企业",
+    caseStudiesSubtitle:
+      "真实的解决方案，解决真实的问题。看看我们如何让工作更轻松。",
     useCases: [
       {
         industry: "会计与金融",
-        challenge: "手动信托会计、收据处理、跨账户对账需要数天时间",
-        solution: "AI代理自动化收据OCR、分类、账户移动和文档",
+        challenge: "被收据淹没，花好几天对账，还担心出错",
+        solution:
+          "我们帮你扫描收据，自动分类整理，让账目完美无缺——让你安心睡好觉",
         processes: [
-          "自动收据扫描和数据提取",
-          "智能账户对账",
-          "实时信托会计更新",
-          "即时文档生成",
+          "收据自动扫描分类",
+          "账目自动匹配",
+          "信托账户实时更新",
+          "需要的文件随时就绪",
         ],
         metrics: {
           primary: "95%",
           secondary: "3天→2小时",
-          label: "消除手动工作",
+          label: "省下时间",
+          secondaryLabel: "每人",
         },
       },
       {
         industry: "专业服务",
-        challenge: "每个账户的客户入职需要2周以上",
-        solution: "AI代理自动化文档收集、合规验证和启动协调",
-        processes: ["自动文档请求", "智能合规检查", "即时启动安排"],
+        challenge: "新客户入职太慢，团队一直在追着要文件",
+        solution: "我们帮你收集文件、检查合规、安排启动——让你专注真正的工作",
+        processes: ["文件自动收集", "合规即时检查", "启动会议自动安排"],
         metrics: {
           primary: "2天",
           secondary: "5倍容量",
-          label: "入职时间",
+          label: "开始合作",
+          secondaryLabel: "每人",
         },
       },
       {
-        industry: "电子商务和零售",
-        challenge: "客户咨询等待24小时以上，失去销售",
-        solution: "24/7 AI支持即时处理常见问题、订单跟踪、退货",
-        processes: ["即时查询响应", "智能产品匹配", "自动订单更新"],
+        industry: "电商与零售",
+        challenge: "不知道什么产品能卖，找客户像碰运气",
+        solution: "我们帮你了解市场，找到爆款产品，精准触达对的客户",
+        processes: [
+          "市场调研帮你做好",
+          "找到真正有人要的产品",
+          "触达准备购买的客户",
+        ],
         metrics: {
-          primary: "<1分钟",
-          secondary: "+40%转化",
-          label: "响应时间",
+          primary: "40%",
+          secondary: "快2倍",
+          label: "更多销售",
+          secondaryLabel: "上市速度",
         },
       },
       {
-        industry: "医疗保健和健康",
-        challenge: "预约混乱，频繁缺席，管理负担",
-        solution: "智能调度AI，自动提醒和重新安排",
-        processes: ["智能调度优化", "自动提醒序列", "自助重新安排"],
+        industry: "医疗与诊所",
+        challenge: "患者不来，文书堆积，员工忙不过来",
+        solution:
+          "我们提醒患者、处理预约、搞定行政事务——让你的团队专注于照顾患者",
+        processes: ["自动提醒患者", "轻松改约", "文书后台处理好"],
         metrics: {
           primary: "60%",
-          secondary: "节省70%时间",
-          label: "缺席减少",
+          secondary: "70%少工作",
+          label: "更少爽约",
+          secondaryLabel: "每位员工",
         },
       },
       {
-        industry: "房地产",
-        challenge: "潜在客户资格占用代理时间，转化率低",
-        solution: "AI代理预先筛选潜在客户，安排看房，自动跟进",
-        processes: ["即时潜在客户资格", "自动看房协调", "智能跟进序列"],
+        industry: "房产管理",
+        challenge: "管理租房太累——租客问题、预订混乱、无尽的跟进",
+        solution: "我们处理咨询、管理预订、让租客满意——不管是短租还是长租",
+        processes: ["24/7回答租客问题", "预订自动管理", "跟进让人感觉贴心"],
         metrics: {
           primary: "3倍",
-          secondary: "80%管理减少",
-          label: "潜在客户容量",
+          secondary: "租客更满意",
+          label: "更多预订",
+          secondaryLabel: "更少烦恼",
         },
       },
       {
         industry: "营销机构",
-        challenge: "跨平台活动跟踪，手动客户报告",
-        solution: "多平台分析聚合与自动化仪表板",
-        processes: ["跨平台数据同步", "自动绩效报告", "预测优化"],
+        challenge: "数据到处都是，花几小时做报告，客户问'什么有效？'",
+        solution: "我们把所有数据整合，自动生成报告，告诉你什么真正带来效果",
+        processes: ["所有平台一目了然", "报告自动生成", "清楚看到什么有效"],
         metrics: {
           primary: "90%",
-          secondary: "实时洞察",
-          label: "节省时间",
+          secondary: "实时更新",
+          label: "省下时间",
+          secondaryLabel: "随时最新",
         },
       },
     ],
@@ -580,39 +615,39 @@ const translations = {
     stats: [
       { value: "95%", label: "平均效率提升" },
       { value: "2-8周", label: "投资回报时间" },
-      { value: "6+", label: "服务行业" },
+      // { value: "6+", label: "服务行业" },
       { value: "24/7", label: "系统正常运行时间" },
     ],
     industryResults: [
       {
         industry: "会计",
-        result: "端到端自动化信托会计",
-        impact: "消除95%手动工作，实时合规",
+        result: "账目自动搞定，每次都准",
+        impact: "95%少做手工活，随时准备审计",
       },
       {
         industry: "专业服务",
-        result: "2天客户入职 vs 2周",
-        impact: "5倍容量增加，无需新招聘",
+        result: "新客户几天就能上手，不用等几周",
+        impact: "不用招人也能服务5倍的客户",
       },
       {
-        industry: "电子商务",
-        result: "24/7客户支持，<1分钟响应",
-        impact: "40%转化提升，零错过咨询",
+        industry: "电商与零售",
+        result: "比客户更早知道他们想要什么",
+        impact: "更快找到爆款，更聪明地触达市场",
       },
       {
-        industry: "医疗保健",
-        result: "通过智能调度减少60%缺席",
-        impact: "节省70%管理时间，更好的患者流程",
+        industry: "医疗与诊所",
+        result: "患者准时来，文书自动消失",
+        impact: "爽约减少60%，员工专注于护理",
       },
       {
-        industry: "房地产",
-        result: "AI资格筛选3倍潜在客户容量",
-        impact: "80%管理减少，代理专注于成交",
+        industry: "房产管理",
+        result: "短租长租都能自己跑起来",
+        impact: "租客满意，烦恼更少，订单更多",
       },
       {
         industry: "营销",
-        result: "多平台分析自动化",
-        impact: "节省90%报告时间，实时洞察",
+        result: "所有数据一目了然，洞察真正重要的",
+        impact: "报告时间省90%，清楚什么有效",
       },
     ],
 
@@ -620,22 +655,25 @@ const translations = {
     faqTitle: "常见问题",
     faqs: [
       {
-        q: "我们多久能看到成果？",
-        a: "大多数客户在30天内看到改善。快速成果先行，完整转型随后。",
+        q: "多久能看到效果？",
+        a: "你一找我们，我们就开始为你做AI助手，很快就能看到第一批成果！大部分客户30天内就感觉变化很大。",
       },
       {
-        q: "这会干扰运营吗？",
-        a: "零干扰。系统在过渡期间并行运行，保持完全连续性。",
+        q: "会打乱我现在的工作吗？",
+        a: "完全不会！我们一边跑新系统一边保持你原来的业务正常运行，一点不中断。",
       },
       {
-        q: "您服务哪些行业？",
-        a: "专业服务、房地产、营销、咨询、医疗、电子商务。",
+        q: "你们帮哪些行业？",
+        a: "我们帮会计师、房产中介、营销团队、医生诊所、网店，还有任何做重复工作的公司。",
       },
       {
-        q: "我需要技术专长吗？",
-        a: "不需要。直观仪表板和自动化工作流适合任何团队成员。",
+        q: "我需要懂技术吗？",
+        a: "不用！界面超简单，全部自动运行，你团队任何人都能用。",
       },
-      { q: "数据安全如何？", a: "企业级加密，符合GDPR/CCPA，金融行业标准。" },
+      {
+        q: "我的数据安全吗？",
+        a: "绝对安全！用银行级别的保护，完全符合国际隐私标准。",
+      },
     ],
 
     // CTA Section
@@ -725,7 +763,7 @@ const AI_SOLUTIONS = {
     solves: "Manual data entry, receipt scanning, document processing",
     features: [
       "OCR receipt/invoice extraction",
-      "Auto-categorization with ML",
+      "Auto-categorisation with ML",
       "Duplicate detection",
       "Real-time data validation",
     ],
@@ -1162,7 +1200,7 @@ const getSmartQuizQuestions = (lang = "en") => {
       question: "How long to find a specific document?",
       options: [
         { text: "Seconds (smart search)", score: 1, hours: 1 },
-        { text: "Few minutes (organized folders)", score: 3, hours: 3 },
+        { text: "Few minutes (organised folders)", score: 3, hours: 3 },
         { text: "10-30 minutes (searching)", score: 5, hours: 8 },
         { text: "Hours or can't find it", score: 7, hours: 15 },
       ],
@@ -1416,7 +1454,7 @@ const getScoreAnalysis = (score) => {
       level: "AI-Ready Leader",
       color: "#10B981",
       message:
-        "Your operations are optimized! AI can enhance efficiency further.",
+        "Your operations are optimised! AI can enhance efficiency further.",
       quickWins: [
         "Predictive analytics",
         "Advanced automation",
@@ -1509,16 +1547,6 @@ const MobileMenu = ({
             className="w-full justify-start"
           >
             {t("navContact", lang)}
-          </Button>
-          <Button
-            variant="primary"
-            onClick={() => {
-              onNavClick("quiz");
-              onClose();
-            }}
-            className="w-full"
-          >
-            {t("navStartQuiz", lang)}
           </Button>
           <div className="pt-4 border-t border-white/10">
             <Button
@@ -2318,20 +2346,20 @@ const CaseStudiesSection = ({ t }) => {
                   </span>
                 </div>
 
-                {/* Challenge */}
+                {/* Pain Points */}
                 <div className="mb-6">
                   <h4 className="text-sm text-[#94A3B8] uppercase tracking-wide mb-2 font-semibold">
-                    The Challenge
+                    Pain Points
                   </h4>
                   <p className="text-white font-medium leading-relaxed">
                     {useCase.challenge}
                   </p>
                 </div>
 
-                {/* Solution */}
+                {/* SingSingh AI Solution */}
                 <div className="mb-6">
                   <h4 className="text-sm text-[#94A3B8] uppercase tracking-wide mb-2 font-semibold">
-                    AI Solution
+                    SingSingh AI Solution
                   </h4>
                   <p className="text-[#E2E8F0] text-sm leading-relaxed">
                     {useCase.solution}
@@ -2364,12 +2392,14 @@ const CaseStudiesSection = ({ t }) => {
                         {useCase.metrics.label}
                       </div>
                     </div>
-                    <div>
-                      <div className="text-xl font-bold text-white mb-1">
-                        {useCase.metrics.secondary}
-                      </div>
-                      <div className="text-xs text-[#94A3B8]">
-                        Additional Impact
+                    <div className="flex items-center gap-2">
+                      <div>
+                        <div className="text-xl font-bold text-white mb-1">
+                          {useCase.metrics.secondary}
+                        </div>
+                        <div className="text-xs text-[#94A3B8]">
+                          {useCase.metrics.secondaryLabel}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -2392,7 +2422,7 @@ const CaseStudiesSection = ({ t }) => {
 };
 
 // 🔴 **HERO SECTION**
-const HeroSection = ({ onStartQuiz, t }) => (
+const HeroSection = ({ onOpenContact, t }) => (
   <section className="min-h-screen flex items-center justify-center text-center px-4 pt-32 pb-20 relative overflow-hidden">
     <div
       className="absolute inset-0 bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#111827]"
@@ -2436,19 +2466,11 @@ const HeroSection = ({ onStartQuiz, t }) => (
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.6 }}
       >
-        <Button onClick={onStartQuiz} size="lg" className="mb-6">
+        <Button onClick={onOpenContact} size="lg" className="mb-6">
           <span>{t("heroCTA")}</span>
           <ArrowRight className="w-5 h-5 ml-3 transition-transform group-hover:translate-x-1" />
         </Button>
       </motion.div>
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.8 }}
-        className="text-sm text-[#CBD5E0] font-medium"
-      >
-        {t("heroSubtext")}
-      </motion.p>
     </div>
   </section>
 );
@@ -2614,21 +2636,28 @@ const HowItWorksSection = ({ t }) => {
       description: t("phases")[0].description,
       icon: Play,
       details: t("phases")[0].details,
-      duration: t("phases")[0].duration,
+      // duration: t("phases")[0].duration,
     },
     {
       step: t("phases")[1].step,
       description: t("phases")[1].description,
       icon: Zap,
       details: t("phases")[1].details,
-      duration: t("phases")[1].duration,
+      // duration: t("phases")[1].duration,
     },
     {
       step: t("phases")[2].step,
       description: t("phases")[2].description,
       icon: TrendingUp,
       details: t("phases")[2].details,
-      duration: t("phases")[2].duration,
+      // duration: t("phases")[2].duration,
+    },
+    {
+      step: t("phases")[3].step,
+      description: t("phases")[3].description,
+      icon: Sparkles,
+      details: t("phases")[3].details,
+      // duration: t("phases")[3].duration,
     },
   ];
 
@@ -2644,7 +2673,7 @@ const HowItWorksSection = ({ t }) => {
           </h2>
           <p className="text-xl text-[#E2E8F0]">{t("howItWorksSubtitle")}</p>
         </motion.div>
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {phases.map((phase, i) => (
             <motion.div
               key={i}
@@ -2697,14 +2726,14 @@ const ProofSection = ({ t }) => {
             {t("proofSubtitle")}
           </p>
         </motion.div>
-        <div className="grid md:grid-cols-4 gap-8 mb-16">
+        <div className="flex flex-wrap justify-center gap-8 mb-16">
           {t("stats").map((stat, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
-              className="text-center p-6 bg-white/10 rounded-2xl backdrop-blur-xl border border-white/20"
+              className="text-center p-6 bg-white/10 rounded-2xl backdrop-blur-xl border border-white/20 min-w-[200px]"
             >
               <CheckCircle className="w-12 h-12 mx-auto mb-4 text-[#0EA5E9]" />
               <div className="text-3xl font-bold text-white mb-2">
@@ -2714,7 +2743,7 @@ const ProofSection = ({ t }) => {
             </motion.div>
           ))}
         </div>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {industryResults.map((result, i) => (
             <motion.div
               key={i}
@@ -2740,44 +2769,68 @@ const ProofSection = ({ t }) => {
               </Card>
             </motion.div>
           ))}
-        </div>
+        </div> */}
       </div>
     </section>
   );
 };
 
-const FaqSection = ({ t }) => (
-  <section
-    id={SECTION_IDS.faq}
-    className="py-24 px-4 relative bg-gradient-to-b from-transparent to-[#0F172A]/20"
-  >
-    <div className="max-w-4xl mx-auto">
-      <motion.div className="text-center mb-20">
-        <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-[#10B981] to-[#1E3A8A] bg-clip-text text-transparent">
-          {t("faqTitle")}
-        </h2>
-      </motion.div>
-      <div className="space-y-4">
-        {t("faqs").map((faq, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, height: 0 }}
-            whileInView={{ opacity: 1, height: "auto" }}
-            transition={{ delay: i * 0.05 }}
-          >
-            <Card className="cursor-pointer group">
-              <div className="flex items-center justify-between">
-                <h3 className="text-xl font-bold text-white">{faq.q}</h3>
-                <ChevronDown className="w-6 h-6 text-[#0EA5E9] group-hover:rotate-180 transition-transform" />
-              </div>
-              <p className="mt-4 text-[#E2E8F0]">{faq.a}</p>
-            </Card>
-          </motion.div>
-        ))}
+const FaqSection = ({ t }) => {
+  const [openIndex, setOpenIndex] = useState(null);
+
+  const toggleFaq = (index) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
+
+  return (
+    <section
+      id={SECTION_IDS.faq}
+      className="py-24 px-4 relative bg-gradient-to-b from-transparent to-[#0F172A]/20"
+    >
+      <div className="max-w-4xl mx-auto">
+        <motion.div className="text-center mb-20">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-[#10B981] to-[#1E3A8A] bg-clip-text text-transparent">
+            {t("faqTitle")}
+          </h2>
+        </motion.div>
+        <div className="space-y-4">
+          {t("faqs").map((faq, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.05 }}
+            >
+              <Card className="cursor-pointer" onClick={() => toggleFaq(i)}>
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xl font-bold text-white">{faq.q}</h3>
+                  <ChevronDown
+                    className={`w-6 h-6 text-[#0EA5E9] transition-transform duration-300 ${
+                      openIndex === i ? "rotate-180" : ""
+                    }`}
+                  />
+                </div>
+                <AnimatePresence>
+                  {openIndex === i && (
+                    <motion.p
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="mt-4 text-[#E2E8F0] overflow-hidden"
+                    >
+                      {faq.a}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 const CtaSection = ({ onStartQuiz, t }) => (
   <section className="py-24 px-4 text-center relative">
@@ -2895,12 +2948,20 @@ const LandingPage = () => {
       {/* HEADER WITH FULL NAVIGATION */}
       <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-2xl border-b border-white/10 bg-white/5">
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between py-4">
-          <div className="flex flex-col">
-            <div className="font-mono text-2xl font-bold bg-gradient-to-r from-[#1E3A8A] to-[#10B981] bg-clip-text text-transparent">
-              {translate("brandName")}
+          <div className="flex items-center gap-3">
+            {/* Logo */}
+            {/* Logo Placeholder */}
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#1E3A8A] to-[#10B981] flex items-center justify-center">
+              <span className="text-white font-bold text-lg">S</span>
             </div>
-            <div className="text-xs font-semibold text-[#0EA5E9]/80 tracking-wide">
-              {translate("tagline")}
+
+            <div className="flex flex-col">
+              <div className="font-mono text-2xl font-bold bg-gradient-to-r from-[#1E3A8A] to-[#10B981] bg-clip-text text-transparent">
+                {translate("brandName")}
+              </div>
+              <div className="text-xs font-semibold text-[#0EA5E9]/80 tracking-wide">
+                {translate("tagline")}
+              </div>
             </div>
           </div>
           <nav className="hidden md:flex items-center gap-8">
@@ -2918,9 +2979,6 @@ const LandingPage = () => {
               onClick={() => handleNavClick("contact")}
             >
               {translate("navContact")}
-            </Button>
-            <Button variant="primary" onClick={() => handleNavClick("quiz")}>
-              {translate("navStartQuiz")}
             </Button>
             <LanguageToggle lang={lang} onToggle={setLang} />
           </nav>
@@ -2955,14 +3013,17 @@ const LandingPage = () => {
       />
 
       <main>
-        <HeroSection onStartQuiz={() => setIsQuizOpen(true)} t={translate} />
-        <ProblemSection t={translate} />
-        <SolutionSection t={translate} />
+        <HeroSection
+          onOpenContact={() => setIsContactOpen(true)}
+          t={translate}
+        />
+        {/* <ProblemSection t={translate} /> */}
+        {/* <SolutionSection t={translate} /> */}
         <HowItWorksSection t={translate} />
         <CaseStudiesSection t={translate} />
         <ProofSection t={translate} />
         <FaqSection t={translate} />
-        <CtaSection onStartQuiz={() => setIsQuizOpen(true)} t={translate} />
+        {/* <CtaSection onStartQuiz={() => setIsQuizOpen(true)} t={translate} /> */}
       </main>
 
       <QuizModal
