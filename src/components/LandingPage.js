@@ -39,7 +39,7 @@ const cn = (...inputs) => twMerge(clsx(inputs.filter(Boolean)));
 const translations = {
   en: {
     brandName: "SING SINGH",
-    tagline: "Smarter AI, Scalable Businesses",
+    tagline: "Smarter AI, Stronger Businesses",
     // Navigation
     navHowItWorks: "How It Works",
     navCaseStudies: "Case Studies",

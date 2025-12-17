@@ -1,846 +1,974 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SingSingh AI Logo Concepts</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SingSingh AI Logo Concepts</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-    body {
-      min-height: 100vh;
-      background: #0F172A;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      padding: 40px;
-    }
+      body {
+        min-height: 100vh;
+        background: #0f172a;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        padding: 40px;
+      }
 
-    h1 {
-      text-align: center;
-      color: white;
-      margin-bottom: 50px;
-      font-size: 28px;
-    }
+      h1 {
+        text-align: center;
+        color: white;
+        margin-bottom: 50px;
+        font-size: 28px;
+      }
 
-    h2 {
-      color: #64748b;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-bottom: 15px;
-      text-align: center;
-    }
+      h2 {
+        color: #64748b;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 15px;
+        text-align: center;
+      }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 50px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 50px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
 
-    .logo-section {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+      .logo-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
 
-    .logo-container {
-      width: 180px;
-      height: 180px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+      .logo-container {
+        width: 180px;
+        height: 180px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
 
-    /* ===== 1. INFINITY LOOP ===== */
-    .logo-infinity {
-      position: relative;
-      width: 160px;
-      height: 80px;
-    }
-    .logo-infinity::before,
-    .logo-infinity::after {
-      content: '';
-      position: absolute;
-      width: 70px;
-      height: 70px;
-      border: 10px solid;
-      border-radius: 50%;
-    }
-    .logo-infinity::before {
-      left: 0;
-      border-color: #1E3A8A;
-      clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);
-    }
-    .logo-infinity::after {
-      right: 0;
-      border-color: #10B981;
-      clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
-    }
-    .logo-infinity .center {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      width: 50px;
-      height: 50px;
-      background: linear-gradient(135deg, #1E3A8A, #10B981);
-      border-radius: 50%;
-    }
+      /* ===== 1. INFINITY LOOP ===== */
+      .logo-infinity {
+        position: relative;
+        width: 160px;
+        height: 80px;
+      }
+      .logo-infinity::before,
+      .logo-infinity::after {
+        content: "";
+        position: absolute;
+        width: 70px;
+        height: 70px;
+        border: 10px solid;
+        border-radius: 50%;
+      }
+      .logo-infinity::before {
+        left: 0;
+        border-color: #1e3a8a;
+        clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);
+      }
+      .logo-infinity::after {
+        right: 0;
+        border-color: #10b981;
+        clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
+      }
+      .logo-infinity .center {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #1e3a8a, #10b981);
+        border-radius: 50%;
+      }
 
-    /* ===== 2. NEURAL NETWORK NODE ===== */
-    .logo-neural {
-      position: relative;
-      width: 150px;
-      height: 150px;
-    }
-    .logo-neural .core {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      width: 50px;
-      height: 50px;
-      background: linear-gradient(135deg, #1E3A8A, #10B981);
-      border-radius: 50%;
-      box-shadow: 0 0 30px rgba(16, 185, 129, 0.5);
-    }
-    .logo-neural .node {
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: #0EA5E9;
-      border-radius: 50%;
-    }
-    .logo-neural .node:nth-child(2) { top: 0; left: 50%; transform: translateX(-50%); }
-    .logo-neural .node:nth-child(3) { bottom: 0; left: 50%; transform: translateX(-50%); }
-    .logo-neural .node:nth-child(4) { left: 0; top: 50%; transform: translateY(-50%); }
-    .logo-neural .node:nth-child(5) { right: 0; top: 50%; transform: translateY(-50%); }
-    .logo-neural .node:nth-child(6) { top: 15%; left: 15%; background: #10B981; }
-    .logo-neural .node:nth-child(7) { top: 15%; right: 15%; background: #10B981; }
-    .logo-neural .node:nth-child(8) { bottom: 15%; left: 15%; background: #10B981; }
-    .logo-neural .node:nth-child(9) { bottom: 15%; right: 15%; background: #10B981; }
-    .logo-neural .line {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      width: 2px;
-      height: 55px;
-      background: linear-gradient(to bottom, transparent, #0EA5E9);
-      transform-origin: top center;
-    }
-    .logo-neural .line:nth-child(10) { transform: rotate(0deg); }
-    .logo-neural .line:nth-child(11) { transform: rotate(45deg); }
-    .logo-neural .line:nth-child(12) { transform: rotate(90deg); }
-    .logo-neural .line:nth-child(13) { transform: rotate(135deg); }
-    .logo-neural .line:nth-child(14) { transform: rotate(180deg); }
-    .logo-neural .line:nth-child(15) { transform: rotate(225deg); }
-    .logo-neural .line:nth-child(16) { transform: rotate(270deg); }
-    .logo-neural .line:nth-child(17) { transform: rotate(315deg); }
+      /* ===== 2. NEURAL NETWORK NODE ===== */
+      .logo-neural {
+        position: relative;
+        width: 150px;
+        height: 150px;
+      }
+      .logo-neural .core {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #1e3a8a, #10b981);
+        border-radius: 50%;
+        box-shadow: 0 0 30px rgba(16, 185, 129, 0.5);
+      }
+      .logo-neural .node {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background: #0ea5e9;
+        border-radius: 50%;
+      }
+      .logo-neural .node:nth-child(2) {
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      .logo-neural .node:nth-child(3) {
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      .logo-neural .node:nth-child(4) {
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      .logo-neural .node:nth-child(5) {
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      .logo-neural .node:nth-child(6) {
+        top: 15%;
+        left: 15%;
+        background: #10b981;
+      }
+      .logo-neural .node:nth-child(7) {
+        top: 15%;
+        right: 15%;
+        background: #10b981;
+      }
+      .logo-neural .node:nth-child(8) {
+        bottom: 15%;
+        left: 15%;
+        background: #10b981;
+      }
+      .logo-neural .node:nth-child(9) {
+        bottom: 15%;
+        right: 15%;
+        background: #10b981;
+      }
+      .logo-neural .line {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 2px;
+        height: 55px;
+        background: linear-gradient(to bottom, transparent, #0ea5e9);
+        transform-origin: top center;
+      }
+      .logo-neural .line:nth-child(10) {
+        transform: rotate(0deg);
+      }
+      .logo-neural .line:nth-child(11) {
+        transform: rotate(45deg);
+      }
+      .logo-neural .line:nth-child(12) {
+        transform: rotate(90deg);
+      }
+      .logo-neural .line:nth-child(13) {
+        transform: rotate(135deg);
+      }
+      .logo-neural .line:nth-child(14) {
+        transform: rotate(180deg);
+      }
+      .logo-neural .line:nth-child(15) {
+        transform: rotate(225deg);
+      }
+      .logo-neural .line:nth-child(16) {
+        transform: rotate(270deg);
+      }
+      .logo-neural .line:nth-child(17) {
+        transform: rotate(315deg);
+      }
 
-    /* ===== 3. ABSTRACT WAVE ===== */
-    .logo-wave {
-      width: 150px;
-      height: 150px;
-      position: relative;
-    }
-    .logo-wave .wave {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-      animation: morph 8s ease-in-out infinite;
-    }
-    .logo-wave .wave:nth-child(1) {
-      background: linear-gradient(135deg, #1E3A8A, #0EA5E9);
-      animation-delay: 0s;
-    }
-    .logo-wave .wave:nth-child(2) {
-      background: linear-gradient(135deg, #10B981, #059669);
-      opacity: 0.7;
-      animation-delay: -4s;
-      transform: scale(0.8);
-    }
-    .logo-wave .letter {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 60px;
-      font-weight: 900;
-      color: white;
-      font-family: 'Arial Black', sans-serif;
-    }
-    @keyframes morph {
-      0%, 100% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
-      50% { border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%; }
-    }
+      /* ===== 3. ABSTRACT WAVE ===== */
+      .logo-wave {
+        width: 150px;
+        height: 150px;
+        position: relative;
+      }
+      .logo-wave .wave {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+        animation: morph 8s ease-in-out infinite;
+      }
+      .logo-wave .wave:nth-child(1) {
+        background: linear-gradient(135deg, #1e3a8a, #0ea5e9);
+        animation-delay: 0s;
+      }
+      .logo-wave .wave:nth-child(2) {
+        background: linear-gradient(135deg, #10b981, #059669);
+        opacity: 0.7;
+        animation-delay: -4s;
+        transform: scale(0.8);
+      }
+      .logo-wave .letter {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 60px;
+        font-weight: 900;
+        color: white;
+        font-family: "Arial Black", sans-serif;
+      }
+      @keyframes morph {
+        0%,
+        100% {
+          border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+        }
+        50% {
+          border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%;
+        }
+      }
 
-    /* ===== 4. HEXAGON TECH ===== */
-    .logo-hex {
-      width: 140px;
-      height: 160px;
-      position: relative;
-      background: linear-gradient(135deg, #1E3A8A, #10B981);
-      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .logo-hex .inner {
-      width: 120px;
-      height: 138px;
-      background: #0F172A;
-      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .logo-hex .text {
-      font-size: 50px;
-      font-weight: 900;
-      background: linear-gradient(135deg, #1E3A8A, #10B981);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-family: 'Arial Black', sans-serif;
-    }
+      /* ===== 4. HEXAGON TECH ===== */
+      .logo-hex {
+        width: 140px;
+        height: 160px;
+        position: relative;
+        background: linear-gradient(135deg, #1e3a8a, #10b981);
+        clip-path: polygon(
+          50% 0%,
+          100% 25%,
+          100% 75%,
+          50% 100%,
+          0% 75%,
+          0% 25%
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .logo-hex .inner {
+        width: 120px;
+        height: 138px;
+        background: #0f172a;
+        clip-path: polygon(
+          50% 0%,
+          100% 25%,
+          100% 75%,
+          50% 100%,
+          0% 75%,
+          0% 25%
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .logo-hex .text {
+        font-size: 50px;
+        font-weight: 900;
+        background: linear-gradient(135deg, #1e3a8a, #10b981);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-family: "Arial Black", sans-serif;
+      }
 
-    /* ===== 5. RISING BARS / GROWTH ===== */
-    .logo-bars {
-      display: flex;
-      align-items: flex-end;
-      gap: 8px;
-      height: 120px;
-    }
-    .logo-bars .bar {
-      width: 25px;
-      border-radius: 8px 8px 0 0;
-      background: linear-gradient(to top, #1E3A8A, #0EA5E9);
-    }
-    .logo-bars .bar:nth-child(1) { height: 40%; }
-    .logo-bars .bar:nth-child(2) { height: 60%; background: linear-gradient(to top, #1E3A8A, #10B981); }
-    .logo-bars .bar:nth-child(3) { height: 85%; }
-    .logo-bars .bar:nth-child(4) { height: 100%; background: linear-gradient(to top, #10B981, #0EA5E9); }
+      /* ===== 5. RISING BARS / GROWTH ===== */
+      .logo-bars {
+        display: flex;
+        align-items: flex-end;
+        gap: 8px;
+        height: 120px;
+      }
+      .logo-bars .bar {
+        width: 25px;
+        border-radius: 8px 8px 0 0;
+        background: linear-gradient(to top, #1e3a8a, #0ea5e9);
+      }
+      .logo-bars .bar:nth-child(1) {
+        height: 40%;
+      }
+      .logo-bars .bar:nth-child(2) {
+        height: 60%;
+        background: linear-gradient(to top, #1e3a8a, #10b981);
+      }
+      .logo-bars .bar:nth-child(3) {
+        height: 85%;
+      }
+      .logo-bars .bar:nth-child(4) {
+        height: 100%;
+        background: linear-gradient(to top, #10b981, #0ea5e9);
+      }
 
-    /* ===== 6. ORBIT / ATOM ===== */
-    .logo-orbit {
-      position: relative;
-      width: 150px;
-      height: 150px;
-    }
-    .logo-orbit .center {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      width: 40px;
-      height: 40px;
-      background: linear-gradient(135deg, #1E3A8A, #10B981);
-      border-radius: 50%;
-    }
-    .logo-orbit .ring {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      border: 3px solid;
-      border-radius: 50%;
-    }
-    .logo-orbit .ring:nth-child(2) {
-      width: 80px;
-      height: 80px;
-      border-color: #0EA5E9;
-      transform: translate(-50%, -50%) rotate(45deg);
-    }
-    .logo-orbit .ring:nth-child(3) {
-      width: 120px;
-      height: 60px;
-      border-color: #10B981;
-      transform: translate(-50%, -50%) rotate(-20deg);
-    }
-    .logo-orbit .ring:nth-child(4) {
-      width: 140px;
-      height: 70px;
-      border-color: #1E3A8A;
-      transform: translate(-50%, -50%) rotate(70deg);
-    }
-    .logo-orbit .dot {
-      position: absolute;
-      width: 12px;
-      height: 12px;
-      background: #10B981;
-      border-radius: 50%;
-      box-shadow: 0 0 10px #10B981;
-    }
-    .logo-orbit .dot:nth-child(5) { top: 10px; left: 50%; }
-    .logo-orbit .dot:nth-child(6) { bottom: 20px; right: 10px; background: #0EA5E9; box-shadow: 0 0 10px #0EA5E9; }
+      /* ===== 6. ORBIT / ATOM ===== */
+      .logo-orbit {
+        position: relative;
+        width: 150px;
+        height: 150px;
+      }
+      .logo-orbit .center {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #1e3a8a, #10b981);
+        border-radius: 50%;
+      }
+      .logo-orbit .ring {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        border: 3px solid;
+        border-radius: 50%;
+      }
+      .logo-orbit .ring:nth-child(2) {
+        width: 80px;
+        height: 80px;
+        border-color: #0ea5e9;
+        transform: translate(-50%, -50%) rotate(45deg);
+      }
+      .logo-orbit .ring:nth-child(3) {
+        width: 120px;
+        height: 60px;
+        border-color: #10b981;
+        transform: translate(-50%, -50%) rotate(-20deg);
+      }
+      .logo-orbit .ring:nth-child(4) {
+        width: 140px;
+        height: 70px;
+        border-color: #1e3a8a;
+        transform: translate(-50%, -50%) rotate(70deg);
+      }
+      .logo-orbit .dot {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        background: #10b981;
+        border-radius: 50%;
+        box-shadow: 0 0 10px #10b981;
+      }
+      .logo-orbit .dot:nth-child(5) {
+        top: 10px;
+        left: 50%;
+      }
+      .logo-orbit .dot:nth-child(6) {
+        bottom: 20px;
+        right: 10px;
+        background: #0ea5e9;
+        box-shadow: 0 0 10px #0ea5e9;
+      }
 
-    /* ===== 7. ABSTRACT S FLOW ===== */
-    .logo-flow {
-      position: relative;
-      width: 120px;
-      height: 150px;
-    }
-    .logo-flow .path {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-    }
-    .logo-flow .path::before {
-      content: '';
-      position: absolute;
-      width: 80px;
-      height: 80px;
-      border: 12px solid transparent;
-      border-top-color: #1E3A8A;
-      border-right-color: #0EA5E9;
-      border-radius: 50%;
-      top: 0;
-      right: 0;
-    }
-    .logo-flow .path::after {
-      content: '';
-      position: absolute;
-      width: 80px;
-      height: 80px;
-      border: 12px solid transparent;
-      border-bottom-color: #10B981;
-      border-left-color: #059669;
-      border-radius: 50%;
-      bottom: 0;
-      left: 0;
-    }
+      /* ===== 7. ABSTRACT S FLOW ===== */
+      .logo-flow {
+        position: relative;
+        width: 120px;
+        height: 150px;
+      }
+      .logo-flow .path {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+      .logo-flow .path::before {
+        content: "";
+        position: absolute;
+        width: 80px;
+        height: 80px;
+        border: 12px solid transparent;
+        border-top-color: #1e3a8a;
+        border-right-color: #0ea5e9;
+        border-radius: 50%;
+        top: 0;
+        right: 0;
+      }
+      .logo-flow .path::after {
+        content: "";
+        position: absolute;
+        width: 80px;
+        height: 80px;
+        border: 12px solid transparent;
+        border-bottom-color: #10b981;
+        border-left-color: #059669;
+        border-radius: 50%;
+        bottom: 0;
+        left: 0;
+      }
 
-    /* ===== 8. DIAMOND SPARK ===== */
-    .logo-diamond {
-      position: relative;
-      width: 130px;
-      height: 130px;
-      transform: rotate(45deg);
-    }
-    .logo-diamond .outer {
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, #1E3A8A, #10B981);
-      border-radius: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .logo-diamond .inner {
-      width: 100px;
-      height: 100px;
-      background: #0F172A;
-      border-radius: 15px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .logo-diamond .spark {
-      transform: rotate(-45deg);
-      font-size: 45px;
-      font-weight: 900;
-      background: linear-gradient(135deg, #0EA5E9, #10B981);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-family: 'Arial Black', sans-serif;
-    }
+      /* ===== 8. DIAMOND SPARK ===== */
+      .logo-diamond {
+        position: relative;
+        width: 130px;
+        height: 130px;
+        transform: rotate(45deg);
+      }
+      .logo-diamond .outer {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #1e3a8a, #10b981);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .logo-diamond .inner {
+        width: 100px;
+        height: 100px;
+        background: #0f172a;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .logo-diamond .spark {
+        transform: rotate(-45deg);
+        font-size: 45px;
+        font-weight: 900;
+        background: linear-gradient(135deg, #0ea5e9, #10b981);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-family: "Arial Black", sans-serif;
+      }
 
-    /* ===== 9. LAYERED CIRCLES ===== */
-    .logo-layers {
-      position: relative;
-      width: 150px;
-      height: 150px;
-    }
-    .logo-layers .circle {
-      position: absolute;
-      border-radius: 50%;
-    }
-    .logo-layers .circle:nth-child(1) {
-      width: 150px;
-      height: 150px;
-      background: #1E3A8A;
-      top: 0;
-      left: 0;
-    }
-    .logo-layers .circle:nth-child(2) {
-      width: 110px;
-      height: 110px;
-      background: #0EA5E9;
-      top: 40px;
-      left: 40px;
-    }
-    .logo-layers .circle:nth-child(3) {
-      width: 70px;
-      height: 70px;
-      background: #10B981;
-      top: 60px;
-      left: 60px;
-    }
-    .logo-layers .icon {
-      position: absolute;
-      top: 75px;
-      left: 75px;
-      font-size: 30px;
-      color: white;
-    }
+      /* ===== 9. LAYERED CIRCLES ===== */
+      .logo-layers {
+        position: relative;
+        width: 150px;
+        height: 150px;
+      }
+      .logo-layers .circle {
+        position: absolute;
+        border-radius: 50%;
+      }
+      .logo-layers .circle:nth-child(1) {
+        width: 150px;
+        height: 150px;
+        background: #1e3a8a;
+        top: 0;
+        left: 0;
+      }
+      .logo-layers .circle:nth-child(2) {
+        width: 110px;
+        height: 110px;
+        background: #0ea5e9;
+        top: 40px;
+        left: 40px;
+      }
+      .logo-layers .circle:nth-child(3) {
+        width: 70px;
+        height: 70px;
+        background: #10b981;
+        top: 60px;
+        left: 60px;
+      }
+      .logo-layers .icon {
+        position: absolute;
+        top: 75px;
+        left: 75px;
+        font-size: 30px;
+        color: white;
+      }
 
-    /* ===== 10. CUBE 3D ===== */
-    .logo-cube {
-      width: 120px;
-      height: 140px;
-      position: relative;
-    }
-    .logo-cube .face {
-      position: absolute;
-      width: 80px;
-      height: 80px;
-    }
-    .logo-cube .face.top {
-      background: linear-gradient(135deg, #0EA5E9, #1E3A8A);
-      transform: skewY(-30deg);
-      left: 20px;
-      top: 0;
-    }
-    .logo-cube .face.left {
-      background: #1E3A8A;
-      transform: skewY(30deg);
-      left: 0;
-      top: 46px;
-    }
-    .logo-cube .face.right {
-      background: #10B981;
-      transform: skewY(-30deg);
-      right: 0;
-      top: 46px;
-    }
+      /* ===== 10. CUBE 3D ===== */
+      .logo-cube {
+        width: 120px;
+        height: 140px;
+        position: relative;
+      }
+      .logo-cube .face {
+        position: absolute;
+        width: 80px;
+        height: 80px;
+      }
+      .logo-cube .face.top {
+        background: linear-gradient(135deg, #0ea5e9, #1e3a8a);
+        transform: skewY(-30deg);
+        left: 20px;
+        top: 0;
+      }
+      .logo-cube .face.left {
+        background: #1e3a8a;
+        transform: skewY(30deg);
+        left: 0;
+        top: 46px;
+      }
+      .logo-cube .face.right {
+        background: #10b981;
+        transform: skewY(-30deg);
+        right: 0;
+        top: 46px;
+      }
 
-    /* ===== 11. PULSE RING ===== */
-    .logo-pulse {
-      position: relative;
-      width: 150px;
-      height: 150px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .logo-pulse .ring {
-      position: absolute;
-      border-radius: 50%;
-      border: 3px solid #10B981;
-      animation: pulse 2s ease-out infinite;
-    }
-    .logo-pulse .ring:nth-child(1) { width: 60px; height: 60px; animation-delay: 0s; }
-    .logo-pulse .ring:nth-child(2) { width: 90px; height: 90px; animation-delay: 0.3s; }
-    .logo-pulse .ring:nth-child(3) { width: 120px; height: 120px; animation-delay: 0.6s; }
-    .logo-pulse .ring:nth-child(4) { width: 150px; height: 150px; animation-delay: 0.9s; }
-    .logo-pulse .core {
-      width: 50px;
-      height: 50px;
-      background: linear-gradient(135deg, #1E3A8A, #10B981);
-      border-radius: 50%;
-      z-index: 10;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 900;
-      font-size: 24px;
-    }
-    @keyframes pulse {
-      0% { transform: scale(0.5); opacity: 1; }
-      100% { transform: scale(1.2); opacity: 0; }
-    }
+      /* ===== 11. PULSE RING ===== */
+      .logo-pulse {
+        position: relative;
+        width: 150px;
+        height: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .logo-pulse .ring {
+        position: absolute;
+        border-radius: 50%;
+        border: 3px solid #10b981;
+        animation: pulse 2s ease-out infinite;
+      }
+      .logo-pulse .ring:nth-child(1) {
+        width: 60px;
+        height: 60px;
+        animation-delay: 0s;
+      }
+      .logo-pulse .ring:nth-child(2) {
+        width: 90px;
+        height: 90px;
+        animation-delay: 0.3s;
+      }
+      .logo-pulse .ring:nth-child(3) {
+        width: 120px;
+        height: 120px;
+        animation-delay: 0.6s;
+      }
+      .logo-pulse .ring:nth-child(4) {
+        width: 150px;
+        height: 150px;
+        animation-delay: 0.9s;
+      }
+      .logo-pulse .core {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #1e3a8a, #10b981);
+        border-radius: 50%;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 900;
+        font-size: 24px;
+      }
+      @keyframes pulse {
+        0% {
+          transform: scale(0.5);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1.2);
+          opacity: 0;
+        }
+      }
 
-    /* ===== 12. ARROW UP / GROWTH ===== */
-    .logo-arrow {
-      position: relative;
-      width: 120px;
-      height: 150px;
-    }
-    .logo-arrow .shaft {
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 40px;
-      height: 100px;
-      background: linear-gradient(to top, #1E3A8A, #0EA5E9);
-      border-radius: 0 0 10px 10px;
-    }
-    .logo-arrow .head {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 0;
-      height: 0;
-      border-left: 50px solid transparent;
-      border-right: 50px solid transparent;
-      border-bottom: 60px solid #10B981;
-    }
+      /* ===== 12. ARROW UP / GROWTH ===== */
+      .logo-arrow {
+        position: relative;
+        width: 120px;
+        height: 150px;
+      }
+      .logo-arrow .shaft {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40px;
+        height: 100px;
+        background: linear-gradient(to top, #1e3a8a, #0ea5e9);
+        border-radius: 0 0 10px 10px;
+      }
+      .logo-arrow .head {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-left: 50px solid transparent;
+        border-right: 50px solid transparent;
+        border-bottom: 60px solid #10b981;
+      }
 
-    /* ===== 13. CHAT BUBBLE AI ===== */
-    .logo-chat {
-      position: relative;
-      width: 140px;
-      height: 120px;
-    }
-    .logo-chat .bubble {
-      width: 140px;
-      height: 100px;
-      background: linear-gradient(135deg, #1E3A8A, #10B981);
-      border-radius: 25px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .logo-chat .bubble::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 25px;
-      width: 0;
-      height: 0;
-      border: 15px solid transparent;
-      border-top-color: #1E3A8A;
-      border-bottom: 0;
-    }
-    .logo-chat .dots {
-      display: flex;
-      gap: 8px;
-    }
-    .logo-chat .dot {
-      width: 15px;
-      height: 15px;
-      background: white;
-      border-radius: 50%;
-      animation: bounce 1.4s infinite ease-in-out;
-    }
-    .logo-chat .dot:nth-child(1) { animation-delay: 0s; }
-    .logo-chat .dot:nth-child(2) { animation-delay: 0.2s; }
-    .logo-chat .dot:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes bounce {
-      0%, 80%, 100% { transform: translateY(0); }
-      40% { transform: translateY(-10px); }
-    }
+      /* ===== 13. CHAT BUBBLE AI ===== */
+      .logo-chat {
+        position: relative;
+        width: 140px;
+        height: 120px;
+      }
+      .logo-chat .bubble {
+        width: 140px;
+        height: 100px;
+        background: linear-gradient(135deg, #1e3a8a, #10b981);
+        border-radius: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .logo-chat .bubble::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 25px;
+        width: 0;
+        height: 0;
+        border: 15px solid transparent;
+        border-top-color: #1e3a8a;
+        border-bottom: 0;
+      }
+      .logo-chat .dots {
+        display: flex;
+        gap: 8px;
+      }
+      .logo-chat .dot {
+        width: 15px;
+        height: 15px;
+        background: white;
+        border-radius: 50%;
+        animation: bounce 1.4s infinite ease-in-out;
+      }
+      .logo-chat .dot:nth-child(1) {
+        animation-delay: 0s;
+      }
+      .logo-chat .dot:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .logo-chat .dot:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+      @keyframes bounce {
+        0%,
+        80%,
+        100% {
+          transform: translateY(0);
+        }
+        40% {
+          transform: translateY(-10px);
+        }
+      }
 
-    /* ===== 14. LIGHTNING BOLT ===== */
-    .logo-bolt {
-      width: 100px;
-      height: 150px;
-      position: relative;
-    }
-    .logo-bolt .bolt {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(180deg, #0EA5E9, #10B981);
-      clip-path: polygon(60% 0, 100% 0, 45% 45%, 75% 45%, 20% 100%, 35% 50%, 0 50%);
-      filter: drop-shadow(0 0 20px rgba(16, 185, 129, 0.5));
-    }
+      /* ===== 14. LIGHTNING BOLT ===== */
+      .logo-bolt {
+        width: 100px;
+        height: 150px;
+        position: relative;
+      }
+      .logo-bolt .bolt {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(180deg, #0ea5e9, #10b981);
+        clip-path: polygon(
+          60% 0,
+          100% 0,
+          45% 45%,
+          75% 45%,
+          20% 100%,
+          35% 50%,
+          0 50%
+        );
+        filter: drop-shadow(0 0 20px rgba(16, 185, 129, 0.5));
+      }
 
-    /* ===== 15. SPIRAL ===== */
-    .logo-spiral {
-      width: 150px;
-      height: 150px;
-      position: relative;
-    }
-    .logo-spiral .arc {
-      position: absolute;
-      border-radius: 50%;
-      border: 8px solid transparent;
-    }
-    .logo-spiral .arc:nth-child(1) {
-      width: 150px;
-      height: 150px;
-      border-top-color: #1E3A8A;
-      border-right-color: #1E3A8A;
-      top: 0;
-      left: 0;
-    }
-    .logo-spiral .arc:nth-child(2) {
-      width: 110px;
-      height: 110px;
-      border-bottom-color: #0EA5E9;
-      border-left-color: #0EA5E9;
-      top: 20px;
-      left: 20px;
-    }
-    .logo-spiral .arc:nth-child(3) {
-      width: 70px;
-      height: 70px;
-      border-top-color: #10B981;
-      border-right-color: #10B981;
-      top: 40px;
-      left: 40px;
-    }
-    .logo-spiral .center {
-      position: absolute;
-      width: 30px;
-      height: 30px;
-      background: linear-gradient(135deg, #10B981, #0EA5E9);
-      border-radius: 50%;
-      top: 60px;
-      left: 60px;
-    }
+      /* ===== 15. SPIRAL ===== */
+      .logo-spiral {
+        width: 150px;
+        height: 150px;
+        position: relative;
+      }
+      .logo-spiral .arc {
+        position: absolute;
+        border-radius: 50%;
+        border: 8px solid transparent;
+      }
+      .logo-spiral .arc:nth-child(1) {
+        width: 150px;
+        height: 150px;
+        border-top-color: #1e3a8a;
+        border-right-color: #1e3a8a;
+        top: 0;
+        left: 0;
+      }
+      .logo-spiral .arc:nth-child(2) {
+        width: 110px;
+        height: 110px;
+        border-bottom-color: #0ea5e9;
+        border-left-color: #0ea5e9;
+        top: 20px;
+        left: 20px;
+      }
+      .logo-spiral .arc:nth-child(3) {
+        width: 70px;
+        height: 70px;
+        border-top-color: #10b981;
+        border-right-color: #10b981;
+        top: 40px;
+        left: 40px;
+      }
+      .logo-spiral .center {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        background: linear-gradient(135deg, #10b981, #0ea5e9);
+        border-radius: 50%;
+        top: 60px;
+        left: 60px;
+      }
 
-    /* ===== 16. BRACKETS CODE ===== */
-    .logo-code {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-    .logo-code .bracket {
-      font-size: 80px;
-      font-weight: 300;
-      color: #1E3A8A;
-      font-family: 'Courier New', monospace;
-    }
-    .logo-code .bracket:last-child {
-      color: #10B981;
-    }
-    .logo-code .ai {
-      font-size: 40px;
-      font-weight: 900;
-      background: linear-gradient(135deg, #0EA5E9, #10B981);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-family: 'Arial Black', sans-serif;
-    }
+      /* ===== 16. BRACKETS CODE ===== */
+      .logo-code {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .logo-code .bracket {
+        font-size: 80px;
+        font-weight: 300;
+        color: #1e3a8a;
+        font-family: "Courier New", monospace;
+      }
+      .logo-code .bracket:last-child {
+        color: #10b981;
+      }
+      .logo-code .ai {
+        font-size: 40px;
+        font-weight: 900;
+        background: linear-gradient(135deg, #0ea5e9, #10b981);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-family: "Arial Black", sans-serif;
+      }
 
-    @media (max-width: 1000px) {
-      .grid { grid-template-columns: repeat(3, 1fr); }
-    }
-    @media (max-width: 750px) {
-      .grid { grid-template-columns: repeat(2, 1fr); }
-    }
-  </style>
-</head>
-<body>
+      @media (max-width: 1000px) {
+        .grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+      @media (max-width: 750px) {
+        .grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>SingSingh AI - Logo Concepts</h1>
 
-  <h1>SingSingh AI - Logo Concepts</h1>
-
-  <div class="grid">
-
-    <!-- 1. Neural Network -->
-    <div class="logo-section">
-      <h2>Neural Network</h2>
-      <div class="logo-container">
-        <div class="logo-neural">
-          <div class="core"></div>
-          <div class="node"></div>
-          <div class="node"></div>
-          <div class="node"></div>
-          <div class="node"></div>
-          <div class="node"></div>
-          <div class="node"></div>
-          <div class="node"></div>
-          <div class="node"></div>
-          <div class="line"></div>
-          <div class="line"></div>
-          <div class="line"></div>
-          <div class="line"></div>
-          <div class="line"></div>
-          <div class="line"></div>
-          <div class="line"></div>
-          <div class="line"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 2. Abstract Wave -->
-    <div class="logo-section">
-      <h2>Abstract Wave</h2>
-      <div class="logo-container">
-        <div class="logo-wave">
-          <div class="wave"></div>
-          <div class="wave"></div>
-          <span class="letter">S</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- 3. Hexagon Tech -->
-    <div class="logo-section">
-      <h2>Hexagon Tech</h2>
-      <div class="logo-container">
-        <div class="logo-hex">
-          <div class="inner">
-            <span class="text">SS</span>
+    <div class="grid">
+      <!-- 1. Neural Network -->
+      <div class="logo-section">
+        <h2>Neural Network</h2>
+        <div class="logo-container">
+          <div class="logo-neural">
+            <div class="core"></div>
+            <div class="node"></div>
+            <div class="node"></div>
+            <div class="node"></div>
+            <div class="node"></div>
+            <div class="node"></div>
+            <div class="node"></div>
+            <div class="node"></div>
+            <div class="node"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- 4. Growth Bars -->
-    <div class="logo-section">
-      <h2>Growth Bars</h2>
-      <div class="logo-container">
-        <div class="logo-bars">
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
+      <!-- 2. Abstract Wave -->
+      <div class="logo-section">
+        <h2>Abstract Wave</h2>
+        <div class="logo-container">
+          <div class="logo-wave">
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <span class="letter">S</span>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- 5. Orbit -->
-    <div class="logo-section">
-      <h2>Orbit / Atom</h2>
-      <div class="logo-container">
-        <div class="logo-orbit">
-          <div class="center"></div>
-          <div class="ring"></div>
-          <div class="ring"></div>
-          <div class="ring"></div>
-          <div class="dot"></div>
-          <div class="dot"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 6. Abstract S Flow -->
-    <div class="logo-section">
-      <h2>S Flow</h2>
-      <div class="logo-container">
-        <div class="logo-flow">
-          <div class="path"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 7. Diamond Spark -->
-    <div class="logo-section">
-      <h2>Diamond</h2>
-      <div class="logo-container">
-        <div class="logo-diamond">
-          <div class="outer">
+      <!-- 3. Hexagon Tech -->
+      <div class="logo-section">
+        <h2>Hexagon Tech</h2>
+        <div class="logo-container">
+          <div class="logo-hex">
             <div class="inner">
-              <span class="spark">AI</span>
+              <span class="text">SS</span>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- 8. Layered Circles -->
-    <div class="logo-section">
-      <h2>Layered</h2>
-      <div class="logo-container">
-        <div class="logo-layers">
-          <div class="circle"></div>
-          <div class="circle"></div>
-          <div class="circle"></div>
-          <span class="icon">✦</span>
+      <!-- 4. Growth Bars -->
+      <div class="logo-section">
+        <h2>Growth Bars</h2>
+        <div class="logo-container">
+          <div class="logo-bars">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- 9. 3D Cube -->
-    <div class="logo-section">
-      <h2>3D Cube</h2>
-      <div class="logo-container">
-        <div class="logo-cube">
-          <div class="face top"></div>
-          <div class="face left"></div>
-          <div class="face right"></div>
+      <!-- 5. Orbit -->
+      <div class="logo-section">
+        <h2>Orbit / Atom</h2>
+        <div class="logo-container">
+          <div class="logo-orbit">
+            <div class="center"></div>
+            <div class="ring"></div>
+            <div class="ring"></div>
+            <div class="ring"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- 10. Pulse Ring -->
-    <div class="logo-section">
-      <h2>Pulse</h2>
-      <div class="logo-container">
-        <div class="logo-pulse">
-          <div class="ring"></div>
-          <div class="ring"></div>
-          <div class="ring"></div>
-          <div class="ring"></div>
-          <div class="core">S</div>
+      <!-- 6. Abstract S Flow -->
+      <div class="logo-section">
+        <h2>S Flow</h2>
+        <div class="logo-container">
+          <div class="logo-flow">
+            <div class="path"></div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- 11. Arrow Growth -->
-    <div class="logo-section">
-      <h2>Growth Arrow</h2>
-      <div class="logo-container">
-        <div class="logo-arrow">
-          <div class="shaft"></div>
-          <div class="head"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 12. Chat AI -->
-    <div class="logo-section">
-      <h2>AI Chat</h2>
-      <div class="logo-container">
-        <div class="logo-chat">
-          <div class="bubble">
-            <div class="dots">
-              <div class="dot"></div>
-              <div class="dot"></div>
-              <div class="dot"></div>
+      <!-- 7. Diamond Spark -->
+      <div class="logo-section">
+        <h2>Diamond</h2>
+        <div class="logo-container">
+          <div class="logo-diamond">
+            <div class="outer">
+              <div class="inner">
+                <span class="spark">AI</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- 13. Lightning Bolt -->
-    <div class="logo-section">
-      <h2>Lightning</h2>
-      <div class="logo-container">
-        <div class="logo-bolt">
-          <div class="bolt"></div>
+      <!-- 8. Layered Circles -->
+      <div class="logo-section">
+        <h2>Layered</h2>
+        <div class="logo-container">
+          <div class="logo-layers">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <span class="icon">✦</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9. 3D Cube -->
+      <div class="logo-section">
+        <h2>3D Cube</h2>
+        <div class="logo-container">
+          <div class="logo-cube">
+            <div class="face top"></div>
+            <div class="face left"></div>
+            <div class="face right"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 10. Pulse Ring -->
+      <div class="logo-section">
+        <h2>Pulse</h2>
+        <div class="logo-container">
+          <div class="logo-pulse">
+            <div class="ring"></div>
+            <div class="ring"></div>
+            <div class="ring"></div>
+            <div class="ring"></div>
+            <div class="core">S</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 11. Arrow Growth -->
+      <div class="logo-section">
+        <h2>Growth Arrow</h2>
+        <div class="logo-container">
+          <div class="logo-arrow">
+            <div class="shaft"></div>
+            <div class="head"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 12. Chat AI -->
+      <div class="logo-section">
+        <h2>AI Chat</h2>
+        <div class="logo-container">
+          <div class="logo-chat">
+            <div class="bubble">
+              <div class="dots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 13. Lightning Bolt -->
+      <div class="logo-section">
+        <h2>Lightning</h2>
+        <div class="logo-container">
+          <div class="logo-bolt">
+            <div class="bolt"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 14. Spiral -->
+      <div class="logo-section">
+        <h2>Spiral</h2>
+        <div class="logo-container">
+          <div class="logo-spiral">
+            <div class="arc"></div>
+            <div class="arc"></div>
+            <div class="arc"></div>
+            <div class="center"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 15. Code Brackets -->
+      <div class="logo-section">
+        <h2>Code</h2>
+        <div class="logo-container">
+          <div class="logo-code">
+            <span class="bracket">{</span>
+            <span class="ai">AI</span>
+            <span class="bracket">}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 16. Infinity -->
+      <div class="logo-section">
+        <h2>Infinity</h2>
+        <div class="logo-container">
+          <div class="logo-infinity">
+            <div class="center"></div>
+          </div>
         </div>
       </div>
     </div>
-
-    <!-- 14. Spiral -->
-    <div class="logo-section">
-      <h2>Spiral</h2>
-      <div class="logo-container">
-        <div class="logo-spiral">
-          <div class="arc"></div>
-          <div class="arc"></div>
-          <div class="arc"></div>
-          <div class="center"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 15. Code Brackets -->
-    <div class="logo-section">
-      <h2>Code</h2>
-      <div class="logo-container">
-        <div class="logo-code">
-          <span class="bracket">{</span>
-          <span class="ai">AI</span>
-          <span class="bracket">}</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- 16. Infinity -->
-    <div class="logo-section">
-      <h2>Infinity</h2>
-      <div class="logo-container">
-        <div class="logo-infinity">
-          <div class="center"></div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-</body>
+  </body>
 </html>
