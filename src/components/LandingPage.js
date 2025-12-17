@@ -39,7 +39,7 @@ const cn = (...inputs) => twMerge(clsx(inputs.filter(Boolean)));
 const translations = {
   en: {
     brandName: "SING SINGH",
-    tagline: "Smarter AI, Stronger Businesses",
+    tagline: "Smarter AI, Stronger Business",
     // Navigation
     navHowItWorks: "How It Works",
     navCaseStudies: "Case Studies",
@@ -2869,12 +2869,22 @@ const CtaSection = ({ onStartQuiz, t }) => (
 const Footer = ({ t }) => (
   <footer className="py-12 px-4 bg-gradient-to-r from-[#0F172A] via-[#1E293B] to-[#111827] text-white border-t border-white/10">
     <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-8">
+      {/* Brand + description */}
       <div>
-        <div className="text-2xl font-bold mb-4 bg-gradient-to-r from-[#1E3A8A] to-[#10B981] bg-clip-text text-transparent">
-          {t("footerTitle")}
+        <div className="flex items-center gap-3 mb-4">
+          <img
+            src="/logo.png"
+            alt="SingSingh AI logo"
+            className="w-10 h-10 rounded-lg object-contain"
+          />
+          <div className="text-2xl font-bold bg-gradient-to-r from-[#1E3A8A] to-[#10B981] bg-clip-text text-transparent">
+            {t("footerTitle")}
+          </div>
         </div>
         <p className="text-[#E2E8F0] mb-6">{t("footerDescription")}</p>
       </div>
+
+      {/* Services */}
       <div>
         <h3 className="font-bold mb-4 text-white">Services</h3>
         <ul className="space-y-2 text-[#E2E8F0] text-sm">
@@ -2888,6 +2898,7 @@ const Footer = ({ t }) => (
         </ul>
       </div>
 
+      {/* Contact */}
       <div>
         <h3 className="font-bold mb-4 text-white">Contact</h3>
         <div className="space-y-2 text-[#E2E8F0] text-sm">
@@ -2900,13 +2911,13 @@ const Footer = ({ t }) => (
           <div className="flex items-center gap-2">
             <Mail className="w-4 h-4" /> {t("contactEmail2")}
           </div>
-
           <div className="flex items-center gap-2">
             <MapPin className="w-4 h-4" /> {t("contactAddress")}
           </div>
         </div>
       </div>
     </div>
+
     <div className="border-t border-white/10 mt-8 pt-8 text-center text-sm text-[#CBD5E0]">
       {t("copyright")}
     </div>
@@ -2949,11 +2960,11 @@ const LandingPage = () => {
       <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-2xl border-b border-white/10 bg-white/5">
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between py-4">
           <div className="flex items-center gap-3">
-            {/* Logo */}
-            {/* Logo Placeholder */}
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#1E3A8A] to-[#10B981] flex items-center justify-center">
-              <span className="text-white font-bold text-lg">S</span>
-            </div>
+            <img
+              src="/logo.png"
+              alt="SingSingh AI logo"
+              className="w-10 h-10 rounded-lg object-contain"
+            />
 
             <div className="flex flex-col">
               <div className="font-mono text-2xl font-bold bg-gradient-to-r from-[#1E3A8A] to-[#10B981] bg-clip-text text-transparent">
