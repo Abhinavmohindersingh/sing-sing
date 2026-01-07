@@ -2874,7 +2874,7 @@ const Footer = ({ t }) => (
         <div>
           <div className="flex items-center gap-4 mb-6">
             <img
-              src="/logo.png"
+              src="/logo2.png"
               alt="SingSingh AI logo"
               className="w-14 h-14 rounded-xl object-contain"
             />
@@ -2973,7 +2973,7 @@ const LandingPage = () => {
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between py-4">
           <div className="flex items-center gap-3">
             <img
-              src="/logo.png"
+              src="/logo2.png"
               alt="SingSingh AI logo"
               className="w-10 h-10 rounded-lg object-contain"
             />
