@@ -2,26 +2,39 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Phone, Mail, MapPin } from "lucide-react";
 
-// Data
 import { t as translate, SECTION_IDS } from "../data/translations";
 
-// UI components
 import ScrollProgress from "./ui/ScrollProgress";
 import NeonButton from "./ui/NeonButton";
 import QuizModal from "./ui/QuizModal";
 import ContactModal from "./ui/ContactModal";
 
-// Sections
 import HeroSection from "./sections/HeroSection";
 import ProblemSection from "./sections/ProblemSection";
+import ComparisonSection from "./sections/ComparisonSection";
 import SolutionSection from "./sections/SolutionSection";
 import HowItWorks from "./sections/HowItWorks";
 import CaseStudies from "./sections/CaseStudies";
 import ProofSection from "./sections/ProofSection";
+import TestimonialsSection from "./sections/TestimonialsSection";
 import FAQSection from "./sections/FAQSection";
 import CTASection from "./sections/CTASection";
 
-// ── Navbar ──────────────────────────────────────────────────────────────────
+const ZoneDivider = ({ fromZone, toZone }) => (
+  <div className="zone-divider relative">
+    <motion.div
+      className="absolute left-1/2 -translate-x-1/2 font-mono text-xs tracking-widest"
+      style={{ color: "rgba(0,245,255,0.2)" }}
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      viewport={{ once: true }}
+    >
+      {fromZone && toZone ? `${fromZone} → ${toZone}` : ""}
+    </motion.div>
+  </div>
+);
+
 const Navbar = ({ lang, setLang, onOpenContact, scrolled }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const t = (key) => translate(key, lang);
@@ -43,24 +56,15 @@ const Navbar = ({ lang, setLang, onOpenContact, scrolled }) => {
       <header
         className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
         style={{
-          background: scrolled
-            ? "rgba(4,5,13,0.92)"
-            : "rgba(4,5,13,0.4)",
+          background: scrolled ? "rgba(4,5,13,0.92)" : "rgba(4,5,13,0.4)",
           backdropFilter: "blur(16px)",
           WebkitBackdropFilter: "blur(16px)",
-          borderBottom: scrolled
-            ? "1px solid rgba(0,245,255,0.12)"
-            : "1px solid transparent",
+          borderBottom: scrolled ? "1px solid rgba(0,245,255,0.12)" : "1px solid transparent",
         }}
       >
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
-          {/* Logo */}
           <div className="flex items-center gap-3">
-            <img
-              src="/logo2.png"
-              alt="SingSingh AI"
-              className="w-9 h-9 rounded-lg object-contain"
-            />
+            <img src="/logo2.png" alt="SingSingh AI" className="w-9 h-9 rounded-lg object-contain" />
             <div>
               <div
                 className="font-display font-bold text-lg leading-none"
@@ -79,7 +83,6 @@ const Navbar = ({ lang, setLang, onOpenContact, scrolled }) => {
             </div>
           </div>
 
-          {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-1">
             {navLinks.map((link) => (
               <button
@@ -95,7 +98,6 @@ const Navbar = ({ lang, setLang, onOpenContact, scrolled }) => {
             ))}
           </nav>
 
-          {/* Desktop CTA + lang */}
           <div className="hidden md:flex items-center gap-3">
             <NeonButton variant="ghost" color="cyan" size="sm" onClick={() => setLang(lang === "en" ? "zh" : "en")}>
               {lang === "en" ? "中文" : "English"}
@@ -105,7 +107,6 @@ const Navbar = ({ lang, setLang, onOpenContact, scrolled }) => {
             </NeonButton>
           </div>
 
-          {/* Mobile hamburger */}
           <button
             className="md:hidden p-2 rounded-lg"
             style={{ color: "#94a3b8" }}
@@ -116,7 +117,6 @@ const Navbar = ({ lang, setLang, onOpenContact, scrolled }) => {
         </div>
       </header>
 
-      {/* Mobile drawer */}
       <AnimatePresence>
         {mobileOpen && (
           <>
@@ -180,7 +180,6 @@ const Navbar = ({ lang, setLang, onOpenContact, scrolled }) => {
   );
 };
 
-// ── Footer ───────────────────────────────────────────────────────────────────
 const Footer = ({ t }) => (
   <footer
     className="relative py-16 px-6 overflow-hidden"
@@ -192,7 +191,6 @@ const Footer = ({ t }) => (
     <div className="absolute inset-0 hud-grid opacity-30" />
     <div className="max-w-7xl mx-auto relative z-10">
       <div className="grid gap-10 lg:grid-cols-[2fr,1fr,1fr] mb-12">
-        {/* Brand */}
         <div>
           <div className="flex items-center gap-3 mb-5">
             <img src="/logo2.png" alt="SingSingh AI" className="w-12 h-12 rounded-xl object-contain" />
@@ -216,21 +214,17 @@ const Footer = ({ t }) => (
           <p className="text-slate-400 text-sm leading-relaxed max-w-sm">{t("footerDescription")}</p>
         </div>
 
-        {/* Services */}
         <div>
           <h3 className="font-mono text-xs font-bold uppercase tracking-widest mb-4" style={{ color: "rgba(0,245,255,0.5)" }}>
             Services
           </h3>
           <ul className="space-y-2">
             {t("services").map((service, i) => (
-              <li key={i} className="text-sm text-slate-400 hover:text-white transition-colors cursor-pointer">
-                {service}
-              </li>
+              <li key={i} className="text-sm text-slate-400 hover:text-white transition-colors cursor-pointer">{service}</li>
             ))}
           </ul>
         </div>
 
-        {/* Contact */}
         <div>
           <h3 className="font-mono text-xs font-bold uppercase tracking-widest mb-4" style={{ color: "rgba(0,245,255,0.5)" }}>
             Contact
@@ -251,19 +245,17 @@ const Footer = ({ t }) => (
         </div>
       </div>
 
-      {/* Bottom bar */}
       <div
         className="flex flex-col md:flex-row items-center justify-between gap-3 pt-6 text-xs text-slate-600"
         style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
       >
         <span>{t("copyright")}</span>
-        <span style={{ color: "rgba(0,245,255,0.3)" }}>● AI SYSTEMS ONLINE · 24/7 UPTIME</span>
+        <span style={{ color: "rgba(0,245,255,0.3)" }}>● NEURAL ODYSSEY · AI SYSTEMS ONLINE · 24/7</span>
       </div>
     </div>
   </footer>
 );
 
-// ── Main LandingPage ──────────────────────────────────────────────────────────
 const LandingPage = () => {
   const [lang, setLang] = useState("en");
   const [isQuizOpen, setIsQuizOpen] = useState(false);
@@ -276,18 +268,12 @@ const LandingPage = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Bound translation function for passing to sections
   const tFn = (key, replacements = {}) => translate(key, lang, replacements);
 
   return (
-    <div
-      className="min-h-screen font-sans"
-      style={{ background: "#04050d", color: "#e2e8f0" }}
-    >
-      {/* Scroll progress indicator */}
+    <div className="min-h-screen font-sans" style={{ background: "#04050d", color: "#e2e8f0" }}>
       <ScrollProgress />
 
-      {/* Navbar */}
       <Navbar
         lang={lang}
         setLang={setLang}
@@ -296,19 +282,29 @@ const LandingPage = () => {
         scrolled={scrolled}
       />
 
-      {/* Main content */}
       <main>
         <HeroSection
           onOpenContact={() => setIsContactOpen(true)}
           onOpenQuiz={() => setIsQuizOpen(true)}
           t={tFn}
         />
+        <ZoneDivider fromZone="00" toZone="01" />
         <ProblemSection t={tFn} />
+        <ZoneDivider fromZone="01" toZone="01.5" />
+        <ComparisonSection t={tFn} />
+        <ZoneDivider fromZone="01.5" toZone="02" />
         <SolutionSection t={tFn} />
+        <ZoneDivider fromZone="02" toZone="03" />
         <HowItWorks t={tFn} />
+        <ZoneDivider fromZone="03" toZone="04" />
         <CaseStudies t={tFn} />
+        <ZoneDivider fromZone="04" toZone="05" />
         <ProofSection t={tFn} />
+        <ZoneDivider fromZone="05" toZone="05.5" />
+        <TestimonialsSection t={tFn} />
+        <ZoneDivider fromZone="05.5" toZone="06" />
         <FAQSection t={tFn} />
+        <ZoneDivider fromZone="06" toZone="07" />
         <CTASection
           onStartQuiz={() => setIsQuizOpen(true)}
           onOpenContact={() => setIsContactOpen(true)}
@@ -318,7 +314,6 @@ const LandingPage = () => {
 
       <Footer t={tFn} />
 
-      {/* Modals */}
       <QuizModal
         isOpen={isQuizOpen}
         onClose={() => setIsQuizOpen(false)}

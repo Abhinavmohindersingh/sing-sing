@@ -204,6 +204,46 @@ export const translations = {
       { industry: "Property Management", result: "Your rentals run themselves, short or long term", impact: "Happy tenants, fewer headaches, more bookings" },
       { industry: "Marketing", result: "All your data in one place, insights that matter", impact: "90% less time on reports, know what's working" },
     ],
+    // Comparison Section
+    comparisonTitle: "Old Way vs AI Way",
+    comparisonLeft: "Traditional",
+    comparisonRight: "With SingSingh AI",
+    comparisonOld: [
+      "Manual data entry eating up hours",
+      "Chasing clients for documents",
+      "Spreadsheets that break and go stale",
+      "Reports that take days to compile",
+      "Hiring more people to handle more work",
+      "Guesswork decisions without real data",
+    ],
+    comparisonNew: [
+      "AI processes data in seconds",
+      "Documents collected automatically",
+      "Live dashboards that stay up to date",
+      "Reports generated instantly, always fresh",
+      "AI handles 5x the workload",
+      "Data-driven insights that grow revenue",
+    ],
+    // Testimonials Section
+    testimonialsTitle: "What Our Clients Say",
+    testimonialsSubtitle: "Real feedback from businesses we've helped transform.",
+    testimonials: [
+      {
+        userName: "Jessica T.",
+        review: "SingSingh AI saved our accounting team 20+ hours a week. Our books are always audit-ready now and the team can focus on advisory work instead of data entry.",
+        designation: "CFO, Financial Services",
+      },
+      {
+        userName: "Marcus L.",
+        review: "Client onboarding went from two weeks to two days. The AI handles document collection, compliance checks, and scheduling — it's like having 3 extra staff members.",
+        designation: "Director, Professional Services",
+      },
+      {
+        userName: "Sarah K.",
+        review: "We finally know what products will sell before we stock them. Our marketing spend is 40% more efficient and we're reaching customers who actually buy.",
+        designation: "Owner, E-commerce Retail",
+      },
+    ],
     // FAQ Section
     faqTitle: "Frequently Asked Questions",
     faqs: [
@@ -350,6 +390,44 @@ export const translations = {
       { industry: "医疗与诊所", result: "患者准时来，文书自动消失", impact: "爽约减少60%，员工专注于护理" },
       { industry: "房产管理", result: "短租长租都能自己跑起来", impact: "租客满意，烦恼更少，订单更多" },
       { industry: "营销", result: "所有数据一目了然，洞察真正重要的", impact: "报告时间省90%，清楚什么有效" },
+    ],
+    comparisonTitle: "传统方式 vs AI方式",
+    comparisonLeft: "传统方式",
+    comparisonRight: "使用SingSingh AI",
+    comparisonOld: [
+      "手动数据录入浪费大量时间",
+      "反复催客户提供文件",
+      "表格总出错、数据不及时",
+      "报告要花好几天才能做好",
+      "工作多了只能多招人",
+      "没有数据，全靠感觉做决定",
+    ],
+    comparisonNew: [
+      "AI几秒钟处理好数据",
+      "文件自动收集整理",
+      "实时仪表板，数据随时最新",
+      "报告即时生成，随时可用",
+      "AI处理5倍的工作量",
+      "数据驱动洞察，助力增长",
+    ],
+    testimonialsTitle: "客户怎么说",
+    testimonialsSubtitle: "来自我们帮助转型的企业的真实反馈。",
+    testimonials: [
+      {
+        userName: "Jessica T.",
+        review: "SingSingh AI每周为我们的会计团队节省了20多个小时。我们的账目现在随时可以审计，团队可以专注于咨询工作而不是数据录入。",
+        designation: "首席财务官，金融服务",
+      },
+      {
+        userName: "Marcus L.",
+        review: "客户入职从两周缩短到两天。AI处理文件收集、合规检查和排期——就像多了3个员工。",
+        designation: "总监，专业服务",
+      },
+      {
+        userName: "Sarah K.",
+        review: "我们终于能在进货前知道什么产品会卖。营销花费效率提高了40%，我们触达的都是真正会购买的客户。",
+        designation: "老板，电商零售",
+      },
     ],
     faqTitle: "常见问题",
     faqs: [
