@@ -10,7 +10,6 @@ const CTASection = ({ onStartQuiz, onOpenContact, t }) => {
       className="relative py-24 md:py-32 px-4 overflow-hidden"
       style={{ background: "linear-gradient(180deg, #04050d 0%, #06050f 50%, #04050d 100%)" }}
     >
-      {/* Animated radial gradient background */}
       <motion.div
         className="absolute inset-0"
         animate={{
@@ -24,8 +23,9 @@ const CTASection = ({ onStartQuiz, onOpenContact, t }) => {
         transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
       />
 
-      {/* HUD grid */}
       <div className="absolute inset-0 hud-grid opacity-30" />
+
+      <div className="absolute inset-0 holo-shimmer opacity-30" />
 
       <div className="max-w-4xl mx-auto relative z-10">
         <motion.div
@@ -35,12 +35,10 @@ const CTASection = ({ onStartQuiz, onOpenContact, t }) => {
           viewport={{ once: true }}
           className="text-center"
         >
-          {/* Zone tag */}
           <div className="flex justify-center mb-8">
             <SectionTag zone="ZONE 07" label="BEGIN YOUR MISSION" color="cyan" />
           </div>
 
-          {/* Title */}
           <h2
             className="text-4xl md:text-6xl lg:text-7xl font-display font-bold mb-6 leading-none"
             style={{
@@ -57,7 +55,6 @@ const CTASection = ({ onStartQuiz, onOpenContact, t }) => {
             {t("ctaDescription")}
           </p>
 
-          {/* CTA buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-14">
             <NeonButton variant="filled" color="cyan" size="xl" onClick={onStartQuiz}>
               {t("ctaButton")}
@@ -68,7 +65,6 @@ const CTASection = ({ onStartQuiz, onOpenContact, t }) => {
             </NeonButton>
           </div>
 
-          {/* Trust badges */}
           <motion.div
             className="flex flex-wrap items-center justify-center gap-8 md:gap-12"
             initial={{ opacity: 0, y: 16 }}
@@ -83,49 +79,32 @@ const CTASection = ({ onStartQuiz, onOpenContact, t }) => {
             ].map((badge, i) => (
               <div key={i} className="flex flex-col items-center gap-2">
                 <badge.icon size={20} style={{ color: "rgba(0,245,255,0.5)" }} />
-                <div
-                  className="text-xl md:text-2xl font-display font-bold"
-                  style={{ color: "#00f5ff" }}
-                >
+                <div className="text-xl md:text-2xl font-display font-bold" style={{ color: "#00f5ff" }}>
                   {badge.value}
                 </div>
-                <div className="text-xs font-mono text-slate-500 uppercase tracking-widest">
-                  {badge.label}
-                </div>
+                <div className="text-xs font-mono text-slate-500 uppercase tracking-widest">{badge.label}</div>
               </div>
             ))}
           </motion.div>
         </motion.div>
 
-        {/* Decorative corners */}
-        <div
-          className="absolute top-0 left-0 w-16 h-16 pointer-events-none"
-          style={{
-            borderTop: "1.5px solid rgba(0,245,255,0.3)",
-            borderLeft: "1.5px solid rgba(0,245,255,0.3)",
-          }}
-        />
-        <div
-          className="absolute top-0 right-0 w-16 h-16 pointer-events-none"
-          style={{
-            borderTop: "1.5px solid rgba(0,245,255,0.3)",
-            borderRight: "1.5px solid rgba(0,245,255,0.3)",
-          }}
-        />
-        <div
-          className="absolute bottom-0 left-0 w-16 h-16 pointer-events-none"
-          style={{
-            borderBottom: "1.5px solid rgba(0,245,255,0.3)",
-            borderLeft: "1.5px solid rgba(0,245,255,0.3)",
-          }}
-        />
-        <div
-          className="absolute bottom-0 right-0 w-16 h-16 pointer-events-none"
-          style={{
-            borderBottom: "1.5px solid rgba(0,245,255,0.3)",
-            borderRight: "1.5px solid rgba(0,245,255,0.3)",
-          }}
-        />
+        {[
+          { pos: "top-0 left-0", border: "borderTop borderLeft" },
+          { pos: "top-0 right-0", border: "borderTop borderRight" },
+          { pos: "bottom-0 left-0", border: "borderBottom borderLeft" },
+          { pos: "bottom-0 right-0", border: "borderBottom borderRight" },
+        ].map((corner, i) => (
+          <div
+            key={i}
+            className={`absolute ${corner.pos} w-16 h-16 pointer-events-none`}
+            style={{
+              borderTop: corner.border.includes("borderTop") ? "1.5px solid rgba(0,245,255,0.3)" : "none",
+              borderBottom: corner.border.includes("borderBottom") ? "1.5px solid rgba(0,245,255,0.3)" : "none",
+              borderLeft: corner.border.includes("borderLeft") ? "1.5px solid rgba(0,245,255,0.3)" : "none",
+              borderRight: corner.border.includes("borderRight") ? "1.5px solid rgba(0,245,255,0.3)" : "none",
+            }}
+          />
+        ))}
       </div>
     </section>
   );

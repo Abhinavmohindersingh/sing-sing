@@ -29,10 +29,12 @@ const GlowCard = ({
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay, ease: "easeOut" }}
-      viewport={{ once: true }}
-      whileHover={hover ? { y: -4, transition: { duration: 0.2 } } : {}}
-      className={`glass-card relative overflow-hidden ${className}`}
-      style={{ boxShadow: glowMap[glowColor] }}
+      viewport={{ once: true, margin: "-50px" }}
+      className={`glass-card relative overflow-hidden ${hover ? "glow-card-hover" : ""} ${className}`}
+      style={{
+        boxShadow: glowMap[glowColor],
+        willChange: "transform, opacity",
+      }}
       onMouseEnter={(e) => {
         if (hover) e.currentTarget.style.boxShadow = hoverGlowMap[glowColor];
       }}
