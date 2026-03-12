@@ -14,7 +14,7 @@ const ChatbotLauncher = ({ isOpen, onClick }) => (
       boxShadow: "0 0 30px rgba(0,245,255,0.4), 0 0 60px rgba(0,245,255,0.1), 0 8px 32px rgba(0,0,0,0.6)",
     }}
   >
-    {/* Pulsing ring — only when closed */}
+    {/* Pulsing ring - only when closed */}
     {!isOpen && (
       <motion.span
         className="absolute inset-0 rounded-full"

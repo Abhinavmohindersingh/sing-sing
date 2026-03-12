@@ -286,7 +286,6 @@ const LandingPage = () => {
       <main>
         <HeroSection
           onOpenContact={() => setIsContactOpen(true)}
-          onOpenQuiz={() => setIsQuizOpen(true)}
           t={tFn}
         />
         <ZoneDivider fromZone="00" toZone="01" />
@@ -307,7 +306,6 @@ const LandingPage = () => {
         <FAQSection t={tFn} />
         <ZoneDivider fromZone="06" toZone="07" />
         <CTASection
-          onStartQuiz={() => setIsQuizOpen(true)}
           onOpenContact={() => setIsContactOpen(true)}
           t={tFn}
         />

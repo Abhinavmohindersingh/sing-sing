@@ -1,10 +1,10 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Zap, Clock, Shield } from "lucide-react";
+import { ArrowRight, Shield, Zap, Calendar } from "lucide-react";
 import SectionTag from "../ui/SectionTag";
-import NeonButton from "../ui/NeonButton";
+import { LiquidButton } from "../ui/liquid-glass-button";
 
-const CTASection = ({ onStartQuiz, onOpenContact, t }) => {
+const CTASection = ({ onOpenContact, t }) => {
   return (
     <section
       className="relative py-24 md:py-32 px-4 overflow-hidden"
@@ -24,7 +24,6 @@ const CTASection = ({ onStartQuiz, onOpenContact, t }) => {
       />
 
       <div className="absolute inset-0 hud-grid opacity-30" />
-
       <div className="absolute inset-0 holo-shimmer opacity-30" />
 
       <div className="max-w-4xl mx-auto relative z-10">
@@ -55,14 +54,11 @@ const CTASection = ({ onStartQuiz, onOpenContact, t }) => {
             {t("ctaDescription")}
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-14">
-            <NeonButton variant="filled" color="cyan" size="xl" onClick={onStartQuiz}>
+          <div className="flex items-center justify-center mb-14">
+            <LiquidButton size="xxl" onClick={onOpenContact}>
               {t("ctaButton")}
-              <ArrowRight size={20} />
-            </NeonButton>
-            <NeonButton variant="outline" color="cyan" size="xl" onClick={onOpenContact}>
-              {t("ctaSecondary")}
-            </NeonButton>
+              <ArrowRight size={20} className="ml-1" />
+            </LiquidButton>
           </div>
 
           <motion.div
@@ -73,9 +69,9 @@ const CTASection = ({ onStartQuiz, onOpenContact, t }) => {
             viewport={{ once: true }}
           >
             {[
-              { icon: Clock, value: t("ctaQuick"), label: "Quick Quiz" },
-              { icon: Shield, value: t("ctaFree"), label: "No Card Needed" },
-              { icon: Zap, value: t("ctaInstant"), label: "Results" },
+              { icon: Calendar, value: t("ctaQuick"), label: "Meeting" },
+              { icon: Shield, value: t("ctaFree"), label: "Commitment" },
+              { icon: Zap, value: t("ctaInstant"), label: "Roadmap" },
             ].map((badge, i) => (
               <div key={i} className="flex flex-col items-center gap-2">
                 <badge.icon size={20} style={{ color: "rgba(0,245,255,0.5)" }} />
