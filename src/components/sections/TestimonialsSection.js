@@ -1,14 +1,25 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Star, Quote } from "lucide-react";
 import SectionTag from "../ui/SectionTag";
+import { TestimonialCard } from "../ui/testimonial-card";
 
 const TestimonialsSection = ({ t }) => {
   const testimonials = t("testimonials");
 
+  // Map translations data to testimonial card format
+  const cards = testimonials.map((item) => ({
+    author: {
+      name: item.userName,
+      handle: item.handle || `@${item.userName.replace(/\s+/g, "").toLowerCase()}`,
+      avatar: item.avatar || "",
+    },
+    text: item.review,
+    designation: item.designation,
+  }));
+
   return (
     <section
-      className="relative py-24 md:py-32 px-4 overflow-hidden"
+      className="relative py-24 md:py-32 px-0 overflow-hidden"
       style={{ background: "linear-gradient(180deg, #04050d 0%, #060810 50%, #04050d 100%)" }}
     >
       <div className="absolute inset-0 hud-grid opacity-20" />
@@ -17,7 +28,7 @@ const TestimonialsSection = ({ t }) => {
         style={{ background: "rgba(0,245,255,0.03)" }}
       />
 
-      <div className="max-w-6xl mx-auto relative z-10">
+      <div className="max-w-7xl mx-auto relative z-10 px-4">
         <motion.div
           className="text-center mb-14"
           initial={{ opacity: 0, y: 24 }}
@@ -43,77 +54,35 @@ const TestimonialsSection = ({ t }) => {
             {t("testimonialsSubtitle")}
           </p>
         </motion.div>
+      </div>
 
-        <div className="grid md:grid-cols-3 gap-5">
-          {testimonials.map((item, i) => {
-            const accentColors = ["#00f5ff", "#a78bfa", "#00ff88"];
-            const accent = accentColors[i % accentColors.length];
-
-            return (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: Math.min(i * 0.1, 0.3) }}
-                viewport={{ once: true, margin: "-30px" }}
-                className="rounded-2xl p-6 md:p-7 relative overflow-hidden flex flex-col"
-                style={{
-                  background: "rgba(8,8,15,0.9)",
-                  border: "1px solid rgba(255,255,255,0.07)",
-                  backdropFilter: "blur(12px)",
-                }}
-              >
-                <div
-                  className="absolute top-0 left-0 right-0 h-px"
-                  style={{ background: `linear-gradient(90deg, transparent, ${accent}50, transparent)` }}
+      {/* Marquee testimonials - full width, no horizontal padding */}
+      <div className="relative flex w-full flex-col items-center justify-center overflow-hidden">
+        <div
+          className="group flex overflow-hidden p-2 [--gap:1rem] [gap:var(--gap)] flex-row [--duration:40s]"
+        >
+          <div className="flex shrink-0 justify-around [gap:var(--gap)] animate-marquee flex-row group-hover:[animation-play-state:paused]">
+            {[...Array(4)].map((_, setIndex) =>
+              cards.map((card, i) => (
+                <TestimonialCard
+                  key={`${setIndex}-${i}`}
+                  author={card.author}
+                  text={card.text}
                 />
-
-                <Quote
-                  size={24}
-                  className="mb-4 flex-shrink-0"
-                  style={{ color: `${accent}40` }}
-                />
-
-                <div className="flex gap-0.5 mb-4">
-                  {[...Array(5)].map((_, j) => (
-                    <Star key={j} size={14} style={{ color: "#f59e0b", fill: "#f59e0b" }} />
-                  ))}
-                </div>
-
-                <p className="text-sm text-slate-300 leading-relaxed mb-6 flex-1">
-                  "{item.review}"
-                </p>
-
-                <div
-                  className="pt-4 border-t flex items-center gap-3"
-                  style={{ borderColor: "rgba(255,255,255,0.06)" }}
-                >
-                  <div
-                    className="w-10 h-10 rounded-full flex items-center justify-center font-display font-bold text-sm"
-                    style={{
-                      background: `linear-gradient(135deg, ${accent}25, ${accent}08)`,
-                      border: `1px solid ${accent}40`,
-                      color: accent,
-                    }}
-                  >
-                    {item.userName.charAt(0)}
-                  </div>
-                  <div>
-                    <div className="text-sm font-semibold text-white">{item.userName}</div>
-                    <div className="text-xs font-mono" style={{ color: `${accent}90` }}>
-                      {item.designation}
-                    </div>
-                  </div>
-                </div>
-
-                <div
-                  className="absolute bottom-0 left-0 right-0 h-px"
-                  style={{ background: `linear-gradient(90deg, transparent, ${accent}30, transparent)` }}
-                />
-              </motion.div>
-            );
-          })}
+              ))
+            )}
+          </div>
         </div>
+
+        {/* Gradient fade edges */}
+        <div
+          className="pointer-events-none absolute inset-y-0 left-0 hidden w-1/4 sm:block"
+          style={{ background: "linear-gradient(to right, #04050d, transparent)" }}
+        />
+        <div
+          className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/4 sm:block"
+          style={{ background: "linear-gradient(to left, #04050d, transparent)" }}
+        />
       </div>
     </section>
   );

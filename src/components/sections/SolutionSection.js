@@ -127,6 +127,18 @@ const SolutionSection = ({ t }) => {
                   >
                     SYS.{String(i + 1).padStart(2, "0")} ● ACTIVE
                   </span>
+                  {sol.painPoint && (
+                    <span
+                      className="text-xs font-mono px-2 py-1 rounded"
+                      style={{
+                        background: `${iconColors[i]}12`,
+                        border: `1px solid ${iconColors[i]}30`,
+                        color: `${iconColors[i]}bb`,
+                      }}
+                    >
+                      {sol.painPoint}
+                    </span>
+                  )}
                 </div>
 
                 <div

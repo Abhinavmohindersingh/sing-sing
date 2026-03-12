@@ -62,6 +62,11 @@ module.exports = {
         "scan": "scan 2s linear infinite",
         "glow-pulse": "glowPulse 2s ease-in-out infinite",
         "spin-slow": "spin 8s linear infinite",
+        spotlight: "spotlight 2s ease .75s 1 forwards",
+        marquee: "marquee var(--duration) linear infinite",
+      },
+      maxWidth: {
+        container: "1280px",
       },
       keyframes: {
         fadeIn: {
@@ -102,6 +107,14 @@ module.exports = {
         glowPulse: {
           "0%, 100%": { boxShadow: "0 0 10px rgba(0, 245, 255, 0.3)" },
           "50%": { boxShadow: "0 0 30px rgba(0, 245, 255, 0.8), 0 0 60px rgba(0, 245, 255, 0.3)" },
+        },
+        spotlight: {
+          "0%": { opacity: "0", transform: "translate(-72%, -62%) scale(0.5)" },
+          "100%": { opacity: "1", transform: "translate(-50%, -40%) scale(1)" },
+        },
+        marquee: {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(calc(-100% - var(--gap)))" },
         },
       },
       backdropBlur: { xs: "2px", md: "8px", xl: "20px" },
