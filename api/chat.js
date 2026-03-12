@@ -1,8 +1,5 @@
-import Anthropic from "@anthropic-ai/sdk";
-import { Resend } from "resend";
-import { createRequire } from "module";
-
-const require = createRequire(import.meta.url);
+const Anthropic = require("@anthropic-ai/sdk");
+const { Resend } = require("resend");
 const { calculateROI } = require("./tools/solutionsData.js");
 const { auditWebsite } = require("./tools/websiteAudit.js");
 
@@ -210,7 +207,7 @@ function sendSSE(res, data) {
 const rateLimitMap = new Map();
 function isRateLimited(ip) {
   const now = Date.now();
-  const windowMs = 60 * 60 * 1000; // 1 hour
+  const windowMs = 60 * 60 * 1000;
   const maxRequests = 30;
   const entry = rateLimitMap.get(ip) || { count: 0, resetAt: now + windowMs };
   if (now > entry.resetAt) {
@@ -224,21 +221,18 @@ function isRateLimited(ip) {
 }
 
 // ─── Main Handler ─────────────────────────────────────────────────────────────
-export default async function handler(req, res) {
-  // CORS
+module.exports = async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
   if (req.method === "OPTIONS") { res.status(200).end(); return; }
   if (req.method !== "POST") { res.status(405).json({ error: "Method not allowed" }); return; }
 
-  // Validate API key
   if (!process.env.ANTHROPIC_API_KEY) {
     res.status(500).json({ error: "ANTHROPIC_API_KEY not configured" });
     return;
   }
 
-  // Rate limit
   const ip = req.headers["x-forwarded-for"] || req.socket?.remoteAddress || "unknown";
   if (isRateLimited(ip)) {
     res.status(429).json({ error: "Too many requests. Please try again later." });
@@ -251,12 +245,11 @@ export default async function handler(req, res) {
     return;
   }
 
-  // Set SSE headers
   res.setHeader("Content-Type", "text/event-stream");
   res.setHeader("Cache-Control", "no-cache");
   res.setHeader("Connection", "keep-alive");
   res.setHeader("X-Accel-Buffering", "no");
-  res.flushHeaders?.();
+  if (res.flushHeaders) res.flushHeaders();
 
   const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
   const systemPrompt = lang === "zh"
@@ -285,7 +278,6 @@ export default async function handler(req, res) {
       for await (const event of stream) {
         const { type } = event;
 
-        // ── New content block starting ──
         if (type === "content_block_start") {
           if (event.content_block.type === "text") {
             currentBlock = { type: "text", text: "" };
@@ -296,7 +288,6 @@ export default async function handler(req, res) {
           }
         }
 
-        // ── Content delta ──
         if (type === "content_block_delta") {
           if (event.delta.type === "text_delta" && currentBlock?.type === "text") {
             const delta = event.delta.text;
@@ -308,7 +299,6 @@ export default async function handler(req, res) {
           }
         }
 
-        // ── Content block finished ──
         if (type === "content_block_stop" && currentBlock) {
           if (currentBlock.type === "tool_use") {
             try { currentBlock.input = JSON.parse(inputBuffer || "{}"); }
@@ -318,20 +308,17 @@ export default async function handler(req, res) {
           currentBlock = null;
         }
 
-        // ── Turn complete ──
         if (type === "message_stop") break;
       }
 
       const toolUseBlocks = contentBlocks.filter((b) => b.type === "tool_use");
 
-      // No tools used — done
       if (toolUseBlocks.length === 0) {
         sendSSE(res, { type: "done", fullText: accumulatedText });
         res.end();
         return;
       }
 
-      // Execute tools and collect results
       const toolResults = [];
       for (const block of toolUseBlocks) {
         const result = await executeTool(block.name, block.input);
@@ -343,7 +330,6 @@ export default async function handler(req, res) {
         });
       }
 
-      // Feed results back to Claude and loop for follow-up
       currentMessages = [
         ...currentMessages,
         { role: "assistant", content: contentBlocks },
@@ -359,4 +345,4 @@ export default async function handler(req, res) {
     sendSSE(res, { type: "error", message: err.message || "Something went wrong" });
     res.end();
   }
-}
+};
