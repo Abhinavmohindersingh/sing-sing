@@ -21,9 +21,13 @@ app.post("/api/send-quiz-results", async (req, res) => {
   await sendQuizResults(req, res);
 });
 
+app.post("/api/chat", async (req, res) => {
+  const { default: chatHandler } = await import("./api/chat.js");
+  await chatHandler(req, res);
+});
+
 app.listen(PORT, () => {
   console.log(`API server running on http://localhost:${PORT}`);
-  console.log(
-    `Resend API Key loaded: ${process.env.RESEND_API_KEY ? "✅ Yes" : "❌ No"}`
-  );
+  console.log(`Resend API Key loaded: ${process.env.RESEND_API_KEY ? "✅ Yes" : "❌ No"}`);
+  console.log(`Anthropic API Key loaded: ${process.env.ANTHROPIC_API_KEY ? "✅ Yes" : "❌ No"}`);
 });

@@ -265,6 +265,7 @@ const HeroSection = ({ onOpenContact, onOpenQuiz, t }) => {
         style={{ background: "rgba(124, 58, 237, 0.04)", animationDelay: "-5s" }}
       />
 
+
       <div className="absolute top-24 left-6 md:left-12 pointer-events-none hidden md:block">
         <div className="font-mono text-xs text-cyan-400/30 space-y-1">
           <div>SYS.STATUS: ONLINE</div>

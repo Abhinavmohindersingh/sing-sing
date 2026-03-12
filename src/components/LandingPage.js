@@ -8,6 +8,7 @@ import ScrollProgress from "./ui/ScrollProgress";
 import NeonButton from "./ui/NeonButton";
 import QuizModal from "./ui/QuizModal";
 import ContactModal from "./ui/ContactModal";
+import ChatbotWidget from "./ui/chatbot/ChatbotWidget";
 
 import HeroSection from "./sections/HeroSection";
 import ProblemSection from "./sections/ProblemSection";
@@ -326,6 +327,8 @@ const LandingPage = () => {
         lang={lang}
         t={tFn}
       />
+
+      <ChatbotWidget lang={lang} />
     </div>
   );
 };

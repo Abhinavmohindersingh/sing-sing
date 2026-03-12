@@ -8,6 +8,9 @@
     },
     { "src": "api/*.js", "use": "@vercel/node" }
   ],
+  "functions": {
+    "api/chat.js": { "maxDuration": 60 }
+  },
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/$1.js" },
     { "src": "/(.*)", "dest": "/build/index.html" }

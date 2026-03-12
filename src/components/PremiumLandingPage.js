@@ -324,7 +324,6 @@ const translations = {
       "AI-powered business transformation for ambitious companies.",
     services: ["AI Operations", "Business Intelligence", "Growth Automation"],
     company: ["About", "Careers", "Blog"],
-    contactPhone: "+61402733202",
     contactEmail: "hello@singsingh.com",
     contactAddress: "Brisbane, QLD",
     copyright: "© 2025 Sing Singh AI Advisory. All rights reserved.",
@@ -1211,19 +1210,19 @@ function analyzeGaps(answers) {
 
   const totalHoursWasted = Object.values(hoursWasted).reduce(
     (sum, hours) => sum + hours,
-    0
+    0,
   );
   const totalScore = Object.values(categoryScores).reduce(
     (sum, score) => sum + score,
-    0
+    0,
   );
   const totalMonthlyCost = gaps.reduce(
     (sum, gap) => sum + gap.solution.cost,
-    0
+    0,
   );
   const totalHoursSaved = gaps.reduce(
     (sum, gap) => sum + gap.solution.hoursPerWeek,
-    0
+    0,
   );
 
   return {
@@ -1269,7 +1268,7 @@ const t = (key, lang = "en", replacements = {}) => {
       // If still missing, return the key as string for debugging
       if (result === undefined || result === null) {
         console.warn(
-          `Missing translation: ${key} for ${validLang} (using: ${key})`
+          `Missing translation: ${key} for ${validLang} (using: ${key})`,
         );
         return key; // Shows key instead of undefined
       }
@@ -1297,7 +1296,7 @@ const t = (key, lang = "en", replacements = {}) => {
       const placeholder = `{${repKey}}`;
       const regex = new RegExp(
         placeholder.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
-        "g"
+        "g",
       );
       result = result.replace(regex, replacements[repKey]);
     });
@@ -1328,7 +1327,7 @@ const buttonVariants = cva(
       },
     },
     defaultVariants: { variant: "primary", size: "default" },
-  }
+  },
 );
 
 const Button = React.forwardRef(
@@ -1340,7 +1339,7 @@ const Button = React.forwardRef(
     >
       {children}
     </button>
-  )
+  ),
 );
 Button.displayName = "Button";
 
@@ -1352,7 +1351,7 @@ const Card = React.forwardRef(({ className, children, ...props }, ref) => (
     transition={{ duration: 0.6, ease: "easeOut" }}
     className={cn(
       "bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20 p-6 shadow-xl hover:shadow-2xl hover:border-[#0EA5E9]/30 transition-all duration-300 flex flex-col h-full",
-      className
+      className,
     )}
     ref={ref}
     {...props}
@@ -1552,7 +1551,7 @@ const QuizModal = ({ isOpen, onClose, lang }) => {
     try {
       // Calculate score using the local analysis
       const answeredCount = answers.filter(
-        (answer) => answer !== undefined
+        (answer) => answer !== undefined,
       ).length;
       const totalPossibleScore = answeredCount * 7;
       const overallScorePercent =
@@ -1844,7 +1843,7 @@ const QuizModal = ({ isOpen, onClose, lang }) => {
                                 number: index + 1,
                                 severity: t(
                                   `severity${gap.severity.charAt(0) + gap.severity.slice(1).toLowerCase()}`,
-                                  lang
+                                  lang,
                                 ),
                               })}
                             </span>
@@ -1852,7 +1851,7 @@ const QuizModal = ({ isOpen, onClose, lang }) => {
                               {t("quizWeeksToImplement", lang, {
                                 weeks: gap.solution.implementation.replace(
                                   /\D/g,
-                                  ""
+                                  "",
                                 ),
                               })}
                             </span>
@@ -1994,7 +1993,7 @@ const QuizModal = ({ isOpen, onClose, lang }) => {
                           "w-full p-4 rounded-xl border-2 transition-all text-left",
                           answers[currentQuestion] === i
                             ? "border-[#1E3A8A] bg-[#1E3A8A]/20"
-                            : "border-[#334155] hover:border-[#0EA5E9]/50 hover:bg-[#0EA5E9]/10"
+                            : "border-[#334155] hover:border-[#0EA5E9]/50 hover:bg-[#0EA5E9]/10",
                         )}
                         whileHover={
                           answers[currentQuestion] === i ? {} : { scale: 1.02 }
@@ -2006,7 +2005,7 @@ const QuizModal = ({ isOpen, onClose, lang }) => {
                               "w-6 h-6 rounded-full border-2 mr-4 flex items-center justify-center",
                               answers[currentQuestion] === i
                                 ? "border-blue-500 bg-blue-500"
-                                : "border-white/30"
+                                : "border-white/30",
                             )}
                           >
                             {answers[currentQuestion] === i && (
