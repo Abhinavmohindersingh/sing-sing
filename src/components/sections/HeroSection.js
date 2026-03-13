@@ -159,12 +159,26 @@ const HeroSection = ({ onOpenContact, t }) => {
         style={{ background: "rgba(124, 58, 237, 0.04)", animationDelay: "-5s" }}
       />
 
-      {/* Two-column layout: content left, 3D scene right */}
-      <div className="max-w-7xl mx-auto relative z-10 w-full flex items-center gap-8 lg:gap-12">
+      {/* 3D Spline Scene - full background */}
+      <motion.div
+        className="absolute inset-0 w-full h-full z-0"
+        style={{ opacity: 0.35 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.35 }}
+        transition={{ duration: 1.2, delay: 0.6, ease: "easeOut" }}
+      >
+        <SplineScene
+          scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+          className="w-full h-full"
+        />
+      </motion.div>
 
-        {/* Left: Hero content */}
+      {/* Hero content - centered */}
+      <div className="max-w-7xl mx-auto relative z-10 w-full flex items-center" style={{ pointerEvents: "none" }}>
+
+        {/* Content */}
         <motion.div
-          className="flex-1 text-center lg:text-left"
+          className="w-full text-center"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -189,7 +203,7 @@ const HeroSection = ({ onOpenContact, t }) => {
 
           <motion.p
             variants={itemVariants}
-            className="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto lg:mx-0 mb-8 leading-relaxed"
+            className="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto mb-8 leading-relaxed"
           >
             {t("heroDescription")}
           </motion.p>
@@ -198,10 +212,10 @@ const HeroSection = ({ onOpenContact, t }) => {
           {valueProps.length > 0 && (
             <motion.ul
               variants={itemVariants}
-              className="space-y-3 mb-10 max-w-xl mx-auto lg:mx-0"
+              className="space-y-3 mb-10 max-w-xl mx-auto"
             >
               {valueProps.map((prop, i) => (
-                <li key={i} className="flex items-center gap-3 justify-center lg:justify-start">
+                <li key={i} className="flex items-center gap-3 justify-center">
                   <CheckCircle size={16} style={{ color: "#00f5ff", flexShrink: 0 }} />
                   <span className="text-sm text-slate-300">{prop}</span>
                 </li>
@@ -211,24 +225,26 @@ const HeroSection = ({ onOpenContact, t }) => {
 
           <motion.div
             variants={itemVariants}
-            className="flex items-center justify-center lg:justify-start gap-4 mb-14"
+            className="flex items-center justify-center gap-4 mb-14"
           >
-            <LiquidButton size="xl" onClick={onOpenContact}>
-              {t("heroCTA")}
-              <ArrowRight size={18} />
-            </LiquidButton>
+            <div style={{ pointerEvents: "auto" }}>
+              <LiquidButton size="xl" onClick={onOpenContact}>
+                {t("heroCTA")}
+                <ArrowRight size={18} />
+              </LiquidButton>
+            </div>
           </motion.div>
 
           <motion.div
             variants={itemVariants}
-            className="flex flex-wrap items-center justify-center lg:justify-start gap-8 md:gap-12"
+            className="flex flex-wrap items-center justify-center gap-8 md:gap-12"
           >
             {[
               { value: "95%", label: "Efficiency Gain" },
               { value: "2–8wk", label: "Time to ROI" },
               { value: "24/7", label: "AI Uptime" },
             ].map((stat, i) => (
-              <div key={i} className="text-center lg:text-left">
+              <div key={i} className="text-center">
                 <div
                   className="text-2xl md:text-3xl font-bold font-mono mb-1"
                   style={{ color: "#00f5ff" }}
@@ -241,20 +257,6 @@ const HeroSection = ({ onOpenContact, t }) => {
               </div>
             ))}
           </motion.div>
-        </motion.div>
-
-        {/* Right: 3D Spline Scene - desktop only */}
-        <motion.div
-          className="hidden lg:flex flex-1 items-center justify-center"
-          style={{ height: "580px", minWidth: 0 }}
-          initial={{ opacity: 0, x: 40 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1, delay: 0.6, ease: "easeOut" }}
-        >
-          <SplineScene
-            scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-            className="w-full h-full"
-          />
         </motion.div>
 
       </div>
