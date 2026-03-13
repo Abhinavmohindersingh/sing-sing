@@ -1,7 +1,9 @@
 import React, { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Play, Pause, Maximize2, Volume2, VolumeX, ArrowLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Play, Pause, Maximize2, Volume2, VolumeX } from "lucide-react";
+import Navbar from "../components/ui/Navbar";
+import ContactModal from "../components/ui/ContactModal";
+import { t as translate } from "../data/translations";
 
 const DemoPage = () => {
   const videoRef = useRef(null);
@@ -9,7 +11,17 @@ const DemoPage = () => {
   const [muted, setMuted] = useState(false);
   const [progress, setProgress] = useState(0);
   const [hasStarted, setHasStarted] = useState(false);
-  const navigate = useNavigate();
+  const [lang, setLang] = useState("en");
+  const [isContactOpen, setIsContactOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  const tFn = (key) => translate(key, lang);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Pause when tab is hidden
   useEffect(() => {
@@ -69,44 +81,15 @@ const DemoPage = () => {
       className="min-h-screen flex flex-col"
       style={{ background: "#04050d", color: "#e2e8f0" }}
     >
-      {/* Minimal top bar */}
-      <header
-        className="flex items-center justify-between px-6 py-4"
-        style={{ borderBottom: "1px solid rgba(0,245,255,0.08)" }}
-      >
-        <button
-          onClick={() => navigate("/")}
-          className="flex items-center gap-2 text-sm font-mono transition-all"
-          style={{ color: "rgba(0,245,255,0.6)" }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = "#00f5ff")}
-          onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(0,245,255,0.6)")}
-        >
-          <ArrowLeft size={16} />
-          Back to Home
-        </button>
+      <Navbar
+        lang={lang}
+        setLang={setLang}
+        onOpenContact={() => setIsContactOpen(true)}
+        scrolled={scrolled}
+      />
 
-        <div className="flex items-center gap-3">
-          <img src="/logo2.png" alt="SingSingh AI" className="w-7 h-7 rounded-lg object-contain" />
-          <span
-            className="font-display font-bold text-base"
-            style={{
-              background: "linear-gradient(135deg, #00f5ff, #7c3aed)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-            }}
-          >
-            SingSingh AI
-          </span>
-        </div>
-
-        <div className="font-mono text-xs" style={{ color: "rgba(0,245,255,0.35)" }}>
-          ● DEMO
-        </div>
-      </header>
-
-      {/* Main content */}
-      <main className="flex-1 flex flex-col items-center justify-center px-4 py-12">
+      {/* Main content — pt-16 to clear fixed navbar */}
+      <main className="flex-1 flex flex-col items-center justify-center px-4 py-12 pt-28">
         {/* Heading */}
         <motion.div
           className="text-center mb-10"
@@ -309,6 +292,13 @@ const DemoPage = () => {
           ))}
         </motion.div>
       </main>
+
+      <ContactModal
+        isOpen={isContactOpen}
+        onClose={() => setIsContactOpen(false)}
+        lang={lang}
+        t={tFn}
+      />
     </div>
   );
 };
