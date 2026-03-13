@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Phone, Mail, MapPin } from "lucide-react";
+import { Menu, X, Mail, MapPin } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 import { t as translate, SECTION_IDS } from "../data/translations";
 
@@ -39,6 +40,7 @@ const ZoneDivider = ({ fromZone, toZone }) => (
 const Navbar = ({ lang, setLang, onOpenContact, scrolled }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const t = (key) => translate(key, lang);
+  const navigate = useNavigate();
 
   const scrollToSection = (id) => {
     const el = document.getElementById(id);
@@ -97,6 +99,25 @@ const Navbar = ({ lang, setLang, onOpenContact, scrolled }) => {
                 {link.label}
               </button>
             ))}
+            <button
+              onClick={() => navigate("/demo")}
+              className="px-4 py-2 rounded-lg text-sm font-medium transition-all"
+              style={{
+                background: "rgba(124,58,237,0.1)",
+                border: "1px solid rgba(124,58,237,0.3)",
+                color: "#a78bfa",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "rgba(124,58,237,0.2)";
+                e.currentTarget.style.color = "#c4b5fd";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "rgba(124,58,237,0.1)";
+                e.currentTarget.style.color = "#a78bfa";
+              }}
+            >
+              Demo
+            </button>
           </nav>
 
           <div className="hidden md:flex items-center gap-3">
@@ -154,6 +175,13 @@ const Navbar = ({ lang, setLang, onOpenContact, scrolled }) => {
                     {link.label}
                   </button>
                 ))}
+                <button
+                  onClick={() => { navigate("/demo"); setMobileOpen(false); }}
+                  className="w-full text-left px-4 py-3 rounded-lg text-sm font-medium"
+                  style={{ background: "rgba(124,58,237,0.08)", color: "#a78bfa", border: "1px solid rgba(124,58,237,0.25)" }}
+                >
+                  Demo
+                </button>
                 <button
                   onClick={() => { onOpenContact(); setMobileOpen(false); }}
                   className="w-full text-left px-4 py-3 rounded-lg text-sm font-medium"
@@ -232,7 +260,6 @@ const Footer = ({ t }) => (
           </h3>
           <div className="space-y-3">
             {[
-              { icon: Phone, text: t("contactPhone") },
               { icon: Mail, text: t("contactEmail1") },
               { icon: Mail, text: t("contactEmail2") },
               { icon: MapPin, text: t("contactAddress") },

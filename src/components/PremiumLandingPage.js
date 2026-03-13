@@ -623,7 +623,7 @@ const translations = {
     footerDescription: "为雄心勃勃的公司提供AI驱动的业务转型",
     services: ["AI运营", "商业智能", "增长自动化"],
     company: ["关于", "职业", "博客"],
-    contactPhone: "+61402733202",
+    
     contactEmail: "hello@singsingh.com",
     contactAddress: "布里斯班，昆士兰",
     copyright: "© 2025 Sing Singh AI Advisory。保留所有权利。",

@@ -312,7 +312,7 @@ export const translations = {
     footerDescription: "Personalised AI solutions provider helping businesses reduce costs, automate operations, and scale with confidence.",
     services: ["AI Marketing Automation", "AI Compliance & Documentation", "AI Business Operations"],
     company: ["About", "Careers", "Blog"],
-    contactPhone: "+61402733202",
+    
     contactEmail1: "henry.ho@singsinghai.com.au",
     contactEmail2: "abhinav.singh@singsinghai.com.au",
     contactAddress: "Brisbane, QLD",
@@ -494,7 +494,7 @@ export const translations = {
     footerDescription: "为雄心勃勃的公司提供AI驱动的业务转型",
     services: ["AI运营", "商业智能", "增长自动化"],
     company: ["关于", "职业", "博客"],
-    contactPhone: "+61402733202",
+    
     contactEmail1: "henry.ho@singsinghai.com.au",
     contactEmail2: "abhinav.singh@singsinghai.com.au",
     contactAddress: "布里斯班，昆士兰",
