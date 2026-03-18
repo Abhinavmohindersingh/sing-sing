@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marketing GenAI — Dev Notes</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+    :root {
+      --cyan: #00f5ff;
+      --purple: #7c3aed;
+      --green: #00ff88;
+      --orange: #ff6b35;
+      --violet: #a78bfa;
+      --bg: #04050d;
+      --card: rgba(255,255,255,0.03);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--bg);
+      color: #e2e8f0;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Grid bg */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,245,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,245,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Blobs */
+    .blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .blob-1 { width: 500px; height: 500px; top: -100px; left: -100px; background: rgba(0,245,255,0.04); }
+    .blob-2 { width: 400px; height: 400px; bottom: -80px; right: -80px; background: rgba(124,58,237,0.05); }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 60px 24px 80px;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      background: rgba(0,245,255,0.07);
+      border: 1px solid rgba(0,245,255,0.25);
+      color: var(--cyan);
+      margin-bottom: 20px;
+    }
+
+    .badge-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--cyan);
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%,100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0,245,255,0.4); }
+      50% { opacity: 0.7; box-shadow: 0 0 0 5px rgba(0,245,255,0); }
+    }
+
+    h1 {
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    .gradient-cyan {
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .gradient-green {
+      background: linear-gradient(135deg, var(--green), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      color: #64748b;
+      font-size: 15px;
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* Divider */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0,245,255,0.15) 30%, rgba(124,58,237,0.25) 50%, rgba(0,245,255,0.15) 70%, transparent);
+      margin: 40px 0;
+      position: relative;
+    }
+    .divider::after {
+      content: '';
+      position: absolute;
+      left: 50%; top: 50%;
+      transform: translate(-50%,-50%);
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 10px rgba(0,245,255,0.5);
+    }
+
+    /* Section title */
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(0,245,255,0.2), transparent);
+    }
+
+    /* Card */
+    .card {
+      background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px;
+      padding: 24px 28px;
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+    }
+
+    .card-cyan { border-color: rgba(0,245,255,0.15); background: rgba(0,245,255,0.025); }
+    .card-purple { border-color: rgba(124,58,237,0.2); background: rgba(124,58,237,0.025); }
+    .card-green { border-color: rgba(0,255,136,0.15); background: rgba(0,255,136,0.025); }
+    .card-orange { border-color: rgba(255,107,53,0.15); background: rgba(255,107,53,0.025); }
+    .card-violet { border-color: rgba(167,139,250,0.15); background: rgba(167,139,250,0.025); }
+
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .icon-box {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      flex-shrink: 0;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.05);
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #f1f5f9;
+      margin-bottom: 3px;
+    }
+
+    .card-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: #475569;
+      letter-spacing: 0.1em;
+    }
+
+    .card p {
+      font-size: 14px;
+      color: #94a3b8;
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .card p:last-child { margin-bottom: 0; }
+
+    /* Checklist */
+    .checklist {
+      list-style: none;
+      space-y: 8px;
+    }
+
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13.5px;
+      color: #94a3b8;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      line-height: 1.5;
+    }
+
+    .checklist li:last-child { border-bottom: none; }
+
+    .check-icon {
+      width: 18px; height: 18px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .check-cyan { background: rgba(0,245,255,0.12); color: var(--cyan); border: 1px solid rgba(0,245,255,0.25); }
+    .check-purple { background: rgba(124,58,237,0.12); color: var(--violet); border: 1px solid rgba(124,58,237,0.25); }
+    .check-green { background: rgba(0,255,136,0.12); color: var(--green); border: 1px solid rgba(0,255,136,0.25); }
+    .check-orange { background: rgba(255,107,53,0.12); color: var(--orange); border: 1px solid rgba(255,107,53,0.25); }
+
+    /* Tag */
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      margin: 3px 3px 0 0;
+    }
+
+    .tag-cyan { background: rgba(0,245,255,0.08); border: 1px solid rgba(0,245,255,0.2); color: var(--cyan); }
+    .tag-purple { background: rgba(124,58,237,0.08); border: 1px solid rgba(124,58,237,0.2); color: var(--violet); }
+    .tag-green { background: rgba(0,255,136,0.08); border: 1px solid rgba(0,255,136,0.2); color: var(--green); }
+    .tag-orange { background: rgba(255,107,53,0.08); border: 1px solid rgba(255,107,53,0.2); color: var(--orange); }
+    .tag-gray { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #64748b; }
+
+    /* Two column grid */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 640px) { .grid-2 { grid-template-columns: 1fr; } }
+
+    /* Code block */
+    .code-block {
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(0,245,255,0.12);
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: #00f5ff;
+      overflow-x: auto;
+      margin: 12px 0;
+      line-height: 1.7;
+    }
+
+    .code-block .comment { color: #334155; }
+    .code-block .key { color: #a78bfa; }
+    .code-block .val { color: #00ff88; }
+    .code-block .str { color: #fb923c; }
+
+    /* Priority badge */
+    .priority {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .p-critical { background: rgba(255,107,53,0.15); border: 1px solid rgba(255,107,53,0.3); color: var(--orange); }
+    .p-high { background: rgba(0,245,255,0.1); border: 1px solid rgba(0,245,255,0.25); color: var(--cyan); }
+    .p-medium { background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.25); color: var(--violet); }
+
+    /* Flow steps */
+    .flow-step {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .flow-step:last-child { border-bottom: none; }
+
+    .step-num {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      flex-shrink: 0;
+      border: 1.5px solid rgba(0,245,255,0.3);
+      color: var(--cyan);
+      background: rgba(0,245,255,0.06);
+    }
+
+    .step-content h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #f1f5f9;
+      margin-bottom: 4px;
+    }
+
+    .step-content p {
+      font-size: 13px;
+      color: #64748b;
+      line-height: 1.6;
+      margin-bottom: 6px !important;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      margin-top: 60px;
+      padding-top: 32px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      color: #334155;
+      font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .footer span { color: rgba(0,245,255,0.4); }
+  </style>
+</head>
+<body>
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+
+  <div class="container">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="badge">
+        <div class="badge-dot"></div>
+        Internal Dev Notes — Marketing GenAI System
+      </div>
+      <h1>Building the <span class="gradient-cyan">Full Product</span></h1>
+      <p class="subtitle">
+        Everything needed to take the current demo to a production-ready
+        Marketing GenAI system — aligned with the system architecture flowchart.
+      </p>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Overview -->
+    <div class="section-label">System Overview</div>
+
+    <div class="card card-cyan">
+      <div class="card-header">
+        <div class="icon-box">🗺️</div>
+        <div>
+          <div class="card-title">What we're building</div>
+          <div class="card-meta">END-TO-END MARKETING AUTOMATION PIPELINE</div>
+        </div>
+      </div>
+      <p>
+        A full-stack AI marketing platform that takes a user brief — whether a structured form, a plain English prompt, or an automated intake trigger — and generates platform-ready content (copy, images, video) via a network of specialised AI agents. Content flows through a human review layer before entering a managed publishing queue connected to live social APIs. All performance data feeds back into a RAG optimisation loop.
+      </p>
+      <div>
+        <span class="tag tag-cyan">React Frontend</span>
+        <span class="tag tag-purple">Node / Python Backend</span>
+        <span class="tag tag-green">PostgreSQL + pgvector</span>
+        <span class="tag tag-orange">AWS S3</span>
+        <span class="tag tag-gray">Meta API</span>
+        <span class="tag tag-gray">LinkedIn API</span>
+        <span class="tag tag-gray">TikTok API</span>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Layer 1: User Interaction -->
+    <div class="section-label">Layer 1 — User Interaction</div>
+
+    <div class="card card-cyan">
+      <div class="card-header">
+        <div class="icon-box">💬</div>
+        <div>
+          <div class="card-title">Three Input Modes</div>
+          <div class="card-meta">CURRENTLY MOCKED IN DEMO — NEEDS REAL ROUTING</div>
+        </div>
+      </div>
+      <p>The demo already shows the UI shell. These three modes need to be wired to real backend endpoints:</p>
+      <ul class="checklist">
+        <li>
+          <div class="check-icon check-cyan">✦</div>
+          <div><strong style="color:#e2e8f0">Guided Form</strong> — Campus + Course + Platform + Audience + Tone + Goal. Maps to a structured JSON payload sent to the Master AI Agent. Build a proper multi-step form with field validation.</div>
+        </li>
+        <li>
+          <div class="check-icon check-cyan">✦</div>
+          <div><strong style="color:#e2e8f0">Plain English Brief</strong> — Free text input (e.g. "Create 5 Instagram posts for Carpentry at Brisbane, March Intake"). Needs an LLM parsing step to extract structured intent before hitting the agents.</div>
+        </li>
+        <li>
+          <div class="check-icon check-cyan">✦</div>
+          <div><strong style="color:#e2e8f0">Automated Intake Trigger</strong> — Webhook or cron-based trigger (e.g. "March intake in 3 weeks → generate a campaign"). Wire to intake calendar data in the dynamic data layer.</div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Layer 2: Knowledge Base -->
+    <div class="section-label">Layer 2 — Knowledge Base (Static + Dynamic)</div>
+
+    <div class="grid-2">
+      <div class="card card-purple">
+        <div class="card-header">
+          <div class="icon-box">📚</div>
+          <div>
+            <div class="card-title">Static Knowledge Base</div>
+            <div class="card-meta">LOADED ONCE, UPDATED OCCASIONALLY</div>
+          </div>
+        </div>
+        <ul class="checklist">
+          <li><div class="check-icon check-purple">✦</div>Course Catalogue (all campuses)</li>
+          <li><div class="check-icon check-purple">✦</div>Campus Profiles (location, specialisation, audience)</li>
+          <li><div class="check-icon check-purple">✦</div>Brand Assets (logos, colours, fonts, tone of voice)</li>
+          <li><div class="check-icon check-purple">✦</div>Compliance & Accreditation Docs (ASQA-approved content)</li>
+          <li><div class="check-icon check-purple">✦</div>Historical Campaign Data (past content + benchmarks)</li>
+        </ul>
+        <p style="margin-top:12px">Store as vector embeddings in <strong style="color:#a78bfa">pgvector</strong>. Use chunked ingestion pipeline (LangChain or LlamaIndex). Seed once, re-embed on update.</p>
+      </div>
+
+      <div class="card card-orange">
+        <div class="card-header">
+          <div class="icon-box">⚡</div>
+          <div>
+            <div class="card-title">Dynamic Data Layer</div>
+            <div class="card-meta">UPDATED REGULARLY — KEEPS SYSTEM CURRENT</div>
+          </div>
+        </div>
+        <ul class="checklist">
+          <li><div class="check-icon check-orange">✦</div>Live Updates Feed</li>
+          <li><div class="check-icon check-orange">✦</div>Intake Calendar (enrolment windows per course / campus)</li>
+          <li><div class="check-icon check-orange">✦</div>New / Updated Course Info (fee changes, new offerings)</li>
+          <li><div class="check-icon check-orange">✦</div>Seasonal Promotions (campaigns, special offers, events)</li>
+          <li><div class="check-icon check-orange">✦</div>Live Performance Data (results from published campaigns)</li>
+        </ul>
+        <p style="margin-top:12px">Poll or webhook-driven. Store in <strong style="color:#fb923c">PostgreSQL</strong> with timestamps. RAG engine always queries both layers, weighting recency.</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Layer 3: AI Agents -->
+    <div class="section-label">Layer 3 — Master AI Agent + Sub-Agents</div>
+
+    <div class="card card-purple">
+      <div class="card-header">
+        <div class="icon-box">🧠</div>
+        <div>
+          <div class="card-title">Master AI Agent</div>
+          <div class="card-meta">ORCHESTRATOR — ROUTES TO SUB-AGENTS</div>
+        </div>
+      </div>
+      <p>
+        Receives the parsed user brief + RAG context. Decides which sub-agents to invoke, in what order, and with what parameters. Manages the full campaign package assembly. Think of it as the conductor — it should output a structured job manifest that each sub-agent consumes.
+      </p>
+      <div class="code-block">
+        <span class="comment">// Example job manifest structure</span><br>
+        {<br>
+        &nbsp;&nbsp;<span class="key">"campaign_id"</span>: <span class="str">"mktg_2025_march_carpentry_brisbane"</span>,<br>
+        &nbsp;&nbsp;<span class="key">"platform"</span>: <span class="str">"instagram"</span>,<br>
+        &nbsp;&nbsp;<span class="key">"agents"</span>: [<span class="str">"content"</span>, <span class="str">"image"</span>, <span class="str">"campaign"</span>],<br>
+        &nbsp;&nbsp;<span class="key">"rag_context_ids"</span>: [<span class="str">"chunk_042"</span>, <span class="str">"chunk_108"</span>],<br>
+        &nbsp;&nbsp;<span class="key">"tone"</span>: <span class="str">"bold"</span>,<br>
+        &nbsp;&nbsp;<span class="key">"audience"</span>: <span class="str">"students_18_25"</span><br>
+        }
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-header">
+          <div class="icon-box">🖼️</div>
+          <div>
+            <div class="card-title">Image Agent</div>
+            <div class="card-meta">DALL·E / STABLE DIFFUSION</div>
+          </div>
+        </div>
+        <ul class="checklist">
+          <li><div class="check-icon check-cyan">✦</div>Generates social media visuals per platform spec</li>
+          <li><div class="check-icon check-cyan">✦</div>Applies brand colours, fonts, campus context</li>
+          <li><div class="check-icon check-cyan">✦</div>Outputs design-ready assets for review</li>
+          <li><div class="check-icon check-cyan">✦</div>Store generated assets in <strong style="color:#00f5ff">AWS S3</strong></li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="icon-box">🎬</div>
+          <div>
+            <div class="card-title">Video Agent</div>
+            <div class="card-meta">AI AVATAR / VOICEOVER</div>
+          </div>
+        </div>
+        <ul class="checklist">
+          <li><div class="check-icon check-purple">✦</div>Generates AI avatar videos for course promotions</li>
+          <li><div class="check-icon check-purple">✦</div>Applies voiceover audio matched to campus tone</li>
+          <li><div class="check-icon check-purple">✦</div>Outputs ready-to-review video files</li>
+          <li><div class="check-icon check-purple">✦</div>Store in S3, link in draft record</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="icon-box">✍️</div>
+          <div>
+            <div class="card-title">Content Agent</div>
+            <div class="card-meta">GPT-4o / CLAUDE</div>
+          </div>
+        </div>
+        <ul class="checklist">
+          <li><div class="check-icon check-green">✦</div>Generates post copy, captions, hashtags, blog content</li>
+          <li><div class="check-icon check-green">✦</div>Platform-specific tone and formatting auto-applied</li>
+          <li><div class="check-icon check-green">✦</div>Outputs copy ready for marketing team approval</li>
+          <li><div class="check-icon check-green">✦</div>Diff logged for RAG learning</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="icon-box">📅</div>
+          <div>
+            <div class="card-title">Campaign Agent</div>
+            <div class="card-meta">SCHEDULER + PLANNER</div>
+          </div>
+        </div>
+        <ul class="checklist">
+          <li><div class="check-icon check-orange">✦</div>Builds full campaign packages (copy + image + landing page)</li>
+          <li><div class="check-icon check-orange">✦</div>Maps content to intake calendar and enrolment windows</li>
+          <li><div class="check-icon check-orange">✦</div>Outputs a scheduled content calendar ready for publishing</li>
+          <li><div class="check-icon check-orange">✦</div>New draft generated and stored</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Layer 4: Draft Storage -->
+    <div class="section-label">Layer 4 — Temporary Draft Storage</div>
+
+    <div class="card card-violet">
+      <div class="card-header">
+        <div class="icon-box">💾</div>
+        <div>
+          <div class="card-title">Draft Layer — content_drafts table</div>
+          <div class="card-meta">PostgreSQL + AWS S3 FOR MEDIA</div>
+        </div>
+      </div>
+      <p>Every piece of generated content must be stored as a draft with the following schema before it enters the review dashboard:</p>
+      <div class="code-block">
+        <span class="comment">-- content_drafts table schema</span><br>
+        content_id &nbsp;&nbsp;&nbsp;<span class="key">UUID</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">-- primary key</span><br>
+        campus &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="key">VARCHAR</span> &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">-- e.g. "brisbane"</span><br>
+        course &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="key">VARCHAR</span> &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">-- e.g. "carpentry"</span><br>
+        platform &nbsp;&nbsp;&nbsp;&nbsp;<span class="key">VARCHAR</span> &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">-- instagram / linkedin / tiktok</span><br>
+        agent_type &nbsp;&nbsp;<span class="key">VARCHAR</span> &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">-- content / image / video / campaign</span><br>
+        status &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="key">VARCHAR</span> &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">-- DRAFT / APPROVED / REJECTED / EDIT_REQUESTED / MANUALLY_EDITED</span><br>
+        created_at &nbsp;&nbsp;<span class="key">TIMESTAMP</span><br>
+        media_url &nbsp;&nbsp;&nbsp;<span class="key">TEXT</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">-- S3 URL for images / video</span><br>
+        copy_text &nbsp;&nbsp;&nbsp;<span class="key">TEXT</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">-- generated copy</span><br>
+        edit_notes &nbsp;&nbsp;<span class="key">TEXT</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">-- reviewer notes on edit requests</span><br>
+        rejection_reason <span class="key">TEXT</span>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Layer 5: Review Dashboard -->
+    <div class="section-label">Layer 5 — Marketing Team Review Dashboard</div>
+
+    <div class="card card-cyan">
+      <div class="card-header">
+        <div class="icon-box">🖥️</div>
+        <div>
+          <div class="card-title">Review Dashboard UI</div>
+          <div class="card-meta">CURRENTLY PARTIALLY IN DEMO — NEEDS FULL IMPLEMENTATION</div>
+        </div>
+      </div>
+      <p>The demo shows Approve / Edit / Reject buttons. The full review dashboard needs to be a proper page with a queue of all pending drafts, filterable by campus, course, platform, and agent type.</p>
+
+      <div class="flow-step">
+        <div class="step-num">A</div>
+        <div class="step-content">
+          <h4>Approve <span class="priority p-high">HIGH</span></h4>
+          <p>Sets status = APPROVED. Moves content to Publishing Queue. Triggers platform-specific formatting (aspect ratios, character limits, hashtag rules).</p>
+          <span class="tag tag-green">status → APPROVED</span>
+          <span class="tag tag-green">→ publish_queue</span>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="step-num">R</div>
+        <div class="step-content">
+          <h4>Reject <span class="priority p-critical">CRITICAL</span></h4>
+          <p>Sets status = REJECTED. Requires a mandatory rejection reason input. Archives the draft. Sends the rejection reason + original content as a <strong style="color:#ff6b35">negative embedding</strong> to the RAG optimisation layer.</p>
+          <span class="tag tag-orange">status → REJECTED</span>
+          <span class="tag tag-orange">reason → RAG negative signal</span>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="step-num">E</div>
+        <div class="step-content">
+          <h4>Manual Edit <span class="priority p-high">HIGH</span></h4>
+          <p>Team edits copy directly inline. Sets status = MANUALLY_EDITED. The diff between AI output and final edited version is logged and sent as a <strong style="color:#00f5ff">corrective signal</strong> to RAG.</p>
+          <span class="tag tag-cyan">status → MANUALLY_EDITED</span>
+          <span class="tag tag-cyan">diff → RAG corrective signal</span>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="step-num">Q</div>
+        <div class="step-content">
+          <h4>Request Edit (from Agent) <span class="priority p-medium">MEDIUM</span></h4>
+          <p>Sets status = EDIT_REQUESTED. Edit notes attached. Re-routes back to the relevant sub-agent with the notes attached as context. Sub-agent generates a new draft.</p>
+          <span class="tag tag-purple">status → EDIT_REQUESTED</span>
+          <span class="tag tag-purple">→ re-routed to sub-agent</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Layer 6: Publishing Queue -->
+    <div class="section-label">Layer 6 — Publishing Queue + Social API Integration</div>
+
+    <div class="card card-green">
+      <div class="card-header">
+        <div class="icon-box">🚀</div>
+        <div>
+          <div class="card-title">Publishing Queue</div>
+          <div class="card-meta">Redis / Celery TASK QUEUE + PostgreSQL publish_queue TABLE</div>
+        </div>
+      </div>
+      <p>Once approved, content enters a managed publishing queue. Use <strong style="color:#00ff88">Redis + Celery</strong> (or BullMQ if staying in Node) for job scheduling. The queue handles rate limits, retry logic, and platform-specific formatting before calling social APIs.</p>
+
+      <ul class="checklist" style="margin-top:12px">
+        <li>
+          <div class="check-icon check-green">✦</div>
+          <div><strong style="color:#e2e8f0">Facebook & Instagram</strong> — Meta Graph API. Use <code style="color:#00f5ff;font-family:'JetBrains Mono',monospace;font-size:11px">media_publish</code> endpoint. Handle image upload as a two-step process (container → publish). OAuth2 with page token.</div>
+        </li>
+        <li>
+          <div class="check-icon check-green">✦</div>
+          <div><strong style="color:#e2e8f0">LinkedIn</strong> — LinkedIn Marketing API. Use <code style="color:#00f5ff;font-family:'JetBrains Mono',monospace;font-size:11px">ugcPosts</code> endpoint. Requires organisation URN and OAuth2 with <code style="color:#00f5ff;font-family:'JetBrains Mono',monospace;font-size:11px">w_member_social</code> scope.</div>
+        </li>
+        <li>
+          <div class="check-icon check-green">✦</div>
+          <div><strong style="color:#e2e8f0">TikTok</strong> — TikTok Content Posting API. Video only — use <code style="color:#00f5ff;font-family:'JetBrains Mono',monospace;font-size:11px">/video/upload</code> endpoint. Requires TikTok for Business account.</div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Layer 7: Analytics -->
+    <div class="section-label">Layer 7 — Analytics DB + Insights Panel</div>
+
+    <div class="card card-orange">
+      <div class="card-header">
+        <div class="icon-box">📊</div>
+        <div>
+          <div class="card-title">Analytics Pipeline</div>
+          <div class="card-meta">TRACKS ALL PUBLISHED CONTENT PERFORMANCE</div>
+        </div>
+      </div>
+      <p>All performance data normalises into a single PostgreSQL table, tagged by campus, course, and platform. This feeds both the Marketing Insights Panel and the RAG optimisation loop.</p>
+      <ul class="checklist" style="margin-top:4px">
+        <li><div class="check-icon check-orange">✦</div><strong style="color:#e2e8f0">Meta Insights API</strong> — Pull CTR, reach, impressions, engagement, cost-per-click every 24hrs via cron.</li>
+        <li><div class="check-icon check-orange">✦</div><strong style="color:#e2e8f0">LinkedIn Analytics API</strong> — Pull impressions, clicks, engagement rate daily.</li>
+        <li><div class="check-icon check-orange">✦</div><strong style="color:#e2e8f0">Google Analytics 4</strong> — Landing page visits, form submissions, conversion events via GA4 Data API.</li>
+        <li><div class="check-icon check-orange">✦</div>Normalise all data into one DB table tagged by campus, course, platform. Store rejection and edit history alongside performance data.</li>
+      </ul>
+    </div>
+
+    <div class="card card-cyan" style="margin-top:0">
+      <div class="card-header">
+        <div class="icon-box">💡</div>
+        <div>
+          <div class="card-title">Marketing Insights Panel</div>
+          <div class="card-meta">FRONTEND DASHBOARD</div>
+        </div>
+      </div>
+      <ul class="checklist">
+        <li><div class="check-icon check-cyan">✦</div>Aggregated analytics across all campuses, courses, platforms</li>
+        <li><div class="check-icon check-cyan">✦</div>Top performing content by campus / course / platform / content type</li>
+        <li><div class="check-icon check-cyan">✦</div>Manual quality flagging (thumbs up / down per post)</li>
+        <li><div class="check-icon check-cyan">✦</div>Charts: reach over time, CTR by platform, approval rate, edit frequency</li>
+      </ul>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Layer 8: RAG Optimisation -->
+    <div class="section-label">Layer 8 — Memory & Learning Layer (RAG Optimisation)</div>
+
+    <div class="card card-purple">
+      <div class="card-header">
+        <div class="icon-box">🔁</div>
+        <div>
+          <div class="card-title">RAG Optimisation Loop</div>
+          <div class="card-meta">pgvector — STORES PERFORMANCE EMBEDDINGS</div>
+        </div>
+      </div>
+      <p>This is the flywheel. Every signal from the review and analytics layers gets stored as a vector embedding and retrieved at generation time to bias future outputs. Three signal types:</p>
+
+      <div class="grid-2" style="margin-top:14px">
+        <div style="padding:14px;border-radius:12px;background:rgba(0,245,255,0.05);border:1px solid rgba(0,245,255,0.15)">
+          <div style="font-size:12px;font-weight:600;color:#00f5ff;margin-bottom:6px">✦ Corrective Signal</div>
+          <div style="font-size:12px;color:#64748b;line-height:1.6">Edit history + diff stored as corrective learning signal. Tells the model: "human preferred this phrasing over what you wrote."</div>
+        </div>
+        <div style="padding:14px;border-radius:12px;background:rgba(255,107,53,0.05);border:1px solid rgba(255,107,53,0.15)">
+          <div style="font-size:12px;font-weight:600;color:#ff6b35;margin-bottom:6px">✦ Negative Signal</div>
+          <div style="font-size:12px;color:#64748b;line-height:1.6">Rejected content + rejection reason stored as negative embedding. Prevents similar outputs from being generated again.</div>
+        </div>
+        <div style="padding:14px;border-radius:12px;background:rgba(0,255,136,0.05);border:1px solid rgba(0,255,136,0.15)">
+          <div style="font-size:12px;font-weight:600;color:#00ff88;margin-bottom:6px">✦ Positive Signal</div>
+          <div style="font-size:12px;color:#64748b;line-height:1.6">Approved content with high performance score stored as positive embedding. Biases future generations toward proven patterns.</div>
+        </div>
+        <div style="padding:14px;border-radius:12px;background:rgba(139,92,246,0.05);border:1px solid rgba(139,92,246,0.15)">
+          <div style="font-size:12px;font-weight:600;color:#a78bfa;margin-bottom:6px">✦ Implementation</div>
+          <div style="font-size:12px;color:#64748b;line-height:1.6">Use pgvector's cosine similarity search. At generation time, retrieve top-K similar past jobs and include their outcomes in the LLM context window.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Priority list -->
+    <div class="section-label">Build Priority Order</div>
+
+    <div class="card">
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h4>Backend API + DB Schema <span class="priority p-critical">CRITICAL</span></h4>
+          <p>Set up PostgreSQL with pgvector. Create content_drafts, publish_queue, and analytics tables. Stand up a REST or GraphQL API. Everything else depends on this.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h4>RAG Engine + Knowledge Base Ingestion <span class="priority p-critical">CRITICAL</span></h4>
+          <p>Ingest static knowledge base docs into pgvector. Build the retrieval pipeline. This is the brain — agents are dumb without it.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h4>Master AI Agent + Content Agent <span class="priority p-high">HIGH</span></h4>
+          <p>Wire up the orchestration layer. Start with just the Content Agent (text) to get the full loop working end-to-end before adding image/video.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <h4>Review Dashboard (Full) <span class="priority p-high">HIGH</span></h4>
+          <p>Build the real review UI with the draft queue, approve/reject/edit flows, and signal logging back to RAG. Replace the demo mocks.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <h4>Publishing Queue + Social API Integration <span class="priority p-high">HIGH</span></h4>
+          <p>Integrate Meta, LinkedIn, TikTok APIs. Set up Redis/Celery for job scheduling. Handle auth, rate limits, and error retries.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">6</div>
+        <div class="step-content">
+          <h4>Analytics Pipeline + Insights Panel <span class="priority p-medium">MEDIUM</span></h4>
+          <p>Pull performance data from social APIs on a cron schedule. Normalise into the analytics table. Build the insights dashboard.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">7</div>
+        <div class="step-content">
+          <h4>Image Agent + Video Agent <span class="priority p-medium">MEDIUM</span></h4>
+          <p>Add image generation (DALL·E / Stable Diffusion) and video (AI avatar). S3 upload pipeline. These are high-impact but not blockers for the core loop.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">8</div>
+        <div class="step-content">
+          <h4>RAG Learning Loop (Signals) <span class="priority p-medium">MEDIUM</span></h4>
+          <p>Close the feedback loop. Wire corrective, negative, and positive signals from the review and analytics layers back into pgvector. System gets smarter with every campaign.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <span>SingSinghAI</span> — Marketing GenAI System — Internal Dev Notes<br>
+      Keep the UI sharp. Keep the system smart. Ship it. 🚀
+    </div>
+
+  </div>
+</body>
+</html>
