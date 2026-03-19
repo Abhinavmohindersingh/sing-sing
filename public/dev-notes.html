@@ -378,7 +378,46 @@
   <div class="blob blob-1"></div>
   <div class="blob blob-2"></div>
 
-  <div class="container">
+  <!-- ── Welcome Screen ── -->
+  <div id="welcome-screen">
+    <div class="welcome-particles" id="particles"></div>
+
+    <div class="welcome-content">
+      <div class="welcome-logo-wrap">
+        <img src="logo2.png" alt="SingSinghAI" class="welcome-logo" />
+        <div class="welcome-logo-ring ring-1"></div>
+        <div class="welcome-logo-ring ring-2"></div>
+        <div class="welcome-logo-ring ring-3"></div>
+      </div>
+
+      <div class="welcome-brand">SingSinghAI</div>
+      <div class="welcome-sub">Marketing GenAI System</div>
+
+      <div class="welcome-divider"></div>
+
+      <h2 class="welcome-title">Developer Handoff Notes</h2>
+      <p class="welcome-desc">
+        A complete technical breakdown of every layer in the Marketing GenAI architecture —
+        from user input to RAG optimisation. Everything you need to build the full product.
+      </p>
+
+      <div class="welcome-tags">
+        <span class="w-tag">8 System Layers</span>
+        <span class="w-tag">Full DB Schema</span>
+        <span class="w-tag">API Endpoints</span>
+        <span class="w-tag">Build Priority</span>
+      </div>
+
+      <button class="welcome-btn" onclick="enterDocs()">
+        <span>Open Dev Notes</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+
+      <div class="welcome-hint">Prepared for internal development team</div>
+    </div>
+  </div>
+
+  <div class="container" id="main-docs" style="display:none">
 
     <!-- Header -->
     <div class="header">
@@ -848,6 +887,238 @@
       Keep the UI sharp. Keep the system smart. Ship it. 🚀
     </div>
 
-  </div>
+  </div><!-- end #main-docs -->
+
+  <style>
+    /* ── Welcome screen ── */
+    #welcome-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: #080c14;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    #welcome-screen.fade-out {
+      opacity: 0;
+      transform: scale(1.03);
+      pointer-events: none;
+    }
+
+    /* Animated particles */
+    .welcome-particles {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .w-particle {
+      position: absolute;
+      border-radius: 50%;
+      animation: wfloat linear infinite;
+      opacity: 0;
+    }
+
+    @keyframes wfloat {
+      0%   { transform: translateY(110vh) scale(0); opacity: 0; }
+      10%  { opacity: 0.6; }
+      90%  { opacity: 0.3; }
+      100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+    }
+
+    /* Grid overlay on welcome */
+    #welcome-screen::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 50px 50px;
+      pointer-events: none;
+    }
+
+    /* Radial vignette */
+    #welcome-screen::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 70% at 50% 50%, transparent 30%, #080c14 100%);
+      pointer-events: none;
+    }
+
+    .welcome-content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      max-width: 520px;
+      padding: 0 24px;
+    }
+
+    /* Logo */
+    .welcome-logo-wrap {
+      position: relative;
+      width: 110px;
+      height: 110px;
+      margin: 0 auto 28px;
+    }
+
+    .welcome-logo {
+      width: 110px;
+      height: 110px;
+      border-radius: 24px;
+      object-fit: contain;
+      position: relative;
+      z-index: 3;
+      box-shadow: 0 0 40px rgba(99,130,255,0.25), 0 20px 60px rgba(0,0,0,0.5);
+    }
+
+    .welcome-logo-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      animation: ringPulse 3s ease-in-out infinite;
+    }
+
+    .ring-1 { width: 140px; height: 140px; border-color: rgba(99,130,255,0.25); animation-delay: 0s; }
+    .ring-2 { width: 175px; height: 175px; border-color: rgba(99,130,255,0.12); animation-delay: 0.6s; }
+    .ring-3 { width: 210px; height: 210px; border-color: rgba(99,130,255,0.06); animation-delay: 1.2s; }
+
+    @keyframes ringPulse {
+      0%, 100% { opacity: 0.6; transform: translate(-50%,-50%) scale(1); }
+      50%       { opacity: 0.2; transform: translate(-50%,-50%) scale(1.06); }
+    }
+
+    /* Brand name */
+    .welcome-brand {
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: #ffffff;
+      margin-bottom: 6px;
+    }
+
+    .welcome-sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #4a7fa5;
+      margin-bottom: 28px;
+    }
+
+    .welcome-divider {
+      width: 48px;
+      height: 2px;
+      background: linear-gradient(90deg, #4a7fa5, #6382ff);
+      border-radius: 2px;
+      margin: 0 auto 24px;
+    }
+
+    .welcome-title {
+      font-size: 22px;
+      font-weight: 600;
+      color: #e8edf5;
+      margin-bottom: 14px;
+      line-height: 1.3;
+    }
+
+    .welcome-desc {
+      font-size: 14px;
+      color: #6b7fa0;
+      line-height: 1.75;
+      margin-bottom: 24px;
+    }
+
+    /* Tags */
+    .welcome-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 32px;
+    }
+
+    .w-tag {
+      padding: 5px 13px;
+      border-radius: 100px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      background: rgba(99,130,255,0.08);
+      border: 1px solid rgba(99,130,255,0.2);
+      color: #7a9adc;
+    }
+
+    /* Button */
+    .welcome-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 32px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #3b5fe2, #6047d4);
+      border: none;
+      color: #ffffff;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 8px 30px rgba(60,95,226,0.35), 0 2px 8px rgba(0,0,0,0.3);
+      margin-bottom: 20px;
+    }
+
+    .welcome-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 40px rgba(60,95,226,0.5), 0 4px 12px rgba(0,0,0,0.3);
+      background: linear-gradient(135deg, #4a6ef5, #7055e8);
+    }
+
+    .welcome-btn:active { transform: translateY(0); }
+
+    .welcome-hint {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: #2a3a55;
+      letter-spacing: 0.1em;
+    }
+  </style>
+
+  <script>
+    // Generate floating particles
+    const container = document.getElementById('particles');
+    const colors = ['#3b5fe2','#6047d4','#4a7fa5','#ffffff'];
+    for (let i = 0; i < 28; i++) {
+      const p = document.createElement('div');
+      p.className = 'w-particle';
+      const size = Math.random() * 4 + 1.5;
+      p.style.cssText = `
+        width: ${size}px;
+        height: ${size}px;
+        left: ${Math.random() * 100}%;
+        background: ${colors[Math.floor(Math.random() * colors.length)]};
+        animation-duration: ${Math.random() * 12 + 8}s;
+        animation-delay: ${Math.random() * 8}s;
+      `;
+      container.appendChild(p);
+    }
+
+    function enterDocs() {
+      const ws = document.getElementById('welcome-screen');
+      const docs = document.getElementById('main-docs');
+      ws.classList.add('fade-out');
+      setTimeout(() => {
+        ws.style.display = 'none';
+        docs.style.display = 'block';
+      }, 700);
+    }
+  </script>
 </body>
 </html>

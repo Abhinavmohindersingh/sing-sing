@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1200px;
+    height: 630px;
+    overflow: hidden;
+    background: #050508;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  /* ─────────────────────────────────────────
+     ROOT CANVAS
+  ───────────────────────────────────────── */
+  .canvas {
+    width: 1200px;
+    height: 630px;
+    background: #050508;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+  }
+
+  /* ─────────────────────────────────────────
+     BACKGROUND LAYERS
+  ───────────────────────────────────────── */
+
+  /* Blob 1 — purple, top-right */
+  .blob-1 {
+    position: absolute;
+    width: 700px; height: 700px;
+    top: -200px; right: -100px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(124,58,237,0.28) 0%, rgba(124,58,237,0.08) 45%, transparent 70%);
+    filter: blur(0px);
+    z-index: 0;
+  }
+
+  /* Blob 2 — cyan, bottom-left */
+  .blob-2 {
+    position: absolute;
+    width: 600px; height: 600px;
+    bottom: -220px; left: -80px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,245,255,0.18) 0%, rgba(0,245,255,0.05) 45%, transparent 70%);
+    filter: blur(0px);
+    z-index: 0;
+  }
+
+  /* Blob 3 — dark centre absorber */
+  .blob-3 {
+    position: absolute;
+    width: 500px; height: 400px;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(5,5,8,0.85) 0%, transparent 80%);
+    z-index: 0;
+  }
+
+  /* Diagonal gradient overlay */
+  .diag-overlay {
+    position: absolute; inset: 0; z-index: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(124,58,237,0.12) 0%,
+      transparent 35%,
+      transparent 65%,
+      rgba(0,245,255,0.08) 100%
+    );
+  }
+
+  /* Dot grid */
+  .dot-grid {
+    position: absolute; inset: 0; z-index: 1;
+    background-image: radial-gradient(rgba(255,255,255,0.045) 1px, transparent 1px);
+    background-size: 30px 30px;
+    mask-image: radial-gradient(ellipse 85% 75% at 50% 50%, black 20%, transparent 100%);
+  }
+
+  /* ─────────────────────────────────────────
+     TOP-RIGHT BADGE
+  ───────────────────────────────────────── */
+  .ai-badge {
+    position: absolute;
+    top: 28px; right: 36px;
+    z-index: 10;
+    display: flex; align-items: center; gap: 7px;
+    padding: 6px 14px;
+    border-radius: 100px;
+    background: rgba(124,58,237,0.15);
+    border: 1px solid rgba(124,58,237,0.4);
+    backdrop-filter: blur(12px);
+  }
+  .ai-badge-star {
+    font-size: 10px;
+    color: #a78bfa;
+    line-height: 1;
+  }
+  .ai-badge-text {
+    font-size: 11px;
+    font-weight: 600;
+    color: #a78bfa;
+    letter-spacing: 0.08em;
+  }
+
+  /* ─────────────────────────────────────────
+     LEFT HERO SECTION
+  ───────────────────────────────────────── */
+  .hero {
+    position: relative; z-index: 5;
+    width: 530px;
+    flex-shrink: 0;
+    padding: 0 0 0 72px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* Eyebrow tag */
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 5px 13px 5px 9px;
+    border-radius: 100px;
+    background: rgba(0,245,255,0.06);
+    border: 1px solid rgba(0,245,255,0.2);
+    margin-bottom: 26px;
+    width: fit-content;
+  }
+  .eyebrow-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #00f5ff;
+    box-shadow: 0 0 8px #00f5ff, 0 0 20px rgba(0,245,255,0.5);
+    flex-shrink: 0;
+  }
+  .eyebrow-text {
+    font-size: 10px;
+    font-weight: 600;
+    color: rgba(0,245,255,0.75);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  /* Main headline */
+  .headline {
+    font-size: 70px;
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: -2.5px;
+    color: #ffffff;
+    margin-bottom: 22px;
+  }
+  .headline-line2 {
+    display: block;
+    background: linear-gradient(105deg, #ffffff 0%, rgba(255,255,255,0.82) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .headline-word-auto {
+    background: linear-gradient(110deg, #00f5ff 0%, #7c3aed 55%, #a78bfa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Sub-line */
+  .subline {
+    font-size: 15px;
+    font-weight: 400;
+    color: #475569;
+    line-height: 1.55;
+    letter-spacing: 0.01em;
+    margin-bottom: 38px;
+  }
+  .subline-sep {
+    color: #1e293b;
+    margin: 0 5px;
+  }
+
+  /* Stat pills */
+  .pills-row {
+    display: flex;
+    gap: 10px;
+  }
+  .pill {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 16px;
+    border-radius: 100px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.09);
+    backdrop-filter: blur(8px);
+  }
+  .pill-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .pill-text {
+    font-size: 12px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+
+  /* ─────────────────────────────────────────
+     RIGHT PRODUCT CARD
+  ───────────────────────────────────────── */
+  .card-wrap {
+    position: relative; z-index: 5;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 56px 40px 40px;
+  }
+
+  .product-card {
+    width: 340px;
+    background: rgba(255,255,255,0.035);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+      0 0 0 1px rgba(124,58,237,0.0),
+      0 20px 60px rgba(0,0,0,0.6),
+      0 0 80px rgba(124,58,237,0.18),
+      0 0 120px rgba(124,58,237,0.08);
+  }
+
+  /* Top edge highlight */
+  .product-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(124,58,237,0.6) 20%,
+      rgba(0,245,255,0.8) 50%,
+      rgba(124,58,237,0.6) 80%,
+      transparent 100%
+    );
+    z-index: 2;
+  }
+
+  /* Inner glow wash */
+  .product-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 120px;
+    background: linear-gradient(180deg, rgba(124,58,237,0.07) 0%, transparent 100%);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .card-inner {
+    position: relative; z-index: 3;
+    padding: 22px 22px 20px;
+  }
+
+  /* Card header row */
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .card-header-left {
+    display: flex; align-items: center; gap: 9px;
+  }
+  .card-header-icon {
+    width: 30px; height: 30px;
+    border-radius: 9px;
+    background: linear-gradient(135deg, rgba(0,245,255,0.2), rgba(124,58,237,0.3));
+    border: 1px solid rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .card-header-icon svg {
+    width: 14px; height: 14px;
+  }
+  .card-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: -0.01em;
+  }
+  .card-subtitle {
+    font-size: 10px;
+    font-weight: 400;
+    color: #334155;
+    margin-top: 1px;
+  }
+  .live-badge {
+    display: flex; align-items: center; gap: 5px;
+    padding: 4px 10px;
+    border-radius: 100px;
+    background: rgba(0,255,136,0.1);
+    border: 1px solid rgba(0,255,136,0.25);
+  }
+  .live-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #00ff88;
+    box-shadow: 0 0 6px #00ff88, 0 0 12px rgba(0,255,136,0.4);
+  }
+  .live-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: #00ff88;
+    letter-spacing: 0.06em;
+  }
+
+  /* Divider */
+  .card-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent);
+    margin-bottom: 16px;
+  }
+
+  /* Platform rows */
+  .platform-list {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+    margin-bottom: 18px;
+  }
+  .platform-row {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+  }
+  .platform-icon {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+  .icon-li { background: rgba(10,102,194,0.18); border: 1px solid rgba(10,102,194,0.3); color: #60a5fa; }
+  .icon-ig { background: rgba(225,48,108,0.14); border: 1px solid rgba(225,48,108,0.28); color: #f472b6; }
+  .icon-tt { background: rgba(255,0,80,0.1);    border: 1px solid rgba(255,0,80,0.22);   color: #f87171; }
+
+  .platform-info {
+    flex: 1;
+    min-width: 0;
+  }
+  .platform-name-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+  .platform-name {
+    font-size: 11px;
+    font-weight: 600;
+    color: #cbd5e1;
+    letter-spacing: 0.01em;
+  }
+  .platform-reach {
+    font-size: 11px;
+    font-weight: 700;
+    color: #ffffff;
+  }
+  .progress-track {
+    height: 4px;
+    border-radius: 3px;
+    background: rgba(255,255,255,0.06);
+    overflow: hidden;
+    position: relative;
+  }
+  .progress-fill {
+    height: 100%;
+    border-radius: 3px;
+    position: relative;
+  }
+  .progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 8px; height: 100%;
+    background: rgba(255,255,255,0.55);
+    border-radius: 3px;
+    filter: blur(2px);
+  }
+  .prog-li { width: 72%; background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+  .prog-ig { width: 88%; background: linear-gradient(90deg, #ec4899, #f472b6); }
+  .prog-tt { width: 94%; background: linear-gradient(90deg, #ef4444, #f87171); }
+
+  /* Card footer */
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .footer-timestamp {
+    display: flex; align-items: center; gap: 6px;
+  }
+  .timestamp-dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: #475569;
+  }
+  .timestamp-text {
+    font-size: 10px;
+    font-weight: 400;
+    color: #334155;
+    letter-spacing: 0.02em;
+  }
+  .footer-total {
+    font-size: 10px;
+    font-weight: 700;
+    color: #00f5ff;
+    letter-spacing: 0.02em;
+  }
+
+  /* ─────────────────────────────────────────
+     BOTTOM BAR
+  ───────────────────────────────────────── */
+  /* Logo */
+  .logo {
+    position: absolute;
+    bottom: 26px; left: 72px;
+    display: flex; align-items: center; gap: 10px;
+    z-index: 10;
+  }
+  .logo-sq {
+    width: 30px; height: 30px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #00f5ff 0%, #7c3aed 100%);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 16px rgba(0,245,255,0.25), 0 0 32px rgba(124,58,237,0.2);
+    flex-shrink: 0;
+  }
+  .logo-sq svg {
+    width: 16px; height: 16px;
+  }
+  .logo-wordmark {
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.02em;
+  }
+  .logo-wordmark strong {
+    color: rgba(255,255,255,0.85);
+    font-weight: 800;
+  }
+
+  /* URL */
+  .url-tag {
+    position: absolute;
+    bottom: 30px; right: 36px;
+    font-family: 'Inter', monospace;
+    font-size: 10px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 0.08em;
+    z-index: 10;
+  }
+
+  /* ─────────────────────────────────────────
+     DECORATIVE VERTICAL LINE
+  ───────────────────────────────────────── */
+  .vert-line {
+    position: absolute;
+    top: 0; bottom: 0;
+    left: 540px;
+    width: 1px;
+    background: linear-gradient(180deg,
+      transparent 0%,
+      rgba(255,255,255,0.04) 20%,
+      rgba(255,255,255,0.06) 50%,
+      rgba(255,255,255,0.04) 80%,
+      transparent 100%
+    );
+    z-index: 4;
+  }
+
+  /* Subtle cross-hair marks at midpoint of vert line */
+  .vert-line::before,
+  .vert-line::after {
+    content: '';
+    position: absolute;
+    left: -3px;
+    width: 7px;
+    height: 1px;
+    background: rgba(0,245,255,0.25);
+  }
+  .vert-line::before { top: 30%; }
+  .vert-line::after  { top: 70%; }
+
+</style>
+</head>
+<body>
+<div class="canvas">
+
+  <!-- ── BACKGROUND LAYERS ── -->
+  <div class="blob-1"></div>
+  <div class="blob-2"></div>
+  <div class="blob-3"></div>
+  <div class="diag-overlay"></div>
+  <div class="dot-grid"></div>
+
+  <!-- ── TOP-RIGHT AI BADGE ── -->
+  <div class="ai-badge">
+    <span class="ai-badge-star">&#10022;</span>
+    <span class="ai-badge-text">AI Generated</span>
+  </div>
+
+  <!-- ── VERTICAL DIVIDER ── -->
+  <div class="vert-line"></div>
+
+  <!-- ══════════════════════════════
+       LEFT — HERO COPY
+  ══════════════════════════════ -->
+  <div class="hero">
+
+    <!-- Eyebrow -->
+    <div class="eyebrow">
+      <div class="eyebrow-dot"></div>
+      <span class="eyebrow-text">Product Launch · 2025</span>
+    </div>
+
+    <!-- Headline -->
+    <h1 class="headline">
+      AI Marketing.<br/>
+      <span class="headline-line2"><span class="headline-word-auto">Automated.</span></span>
+    </h1>
+
+    <!-- Sub-line -->
+    <p class="subline">
+      Generate<span class="subline-sep">·</span>Schedule<span class="subline-sep">·</span>Publish
+      &mdash; across 8 platforms in seconds.
+    </p>
+
+    <!-- Stat pills -->
+    <div class="pills-row">
+      <div class="pill">
+        <div class="pill-dot" style="background:#00f5ff; box-shadow: 0 0 6px #00f5ff;"></div>
+        <span class="pill-text">80% less time</span>
+      </div>
+      <div class="pill">
+        <div class="pill-dot" style="background:#7c3aed; box-shadow: 0 0 6px rgba(124,58,237,0.8);"></div>
+        <span class="pill-text">8+ platforms</span>
+      </div>
+      <div class="pill">
+        <div class="pill-dot" style="background:#00ff88; box-shadow: 0 0 6px #00ff88;"></div>
+        <span class="pill-text">3&times; engagement</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════
+       RIGHT — PRODUCT CARD
+  ══════════════════════════════ -->
+  <div class="card-wrap">
+    <div class="product-card">
+      <div class="card-inner">
+
+        <!-- Card header -->
+        <div class="card-header">
+          <div class="card-header-left">
+            <div class="card-header-icon">
+              <!-- simple signal/broadcast icon -->
+              <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="7" cy="7" r="2" fill="#00f5ff"/>
+                <path d="M4.5 4.5C3.5 5.5 3 6.2 3 7s.5 1.5 1.5 2.5" stroke="#00f5ff" stroke-width="1.1" stroke-linecap="round" fill="none" opacity="0.7"/>
+                <path d="M9.5 4.5C10.5 5.5 11 6.2 11 7s-.5 1.5-1.5 2.5" stroke="#00f5ff" stroke-width="1.1" stroke-linecap="round" fill="none" opacity="0.7"/>
+                <path d="M2.5 2.5C1 4 0.5 5.4 0.5 7s.5 3 2 4.5" stroke="#00f5ff" stroke-width="1" stroke-linecap="round" fill="none" opacity="0.35"/>
+                <path d="M11.5 2.5C13 4 13.5 5.4 13.5 7s-.5 3-2 4.5" stroke="#00f5ff" stroke-width="1" stroke-linecap="round" fill="none" opacity="0.35"/>
+              </svg>
+            </div>
+            <div>
+              <div class="card-title">Campaign Live</div>
+              <div class="card-subtitle">Real-time distribution</div>
+            </div>
+          </div>
+          <div class="live-badge">
+            <div class="live-dot"></div>
+            <span class="live-label">LIVE</span>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="card-divider"></div>
+
+        <!-- Platform rows -->
+        <div class="platform-list">
+
+          <!-- LinkedIn -->
+          <div class="platform-row">
+            <div class="platform-icon icon-li">in</div>
+            <div class="platform-info">
+              <div class="platform-name-row">
+                <span class="platform-name">LinkedIn</span>
+                <span class="platform-reach">12.4K reach</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill prog-li"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Instagram -->
+          <div class="platform-row">
+            <div class="platform-icon icon-ig">ig</div>
+            <div class="platform-info">
+              <div class="platform-name-row">
+                <span class="platform-name">Instagram</span>
+                <span class="platform-reach">28.1K reach</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill prog-ig"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TikTok -->
+          <div class="platform-row">
+            <div class="platform-icon icon-tt">tt</div>
+            <div class="platform-info">
+              <div class="platform-name-row">
+                <span class="platform-name">TikTok</span>
+                <span class="platform-reach">41.7K reach</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill prog-tt"></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Card footer -->
+        <div class="card-footer">
+          <div class="footer-timestamp">
+            <div class="timestamp-dot"></div>
+            <span class="timestamp-text">Published 2 mins ago</span>
+          </div>
+          <span class="footer-total">82.2K total</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ── LOGO ── -->
+  <div class="logo">
+    <div class="logo-sq">
+      <!-- minimal "S" shape via SVG -->
+      <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M11 4.5C10.2 3.6 9 3 8 3 6.3 3 5 4 5 5.5c0 1.2.9 1.8 2.5 2.3L9 8.2C10.7 8.8 12 9.7 12 11.5 12 13.2 10.4 14 8 14c-1.5 0-2.9-.6-3.8-1.6" stroke="#050508" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <span class="logo-wordmark">Sing<strong>Singh</strong>AI</span>
+  </div>
+
+  <!-- ── URL ── -->
+  <div class="url-tag">singsinghAI.com.au</div>
+
+</div>
+</body>
+</html>
