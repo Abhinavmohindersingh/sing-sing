@@ -1,9 +1,11 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, ChevronDown, CheckCircle } from "lucide-react";
 import { LiquidButton } from "../ui/liquid-glass-button";
 import { SplineScene } from "../ui/splite";
 import { Spotlight } from "../ui/spotlight";
+
+const isMobile = () => window.innerWidth < 768;
 
 const NeuralCanvas = () => {
   const canvasRef = useRef(null);
@@ -20,7 +22,12 @@ const NeuralCanvas = () => {
       canvas.height = canvas.offsetHeight;
     };
     resize();
-    window.addEventListener("resize", resize);
+    let resizeTimer;
+    const debouncedResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(resize, 150);
+    };
+    window.addEventListener("resize", debouncedResize);
 
     const handleMouseMove = (e) => {
       const rect = canvas.getBoundingClientRect();
@@ -113,7 +120,8 @@ const NeuralCanvas = () => {
     draw();
 
     return () => {
-      window.removeEventListener("resize", resize);
+      clearTimeout(resizeTimer);
+      window.removeEventListener("resize", debouncedResize);
       canvas.removeEventListener("mousemove", handleMouseMove);
       if (animRef.current) cancelAnimationFrame(animRef.current);
     };
@@ -130,6 +138,12 @@ const NeuralCanvas = () => {
 
 
 const HeroSection = ({ onOpenContact, t }) => {
+  const [showSpline, setShowSpline] = useState(false);
+
+  useEffect(() => {
+    if (!isMobile()) setShowSpline(true);
+  }, []);
+
   const containerVariants = {
     hidden: {},
     visible: { transition: { staggerChildren: 0.15, delayChildren: 0.3 } },
@@ -144,8 +158,8 @@ const HeroSection = ({ onOpenContact, t }) => {
 
   return (
     <section
-      className="relative min-h-screen flex items-center justify-center px-4 pt-16 pb-8 overflow-hidden"
-      style={{ background: "radial-gradient(ellipse at 50% 0%, #0a0d1a 0%, #04050d 60%)" }}
+      className="relative flex items-center justify-center px-4 pt-16 pb-8 overflow-hidden"
+      style={{ background: "radial-gradient(ellipse at 50% 0%, #0a0d1a 0%, #04050d 60%)", minHeight: "calc(var(--vh, 1vh) * 100)" }}
     >
       <NeuralCanvas />
       <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" fill="rgba(0,245,255,0.3)" />
@@ -159,19 +173,21 @@ const HeroSection = ({ onOpenContact, t }) => {
         style={{ background: "rgba(124, 58, 237, 0.04)", animationDelay: "-5s" }}
       />
 
-      {/* 3D Spline Scene - full background */}
-      <motion.div
-        className="absolute inset-0 w-full h-full z-0"
-        style={{ opacity: 0.35 }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.35 }}
-        transition={{ duration: 1.2, delay: 0.6, ease: "easeOut" }}
-      >
-        <SplineScene
-          scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-          className="w-full h-full"
-        />
-      </motion.div>
+      {/* 3D Spline Scene - desktop only */}
+      {showSpline && (
+        <motion.div
+          className="absolute inset-0 w-full h-full z-0"
+          style={{ opacity: 0.35 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.35 }}
+          transition={{ duration: 1.2, delay: 0.6, ease: "easeOut" }}
+        >
+          <SplineScene
+            scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+            className="w-full h-full"
+          />
+        </motion.div>
+      )}
 
       {/* Hero content - centered */}
       <div className="max-w-7xl mx-auto relative z-10 w-full flex items-center" style={{ pointerEvents: "none" }}>
