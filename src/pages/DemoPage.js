@@ -232,6 +232,13 @@ const DemoPage = () => {
   const [lang, setLang] = useState("en");
   const [isContactOpen, setIsContactOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
+
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", onResize, { passive: true });
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
 
   const tFn = (key) => translate(key, lang);
   const demo = DEMOS[activeIndex];
@@ -276,7 +283,7 @@ const DemoPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: "#04050d", color: "#e2e8f0" }}>
+    <div className="min-h-screen flex flex-col" style={{ background: "#04050d", color: "#e2e8f0", overflowX: "hidden" }}>
       <Navbar lang={lang} setLang={setLang} onOpenContact={() => setIsContactOpen(true)} scrolled={scrolled} />
 
       <main className="flex-1 flex flex-col items-center px-4 py-12 pt-24">
@@ -321,65 +328,83 @@ const DemoPage = () => {
           </AnimatePresence>
         </motion.div>
 
-        {/* 3D Coverflow — full video players */}
+        {/* Video carousel */}
         <motion.div
-          className="w-full max-w-6xl relative"
+          className="w-full max-w-5xl relative"
           initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.65, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
         >
-          {/* Carousel viewport */}
-          <div
-            className="relative w-full"
-            style={{ perspective: "1200px", height: "auto" }}
-          >
-            <div className="relative w-full" style={{ transformStyle: "preserve-3d" }}>
-              {DEMOS.map((d, i) => {
-                const s = getCardStyle(i);
-                return (
-                  <motion.div
-                    key={d.id}
-                    animate={{
-                      rotateY: s.rotateY,
-                      x: s.x,
-                      scale: s.scale,
-                      opacity: s.opacity,
-                      zIndex: s.zIndex,
-                    }}
-                    transition={{ type: "spring", stiffness: 280, damping: 30 }}
-                    style={{
-                      position: i === activeIndex ? "relative" : "absolute",
-                      top: 0, left: 0, width: "100%",
-                      transformStyle: "preserve-3d",
-                      transformOrigin: s.rotateY > 0 ? "left center" : s.rotateY < 0 ? "right center" : "center",
-                      pointerEvents: s.pointerEvents,
-                    }}
-                  >
-                    <VideoCard
-                      demo={d}
-                      isActive={i === activeIndex}
-                      onClick={() => setActiveIndex(i)}
-                    />
-                  </motion.div>
-                );
-              })}
+          {isMobile ? (
+            /* ── Mobile: full-width active video + inline arrows ── */
+            <div className="relative">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={demo.id}
+                  initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -24 }}
+                  transition={{ duration: 0.25 }}
+                >
+                  <VideoCard demo={demo} isActive onClick={() => {}} />
+                </motion.div>
+              </AnimatePresence>
+              {/* Arrows overlaid inside the video top corners */}
+              <button
+                onClick={prev}
+                className="absolute top-3 left-3 w-9 h-9 rounded-full flex items-center justify-center"
+                style={{ background: "rgba(4,5,13,0.7)", border: "1px solid rgba(255,255,255,0.15)", color: "#94a3b8", zIndex: 20 }}
+              >
+                <ChevronLeft size={16} />
+              </button>
+              <button
+                onClick={next}
+                className="absolute top-3 right-3 w-9 h-9 rounded-full flex items-center justify-center"
+                style={{ background: "rgba(4,5,13,0.7)", border: "1px solid rgba(255,255,255,0.15)", color: "#94a3b8", zIndex: 20 }}
+              >
+                <ChevronRight size={16} />
+              </button>
             </div>
-          </div>
-
-          {/* Arrow buttons */}
-          <button
-            onClick={prev}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-14 w-11 h-11 rounded-full flex items-center justify-center transition-all"
-            style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#94a3b8", zIndex: 20 }}
-          >
-            <ChevronLeft size={20} />
-          </button>
-          <button
-            onClick={next}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-14 w-11 h-11 rounded-full flex items-center justify-center transition-all"
-            style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#94a3b8", zIndex: 20 }}
-          >
-            <ChevronRight size={20} />
-          </button>
+          ) : (
+            /* ── Desktop: 3D coverflow ── */
+            <div className="relative">
+              <div className="relative w-full" style={{ perspective: "1200px" }}>
+                <div className="relative w-full" style={{ transformStyle: "preserve-3d" }}>
+                  {DEMOS.map((d, i) => {
+                    const s = getCardStyle(i);
+                    return (
+                      <motion.div
+                        key={d.id}
+                        animate={{ rotateY: s.rotateY, x: s.x, scale: s.scale, opacity: s.opacity, zIndex: s.zIndex }}
+                        transition={{ type: "spring", stiffness: 280, damping: 30 }}
+                        style={{
+                          position: i === activeIndex ? "relative" : "absolute",
+                          top: 0, left: 0, width: "100%",
+                          transformStyle: "preserve-3d",
+                          transformOrigin: s.rotateY > 0 ? "left center" : s.rotateY < 0 ? "right center" : "center",
+                          pointerEvents: s.pointerEvents,
+                        }}
+                      >
+                        <VideoCard demo={d} isActive={i === activeIndex} onClick={() => setActiveIndex(i)} />
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              </div>
+              {/* Arrows outside on desktop */}
+              <button
+                onClick={prev}
+                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-14 w-11 h-11 rounded-full flex items-center justify-center transition-all"
+                style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#94a3b8", zIndex: 20 }}
+              >
+                <ChevronLeft size={20} />
+              </button>
+              <button
+                onClick={next}
+                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-14 w-11 h-11 rounded-full flex items-center justify-center transition-all"
+                style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#94a3b8", zIndex: 20 }}
+              >
+                <ChevronRight size={20} />
+              </button>
+            </div>
+          )}
         </motion.div>
 
         {/* Dot indicators */}
