@@ -46,7 +46,6 @@ const VideoCard = ({ demo, isActive, onClick }) => {
   const [progress, setProgress] = useState(0);
   const [hasStarted, setHasStarted] = useState(false);
 
-  // Reset when no longer active
   useEffect(() => {
     if (!isActive && videoRef.current) {
       videoRef.current.pause();
@@ -147,7 +146,6 @@ const VideoCard = ({ demo, isActive, onClick }) => {
           style={{ display: "block" }}
         />
 
-        {/* Side card overlay — click to activate */}
         {!isActive && (
           <div
             className="absolute inset-0 flex items-center justify-center"
@@ -166,7 +164,6 @@ const VideoCard = ({ demo, isActive, onClick }) => {
           </div>
         )}
 
-        {/* Play overlay for active card */}
         {isActive && !playing && (
           <motion.div
             className="absolute inset-0 flex items-center justify-center cursor-pointer"
@@ -189,7 +186,6 @@ const VideoCard = ({ demo, isActive, onClick }) => {
         )}
       </div>
 
-      {/* Controls — only on active card */}
       {isActive && (
         <div
           className="flex items-center gap-3 px-4 py-3"
@@ -234,18 +230,18 @@ const DemoPage = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
 
-  useEffect(() => {
-    const onResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener("resize", onResize, { passive: true });
-    return () => window.removeEventListener("resize", onResize);
-  }, []);
-
   const tFn = (key) => translate(key, lang);
   const demo = DEMOS[activeIndex];
   const n = DEMOS.length;
 
   const prev = useCallback(() => setActiveIndex((i) => (i - 1 + n) % n), [n]);
   const next = useCallback(() => setActiveIndex((i) => (i + 1) % n), [n]);
+
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", onResize, { passive: true });
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
 
   useEffect(() => {
     const onKey = (e) => { if (e.key === "ArrowLeft") prev(); if (e.key === "ArrowRight") next(); };
@@ -259,17 +255,11 @@ const DemoPage = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Per-card 3D transform based on distance from active
   const getCardStyle = (i) => {
-    const offset = i - activeIndex;
-    // Wrap offset for circular
-    let o = offset;
+    let o = i - activeIndex;
     if (o > n / 2) o -= n;
     if (o < -n / 2) o += n;
-
-    if (o === 0) return {
-      rotateY: 0, x: "0%", scale: 1, opacity: 1, zIndex: 10, pointerEvents: "auto",
-    };
+    if (o === 0) return { rotateY: 0, x: "0%", scale: 1, opacity: 1, zIndex: 10, pointerEvents: "auto" };
     const sign = o > 0 ? 1 : -1;
     const abs = Math.abs(o);
     return {
@@ -328,14 +318,14 @@ const DemoPage = () => {
           </AnimatePresence>
         </motion.div>
 
-        {/* Video carousel */}
+        {/* Carousel */}
         <motion.div
-          className="w-full max-w-5xl relative"
+          className="w-full max-w-6xl relative"
           initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.65, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
         >
           {isMobile ? (
-            /* ── Mobile: full-width active video + inline arrows ── */
+            /* ── Mobile: full-width, arrows inside ── */
             <div className="relative">
               <AnimatePresence mode="wait">
                 <motion.div
@@ -346,16 +336,13 @@ const DemoPage = () => {
                   <VideoCard demo={demo} isActive onClick={() => {}} />
                 </motion.div>
               </AnimatePresence>
-              {/* Arrows overlaid inside the video top corners */}
-              <button
-                onClick={prev}
+              <button onClick={prev}
                 className="absolute top-3 left-3 w-9 h-9 rounded-full flex items-center justify-center"
                 style={{ background: "rgba(4,5,13,0.7)", border: "1px solid rgba(255,255,255,0.15)", color: "#94a3b8", zIndex: 20 }}
               >
                 <ChevronLeft size={16} />
               </button>
-              <button
-                onClick={next}
+              <button onClick={next}
                 className="absolute top-3 right-3 w-9 h-9 rounded-full flex items-center justify-center"
                 style={{ background: "rgba(4,5,13,0.7)", border: "1px solid rgba(255,255,255,0.15)", color: "#94a3b8", zIndex: 20 }}
               >
@@ -363,8 +350,8 @@ const DemoPage = () => {
               </button>
             </div>
           ) : (
-            /* ── Desktop: 3D coverflow ── */
-            <div className="relative">
+            /* ── Desktop: original 3D coverflow ── */
+            <div>
               <div className="relative w-full" style={{ perspective: "1200px" }}>
                 <div className="relative w-full" style={{ transformStyle: "preserve-3d" }}>
                   {DEMOS.map((d, i) => {
@@ -388,16 +375,13 @@ const DemoPage = () => {
                   })}
                 </div>
               </div>
-              {/* Arrows outside on desktop */}
-              <button
-                onClick={prev}
+              <button onClick={prev}
                 className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-14 w-11 h-11 rounded-full flex items-center justify-center transition-all"
                 style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#94a3b8", zIndex: 20 }}
               >
                 <ChevronLeft size={20} />
               </button>
-              <button
-                onClick={next}
+              <button onClick={next}
                 className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-14 w-11 h-11 rounded-full flex items-center justify-center transition-all"
                 style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#94a3b8", zIndex: 20 }}
               >
@@ -407,11 +391,10 @@ const DemoPage = () => {
           )}
         </motion.div>
 
-        {/* Dot indicators */}
+        {/* Dots */}
         <div className="flex items-center justify-center gap-2 mt-6">
           {DEMOS.map((d, i) => (
-            <button
-              key={i} onClick={() => setActiveIndex(i)}
+            <button key={i} onClick={() => setActiveIndex(i)}
               style={{
                 width: activeIndex === i ? 22 : 6, height: 6, borderRadius: 3,
                 background: activeIndex === i ? d.accent : "rgba(255,255,255,0.15)",
