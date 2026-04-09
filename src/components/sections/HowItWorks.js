@@ -127,8 +127,8 @@ const HowItWorks = ({ t }) => {
                   </motion.div>
 
                   <motion.div
-                    initial={{ opacity: 0, y: 20, filter: "blur(6px)" }}
-                    animate={isActive ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={isActive ? { opacity: 1, y: 0 } : {}}
                     transition={{ duration: 0.6, delay: 0.1 }}
                     className="glass-card p-5 w-full text-center relative overflow-hidden"
                     style={{

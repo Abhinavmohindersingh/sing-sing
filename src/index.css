@@ -279,6 +279,19 @@ button:focus, a:focus {
   border-radius: 50%;
   filter: blur(80px);
   pointer-events: none;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* On mobile, remove blur entirely — blur forces CPU repaint on scroll causing text flicker */
+@media (max-width: 768px) {
+  .radial-blob {
+    filter: none;
+    opacity: 0.4;
+  }
+  .morphing-blob {
+    animation: none;
+  }
 }
 
 /* ── Count-up animation ── */
