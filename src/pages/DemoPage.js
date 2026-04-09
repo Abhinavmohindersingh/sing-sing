@@ -38,7 +38,7 @@ const DEMOS = [
   },
 ];
 
-/* ── Inline video player ── */
+/* ── Video player ── */
 const VideoPlayer = ({ demo }) => {
   const videoRef = useRef(null);
   const [playing, setPlaying] = useState(false);
@@ -47,56 +47,40 @@ const VideoPlayer = ({ demo }) => {
   const [hasStarted, setHasStarted] = useState(false);
 
   useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-    video.pause();
-    video.currentTime = 0;
-    setPlaying(false);
-    setProgress(0);
-    setHasStarted(false);
+    const v = videoRef.current;
+    if (!v) return;
+    v.pause(); v.currentTime = 0;
+    setPlaying(false); setProgress(0); setHasStarted(false);
   }, [demo.id]);
 
   useEffect(() => {
     const onHide = () => {
-      if (document.hidden && videoRef.current) {
-        videoRef.current.pause();
-        setPlaying(false);
-      }
+      if (document.hidden && videoRef.current) { videoRef.current.pause(); setPlaying(false); }
     };
     document.addEventListener("visibilitychange", onHide);
     return () => document.removeEventListener("visibilitychange", onHide);
   }, []);
 
   const togglePlay = () => {
-    const v = videoRef.current;
-    if (!v) return;
+    const v = videoRef.current; if (!v) return;
     if (playing) { v.pause(); setPlaying(false); }
     else { v.play(); setPlaying(true); setHasStarted(true); }
   };
-
   const toggleMute = () => {
-    const v = videoRef.current;
-    if (!v) return;
-    v.muted = !muted;
-    setMuted(!muted);
+    const v = videoRef.current; if (!v) return;
+    v.muted = !muted; setMuted(!muted);
   };
-
   const handleTimeUpdate = () => {
-    const v = videoRef.current;
-    if (!v || !v.duration) return;
+    const v = videoRef.current; if (!v || !v.duration) return;
     setProgress((v.currentTime / v.duration) * 100);
   };
-
   const handleSeek = (e) => {
-    const v = videoRef.current;
-    if (!v) return;
+    const v = videoRef.current; if (!v) return;
     const rect = e.currentTarget.getBoundingClientRect();
     v.currentTime = ((e.clientX - rect.left) / rect.width) * v.duration;
   };
-
   const openFullscreen = () => {
-    const v = videoRef.current;
-    if (!v) return;
+    const v = videoRef.current; if (!v) return;
     if (v.requestFullscreen) v.requestFullscreen();
     else if (v.webkitRequestFullscreen) v.webkitRequestFullscreen();
   };
@@ -106,62 +90,48 @@ const VideoPlayer = ({ demo }) => {
       className="rounded-2xl overflow-hidden w-full"
       style={{
         border: `1px solid ${demo.accent}55`,
-        boxShadow: `0 0 60px ${demo.accent}20, 0 30px 80px rgba(0,0,0,0.6)`,
+        boxShadow: `0 0 80px ${demo.accent}22, 0 0 160px ${demo.accent}0a, 0 30px 80px rgba(0,0,0,0.7)`,
       }}
     >
-      {/* Browser chrome */}
       <div
         className="flex items-center gap-2 px-4 py-3"
         style={{ background: "rgba(8,10,22,0.97)", borderBottom: "1px solid rgba(255,255,255,0.07)" }}
       >
-        <div className="flex items-center gap-1.5">
+        <div className="flex gap-1.5">
           <div className="w-3 h-3 rounded-full" style={{ background: "#ff5f57" }} />
           <div className="w-3 h-3 rounded-full" style={{ background: "#febc2e" }} />
           <div className="w-3 h-3 rounded-full" style={{ background: "#28c840" }} />
         </div>
         <div
           className="flex-1 mx-4 rounded-md px-3 py-1 text-xs font-mono text-center truncate"
-          style={{
-            background: "rgba(255,255,255,0.04)",
-            border: "1px solid rgba(255,255,255,0.07)",
-            color: "rgba(148,163,184,0.7)",
-          }}
+          style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)", color: "rgba(148,163,184,0.7)" }}
         >
           SingSinghAI · {demo.title}
         </div>
         <div className="font-mono text-xs" style={{ color: `${demo.accent}99` }}>● LIVE</div>
       </div>
 
-      {/* Video */}
       <div className="relative bg-black" style={{ aspectRatio: "2000/1400" }}>
         <video
-          ref={videoRef}
-          src={demo.src}
-          poster={demo.poster || undefined}
-          muted={muted}
-          playsInline
-          preload="metadata"
+          ref={videoRef} src={demo.src} poster={demo.poster || undefined}
+          muted={muted} playsInline preload="metadata"
           onTimeUpdate={handleTimeUpdate}
-          className="w-full h-full object-cover"
-          style={{ display: "block" }}
+          className="w-full h-full object-cover" style={{ display: "block" }}
         />
         {!playing && (
           <motion.div
             className="absolute inset-0 flex items-center justify-center cursor-pointer"
             style={{ background: hasStarted ? "rgba(4,5,13,0.45)" : "transparent" }}
             onClick={togglePlay}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.2 }}
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}
           >
             <motion.div
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.95 }}
               className="w-20 h-20 rounded-full flex items-center justify-center"
               style={{
                 background: `linear-gradient(135deg, rgba(124,58,237,0.85), ${demo.accent}aa)`,
                 border: `2px solid ${demo.accent}66`,
-                boxShadow: `0 0 50px ${demo.accent}44`,
+                boxShadow: `0 0 50px ${demo.accent}44, 0 0 100px rgba(124,58,237,0.2)`,
               }}
             >
               <Play size={32} fill="white" style={{ color: "white", marginLeft: 4 }} />
@@ -170,41 +140,30 @@ const VideoPlayer = ({ demo }) => {
         )}
       </div>
 
-      {/* Controls */}
       <div
         className="flex items-center gap-3 px-4 py-3"
         style={{ background: "rgba(6,8,18,0.97)", borderTop: "1px solid rgba(255,255,255,0.06)" }}
       >
-        <button
-          onClick={togglePlay}
+        <button onClick={togglePlay}
           className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
           style={{ background: "rgba(124,58,237,0.15)", border: "1px solid rgba(124,58,237,0.3)", color: "#a78bfa" }}
         >
           {playing ? <Pause size={15} /> : <Play size={15} style={{ marginLeft: 1 }} />}
         </button>
-        <div
-          className="flex-1 h-1.5 rounded-full cursor-pointer"
-          style={{ background: "rgba(255,255,255,0.08)" }}
-          onClick={handleSeek}
+        <div className="flex-1 h-1.5 rounded-full cursor-pointer"
+          style={{ background: "rgba(255,255,255,0.08)" }} onClick={handleSeek}
         >
-          <div
-            className="h-full rounded-full"
-            style={{
-              width: `${progress}%`,
-              background: `linear-gradient(90deg, #7c3aed, ${demo.accent})`,
-              transition: "width 0.1s linear",
-            }}
+          <div className="h-full rounded-full"
+            style={{ width: `${progress}%`, background: `linear-gradient(90deg, #7c3aed, ${demo.accent})`, transition: "width 0.1s linear" }}
           />
         </div>
-        <button
-          onClick={toggleMute}
+        <button onClick={toggleMute}
           className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
           style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: muted ? "#475569" : "#94a3b8" }}
         >
           {muted ? <VolumeX size={15} /> : <Volume2 size={15} />}
         </button>
-        <button
-          onClick={openFullscreen}
+        <button onClick={openFullscreen}
           className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
           style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: "#94a3b8" }}
         >
@@ -215,87 +174,125 @@ const VideoPlayer = ({ demo }) => {
   );
 };
 
-/* ── 3-D Ring Carousel ── */
-const Carousel3D = ({ activeIndex, onSelect }) => {
+/* ── Coverflow 3D selector ── */
+const CoverflowSelector = ({ activeIndex, onSelect }) => {
   const n = DEMOS.length;
-  const angleStep = 360 / n;
-  // radius scales with number of demos
-  const radius = n <= 2 ? 220 : n <= 3 ? 280 : 340;
+
+  const getTransform = (i) => {
+    const offset = i - activeIndex;
+    if (offset === 0) return { rotateY: 0, x: "0%", scale: 1, opacity: 1, zIndex: 10 };
+    const sign = offset > 0 ? 1 : -1;
+    const abs = Math.abs(offset);
+    return {
+      rotateY: sign * Math.min(abs * 42, 70),
+      x: `${sign * Math.min(abs * 60, 90)}%`,
+      scale: Math.max(1 - abs * 0.14, 0.62),
+      opacity: Math.max(1 - abs * 0.35, 0.25),
+      zIndex: 10 - abs,
+    };
+  };
 
   return (
-    <div
-      className="relative flex items-center justify-center"
-      style={{ height: 80, perspective: 900 }}
-    >
-      <div
-        style={{
-          position: "relative",
-          width: 180,
-          height: 48,
-          transformStyle: "preserve-3d",
-        }}
-      >
-        {DEMOS.map((demo, i) => {
-          const relativeIndex = (i - activeIndex + n) % n;
-          const angle = relativeIndex * angleStep;
-          const isActive = i === activeIndex;
-          return (
-            <motion.button
-              key={demo.id}
-              onClick={() => onSelect(i)}
-              animate={{
-                rotateY: angle > 180 ? angle - 360 : angle,
-                translateZ: radius,
-                opacity: isActive ? 1 : 0.45,
-                scale: isActive ? 1 : 0.82,
-              }}
-              transition={{ type: "spring", stiffness: 260, damping: 28 }}
+    <div className="relative w-full flex items-center justify-center" style={{ height: 180, perspective: 1100 }}>
+      {DEMOS.map((demo, i) => {
+        const t = getTransform(i);
+        const isActive = i === activeIndex;
+        return (
+          <motion.div
+            key={demo.id}
+            onClick={() => !isActive && onSelect(i)}
+            animate={{ rotateY: t.rotateY, x: t.x, scale: t.scale, opacity: t.opacity, zIndex: t.zIndex }}
+            transition={{ type: "spring", stiffness: 300, damping: 32 }}
+            style={{
+              position: "absolute",
+              width: 220,
+              cursor: isActive ? "default" : "pointer",
+              transformStyle: "preserve-3d",
+              transformOrigin: isActive ? "center" : offset => offset > 0 ? "left center" : "right center",
+            }}
+          >
+            {/* Card */}
+            <div
+              className="rounded-xl overflow-hidden"
               style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: 180,
-                height: 48,
-                borderRadius: 12,
-                cursor: isActive ? "default" : "pointer",
-                background: isActive
-                  ? `linear-gradient(135deg, rgba(124,58,237,0.55), ${demo.accent}44)`
-                  : "rgba(255,255,255,0.04)",
-                border: `1px solid ${isActive ? demo.accent + "88" : "rgba(255,255,255,0.1)"}`,
-                color: isActive ? "white" : "rgba(148,163,184,0.7)",
-                fontFamily: "monospace",
-                fontSize: 13,
-                fontWeight: 500,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: 8,
-                boxShadow: isActive ? `0 0 24px ${demo.accent}33` : "none",
-                backdropFilter: "blur(8px)",
+                border: `1px solid ${isActive ? demo.accent + "88" : "rgba(255,255,255,0.08)"}`,
+                boxShadow: isActive ? `0 0 40px ${demo.accent}33, 0 20px 60px rgba(0,0,0,0.6)` : "0 8px 32px rgba(0,0,0,0.5)",
+                background: "rgba(6,8,18,0.95)",
               }}
             >
-              {isActive && (
-                <span
-                  style={{
-                    width: 6,
-                    height: 6,
-                    borderRadius: "50%",
-                    background: demo.accent,
-                    boxShadow: `0 0 8px ${demo.accent}`,
-                    flexShrink: 0,
-                  }}
-                />
-              )}
-              {demo.label}
-            </motion.button>
-          );
-        })}
-      </div>
+              {/* Mini browser bar */}
+              <div
+                className="flex items-center gap-1.5 px-3 py-2"
+                style={{ background: "rgba(8,10,22,0.9)", borderBottom: "1px solid rgba(255,255,255,0.06)" }}
+              >
+                <div className="w-2 h-2 rounded-full" style={{ background: "#ff5f57" }} />
+                <div className="w-2 h-2 rounded-full" style={{ background: "#febc2e" }} />
+                <div className="w-2 h-2 rounded-full" style={{ background: "#28c840" }} />
+                <div
+                  className="flex-1 ml-2 rounded px-2 py-0.5 text-[10px] font-mono truncate"
+                  style={{ background: "rgba(255,255,255,0.04)", color: "rgba(148,163,184,0.5)" }}
+                >
+                  {demo.label}
+                </div>
+              </div>
+
+              {/* Thumbnail */}
+              <div
+                className="relative flex items-center justify-center"
+                style={{ aspectRatio: "16/9", background: "#04050d" }}
+              >
+                {demo.poster ? (
+                  <img src={demo.poster} alt={demo.label} className="w-full h-full object-cover" />
+                ) : (
+                  <div
+                    className="w-full h-full flex items-center justify-center"
+                    style={{
+                      background: `radial-gradient(ellipse at center, ${demo.accent}15 0%, #04050d 70%)`,
+                    }}
+                  >
+                    <div style={{ color: `${demo.accent}66`, fontFamily: "monospace", fontSize: 11 }}>
+                      {demo.label}
+                    </div>
+                  </div>
+                )}
+                {/* Play icon overlay */}
+                <div
+                  className="absolute inset-0 flex items-center justify-center"
+                  style={{ background: isActive ? "rgba(0,0,0,0.15)" : "rgba(0,0,0,0.35)" }}
+                >
+                  <div
+                    className="w-9 h-9 rounded-full flex items-center justify-center"
+                    style={{
+                      background: isActive
+                        ? `linear-gradient(135deg, rgba(124,58,237,0.8), ${demo.accent}aa)`
+                        : "rgba(255,255,255,0.12)",
+                      border: `1px solid ${isActive ? demo.accent + "66" : "rgba(255,255,255,0.15)"}`,
+                    }}
+                  >
+                    <Play size={14} fill="white" style={{ color: "white", marginLeft: 2 }} />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Label below card */}
+            {isActive && (
+              <motion.div
+                className="mt-2 text-center text-xs font-mono"
+                initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}
+                style={{ color: demo.accent }}
+              >
+                ● NOW PLAYING
+              </motion.div>
+            )}
+          </motion.div>
+        );
+      })}
     </div>
   );
 };
 
-/* ── Main page ── */
+/* ── Page ── */
 const DemoPage = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [lang, setLang] = useState("en");
@@ -308,12 +305,8 @@ const DemoPage = () => {
   const prev = useCallback(() => setActiveIndex((i) => (i - 1 + DEMOS.length) % DEMOS.length), []);
   const next = useCallback(() => setActiveIndex((i) => (i + 1) % DEMOS.length), []);
 
-  // Keyboard nav
   useEffect(() => {
-    const onKey = (e) => {
-      if (e.key === "ArrowLeft") prev();
-      if (e.key === "ArrowRight") next();
-    };
+    const onKey = (e) => { if (e.key === "ArrowLeft") prev(); if (e.key === "ArrowRight") next(); };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [prev, next]);
@@ -328,121 +321,108 @@ const DemoPage = () => {
     <div className="min-h-screen flex flex-col" style={{ background: "#04050d", color: "#e2e8f0" }}>
       <Navbar lang={lang} setLang={setLang} onOpenContact={() => setIsContactOpen(true)} scrolled={scrolled} />
 
-      <main className="flex-1 flex flex-col items-center px-4 py-12 pt-28">
+      <main className="flex-1 flex flex-col items-center px-4 py-12 pt-24">
 
-        {/* Badge */}
+        {/* Header */}
         <motion.div
-          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-mono mb-6"
-          style={{
-            background: "rgba(124,58,237,0.1)",
-            border: "1px solid rgba(124,58,237,0.3)",
-            color: "#a78bfa",
-          }}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          className="text-center mb-10"
+          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }}
         >
-          <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse" />
-          PRODUCT DEMOS
+          <div
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-mono mb-4"
+            style={{ background: "rgba(124,58,237,0.1)", border: "1px solid rgba(124,58,237,0.3)", color: "#a78bfa" }}
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse" />
+            PRODUCT DEMOS
+          </div>
+          <h1
+            className="text-4xl md:text-5xl font-display font-bold mb-3"
+            style={{
+              background: "linear-gradient(135deg, #a78bfa 0%, #00f5ff 60%, #00ff88 100%)",
+              WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
+            }}
+          >
+            See It In Action
+          </h1>
+          <p className="text-slate-400 max-w-md mx-auto text-sm leading-relaxed">
+            Browse our live product demos — click a card or use the arrows to switch.
+          </p>
         </motion.div>
 
-        {/* 3-D Ring Carousel */}
+        {/* Coverflow selector + arrows */}
         <motion.div
-          className="w-full mb-8"
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, delay: 0.1 }}
+          className="w-full max-w-4xl mb-10"
+          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55, delay: 0.1 }}
         >
-          <div className="flex items-center justify-center gap-4">
-            {/* Prev */}
+          <div className="flex items-center gap-3">
             <button
               onClick={prev}
-              className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 transition-colors"
-              style={{
-                background: "rgba(255,255,255,0.05)",
-                border: "1px solid rgba(255,255,255,0.1)",
-                color: "#94a3b8",
-              }}
+              className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 transition-all"
+              style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#94a3b8" }}
             >
               <ChevronLeft size={18} />
             </button>
 
-            <Carousel3D activeIndex={activeIndex} onSelect={setActiveIndex} />
+            <div className="flex-1">
+              <CoverflowSelector activeIndex={activeIndex} onSelect={setActiveIndex} />
+            </div>
 
-            {/* Next */}
             <button
               onClick={next}
-              className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 transition-colors"
-              style={{
-                background: "rgba(255,255,255,0.05)",
-                border: "1px solid rgba(255,255,255,0.1)",
-                color: "#94a3b8",
-              }}
+              className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 transition-all"
+              style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#94a3b8" }}
             >
               <ChevronRight size={18} />
             </button>
           </div>
 
-          {/* Dots */}
-          <div className="flex items-center justify-center gap-2 mt-4">
-            {DEMOS.map((_, i) => (
+          {/* Dot indicators */}
+          <div className="flex items-center justify-center gap-2 mt-5">
+            {DEMOS.map((d, i) => (
               <button
-                key={i}
-                onClick={() => setActiveIndex(i)}
+                key={i} onClick={() => setActiveIndex(i)}
                 style={{
-                  width: activeIndex === i ? 20 : 6,
-                  height: 6,
-                  borderRadius: 3,
-                  background: activeIndex === i ? DEMOS[i].accent : "rgba(255,255,255,0.15)",
-                  transition: "all 0.3s ease",
-                  border: "none",
-                  cursor: "pointer",
-                  padding: 0,
+                  width: activeIndex === i ? 22 : 6, height: 6, borderRadius: 3,
+                  background: activeIndex === i ? d.accent : "rgba(255,255,255,0.15)",
+                  transition: "all 0.3s ease", border: "none", cursor: "pointer", padding: 0,
                 }}
               />
             ))}
           </div>
         </motion.div>
 
-        {/* Active demo heading */}
+        {/* Demo title + description */}
         <AnimatePresence mode="wait">
           <motion.div
-            key={demo.id + "-heading"}
-            className="text-center mb-8 max-w-xl"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.3 }}
+            key={demo.id + "-info"}
+            className="text-center mb-7 max-w-xl"
+            initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.28 }}
           >
-            <h1
-              className="text-3xl md:text-4xl font-display font-bold mb-3"
+            <h2
+              className="text-2xl md:text-3xl font-display font-bold mb-2"
               style={{
-                background: `linear-gradient(135deg, #a78bfa 0%, ${demo.accent} 100%)`,
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
+                background: `linear-gradient(135deg, #a78bfa, ${demo.accent})`,
+                WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
               }}
             >
               {demo.title}
-            </h1>
-            <p className="text-slate-400 leading-relaxed text-sm md:text-base">{demo.description}</p>
+            </h2>
+            <p className="text-slate-400 text-sm leading-relaxed">{demo.description}</p>
           </motion.div>
         </AnimatePresence>
 
-        {/* Video player */}
+        {/* Full video player */}
         <motion.div
           className="w-full max-w-5xl"
-          initial={{ opacity: 0, y: 30, scale: 0.98 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.65, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
         >
           <AnimatePresence mode="wait">
             <motion.div
               key={demo.id}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.25 }}
+              initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -24 }}
+              transition={{ duration: 0.28 }}
             >
               <VideoPlayer demo={demo} />
             </motion.div>
@@ -454,16 +434,12 @@ const DemoPage = () => {
           <motion.div
             key={demo.id + "-stats"}
             className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-8"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4, delay: 0.1 }}
+            initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+            transition={{ duration: 0.35, delay: 0.1 }}
           >
             {demo.stats.map((stat, i) => (
               <div key={i} className="flex items-center gap-3">
-                <div className="text-lg font-bold font-mono" style={{ color: demo.accent }}>
-                  {stat.value}
-                </div>
+                <div className="text-lg font-bold font-mono" style={{ color: demo.accent }}>{stat.value}</div>
                 <div className="text-sm text-slate-500">{stat.label}</div>
                 {i < demo.stats.length - 1 && (
                   <div className="hidden sm:block w-px h-4" style={{ background: "rgba(255,255,255,0.1)" }} />
