@@ -325,17 +325,9 @@ const DemoPage = () => {
           transition={{ duration: 0.65, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
         >
           {isMobile ? (
-            /* ── Mobile: full-width, arrows inside ── */
+            /* ── Mobile: full-width, no transition animation (prevents blink) ── */
             <div className="relative">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={demo.id}
-                  initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -24 }}
-                  transition={{ duration: 0.25 }}
-                >
-                  <VideoCard demo={demo} isActive onClick={() => {}} />
-                </motion.div>
-              </AnimatePresence>
+              <VideoCard demo={demo} isActive onClick={() => {}} />
               <button onClick={prev}
                 className="absolute top-3 left-3 w-9 h-9 rounded-full flex items-center justify-center"
                 style={{ background: "rgba(4,5,13,0.7)", border: "1px solid rgba(255,255,255,0.15)", color: "#94a3b8", zIndex: 20 }}
