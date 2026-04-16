@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aged Care AI — System Architecture</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:          #0d1117;
+      --surface:     rgba(255,255,255,0.07);
+      --border:      rgba(255,255,255,0.14);
+      --cyan:        #38d9f5;
+      --cyan-dim:    rgba(56,217,245,0.1);
+      --cyan-glow:   0 0 18px rgba(56,217,245,0.3);
+      --green:       #34d987;
+      --green-dim:   rgba(52,217,135,0.1);
+      --green-glow:  0 0 18px rgba(52,217,135,0.3);
+      --amber:       #fbbf24;
+      --amber-dim:   rgba(251,191,36,0.1);
+      --text:        #f0f4f8;
+      --muted:       #8899aa;
+      --mono:        'JetBrains Mono', monospace;
+      --sans:        'Space Grotesk', sans-serif;
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 32px 24px 64px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+    }
+
+    /* ── HEADER ── */
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--cyan);
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 5px 14px;
+      border: 1px solid rgba(0,200,245,0.25);
+      border-radius: 20px;
+      background: var(--cyan-dim);
+      margin-bottom: 14px;
+    }
+    header h1 {
+      font-size: clamp(1.3rem, 2.5vw, 1.9rem);
+      font-weight: 700; letter-spacing: -0.3px;
+    }
+    header p {
+      font-family: var(--mono);
+      font-size: 11px; color: var(--muted); margin-top: 6px; letter-spacing: 0.04em;
+    }
+
+    /* ── DIAGRAM SHELL ── */
+    .diagram-shell {
+      width: 100%;
+      max-width: 1240px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 16px;
+      padding: 40px 36px 36px;
+      position: relative;
+    }
+    .diagram-shell::before {
+      content: '';
+      position: absolute; top: 0; left: 12%; right: 12%; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+      opacity: 0.5;
+    }
+    .diag-label {
+      font-family: var(--mono);
+      font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase;
+      color: #6b7f96; text-align: center; margin-bottom: 36px;
+    }
+
+    /* ── MAIN LAYOUT ── */
+    .arch-layout {
+      display: flex;
+      align-items: flex-start;
+      gap: 0;
+      justify-content: center;
+    }
+
+    /* Column */
+    .arch-col {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex-shrink: 0;
+      width: 172px;
+    }
+    .arch-col-label {
+      font-family: var(--mono);
+      font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+      color: #aabbcc; margin-bottom: 4px; text-align: center;
+    }
+
+    /* On-premises fence wrapping ingestion + AI */
+    .fence {
+      border: 1.5px dashed rgba(56,217,245,0.45);
+      border-radius: 12px;
+      padding: 28px 14px 16px;
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      gap: 0;
+      flex-shrink: 0;
+      background: rgba(56,217,245,0.02);
+    }
+    .fence-tag {
+      position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+      background: #0d1117;
+      padding: 2px 14px;
+      font-family: var(--mono); font-size: 9px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--cyan); white-space: nowrap;
+      border: 1px solid rgba(56,217,245,0.4); border-radius: 20px;
+    }
+
+    /* Arrow separators */
+    .arch-arrow {
+      display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+      padding-top: 52px;
+      width: 44px; flex-shrink: 0; align-self: flex-start;
+      gap: 5px;
+    }
+    .arch-arrow svg { display: block; }
+    .arch-arrow-label {
+      font-family: var(--mono); font-size: 7.5px; letter-spacing: 1px;
+      text-transform: uppercase; color: rgba(56,217,245,0.5);
+      text-align: center; line-height: 1.3; white-space: nowrap;
+    }
+
+    /* ── NODE CARDS ── */
+    .node {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 10px;
+      padding: 12px 12px;
+      cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+      position: relative;
+      user-select: none;
+    }
+    .node:hover {
+      border-color: rgba(56,217,245,0.5);
+      box-shadow: 0 0 14px rgba(56,217,245,0.12);
+      background: rgba(56,217,245,0.07);
+    }
+    .node.active {
+      border-color: var(--cyan);
+      box-shadow: var(--cyan-glow);
+      background: rgba(56,217,245,0.1);
+    }
+    .node.active::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: var(--cyan); border-radius: 10px 10px 0 0;
+    }
+    .node.green:hover {
+      border-color: rgba(52,217,135,0.5);
+      box-shadow: 0 0 14px rgba(52,217,135,0.12);
+      background: rgba(52,217,135,0.07);
+    }
+    .node.green.active {
+      border-color: var(--green);
+      box-shadow: var(--green-glow);
+      background: rgba(52,217,135,0.1);
+    }
+    .node.green.active::before { background: var(--green); }
+
+    /* Extension nodes — dashed border, amber tint */
+    .node.ext {
+      border: 1px dashed rgba(251,191,36,0.3);
+      background: rgba(251,191,36,0.03);
+    }
+    .node.ext:hover {
+      border-color: rgba(251,191,36,0.55);
+      box-shadow: 0 0 14px rgba(251,191,36,0.1);
+      background: rgba(251,191,36,0.06);
+    }
+    .node.ext.active {
+      border-color: var(--amber);
+      box-shadow: 0 0 18px rgba(251,191,36,0.2);
+      background: rgba(251,191,36,0.07);
+    }
+    .node.ext.active::before { background: var(--amber); }
+    .node.ext .node-icon svg { stroke: var(--amber); }
+    .ext-badge {
+      font-family: var(--mono); font-size: 7px; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--amber);
+      background: rgba(251,191,36,0.1);
+      border: 1px solid rgba(251,191,36,0.25);
+      border-radius: 3px; padding: 1px 5px;
+      display: inline-block; margin-top: 4px;
+    }
+
+    .node-header {
+      display: flex; align-items: flex-start; gap: 10px; margin-bottom: 6px;
+    }
+    .node-icon {
+      width: 28px; height: 28px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .node-icon svg {
+      width: 16px; height: 16px;
+      stroke: var(--cyan); fill: none;
+      stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .node.green .node-icon svg { stroke: var(--green); }
+    .node-text { flex: 1; min-width: 0; }
+    .node-title {
+      font-size: 0.8rem; font-weight: 700; color: #ffffff;
+      line-height: 1.2; margin-bottom: 3px;
+    }
+    .node-sub {
+      font-family: var(--mono); font-size: 0.59rem; color: #8899aa;
+      line-height: 1.3;
+    }
+
+    /* ── BOTTOM ROW ── */
+    .bottom-bar {
+      display: flex; gap: 16px; margin-top: 24px;
+    }
+    .bottom-bar .node { flex: 1; }
+
+    /* ── MODAL OVERLAY ── */
+    #backdrop {
+      display: none; position: fixed; inset: 0; z-index: 100;
+      background: rgba(4,6,12,0.75);
+      backdrop-filter: blur(6px);
+      align-items: center; justify-content: center;
+    }
+    #backdrop.open { display: flex; }
+
+    #modal {
+      width: 720px; max-width: 96vw;
+      max-height: 88vh;
+      overflow-y: auto;
+      background: #111827;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 16px;
+      animation: modalIn 0.22s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+    @keyframes modalIn {
+      from { opacity:0; transform: scale(0.94) translateY(12px); }
+      to   { opacity:1; transform: scale(1) translateY(0); }
+    }
+
+    /* modal top bar */
+    .modal-bar {
+      display: flex; align-items: center; gap: 14px;
+      padding: 20px 20px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .modal-ico {
+      width: 44px; height: 44px; flex-shrink: 0;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .modal-ico svg {
+      width: 22px; height: 22px; fill: none;
+      stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .modal-ico.c  { background: rgba(56,217,245,0.1);  border: 1px solid rgba(56,217,245,0.25); }
+    .modal-ico.c svg { stroke: var(--cyan); }
+    .modal-ico.g  { background: rgba(52,217,135,0.1);  border: 1px solid rgba(52,217,135,0.25); }
+    .modal-ico.g svg { stroke: var(--green); }
+    .modal-titles { flex: 1; }
+    .modal-title  { font-size: 1rem; font-weight: 700; color: #fff; }
+    .modal-sub    { font-family: var(--mono); font-size: 0.6rem; color: var(--muted); margin-top: 2px; }
+    .modal-close  {
+      width: 28px; height: 28px; border-radius: 6px; border: none;
+      background: rgba(255,255,255,0.07); color: var(--muted);
+      cursor: pointer; font-size: 0.95rem; line-height: 1;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s, color 0.15s;
+    }
+    .modal-close:hover { background: rgba(255,255,255,0.14); color: #fff; }
+
+    /* modal body */
+    .modal-body { padding: 18px 20px 22px; display: flex; flex-direction: column; gap: 16px; }
+
+    /* description paragraph */
+    .modal-desc {
+      font-size: 0.85rem; line-height: 1.65; color: #c8d8e8;
+      border-left: 2px solid rgba(56,217,245,0.3);
+      padding-left: 12px;
+    }
+
+
+    /* stat row */
+    .modal-stat {
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(251,191,36,0.07);
+      border: 1px solid rgba(251,191,36,0.2);
+      border-left: 3px solid var(--amber);
+      border-radius: 8px; padding: 10px 14px;
+    }
+    .stat-num {
+      font-family: var(--mono); font-size: 1.25rem; font-weight: 700;
+      color: var(--amber); white-space: nowrap;
+    }
+    .stat-label { font-size: 0.78rem; color: #c9a96e; line-height: 1.4; }
+
+    /* tech tags */
+    .modal-sec-label {
+      font-family: var(--mono); font-size: 9px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+    }
+    .tag-list { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag {
+      font-family: var(--mono); font-size: 0.61rem;
+      color: var(--cyan); background: rgba(56,217,245,0.08);
+      border: 1px solid rgba(56,217,245,0.2);
+      border-radius: 4px; padding: 3px 9px; line-height: 1.5;
+    }
+
+    /* io flow */
+    .io-flow {
+      display: flex; align-items: flex-start; gap: 10px;
+    }
+    .io-col { flex: 1; }
+    .io-col-label {
+      font-family: var(--mono); font-size: 9px; letter-spacing: 1.5px;
+      text-transform: uppercase; margin-bottom: 7px;
+    }
+    .io-col-label.in  { color: rgba(56,217,245,0.7); }
+    .io-col-label.out { color: rgba(52,217,135,0.7); }
+    .io-item {
+      font-size: 0.71rem; color: #8899aa; padding: 3px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04); line-height: 1.4;
+    }
+    .io-item:last-child { border: none; }
+    .io-arrow {
+      padding-top: 18px; color: var(--muted); font-size: 1rem; flex-shrink: 0;
+    }
+
+    /* system platform cards */
+    .sys-grid {
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;
+    }
+    .sys-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px; padding: 10px 12px;
+      display: flex; flex-direction: column; gap: 6px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .sys-card:hover {
+      border-color: rgba(56,217,245,0.35);
+      background: rgba(56,217,245,0.05);
+    }
+    .sys-card svg {
+      width: 16px; height: 16px; flex-shrink: 0;
+      stroke: var(--cyan); fill: none;
+      stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .sys-card-name {
+      font-size: 0.73rem; font-weight: 700; color: #fff; line-height: 1.2;
+    }
+    .sys-card-role {
+      font-family: var(--mono); font-size: 0.57rem; color: var(--muted); line-height: 1.3;
+    }
+
+    /* Animated SVG connection lines */
+    .flow-line {
+      stroke-dasharray: 5 3;
+      animation: flow 1.8s linear infinite;
+    }
+    .flow-line-slow {
+      stroke-dasharray: 5 3;
+      animation: flow 2.5s linear infinite;
+    }
+    @keyframes flow {
+      to { stroke-dashoffset: -32; }
+    }
+
+    /* Overlay to close panel */
+    #overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 99;
+    }
+    #overlay.active { display: block; }
+
+    /* footer */
+    footer {
+      margin-top: 28px; text-align: center;
+      font-family: var(--mono); font-size: 10px; color: var(--muted);
+    }
+    footer span { color: var(--cyan); }
+
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+    SingSinghAI · April 2026
+  </div>
+  <h1>Aged Care AI System Architecture</h1>
+  <p>Click any component to explore what it does</p>
+</header>
+
+<div class="diagram-shell">
+
+  <div class="arch-layout">
+
+    <!-- COL 1: DATA INPUTS -->
+    <div class="arch-col">
+      <div class="arch-col-label">Data Inputs</div>
+      <div class="node" data-id="clinical_systems">
+        <div class="node-header">
+          <div class="node-icon">
+            <svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+          </div>
+          <div class="node-text">
+            <div class="node-title">Clinical Systems</div>
+            <div class="node-sub">Existing facility software</div>
+          </div>
+        </div>
+      </div>
+      <div class="node ext" data-id="voice_input">
+        <div class="node-header">
+          <div class="node-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+          </div>
+          <div class="node-text">
+            <div class="node-title">Voice Input</div>
+            <div class="node-sub">Nurse speech capture</div>
+            <div class="ext-badge">Extension</div>
+          </div>
+        </div>
+      </div>
+      <div class="node" data-id="staff_entry">
+        <div class="node-header">
+          <div class="node-icon">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <div class="node-text">
+            <div class="node-title">Staff Entry</div>
+            <div class="node-sub">Forms &amp; updates</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ARROW 1 -->
+    <div class="arch-arrow">
+      <svg width="36" height="60" viewBox="0 0 36 60">
+        <line class="flow-line" x1="4" y1="30" x2="28" y2="30" stroke="rgba(0,200,245,0.4)" stroke-width="1.5"/>
+        <polyline points="22,24 30,30 22,36" fill="none" stroke="rgba(0,200,245,0.6)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="arch-arrow-label">raw<br>data</div>
+    </div>
+
+    <!-- FENCE: INGESTION + AI STACK -->
+    <div class="fence">
+      <div class="fence-tag">Runs Inside the Facility</div>
+
+      <!-- COL 2: INGESTION -->
+      <div class="arch-col">
+        <div class="arch-col-label">Ingestion</div>
+        <div class="node" data-id="api_framework">
+          <div class="node-header">
+            <div class="node-icon">
+              <svg viewBox="0 0 24 24"><path d="M18 6v6a6 6 0 0 1-12 0V6"/><line x1="9" y1="2" x2="9" y2="6"/><line x1="15" y1="2" x2="15" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/></svg>
+            </div>
+            <div class="node-text">
+              <div class="node-title">API Framework</div>
+              <div class="node-sub">Platform connectors</div>
+            </div>
+          </div>
+        </div>
+        <div class="node" data-id="reconciler">
+          <div class="node-header">
+            <div class="node-icon">
+              <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </div>
+            <div class="node-text">
+              <div class="node-title">Reconciler</div>
+              <div class="node-sub">Conflict detection</div>
+            </div>
+          </div>
+        </div>
+        <div class="node" data-id="single_entry">
+          <div class="node-header">
+            <div class="node-icon">
+              <svg viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+            </div>
+            <div class="node-text">
+              <div class="node-title">Single Entry</div>
+              <div class="node-sub">One write, all systems</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ARROW 2 -->
+      <div class="arch-arrow">
+        <svg width="36" height="60" viewBox="0 0 36 60">
+          <line class="flow-line" x1="4" y1="30" x2="28" y2="30" stroke="rgba(0,200,245,0.5)" stroke-width="1.5"/>
+          <polyline points="22,24 30,30 22,36" fill="none" stroke="rgba(0,200,245,0.7)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="arch-arrow-label">clean<br>data</div>
+      </div>
+
+      <!-- COL 3: AI STACK -->
+      <div class="arch-col">
+        <div class="arch-col-label">AI Engine</div>
+        <div class="node" data-id="regulatory_kb">
+          <div class="node-header">
+            <div class="node-icon">
+              <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            </div>
+            <div class="node-text">
+              <div class="node-title">Regulatory KB</div>
+              <div class="node-sub">Always current regulations</div>
+            </div>
+          </div>
+        </div>
+        <div class="node" data-id="llm_engine">
+          <div class="node-header">
+            <div class="node-icon">
+              <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="2" x2="9" y2="4"/><line x1="15" y1="2" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="22"/><line x1="15" y1="20" x2="15" y2="22"/><line x1="20" y1="9" x2="22" y2="9"/><line x1="20" y1="14" x2="22" y2="14"/><line x1="2" y1="9" x2="4" y2="9"/><line x1="2" y1="14" x2="4" y2="14"/></svg>
+            </div>
+            <div class="node-text">
+              <div class="node-title">Intelligence Engine</div>
+              <div class="node-sub">Runs on facility hardware</div>
+            </div>
+          </div>
+        </div>
+        <div class="node ext" data-id="ml_pattern">
+          <div class="node-header">
+            <div class="node-icon">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><line x1="3" y1="12" x2="9" y2="12"/><line x1="15" y1="12" x2="21" y2="12"/><line x1="12" y1="3" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="21"/><line x1="5.6" y1="5.6" x2="8.5" y2="8.5"/><line x1="15.5" y1="15.5" x2="18.4" y2="18.4"/><line x1="5.6" y1="18.4" x2="8.5" y2="15.5"/><line x1="15.5" y1="8.5" x2="18.4" y2="5.6"/></svg>
+            </div>
+            <div class="node-text">
+              <div class="node-title">Pattern Recognition</div>
+              <div class="node-sub">Clinical risk detection</div>
+              <div class="ext-badge">Extension</div>
+            </div>
+          </div>
+        </div>
+        <div class="node" data-id="compliance_engine">
+          <div class="node-header">
+            <div class="node-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+            </div>
+            <div class="node-text">
+              <div class="node-title">Compliance Engine</div>
+              <div class="node-sub">Tracks standards and claims</div>
+            </div>
+          </div>
+        </div>
+        <div class="node" data-id="reporting_engine">
+          <div class="node-header">
+            <div class="node-icon">
+              <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg>
+            </div>
+            <div class="node-text">
+              <div class="node-title">Reporting Engine</div>
+              <div class="node-sub">Auto-generated outputs</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /fence -->
+
+    <!-- ARROW 3 -->
+    <div class="arch-arrow">
+      <svg width="36" height="60" viewBox="0 0 36 60">
+        <line class="flow-line" x1="4" y1="30" x2="28" y2="30" stroke="rgba(16,200,122,0.5)" stroke-width="1.5"/>
+        <polyline points="22,24 30,30 22,36" fill="none" stroke="rgba(16,200,122,0.7)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="arch-arrow-label" style="color:rgba(52,217,135,0.55)">AI<br>output</div>
+    </div>
+
+    <!-- COL 4: HUMAN INTERFACES -->
+    <div class="arch-col">
+      <div class="arch-col-label">Human Review</div>
+      <div class="node green" data-id="staff_console">
+        <div class="node-header">
+          <div class="node-icon">
+            <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg>
+          </div>
+          <div class="node-text">
+            <div class="node-title">Staff Console</div>
+            <div class="node-sub">Approval gate</div>
+          </div>
+        </div>
+      </div>
+      <div class="node green" data-id="manager_dashboard">
+        <div class="node-header">
+          <div class="node-icon">
+            <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <div class="node-text">
+            <div class="node-title">Manager Dashboard</div>
+            <div class="node-sub">Live operational view</div>
+          </div>
+        </div>
+      </div>
+      <div class="node green" data-id="board_reports">
+        <div class="node-header">
+          <div class="node-icon">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+          </div>
+          <div class="node-text">
+            <div class="node-title">Board Reports</div>
+            <div class="node-sub">Governance packs</div>
+          </div>
+        </div>
+      </div>
+      <div class="node green" data-id="gov_submissions">
+        <div class="node-header">
+          <div class="node-icon">
+            <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          </div>
+          <div class="node-text">
+            <div class="node-title">Gov Submissions</div>
+            <div class="node-sub">Pre-validated · lodged by staff</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /arch-layout -->
+
+  <!-- BOTTOM BAR -->
+  <div class="bottom-bar">
+    <div class="node" data-id="audit_trail">
+      <div class="node-header">
+        <div class="node-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <div class="node-text">
+          <div class="node-title">Audit Trail</div>
+          <div class="node-sub">Every action logged · timestamp · staff ID</div>
+        </div>
+      </div>
+    </div>
+    <div class="node" data-id="feedback_loop">
+      <div class="node-header">
+        <div class="node-icon">
+          <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+        </div>
+        <div class="node-text">
+          <div class="node-title">Feedback Loop</div>
+          <div class="node-sub">Staff corrections → continuous model improvement</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /diagram-shell -->
+
+<!-- MODAL -->
+<div id="backdrop">
+  <div id="modal">
+    <div class="modal-bar">
+      <div class="modal-ico" id="mIco"></div>
+      <div class="modal-titles">
+        <div class="modal-title" id="mTitle"></div>
+        <div class="modal-sub"  id="mSub"></div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="mBody"></div>
+  </div>
+</div>
+
+<footer>
+  <span>SingSinghAI</span> · singsinghai.com.au · Brisbane, Australia
+</footer>
+
+<script>
+// ── ICON PATHS (Feather-style SVG, viewBox 0 0 24 24) ──
+const ICONS = {
+  database:   `<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>`,
+  mic:        `<path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/>`,
+  file:       `<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>`,
+  plug:       `<path d="M18 6v6a6 6 0 0 1-12 0V6"/><line x1="9" y1="2" x2="9" y2="6"/><line x1="15" y1="2" x2="15" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/>`,
+  activity:   `<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>`,
+  layers:     `<polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/>`,
+  book:       `<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>`,
+  cpu:        `<rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="2" x2="9" y2="4"/><line x1="15" y1="2" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="22"/><line x1="15" y1="20" x2="15" y2="22"/><line x1="20" y1="9" x2="22" y2="9"/><line x1="20" y1="14" x2="22" y2="14"/><line x1="2" y1="9" x2="4" y2="9"/><line x1="2" y1="14" x2="4" y2="14"/>`,
+  crosshair:  `<circle cx="12" cy="12" r="3"/><line x1="3" y1="12" x2="9" y2="12"/><line x1="15" y1="12" x2="21" y2="12"/><line x1="12" y1="3" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="21"/>`,
+  shield:     `<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/>`,
+  barchart:   `<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/>`,
+  usercheck:  `<path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/>`,
+  monitor:    `<rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>`,
+  layout:     `<rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/>`,
+  checksq:    `<polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>`,
+  lock:       `<rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>`,
+  refresh:    `<polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>`,
+  zap:        `<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>`,
+  server:     `<rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/>`,
+  alerttri:   `<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>`,
+  clock:      `<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>`,
+  hash:       `<line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/>`,
+  gitmerge:   `<circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M6 21V9a9 9 0 0 0 9 9"/>`,
+  sliders:    `<line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/>`,
+  checkcirc:  `<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>`,
+  send:       `<line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>`,
+  eye:        `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`,
+  users:      `<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>`,
+  terminal:   `<polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/>`,
+  filter:     `<polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>`,
+  calendar:   `<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>`,
+  inbox:      `<polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>`,
+};
+
+function svgIcon(name, isGreen) {
+  const c = isGreen ? '#34d987' : '#38d9f5';
+  return `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="${c}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${ICONS[name]}</svg>`;
+}
+
+// ── NODE DATA (compact) ──
+const NODES = {
+
+  clinical_systems: {
+    title: "Clinical Systems",
+    subtitle: "your existing software, untouched",
+    desc: "The software your facility already runs — PointClickCare, Leecare, ShiftCare, Civica, AlayaCare. The AI layer connects on top. Nothing is replaced, no contracts change, and staff do not need retraining on existing systems.",
+    icon: "database", color: "cyan",
+    stat: null,
+    sysLabel: "Connected Platforms",
+    systems: [
+      { icon: "cpu",      name: "PointClickCare", role: "Clinical records & care management" },
+      { icon: "barchart", name: "Leecare",         role: "Billing, finance & AN-ACC claiming" },
+      { icon: "activity", name: "AlayaCare",       role: "Allied health & home care" },
+      { icon: "file",     name: "Civica",          role: "Incident management & governance" },
+      { icon: "layers",   name: "ShiftCare",       role: "Rostering, payroll & scheduling" },
+      { icon: "plug",     name: "REST / Webhooks", role: "API adapters connecting all platforms" },
+    ],
+    tech: [],
+    ins:  [],
+    outs: ["Clinical records", "Medication logs", "Rostering data", "Billing data", "Incident reports"],
+    callout: "Nothing replaced. AI sits on top of existing software via API — contracts and staff training stay intact.",
+  },
+
+  voice_input: {
+    title: "Voice Input",
+    subtitle: "optional add-on for voice documentation",
+    desc: "An optional add-on that lets care staff speak a brief summary after an interaction rather than typing it. The system converts that speech into structured text and feeds it into the documentation workflow. This builds on the core platform once the foundation is in place.",
+    icon: "mic", color: "cyan",
+    sysLabel: "Capability Areas",
+    stat: null,
+    systems: [
+      { icon: "mic",      name: "Voice Capture",          role: "Records the staff member speaking" },
+      { icon: "activity", name: "Transcription",          role: "Converts spoken words to written text" },
+      { icon: "book",     name: "Clinical Language",      role: "Understands care-specific words and context" },
+      { icon: "send",     name: "Handoff to AI",          role: "Passes the text into the documentation workflow" },
+    ],
+    ins:  ["Staff speaking after a care interaction"],
+    outs: ["Written text ready for the AI to structure"],
+    callout: "Optional add-on built on top of the core system. Staff speak instead of type, saving time at the point of care.",
+  },
+
+  staff_entry: {
+    title: "Staff Entry",
+    subtitle: "one form for all updates",
+    desc: "A single browser-based form for any staff update: roster changes, incident reports, care plan corrections, or fixing an AI draft. One submission updates every connected platform at once. Every correction staff make also helps the AI get better over time.",
+    icon: "file", color: "cyan",
+    sysLabel: "Interface Components",
+    stat: null,
+    systems: [
+      { icon: "monitor",  name: "Browser Interface",      role: "Works on any device, no software to install" },
+      { icon: "layers",   name: "Format Translator",      role: "Sends each platform the format it expects" },
+      { icon: "checkcirc",name: "Error Check",            role: "Catches mistakes before they reach any system" },
+      { icon: "refresh",  name: "Safe Write",             role: "Either all systems update or none do" },
+      { icon: "send",     name: "Learning Signal",        role: "Staff corrections help the AI improve" },
+    ],
+    ins:  ["Roster changes", "Incident reports", "Care plan updates", "AI corrections"],
+    outs: ["All platforms updated simultaneously", "Corrections used to improve the AI"],
+    callout: "Every correction a staff member makes helps the system get more accurate over time.",
+  },
+
+  api_framework: {
+    title: "API Integration Framework",
+    subtitle: "connects all your existing software",
+    desc: "The layer that connects every platform the facility already runs. Data entered once is translated into the right format for each system and sent automatically. Staff stop copying information from one system into another.",
+    icon: "plug", color: "cyan",
+    sysLabel: "Integration Components",
+    stat: { num: "5–8", label: "platforms connected via one integration layer" },
+    systems: [
+      { icon: "plug",     name: "Platform Connectors",    role: "One connector per existing software platform" },
+      { icon: "zap",      name: "Live Updates",           role: "Changes pushed the moment they are made" },
+      { icon: "sliders",  name: "Format Translator",      role: "Each system gets data in the format it needs" },
+      { icon: "lock",     name: "Secure Access",          role: "Credentials stored safely per platform" },
+      { icon: "alerttri", name: "Failure Handling",       role: "Retries on failure and alerts staff if needed" },
+      { icon: "activity", name: "Traffic Manager",        role: "Respects each platform's connection limits" },
+    ],
+    ins:  ["Any staff entry or AI output"],
+    outs: ["Updates sent to all connected platforms"],
+    callout: "Staff enter information once. Every connected platform receives it automatically in the right format.",
+  },
+
+  reconciler: {
+    title: "Data Reconciliation Engine",
+    subtitle: "catches when records disagree across systems",
+    desc: "Continuously checks whether records across all connected platforms match each other. When they do not, it flags the discrepancy before it becomes a compliance problem, a rejected government claim, or a clinical risk. Most facilities find these mismatches weeks later — if they find them at all.",
+    icon: "activity", color: "cyan",
+    sysLabel: "Detection Components",
+    stat: { num: "< 24 hr", label: "time to detect record conflict across platforms" },
+    systems: [
+      { icon: "activity", name: "Continuous Monitor",     role: "Watches all platforms for changes in real time" },
+      { icon: "hash",     name: "Record Comparison",      role: "Detects when the same record differs across systems" },
+      { icon: "sliders",  name: "Severity Classifier",    role: "Rates how serious each mismatch is" },
+      { icon: "alerttri", name: "Smart Alerts",           role: "Sends each flag to the right person" },
+      { icon: "checkcirc",name: "Resolution Tracking",    role: "Follows up until each mismatch is resolved" },
+    ],
+    ins:  ["Live records from all connected platforms"],
+    outs: ["Mismatch alerts ranked by severity", "Tasks for staff to resolve", "Clean unified record"],
+    callout: "A South Australian facility had a gap between manual records and their software system. This engine would have flagged it within 24 hours. The clinical risk was avoided.",
+  },
+
+  single_entry: {
+    title: "Single Entry Interface",
+    subtitle: "enter once, every system updates",
+    desc: "Typing the same information into multiple platforms is the main source of data errors in most facilities. This eliminates that entirely. Staff enter information once and every connected system updates automatically, together, with a full record of who did it and when.",
+    icon: "layers", color: "cyan",
+    sysLabel: "Write Layer Components",
+    stat: null,
+    systems: [
+      { icon: "layers",   name: "Single Form",            role: "One form that maps to every platform's format" },
+      { icon: "checkcirc",name: "Quality Check",          role: "Data is validated before anything is written" },
+      { icon: "gitmerge", name: "All or Nothing",         role: "All systems update together or none do" },
+      { icon: "refresh",  name: "Sync Engine",            role: "Keeps all platforms consistent with each other" },
+      { icon: "lock",     name: "Audit Record",           role: "Every entry logged with staff name and time" },
+    ],
+    ins:  ["Any staff entry: forms, corrections, updates"],
+    outs: ["All platforms updated at once", "Full audit log of every entry"],
+    callout: "One submission. Every system updated. No reconciliation required after the fact.",
+  },
+
+  regulatory_kb: {
+    title: "Regulatory Knowledge Base",
+    subtitle: "all aged care regulations in one place, always current",
+    desc: "A knowledge base containing all aged care legislation: all 8 Quality Standard domains, the AN-ACC framework, mandatory care minute rules, the Australian Privacy Principles and the My Health Records Act. Every time the AI generates an output, it checks this knowledge base first so what it produces is grounded in the actual current rules, not just what it was trained on.",
+    icon: "book", color: "cyan",
+    sysLabel: "Knowledge Architecture",
+    stat: { num: "8 domains", label: "Aged Care Quality Standards — fully indexed and searchable" },
+    systems: [
+      { icon: "book",     name: "Knowledge Base",         role: "All aged care legislation stored and searchable" },
+      { icon: "database", name: "Regulation Index",       role: "Every rule indexed for fast retrieval" },
+      { icon: "activity", name: "Legislation Monitor",    role: "Watches for changes to the Aged Care Act" },
+      { icon: "refresh",  name: "Auto Update",            role: "Knowledge base updates when rules change" },
+      { icon: "crosshair",name: "Rule Lookup",            role: "Finds the exact relevant rule every time" },
+      { icon: "shield",   name: "Full Coverage",          role: "AN-ACC, Care Minutes, Privacy Principles and more" },
+    ],
+    ins:  ["Aged Care Quality Standards", "AN-ACC framework", "Care Minute rules", "Privacy legislation"],
+    outs: ["Correct regulations fed to the AI on every output", "Alerts when rules change"],
+    callout: "The AI does not guess what compliance looks like. It looks up the actual current rule every single time.",
+  },
+
+  llm_engine: {
+    title: "Intelligence Engine",
+    subtitle: "the AI that runs on your hardware, not in the cloud",
+    desc: "The core AI model that runs inside the facility. No resident data ever leaves the building. It takes information from staff and connected systems and turns it into compliant clinical notes, handover summaries, and compliance documents. Every output must be approved by a staff member before it is saved. That approval step cannot be skipped.",
+    icon: "cpu", color: "cyan",
+    sysLabel: "AI Stack Components",
+    stat: { num: "7B–13B", label: "parameter open-weight LLM running on facility GPU hardware" },
+    systems: [
+      { icon: "cpu",      name: "AI Language Model",      role: "Runs on facility hardware, no cloud connection" },
+      { icon: "sliders",  name: "Clinical Training",      role: "Trained on care records and aged care standards" },
+      { icon: "server",   name: "On-Site Server",         role: "Processes everything inside the building" },
+      { icon: "book",     name: "Regulation Check",       role: "Consults the knowledge base on every output" },
+      { icon: "terminal", name: "Structured Output",      role: "Always produces a consistent, usable format" },
+      { icon: "shield",   name: "Accuracy Guard",         role: "Outputs grounded in retrieved rules, not guesses" },
+    ],
+    ins:  ["Clinical notes and staff input", "Data from connected systems", "Current regulations from knowledge base"],
+    outs: ["Draft clinical note tagged to a Quality Standard", "Handover summaries", "Compliance documents"],
+    callout: "The AI prepares the draft. The nurse reviews and approves it. Nothing is saved without that sign-off.",
+  },
+
+  ml_pattern: {
+    title: "Pattern Recognition",
+    subtitle: "optional add-on for early resident risk detection",
+    desc: "An optional add-on that watches resident data across clinical records, medication logs and allied health notes at the same time. It looks for patterns that no single system would notice on its own — things like repeated falls, gradual deterioration or medication gaps. When it finds something, it raises a flag. A clinician then decides what to do. This is built on top of the core integration layer once that is in place.",
+    icon: "crosshair", color: "cyan",
+    sysLabel: "Capability Areas",
+    stat: null,
+    systems: [
+      { icon: "crosshair",name: "Pattern Detection",      role: "Spots trends across all resident data" },
+      { icon: "activity", name: "Multi-System View",      role: "Looks across clinical, medication and allied health" },
+      { icon: "alerttri", name: "Early Warning",          role: "Raises a flag before things escalate" },
+      { icon: "usercheck",name: "Clinician Review",       role: "The flag goes to a clinician who makes the call" },
+    ],
+    ins:  ["Clinical records", "Medication logs", "Allied health notes"],
+    outs: ["Risk flag sent to the right staff member", "Summary of what was detected"],
+    callout: "Optional add-on available once the core integration layer is running. The system raises flags. Clinicians make every decision.",
+  },
+
+  compliance_engine: {
+    title: "Compliance Engine",
+    subtitle: "tracks compliance, care minutes and claims in one place",
+    desc: "Automatically links every care interaction to the relevant Aged Care Quality Standard. Tracks mandatory care minutes in real time so managers know where they stand during a shift, not at month end. Checks billing data against care records before any claim is submitted. Audit evidence builds up continuously in the background.",
+    icon: "shield", color: "cyan",
+    sysLabel: "Compliance Components",
+    stat: { num: "Weeks → Hours", label: "audit preparation time with continuous compliance evidence" },
+    systems: [
+      { icon: "shield",   name: "Standards Tracker",      role: "Links every interaction to the right Quality Standard" },
+      { icon: "clock",    name: "Care Minute Monitor",    role: "Tracks mandatory minutes live, per shift" },
+      { icon: "checksq",  name: "Claims Checker",         role: "Checks billing against care records before lodging" },
+      { icon: "monitor",  name: "Compliance View",        role: "Shows where the facility stands against requirements" },
+      { icon: "lock",     name: "Audit Evidence",         role: "Every standard met is backed by a linked record" },
+    ],
+    ins:  ["Approved clinical notes", "Actual rostering data", "Billing and claims data"],
+    outs: ["Care records linked to Quality Standards", "Live care minute status", "Validated claim file"],
+    callout: "Audit preparation drops from weeks to hours because the evidence is already built up throughout the day.",
+  },
+
+  reporting_engine: {
+    title: "Reporting Engine",
+    subtitle: "reports written automatically from live data",
+    desc: "Pulls from live operational data to produce board packs, CEO dashboards, Quality Indicator reports and AN-ACC submissions. Each report is automatically written in plain language and ready for staff to review. The operations team checks and approves. They do not compile anything from scratch.",
+    icon: "barchart", color: "cyan",
+    sysLabel: "Reporting Components",
+    stat: { num: "4 days → 4 hrs", label: "board report compilation — 6-facility Queensland operator" },
+    systems: [
+      { icon: "cpu",      name: "Plain Language Writer",  role: "Turns numbers and records into readable summaries" },
+      { icon: "file",     name: "Report Templates",       role: "Quality Indicators, AN-ACC and Star Rating formats" },
+      { icon: "layout",   name: "Role Dashboards",        role: "CEO, manager and clinical governance each get their own view" },
+      { icon: "calendar", name: "Auto Scheduling",        role: "Reports generated on a set schedule automatically" },
+      { icon: "send",     name: "PDF Export",             role: "Board-ready formatting sent to the right people" },
+    ],
+    ins:  ["Live compliance data", "Operational records", "12-month trends"],
+    outs: ["Quality Indicator reports", "Star Rating submission", "AN-ACC submission", "CEO dashboard", "Board pack"],
+    callout: "The CEO sees every facility live each morning. The board makes decisions on current data, not a two-week-old manual summary.",
+  },
+
+  staff_console: {
+    title: "Staff Review Console",
+    subtitle: "every AI output reviewed by a staff member before saving",
+    desc: "Every AI-generated clinical note, compliance tag or handover summary goes through a named staff member before it is saved. They see the original input alongside the AI draft. One tap to approve, or edit it directly. Both actions are logged with the staff member's name and the time. This step cannot be skipped.",
+    icon: "usercheck", color: "green",
+    sysLabel: "Review Interface",
+    stat: { num: "< 30 sec", label: "approval time per standard care interaction" },
+    systems: [
+      { icon: "monitor",  name: "Review Screen",          role: "Works on tablet or desktop, no install needed" },
+      { icon: "eye",      name: "Side by Side",           role: "Original input shown next to the AI draft" },
+      { icon: "shield",   name: "Standard Label",         role: "Shows which Quality Standard the note satisfies" },
+      { icon: "checkcirc",name: "Approve or Edit",        role: "One tap to approve, or edit before saving" },
+      { icon: "lock",     name: "Approval Required",      role: "Nothing saves until a named staff member approves" },
+      { icon: "send",     name: "Learning Signal",        role: "Every edit helps the AI improve over time" },
+    ],
+    ins:  ["AI draft clinical note", "Original input for comparison"],
+    outs: ["Approved note saved to all systems", "Edit used to improve the AI", "Log of who approved and when"],
+    callout: "The nurse is the quality gate. Nothing is finalised without a named staff member explicitly approving it.",
+  },
+
+  manager_dashboard: {
+    title: "Manager Dashboard",
+    subtitle: "a live view of your whole facility, right now",
+    desc: "A live view of everything happening across the facility: occupancy, care minutes delivered per shift, open incident flags, compliance status and staff allocation. It updates continuously in a browser. If the afternoon shift is heading toward a care minute shortfall, the manager sees it at midday with enough time to fix it.",
+    icon: "monitor", color: "green",
+    sysLabel: "Dashboard Components",
+    stat: { num: "Real-time", label: "care minute tracking — shortfalls flagged by midday, not month-end" },
+    systems: [
+      { icon: "zap",      name: "Live Updates",           role: "Data refreshes instantly as things happen" },
+      { icon: "users",    name: "Role Views",             role: "Managers, nurses and executives each see what they need" },
+      { icon: "monitor",  name: "Browser Based",          role: "No software to install, works on any device" },
+      { icon: "clock",    name: "Care Minute View",       role: "Today's compliance status tracked per shift" },
+      { icon: "alerttri", name: "Risk Flags",             role: "Open issues ranked by how serious they are" },
+      { icon: "sliders",  name: "Alert Settings",         role: "Configurable thresholds per facility" },
+    ],
+    ins:  ["Care minute data", "Risk flags", "Incident status", "Rostering coverage"],
+    outs: ["Live care minute status", "Open issues by severity", "Shortfall alert before it is too late", "Staff allocation view"],
+    callout: "A 120-bed Victorian facility was non-compliant on care minutes in 2 of 4 months. With live tracking, the shortfall was flagged at midday and corrected before the shift ended.",
+  },
+
+  board_reports: {
+    title: "Board & Executive Reports",
+    subtitle: "board reports generated automatically and reviewed by staff",
+    desc: "Governance packs generated automatically from live operational data. The CEO gets a live risk view every morning. The board receives a monthly report written in plain language, current at the time it is generated. The operations team reviews it before it goes out. Nobody compiles it manually.",
+    icon: "layout", color: "green",
+    stat: null,
+    sysLabel: "Report Components",
+    systems: [
+      { icon: "calendar", name: "Report Scheduler",       role: "Aligned to board calendar, auto-triggered" },
+      { icon: "cpu",      name: "LLM Summariser",         role: "Plain-language narrative from operational data" },
+      { icon: "database", name: "Live Data Source",       role: "Pulls from live systems — not a static export" },
+      { icon: "file",     name: "PDF Renderer",           role: "Board-ready formatting, version-controlled" },
+      { icon: "send",     name: "Distribution Manager",   role: "Delivers to the right person at the right time" },
+    ],
+    ins:  ["Compliance data", "Risk summaries", "Care minute actuals", "Star Rating data"],
+    outs: ["Monthly board pack", "CEO daily summary", "Clinical governance report", "Star Rating view"],
+    callout: "Data is current at time of generation — not 2 weeks old by the time it reaches the board table.",
+  },
+
+  gov_submissions: {
+    title: "Government Submissions",
+    subtitle: "government reports prepared, checked and lodged by staff",
+    desc: "Quality Indicator reports, AN-ACC data and Star Rating inputs are prepared from live operational records and checked for discrepancies before lodgement. Problems are flagged before submission, not discovered after a rejection. A qualified staff member reviews and lodges the final report. They do not compile it from scratch.",
+    icon: "checksq", color: "green",
+    stat: null,
+    sysLabel: "Submission Components",
+    systems: [
+      { icon: "file",     name: "QI Formatter",           role: "Quality Indicator schema — Dept of Health format" },
+      { icon: "barchart", name: "Star Rating Packager",   role: "Structures performance data for submission" },
+      { icon: "shield",   name: "AN-ACC Formatter",       role: "Classification data in required submission format" },
+      { icon: "checkcirc",name: "Pre-Lodgement Validator",role: "Cross-checks care record vs. claim vs. AN-ACC" },
+      { icon: "usercheck",name: "Human Sign-Off Gate",    role: "Mandatory staff approval before any submission" },
+      { icon: "inbox",    name: "Receipt Tracker",        role: "Confirmation and acknowledgement logging" },
+    ],
+    ins:  ["Quality Standards evidence", "AN-ACC data", "Care minute actuals"],
+    outs: ["Quality Indicator report", "Star Rating package", "AN-ACC submission", "Pre-checked claims"],
+    callout: "AI prepares and validates. A qualified staff member lodges. Pre-lodgement validation eliminates most common rejection causes.",
+  },
+
+  audit_trail: {
+    title: "Audit Trail",
+    subtitle: "every action permanently recorded with a name and timestamp",
+    desc: "Every note, approval, risk flag, correction and government submission is recorded with a timestamp and the staff member's name. Records cannot be changed after they are written. Everything is attributable, everything is exportable, and nothing can be erased when an accreditation auditor asks for the evidence.",
+    icon: "lock", color: "cyan",
+    sysLabel: "Audit Components",
+    stat: null,
+    systems: [
+      { icon: "lock",     name: "Permanent Record",       role: "Once written, nothing can be changed or deleted" },
+      { icon: "hash",     name: "Tamper Detection",       role: "Any interference with a record is detectable" },
+      { icon: "users",    name: "Named Attribution",      role: "Every action is linked to the staff member who did it" },
+      { icon: "eye",      name: "Version History",        role: "Both the AI draft and the approved version are kept" },
+      { icon: "clock",    name: "Response Times",         role: "How long each alert took to be acted on is recorded" },
+      { icon: "send",     name: "Audit Export",           role: "Full exportable record for accreditation reviews" },
+    ],
+    ins:  ["Every system action: outputs, approvals, alerts, submissions"],
+    outs: ["Full attributable history", "Accreditation audit export", "Compliance evidence"],
+    callout: "Compliant with the Australian Privacy Principles, the My Health Records Act and the Aged Care Act. No action in the system is anonymous.",
+  },
+
+  feedback_loop: {
+    title: "Feedback Loop",
+    subtitle: "the system gets better the more staff use it",
+    desc: "Every correction a staff member makes — a word changed, a standard re-tagged, a note rewritten — is used to improve the AI. The model is periodically updated using corrections from this facility's actual residents and workflows. Over time, the AI gets more accurate and the approval step gets faster. The system learns from the people who know the work best.",
+    icon: "refresh", color: "cyan",
+    sysLabel: "Learning Components",
+    stat: null,
+    systems: [
+      { icon: "filter",   name: "Correction Sorting",     role: "Groups each fix by what kind of mistake it was" },
+      { icon: "database", name: "Learning Dataset",       role: "Built from real interactions at this facility" },
+      { icon: "refresh",  name: "Model Updates",          role: "AI retrained periodically from accumulated corrections" },
+      { icon: "activity", name: "Accuracy Tracking",      role: "Error rates monitored over time by category" },
+      { icon: "checkcirc",name: "Quality Check",          role: "Updated AI tested before it goes live" },
+      { icon: "zap",      name: "Compounding Improvement",role: "More accurate over time means faster approvals" },
+    ],
+    ins:  ["Staff corrections", "Approvals", "Edits to AI drafts"],
+    outs: ["Updated AI model", "Accuracy trend over time"],
+    callout: "The system gets better from this facility's own staff, not generic data. The more it is used, the faster the approval step becomes.",
+  },
+};
+
+// ── MODAL RENDERER ──
+function openModal(id) {
+  const n = NODES[id];
+  if (!n) return;
+  const isGreen = n.color === 'green';
+
+  // header
+  document.getElementById('mIco').className = `modal-ico ${isGreen ? 'g' : 'c'}`;
+  document.getElementById('mIco').innerHTML = svgIcon(n.icon, isGreen);
+  document.getElementById('mTitle').textContent = n.title;
+  document.getElementById('mSub').textContent   = n.subtitle;
+
+  // body
+  let html = '';
+
+  // description paragraph
+  if (n.desc) {
+    html += `<div class="modal-desc">${n.desc}</div>`;
+  }
+
+  // stat
+  if (n.stat) {
+    html += `<div class="modal-stat">
+      <div class="stat-num">${n.stat.num}</div>
+      <div class="stat-label">${n.stat.label}</div>
+    </div>`;
+  }
+
+  // callout (if no stat, show it here prominent)
+  if (!n.stat) {
+    html += `<div class="modal-stat" style="border-left-color:var(--muted); background:rgba(255,255,255,0.03); border-color:rgba(255,255,255,0.1);">
+      <div class="stat-label" style="color:#9aafc4;">${n.callout}</div>
+    </div>`;
+  }
+
+  // systems grid OR tech tags
+  if (n.systems && n.systems.length) {
+    const cards = n.systems.map(s => `
+      <div class="sys-card">
+        <svg viewBox="0 0 24 24">${ICONS[s.icon]}</svg>
+        <div class="sys-card-name">${s.name}</div>
+        <div class="sys-card-role">${s.role}</div>
+      </div>`).join('');
+    html += `<div>
+      <div class="modal-sec-label">${n.sysLabel || 'Components'}</div>
+      <div class="sys-grid">${cards}</div>
+    </div>`;
+  } else if (n.tech.length) {
+    const tags = n.tech.map(t => `<span class="tag">${t}</span>`).join('');
+    html += `<div>
+      <div class="modal-sec-label">Technology Stack</div>
+      <div class="tag-list">${tags}</div>
+    </div>`;
+  }
+
+  // io
+  const inHtml  = n.ins.length  ? n.ins.map(x  => `<div class="io-item">${x}</div>`).join('') : '<div class="io-item" style="color:#2e3e52">originating source</div>';
+  const outHtml = n.outs.map(x => `<div class="io-item">${x}</div>`).join('');
+  html += `<div>
+    <div class="modal-sec-label">Data Flow</div>
+    <div class="io-flow">
+      <div class="io-col"><div class="io-col-label in">In</div>${inHtml}</div>
+      <div class="io-arrow">→</div>
+      <div class="io-col"><div class="io-col-label out">Out</div>${outHtml}</div>
+    </div>
+  </div>`;
+
+  // callout at bottom if stat was shown
+  if (n.stat) {
+    html += `<div class="modal-stat" style="border-left-color:var(--muted); background:rgba(255,255,255,0.03); border-color:rgba(255,255,255,0.08);">
+      <div class="stat-label" style="color:#9aafc4; font-size:0.75rem;">${n.callout}</div>
+    </div>`;
+  }
+
+  document.getElementById('mBody').innerHTML = html;
+
+  // active node highlight
+  document.querySelectorAll('[data-id]').forEach(el => el.classList.remove('active'));
+  document.querySelector(`[data-id="${id}"]`)?.classList.add('active');
+
+  document.getElementById('backdrop').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('backdrop').classList.remove('open');
+  document.querySelectorAll('[data-id]').forEach(el => el.classList.remove('active'));
+}
+
+document.querySelectorAll('[data-id]').forEach(el => {
+  el.addEventListener('click', () => openModal(el.dataset.id));
+});
+
+document.getElementById('backdrop').addEventListener('click', e => {
+  if (e.target === document.getElementById('backdrop')) closeModal();
+});
+</script>
+</body>
+</html>
