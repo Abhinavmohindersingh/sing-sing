@@ -1408,6 +1408,15 @@ h2 { font-size: clamp(30px,4.2vw,58px); font-weight: 900; color: var(--navy); li
   }
   window.addEventListener('scroll', upd, { passive: true });
   upd();
+
+  // Pause videos when scrolled out of view
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      const video = e.target.querySelector('video');
+      if (video) e.isIntersecting ? null : video.pause();
+    });
+  }, { threshold: 0.2 });
+  document.querySelectorAll('.slide-video').forEach(s => observer.observe(s));
 </script>
 </body>
 </html>
