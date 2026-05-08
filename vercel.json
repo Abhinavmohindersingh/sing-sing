@@ -3,6 +3,7 @@
     "api/chat.js": { "maxDuration": 60 }
   },
   "rewrites": [
+    { "source": "/png_education-proposal", "destination": "/png_education-proposal.html" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
