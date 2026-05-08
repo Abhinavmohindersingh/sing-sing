@@ -419,6 +419,21 @@ h2 { font-size: clamp(30px,4.2vw,58px); font-weight: 900; color: var(--navy); li
   .foot { padding: .4rem 5vw; }
   .foot span { font-size: 7px !important; }
   .video-foot span { font-size: 7px !important; }
+
+  /* Fix Critical Window slide (auto 1fr) */
+  [style*="grid-template-columns:auto 1fr"] {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+  [style*="min-width:210px"] {
+    min-width: 0 !important;
+    width: 100% !important;
+    text-align: center !important;
+  }
+
+  /* Video: taller on portrait mobile */
+  .video-frame { aspect-ratio: 4/3 !important; }
+  .slide-video { padding: 90px 0 70px !important; }
 }
 
 @media print {
