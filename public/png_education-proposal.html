@@ -1183,7 +1183,7 @@ h2 { font-size: clamp(30px,4.2vw,58px); font-weight: 900; color: var(--navy); li
         </div>
         <div style="border-top:1px solid var(--border);padding-top:1rem">
           <div style="font-family:var(--mono);font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:.35rem">Budget</div>
-          <div style="font-size:clamp(22px,2.8vw,34px);font-weight:900;color:var(--navy);letter-spacing:-.02em">~$540K</div>
+          <div style="font-size:clamp(22px,2.8vw,34px);font-weight:900;color:var(--navy);letter-spacing:-.02em">~$550K</div>
           <div style="font-size:10px;color:var(--muted);margin-top:.25rem">AUD · hardware costs excluded</div>
         </div>
       </div>
@@ -1200,7 +1200,7 @@ h2 { font-size: clamp(30px,4.2vw,58px); font-weight: 900; color: var(--navy); li
         </div>
         <div style="border-top:1px solid var(--border);padding-top:1rem">
           <div style="font-family:var(--mono);font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:.35rem">Budget</div>
-          <div style="font-size:clamp(22px,2.8vw,34px);font-weight:900;color:var(--violet);letter-spacing:-.02em">$2.2M–$2.5M</div>
+          <div style="font-size:clamp(22px,2.8vw,34px);font-weight:900;color:var(--violet);letter-spacing:-.02em">$1.4M–$1.6M</div>
           <div style="font-size:10px;color:var(--muted);margin-top:.25rem">AUD · conditional on Phase 1 results</div>
         </div>
       </div>
@@ -1216,7 +1216,7 @@ h2 { font-size: clamp(30px,4.2vw,58px); font-weight: 900; color: var(--navy); li
         </div>
         <div style="border-top:1px solid var(--border);padding-top:1rem">
           <div style="font-family:var(--mono);font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:.35rem">Budget</div>
-          <div style="font-size:clamp(22px,2.8vw,34px);font-weight:900;color:var(--teal);letter-spacing:-.02em">~$31M</div>
+          <div style="font-size:clamp(22px,2.8vw,34px);font-weight:900;color:var(--teal);letter-spacing:-.02em">~$20M</div>
           <div style="font-size:10px;color:var(--muted);margin-top:.25rem">AUD · multi-year national programme</div>
         </div>
       </div>
@@ -1237,56 +1237,147 @@ h2 { font-size: clamp(30px,4.2vw,58px); font-weight: 900; color: var(--navy); li
 <section class="slide" id="s-investment-2" style="--a:var(--navy); background:radial-gradient(ellipse at 90% 10%, rgba(196,154,26,.06) 0%, transparent 50%), var(--bg)">
   <div class="wrap">
     <div style="font-family:var(--mono);font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem">Phase 1 · Pilot — Detailed Breakdown</div>
-    <h2 style="font-size:clamp(22px,3vw,40px);font-weight:900;color:var(--navy);line-height:1.05;letter-spacing:-.03em;margin-bottom:.4rem">~$540K AUD · 6 months · 3 cohorts<br><span style="font-size:clamp(14px,1.5vw,18px);font-weight:500;color:var(--muted)">Hardware &amp; devices assessed separately from this budget</span></h2>
+    <h2 style="font-size:clamp(22px,3vw,40px);font-weight:900;color:var(--navy);line-height:1.05;letter-spacing:-.03em;margin-bottom:.4rem">~$550K AUD · 6 months · 3 cohorts<br><span style="font-size:clamp(14px,1.5vw,18px);font-weight:500;color:var(--muted)">Hardware &amp; devices assessed separately from this budget</span></h2>
     <div class="rule"></div>
 
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5vw;margin-top:.2rem">
 
       <!-- Left: cost table -->
-      <div style="border-radius:12px;overflow:hidden;border:1px solid var(--border)">
-        <div style="display:grid;grid-template-columns:1fr auto;background:var(--navy);padding:.6rem 1rem;gap:.5rem">
+      <div style="border-radius:12px;overflow:hidden;border:1px solid var(--border);font-size:clamp(9px,.95vw,11px)">
+        <!-- Header -->
+        <div style="display:grid;grid-template-columns:1fr auto;background:var(--navy);padding:.5rem .9rem;gap:.5rem">
           <div style="font-family:var(--mono);font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.5)">Item</div>
           <div style="font-family:var(--mono);font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.5);text-align:right">Cost (AUD)</div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr auto;padding:.55rem 1rem;gap:.5rem;border-bottom:1px solid var(--border);background:var(--card)">
-          <div style="font-size:clamp(10px,1vw,12px);color:var(--text)">Platform &amp; AI development</div>
-          <div style="font-family:var(--mono);font-size:11px;font-weight:600;color:var(--navy);text-align:right">$150,000</div>
+        <!-- PLATFORM -->
+        <div style="display:grid;grid-template-columns:1fr auto;padding:.4rem .9rem;gap:.5rem;background:rgba(11,35,71,.07);border-bottom:1px solid var(--border)">
+          <div style="font-weight:700;color:var(--navy)">Platform and AI Development</div>
+          <div style="font-family:var(--mono);font-weight:700;color:var(--navy);text-align:right;white-space:nowrap">$150,000</div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr auto;padding:.55rem 1rem;gap:.5rem;border-bottom:1px solid var(--border);background:rgba(11,35,71,.02)">
-          <div style="font-size:clamp(10px,1vw,12px);color:var(--text)">Tok Pisin content, audio &amp; illustration</div>
-          <div style="font-family:var(--mono);font-size:11px;font-weight:600;color:var(--navy);text-align:right">$75,000</div>
+        <div style="display:grid;grid-template-columns:1fr auto;padding:.28rem .9rem .28rem 1.6rem;gap:.5rem;border-bottom:1px solid var(--border);background:var(--card)">
+          <div style="color:var(--muted)">Student learning app, frontend, offline engine, adaptive UI</div>
+          <div style="font-family:var(--mono);color:var(--text);text-align:right;white-space:nowrap">$55,000</div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr auto;padding:.55rem 1rem;gap:.5rem;border-bottom:1px solid var(--border);background:var(--card)">
-          <div style="font-size:clamp(10px,1vw,12px);color:var(--text)">PNG technical coordinator (6 months)</div>
-          <div style="font-family:var(--mono);font-size:11px;font-weight:600;color:var(--navy);text-align:right">$42,000</div>
+        <div style="display:grid;grid-template-columns:1fr auto;padding:.28rem .9rem .28rem 1.6rem;gap:.5rem;border-bottom:1px solid var(--border);background:rgba(11,35,71,.02)">
+          <div style="color:var(--muted)">Backend, APIs and offline sync engine</div>
+          <div style="font-family:var(--mono);color:var(--text);text-align:right;white-space:nowrap">$30,000</div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr auto;padding:.55rem 1rem;gap:.5rem;border-bottom:1px solid var(--border);background:rgba(11,35,71,.02)">
-          <div style="font-size:clamp(10px,1vw,12px);color:var(--text)">Travel &amp; field operations</div>
-          <div style="font-family:var(--mono);font-size:11px;font-weight:600;color:var(--navy);text-align:right">$50,000</div>
+        <div style="display:grid;grid-template-columns:1fr auto;padding:.28rem .9rem .28rem 1.6rem;gap:.5rem;border-bottom:1px solid var(--border);background:var(--card)">
+          <div style="color:var(--muted)">AI adaptive learning engine and personalisation logic</div>
+          <div style="font-family:var(--mono);color:var(--text);text-align:right;white-space:nowrap">$40,000</div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr auto;padding:.55rem 1rem;gap:.5rem;border-bottom:1px solid var(--border);background:var(--card)">
-          <div style="font-size:clamp(10px,1vw,12px);color:var(--text)">Teacher training &amp; follow-up</div>
-          <div style="font-family:var(--mono);font-size:11px;font-weight:600;color:var(--navy);text-align:right">$40,000</div>
+        <div style="display:grid;grid-template-columns:1fr auto;padding:.28rem .9rem .28rem 1.6rem;gap:.5rem;border-bottom:1px solid var(--border);background:rgba(11,35,71,.02)">
+          <div style="color:var(--muted)">Teacher analytics dashboard</div>
+          <div style="font-family:var(--mono);color:var(--text);text-align:right;white-space:nowrap">$12,500</div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr auto;padding:.55rem 1rem;gap:.5rem;border-bottom:1px solid var(--border);background:rgba(11,35,71,.02)">
-          <div style="font-size:clamp(10px,1vw,12px);color:var(--text)">Independent M&amp;E partner</div>
-          <div style="font-family:var(--mono);font-size:11px;font-weight:600;color:var(--navy);text-align:right">$50,000</div>
+        <div style="display:grid;grid-template-columns:1fr auto;padding:.28rem .9rem .28rem 1.6rem;gap:.5rem;border-bottom:1px solid var(--border);background:var(--card)">
+          <div style="color:var(--muted)">Government visibility dashboard</div>
+          <div style="font-family:var(--mono);color:var(--text);text-align:right;white-space:nowrap">$12,500</div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr auto;padding:.55rem 1rem;gap:.5rem;border-bottom:1px solid var(--border);background:var(--card)">
-          <div style="font-size:clamp(10px,1vw,12px);color:var(--text)">Data infrastructure &amp; cloud</div>
-          <div style="font-family:var(--mono);font-size:11px;font-weight:600;color:var(--navy);text-align:right">$25,000</div>
+        <!-- TOK PISIN -->
+        <div style="display:grid;grid-template-columns:1fr auto;padding:.4rem .9rem;gap:.5rem;background:rgba(11,35,71,.07);border-bottom:1px solid var(--border)">
+          <div style="font-weight:700;color:var(--navy)">Tok Pisin Content and Audio</div>
+          <div style="font-family:var(--mono);font-weight:700;color:var(--navy);text-align:right;white-space:nowrap">$75,000</div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr auto;padding:.55rem 1rem;gap:.5rem;border-bottom:1px solid var(--border);background:rgba(11,35,71,.02)">
-          <div style="font-size:clamp(10px,1vw,12px);color:var(--muted);font-style:italic">Project management &amp; overhead (15%)</div>
-          <div style="font-family:var(--mono);font-size:11px;color:var(--muted);text-align:right">$54,000</div>
+        <div style="display:grid;grid-template-columns:1fr auto;padding:.28rem .9rem .28rem 1.6rem;gap:.5rem;border-bottom:1px solid var(--border);background:rgba(11,35,71,.02)">
+          <div style="color:var(--muted)">Curriculum scripting and lesson design</div>
+          <div style="font-family:var(--mono);color:var(--text);text-align:right;white-space:nowrap">$25,000</div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr auto;padding:.55rem 1rem;gap:.5rem;border-bottom:1px solid var(--border);background:var(--card)">
-          <div style="font-size:clamp(10px,1vw,12px);color:var(--muted);font-style:italic">Contingency (15%)</div>
-          <div style="font-family:var(--mono);font-size:11px;color:var(--muted);text-align:right">$54,000</div>
+        <div style="display:grid;grid-template-columns:1fr auto;padding:.28rem .9rem .28rem 1.6rem;gap:.5rem;border-bottom:1px solid var(--border);background:var(--card)">
+          <div style="color:var(--muted)">Tok Pisin translation and cultural review</div>
+          <div style="font-family:var(--mono);color:var(--text);text-align:right;white-space:nowrap">$20,000</div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr auto;padding:.7rem 1rem;gap:.5rem;background:var(--navy)">
-          <div style="font-size:clamp(11px,1.05vw,13px);font-weight:700;color:#fff">TOTAL</div>
-          <div style="font-family:var(--mono);font-size:13px;font-weight:700;color:var(--gold);text-align:right">~$540,000</div>
+        <div style="display:grid;grid-template-columns:1fr auto;padding:.28rem .9rem .28rem 1.6rem;gap:.5rem;border-bottom:1px solid var(--border);background:rgba(11,35,71,.02)">
+          <div style="color:var(--muted)">Audio recording, native PNG voice talent</div>
+          <div style="font-family:var(--mono);color:var(--text);text-align:right;white-space:nowrap">$15,000</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr auto;padding:.28rem .9rem .28rem 1.6rem;gap:.5rem;border-bottom:1px solid var(--border);background:var(--card)">
+          <div style="color:var(--muted)">Illustration and in-app visual assets</div>
+          <div style="font-family:var(--mono);color:var(--text);text-align:right;white-space:nowrap">$15,000</div>
+        </div>
+        <!-- COORDINATOR -->
+        <div style="display:grid;grid-template-columns:1fr auto;padding:.4rem .9rem;gap:.5rem;background:rgba(11,35,71,.07);border-bottom:1px solid var(--border)">
+          <div style="font-weight:700;color:var(--navy)">PNG Technical Coordinator (6 months, in-country)</div>
+          <div style="font-family:var(--mono);font-weight:700;color:var(--navy);text-align:right;white-space:nowrap">$42,000</div>
+        </div>
+        <!-- TRAVEL -->
+        <div style="display:grid;grid-template-columns:1fr auto;padding:.4rem .9rem;gap:.5rem;background:rgba(11,35,71,.07);border-bottom:1px solid var(--border)">
+          <div style="font-weight:700;color:var(--navy)">Travel and Field Operations</div>
+          <div style="font-family:var(--mono);font-weight:700;color:var(--navy);text-align:right;white-space:nowrap">$50,000</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr auto;padding:.28rem .9rem .28rem 1.6rem;gap:.5rem;border-bottom:1px solid var(--border);background:rgba(11,35,71,.02)">
+          <div style="color:var(--muted)">Field team travel and accommodation</div>
+          <div style="font-family:var(--mono);color:var(--text);text-align:right;white-space:nowrap">$35,000</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr auto;padding:.28rem .9rem .28rem 1.6rem;gap:.5rem;border-bottom:1px solid var(--border);background:var(--card)">
+          <div style="color:var(--muted)">In-country logistics and communications</div>
+          <div style="font-family:var(--mono);color:var(--text);text-align:right;white-space:nowrap">$15,000</div>
+        </div>
+        <!-- TRAINING -->
+        <div style="display:grid;grid-template-columns:1fr auto;padding:.4rem .9rem;gap:.5rem;background:rgba(11,35,71,.07);border-bottom:1px solid var(--border)">
+          <div style="font-weight:700;color:var(--navy)">Teacher Training and Follow-up</div>
+          <div style="font-family:var(--mono);font-weight:700;color:var(--navy);text-align:right;white-space:nowrap">$40,000</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr auto;padding:.28rem .9rem .28rem 1.6rem;gap:.5rem;border-bottom:1px solid var(--border);background:rgba(11,35,71,.02)">
+          <div style="color:var(--muted)">Training materials and lesson pack preparation</div>
+          <div style="font-family:var(--mono);color:var(--text);text-align:right;white-space:nowrap">$10,000</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr auto;padding:.28rem .9rem .28rem 1.6rem;gap:.5rem;border-bottom:1px solid var(--border);background:var(--card)">
+          <div style="color:var(--muted)">4 training sessions across pilot schools</div>
+          <div style="font-family:var(--mono);color:var(--text);text-align:right;white-space:nowrap">$20,000</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr auto;padding:.28rem .9rem .28rem 1.6rem;gap:.5rem;border-bottom:1px solid var(--border);background:rgba(11,35,71,.02)">
+          <div style="color:var(--muted)">Follow-up school visits and ongoing teacher support</div>
+          <div style="font-family:var(--mono);color:var(--text);text-align:right;white-space:nowrap">$10,000</div>
+        </div>
+        <!-- M&E -->
+        <div style="display:grid;grid-template-columns:1fr auto;padding:.4rem .9rem;gap:.5rem;background:rgba(11,35,71,.07);border-bottom:1px solid var(--border)">
+          <div style="font-weight:700;color:var(--navy)">Independent Monitoring and Evaluation</div>
+          <div style="font-family:var(--mono);font-weight:700;color:var(--navy);text-align:right;white-space:nowrap">$50,000</div>
+        </div>
+        <div style="padding:.28rem .9rem .28rem 1.6rem;border-bottom:1px solid var(--border);background:var(--card);color:var(--muted);font-style:italic;line-height:1.4">Conducted by PNG NRI / ANU School of Pacific Affairs / UPNG under a separate contract with the Department of Education, ensuring evaluator independence from SingSinghAI</div>
+        <div style="display:grid;grid-template-columns:1fr auto;padding:.28rem .9rem .28rem 1.6rem;gap:.5rem;border-bottom:1px solid var(--border);background:rgba(11,35,71,.02)">
+          <div style="color:var(--muted)">Baseline assessment, design and fieldwork</div>
+          <div style="font-family:var(--mono);color:var(--text);text-align:right;white-space:nowrap">$20,000</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr auto;padding:.28rem .9rem .28rem 1.6rem;gap:.5rem;border-bottom:1px solid var(--border);background:var(--card)">
+          <div style="color:var(--muted)">Midpoint check and progress report</div>
+          <div style="font-family:var(--mono);color:var(--text);text-align:right;white-space:nowrap">$10,000</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr auto;padding:.28rem .9rem .28rem 1.6rem;gap:.5rem;border-bottom:1px solid var(--border);background:rgba(11,35,71,.02)">
+          <div style="color:var(--muted)">Endline evaluation, data analysis and final report</div>
+          <div style="font-family:var(--mono);color:var(--text);text-align:right;white-space:nowrap">$20,000</div>
+        </div>
+        <!-- DATA -->
+        <div style="display:grid;grid-template-columns:1fr auto;padding:.4rem .9rem;gap:.5rem;background:rgba(11,35,71,.07);border-bottom:1px solid var(--border)">
+          <div style="font-weight:700;color:var(--navy)">Data Infrastructure and Cloud</div>
+          <div style="font-family:var(--mono);font-weight:700;color:var(--navy);text-align:right;white-space:nowrap">$35,000</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr auto;padding:.28rem .9rem .28rem 1.6rem;gap:.5rem;border-bottom:1px solid var(--border);background:var(--card)">
+          <div style="color:var(--muted)">Cloud hosting, database and CDN, 6 months</div>
+          <div style="font-family:var(--mono);color:var(--text);text-align:right;white-space:nowrap">$18–25K</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr auto;padding:.28rem .9rem .28rem 1.6rem;gap:.5rem;border-bottom:1px solid var(--border);background:rgba(11,35,71,.02)">
+          <div style="color:var(--muted)">SMS and WhatsApp API integration</div>
+          <div style="font-family:var(--mono);color:var(--text);text-align:right;white-space:nowrap">$8,000</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr auto;padding:.28rem .9rem .28rem 1.6rem;gap:.5rem;border-bottom:1px solid var(--border);background:var(--card)">
+          <div style="color:var(--muted)">DevOps, deployment and system monitoring</div>
+          <div style="font-family:var(--mono);color:var(--text);text-align:right;white-space:nowrap">$7,000</div>
+        </div>
+        <!-- OVERHEAD & CONTINGENCY -->
+        <div style="display:grid;grid-template-columns:1fr auto;padding:.4rem .9rem;gap:.5rem;background:rgba(11,35,71,.07);border-bottom:1px solid var(--border)">
+          <div style="font-weight:700;color:var(--navy)">Project Management and Overhead (15%)</div>
+          <div style="font-family:var(--mono);font-weight:700;color:var(--navy);text-align:right;white-space:nowrap">$54,000</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr auto;padding:.4rem .9rem;gap:.5rem;background:rgba(11,35,71,.07);border-bottom:1px solid var(--border)">
+          <div style="font-weight:700;color:var(--navy)">Contingency (15%)</div>
+          <div style="font-family:var(--mono);font-weight:700;color:var(--navy);text-align:right;white-space:nowrap">$54,000</div>
+        </div>
+        <!-- TOTAL -->
+        <div style="display:grid;grid-template-columns:1fr auto;padding:.6rem .9rem;gap:.5rem;background:var(--navy)">
+          <div style="font-weight:700;color:#fff;letter-spacing:.05em">TOTAL</div>
+          <div style="font-family:var(--mono);font-size:13px;font-weight:700;color:var(--gold);text-align:right">~$550,000 AUD</div>
         </div>
       </div>
 
@@ -1306,8 +1397,8 @@ h2 { font-size: clamp(30px,4.2vw,58px); font-weight: 900; color: var(--navy); li
               <div style="height:6px;border-radius:3px;background:rgba(11,35,71,.08)"><div style="height:100%;border-radius:3px;background:var(--violet);width:14%"></div></div>
             </div>
             <div>
-              <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:.25rem"><span>Field, training, M&amp;E &amp; cloud</span><span style="font-family:var(--mono)">$167K · 31%</span></div>
-              <div style="height:6px;border-radius:3px;background:rgba(11,35,71,.08)"><div style="height:100%;border-radius:3px;background:var(--teal);width:31%"></div></div>
+              <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:.25rem"><span>Field, training, M&amp;E &amp; cloud</span><span style="font-family:var(--mono)">$175K · 32%</span></div>
+              <div style="height:6px;border-radius:3px;background:rgba(11,35,71,.08)"><div style="height:100%;border-radius:3px;background:var(--teal);width:32%"></div></div>
             </div>
             <div>
               <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:.25rem"><span>Overhead &amp; contingency</span><span style="font-family:var(--mono)">$108K · 20%</span></div>
