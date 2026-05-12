@@ -928,13 +928,15 @@
 
         /* All 3-column grids → single column */
         [style*="repeat(3,1fr)"],
+        [style*="repeat(3, 1fr)"],
         [style*="1fr 1fr 1fr"] {
           grid-template-columns: 1fr !important;
           gap: 1rem !important;
         }
 
         /* All 4-column grids → 2×2 */
-        [style*="repeat(4,1fr)"] {
+        [style*="repeat(4,1fr)"],
+        [style*="repeat(4, 1fr)"] {
           grid-template-columns: 1fr 1fr !important;
           gap: 0.75rem !important;
         }
@@ -968,15 +970,23 @@
         }
 
         /* Roles 2-col → stack */
-        #s-roles [style*="grid-template-columns:1fr 1fr"] {
+        #s-roles [style*="grid-template-columns:1fr 1fr"],
+        #s-roles [style*="grid-template-columns: 1fr 1fr"] {
           grid-template-columns: 1fr !important;
           gap: 1rem !important;
         }
 
         /* Investment detail 2-col → stack */
-        #s-investment-2 [style*="grid-template-columns:1fr 1fr"] {
+        #s-investment-2 [style*="grid-template-columns:1fr 1fr"],
+        #s-investment-2 [style*="grid-template-columns: 1fr 1fr"] {
           grid-template-columns: 1fr !important;
           gap: 1.2rem !important;
+        }
+
+        /* Investment overview 3-col → stack */
+        #s-investment [style*="repeat(3"] {
+          grid-template-columns: 1fr !important;
+          gap: 1rem !important;
         }
 
         /* Stat numbers */
@@ -1037,11 +1047,13 @@
         }
 
         /* Fix Critical Window slide (auto 1fr) */
-        [style*="grid-template-columns:auto 1fr"] {
+        [style*="grid-template-columns:auto 1fr"],
+        [style*="grid-template-columns: auto 1fr"] {
           grid-template-columns: 1fr !important;
           gap: 1.5rem !important;
         }
-        [style*="min-width:210px"] {
+        [style*="min-width:210px"],
+        [style*="min-width: 210px"] {
           min-width: 0 !important;
           width: 100% !important;
           text-align: center !important;
@@ -3809,8 +3821,8 @@
                 margin-bottom: 1.2rem;
               "
             >
-              <strong>10–20 schools</strong><br />
-              600–1,200 students<br />
+              <strong>~15 schools across 3 locations</strong><br />
+              ~900 students<br />
               Chimbu · Hela · Port Moresby<br />
               Duration: 6 months
             </div>
@@ -3916,7 +3928,7 @@
                   letter-spacing: -0.02em;
                 "
               >
-                $1.4M–$1.6M
+                $1.5M
               </div>
               <div
                 style="
