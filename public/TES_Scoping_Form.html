@@ -211,18 +211,32 @@
   <!-- SECTION 1: Products -->
   <div class="section active" id="sec-0">
     <div class="section-head">
-      <div class="section-num">Section 01 of 08</div>
+      <div class="section-num">Section 01 of 10</div>
       <div class="section-title">Product Catalog</div>
       <div class="section-desc">What TES is selling and which products should be on the website.</div>
     </div>
 
     <div class="q">
-      <div class="q-label">How many crane models does TES currently sell? <span class="req">*</span></div>
-      <div class="radio-pills">
-        <label class="pill-label"><input type="radio" name="q1" value="1–5"><span>1–5 models</span></label>
-        <label class="pill-label"><input type="radio" name="q1" value="6–10"><span>6–10 models</span></label>
-        <label class="pill-label"><input type="radio" name="q1" value="11–20"><span>11–20 models</span></label>
-        <label class="pill-label"><input type="radio" name="q1" value="20+"><span>20+ models</span></label>
+      <div class="q-label">What types of equipment does TES currently sell? <span class="req">*</span></div>
+      <div class="q-hint">Tick all that apply — this shapes what product sections the website needs</div>
+      <div class="check-group">
+        <label class="check-row"><input type="checkbox" name="q1" value="Tower cranes"><span>Tower cranes</span></label>
+        <label class="check-row"><input type="checkbox" name="q1" value="Luffing cranes"><span>Luffing cranes</span></label>
+        <label class="check-row"><input type="checkbox" name="q1" value="Mobile cranes"><span>Mobile cranes</span></label>
+        <label class="check-row"><input type="checkbox" name="q1" value="Self-erecting cranes"><span>Self-erecting cranes</span></label>
+        <label class="check-row"><input type="checkbox" name="q1" value="Crawler cranes"><span>Crawler cranes</span></label>
+        <label class="check-row"><input type="checkbox" name="q1" value="Hoists"><span>Hoists</span></label>
+        <label class="check-row"><input type="checkbox" name="q1" value="Loading platforms"><span>Loading platforms</span></label>
+        <label class="check-row"><input type="checkbox" name="q1" value="Battery systems"><span>Battery systems</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-label">Are spare parts and accessories sold alongside equipment? <span class="req">*</span></div>
+      <div class="radio-group">
+        <label class="radio-row"><input type="radio" name="q_spare" value="Yes - significant part of the business"><span>Yes - significant part of the business</span></label>
+        <label class="radio-row"><input type="radio" name="q_spare" value="Some - occasionally but not a main focus"><span>Some - occasionally but not a main focus</span></label>
+        <label class="radio-row"><input type="radio" name="q_spare" value="No - complete equipment only"><span>No - complete equipment only</span></label>
       </div>
     </div>
 
@@ -256,10 +270,19 @@
       </div>
     </div>
 
+    <div class="q">
+      <div class="q-label">Any additional technical details about your product range?</div>
+      <div class="q-hint">Model numbers, certifications, key specs, or anything else the website needs to communicate</div>
+      <textarea class="textarea-input" name="q_tech_notes" placeholder="e.g. All tower cranes are certified to AS 2550. The Flat-Top FT210A has a max 10T capacity. Spare parts catalogue has 500+ SKUs..."></textarea>
+    </div>
 
+    <div class="q">
+      <div class="q-label">Any other information you would like to provide about your product range?</div>
+      <textarea class="textarea-input" name="q_extra_1" placeholder="Add anything else relevant here..."></textarea>
+    </div>
 
     <div class="nav">
-      <div class="counter">1 of 8</div>
+      <div class="counter">1 of 10</div>
       <button class="btn btn-primary" onclick="next()">Next →</button>
     </div>
   </div>
@@ -267,7 +290,7 @@
   <!-- SECTION 2: Configurator -->
   <div class="section" id="sec-1">
     <div class="section-head">
-      <div class="section-num">Section 02 of 08</div>
+      <div class="section-num">Section 02 of 10</div>
       <div class="section-title">The Configurator</div>
       <div class="section-desc">The Porsche-style build experience. These are business decisions that directly determine build complexity and cost.</div>
     </div>
@@ -319,9 +342,14 @@
       </div>
     </div>
 
+    <div class="q">
+      <div class="q-label">Any other information you would like to provide about the configurator?</div>
+      <textarea class="textarea-input" name="q_extra_2" placeholder="Add anything else relevant here..."></textarea>
+    </div>
+
     <div class="nav">
       <button class="btn btn-secondary" onclick="prev()">← Back</button>
-      <div class="counter">2 of 8</div>
+      <div class="counter">2 of 10</div>
       <button class="btn btn-primary" onclick="next()">Next →</button>
     </div>
   </div>
@@ -329,7 +357,7 @@
   <!-- SECTION 3: Pricing -->
   <div class="section" id="sec-2">
     <div class="section-head">
-      <div class="section-num">Section 03 of 08</div>
+      <div class="section-num">Section 03 of 10</div>
       <div class="section-title">Pricing</div>
       <div class="section-desc">How pricing appears - or doesn't appear - is one of the biggest trust decisions for a high-value B2B site.</div>
     </div>
@@ -351,9 +379,14 @@
 
 
 
+    <div class="q">
+      <div class="q-label">Any other information you would like to provide about pricing?</div>
+      <textarea class="textarea-input" name="q_extra_3" placeholder="Add anything else relevant here..."></textarea>
+    </div>
+
     <div class="nav">
       <button class="btn btn-secondary" onclick="prev()">← Back</button>
-      <div class="counter">3 of 8</div>
+      <div class="counter">3 of 10</div>
       <button class="btn btn-primary" onclick="next()">Next →</button>
     </div>
   </div>
@@ -361,15 +394,20 @@
   <!-- SECTION 4: Leads -->
   <div class="section" id="sec-3">
     <div class="section-head">
-      <div class="section-num">Section 04 of 08</div>
+      <div class="section-num">Section 04 of 10</div>
       <div class="section-title">Lead Flow</div>
       <div class="section-desc">What happens the moment someone hits submit - and what information do you need from them.</div>
     </div>
 
     <div class="q">
-      <div class="q-label">Which email address should leads be sent to? <span class="req">*</span></div>
-      <div class="q-hint">All inquiries submitted through the website will land here</div>
-      <input type="text" class="text-input" name="q14_dest" placeholder="e.g. sales@totalequipmentsales.com.au">
+      <div class="q-label">Should inquiries be sent to one team member or distributed across multiple people? <span class="req">*</span></div>
+      <div class="radio-group">
+        <label class="radio-row"><input type="radio" name="q14_routing" value="One team member" onclick="toggleOther('routing-other', false)"><span>One team member</span></label>
+        <label class="radio-row"><input type="radio" name="q14_routing" value="Multiple team members - all receive every inquiry" onclick="toggleOther('routing-other', true)"><span>Multiple team members - everyone receives every inquiry</span></label>
+        <label class="radio-row"><input type="radio" name="q14_routing" value="Multiple team members - split by product type" onclick="toggleOther('routing-other', true)"><span>Multiple team members - split by product type</span></label>
+        <label class="radio-row"><input type="radio" name="q14_routing" value="Not decided yet" onclick="toggleOther('routing-other', false)"><span>Not decided yet</span></label>
+      </div>
+      <input type="text" class="text-input other-input" id="routing-other" name="q14_routing_names" placeholder="Names or roles of the people who should receive inquiries">
     </div>
 
     <div class="q">
@@ -409,9 +447,14 @@
       </select>
     </div>
 
+    <div class="q">
+      <div class="q-label">Any other information you would like to provide about lead flow?</div>
+      <textarea class="textarea-input" name="q_extra_4" placeholder="Add anything else relevant here..."></textarea>
+    </div>
+
     <div class="nav">
       <button class="btn btn-secondary" onclick="prev()">← Back</button>
-      <div class="counter">4 of 8</div>
+      <div class="counter">4 of 10</div>
       <button class="btn btn-primary" onclick="next()">Next →</button>
     </div>
   </div>
@@ -419,7 +462,7 @@
   <!-- SECTION 5: Audience -->
   <div class="section" id="sec-4">
     <div class="section-head">
-      <div class="section-num">Section 05 of 08</div>
+      <div class="section-num">Section 05 of 10</div>
       <div class="section-title">Target Audience</div>
       <div class="section-desc">Every design and copy decision flows from who we're building this for.</div>
     </div>
@@ -463,11 +506,40 @@
       </div>
     </div>
 
+    <div class="q">
+      <div class="q-label">Who is the primary customer segment? <span class="req">*</span></div>
+      <div class="q-hint">The main type of business TES sells to most often</div>
+      <div class="check-group">
+        <label class="check-row"><input type="checkbox" name="q_seg_primary" value="Construction companies"><span>Construction companies</span></label>
+        <label class="check-row"><input type="checkbox" name="q_seg_primary" value="Mining companies"><span>Mining companies</span></label>
+        <label class="check-row"><input type="checkbox" name="q_seg_primary" value="Civil / infrastructure"><span>Civil / infrastructure</span></label>
+        <label class="check-row"><input type="checkbox" name="q_seg_primary" value="Property developers"><span>Property developers</span></label>
+        <label class="check-row"><input type="checkbox" name="q_seg_primary" value="Government / public sector"><span>Government / public sector</span></label>
+        <label class="check-row"><input type="checkbox" name="q_seg_primary" value="Crane hire / rental companies"><span>Crane hire companies</span></label>
+      </div>
+    </div>
 
+    <div class="q">
+      <div class="q-label">Who is the secondary customer segment?</div>
+      <div class="q-hint">Who else buys from TES, even occasionally — helps us write copy that speaks to multiple audiences</div>
+      <div class="check-group">
+        <label class="check-row"><input type="checkbox" name="q_seg_secondary" value="Construction companies"><span>Construction companies</span></label>
+        <label class="check-row"><input type="checkbox" name="q_seg_secondary" value="Mining companies"><span>Mining companies</span></label>
+        <label class="check-row"><input type="checkbox" name="q_seg_secondary" value="Civil / infrastructure"><span>Civil / infrastructure</span></label>
+        <label class="check-row"><input type="checkbox" name="q_seg_secondary" value="Property developers"><span>Property developers</span></label>
+        <label class="check-row"><input type="checkbox" name="q_seg_secondary" value="Government / public sector"><span>Government / public sector</span></label>
+        <label class="check-row"><input type="checkbox" name="q_seg_secondary" value="Crane hire / rental companies"><span>Crane hire companies</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-label">Any other information you would like to provide about your target audience?</div>
+      <textarea class="textarea-input" name="q_extra_5" placeholder="Add anything else relevant here..."></textarea>
+    </div>
 
     <div class="nav">
       <button class="btn btn-secondary" onclick="prev()">← Back</button>
-      <div class="counter">5 of 8</div>
+      <div class="counter">5 of 10</div>
       <button class="btn btn-primary" onclick="next()">Next →</button>
     </div>
   </div>
@@ -475,7 +547,7 @@
   <!-- SECTION 6: Content -->
   <div class="section" id="sec-5">
     <div class="section-head">
-      <div class="section-num">Section 06 of 08</div>
+      <div class="section-num">Section 06 of 10</div>
       <div class="section-title">Content</div>
       <div class="section-desc">Content readiness is usually the biggest project bottleneck - be honest here so we can plan accurately.</div>
     </div>
@@ -526,9 +598,14 @@
       </div>
     </div>
 
+    <div class="q">
+      <div class="q-label">Any other information you would like to provide about content?</div>
+      <textarea class="textarea-input" name="q_extra_6" placeholder="Add anything else relevant here..."></textarea>
+    </div>
+
     <div class="nav">
       <button class="btn btn-secondary" onclick="prev()">← Back</button>
-      <div class="counter">6 of 8</div>
+      <div class="counter">6 of 10</div>
       <button class="btn btn-primary" onclick="next()">Next →</button>
     </div>
   </div>
@@ -536,7 +613,7 @@
   <!-- SECTION 7: Technical -->
   <div class="section" id="sec-6">
     <div class="section-head">
-      <div class="section-num">Section 07 of 08</div>
+      <div class="section-num">Section 07 of 10</div>
       <div class="section-title">Technical</div>
       <div class="section-desc">Platform, integrations, and certifications.</div>
     </div>
@@ -557,7 +634,6 @@
       <div class="check-group">
         <label class="check-row"><input type="checkbox" name="q30" value="CRM"><span>CRM</span></label>
         <label class="check-row"><input type="checkbox" name="q30" value="Email marketing"><span>Email marketing tool</span></label>
-        <label class="check-row"><input type="checkbox" name="q30" value="Accounting (Xero)"><span>Accounting / Xero</span></label>
         <label class="check-row"><input type="checkbox" name="q30" value="Google Analytics"><span>Google Analytics</span></label>
         <label class="check-row"><input type="checkbox" name="q30" value="Heatmap / session recording"><span>Heatmap / session recording</span></label>
         <label class="check-row"><input type="checkbox" name="q30" value="None currently"><span>None currently</span></label>
@@ -574,7 +650,38 @@
       </div>
     </div>
 
+    <div class="q">
+      <div class="q-label">Who will manage and update the website after launch? <span class="req">*</span></div>
+      <div class="q-hint">Determines whether a content management dashboard (CMS) is needed</div>
+      <div class="radio-group">
+        <label class="radio-row"><input type="radio" name="q_cms" value="TES team - they need to update it themselves"><span>TES team themselves - need a simple dashboard to update content</span></label>
+        <label class="radio-row"><input type="radio" name="q_cms" value="SingSingh AI handles all updates"><span>SingSingh AI handles all updates on request</span></label>
+        <label class="radio-row"><input type="radio" name="q_cms" value="Mix - TES updates content, SingSingh handles technical"><span>Mix - TES updates content, SingSingh handles technical changes</span></label>
+        <label class="radio-row"><input type="radio" name="q_cms" value="Not decided"><span>Not decided yet</span></label>
+      </div>
+    </div>
 
+    <div class="q">
+      <div class="q-label">Does the website need to meet accessibility standards (WCAG)?</div>
+      <div class="q-hint">Some government and corporate clients require suppliers to meet WCAG AA accessibility compliance</div>
+      <div class="radio-pills">
+        <label class="pill-label"><input type="radio" name="q_access" value="Must have - required by clients"><span>Must have</span></label>
+        <label class="pill-label"><input type="radio" name="q_access" value="Nice to have"><span>Nice to have</span></label>
+        <label class="pill-label"><input type="radio" name="q_access" value="Not sure"><span>Not sure</span></label>
+        <label class="pill-label"><input type="radio" name="q_access" value="Not needed"><span>Not needed</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-label">Any specific security or compliance requirements?</div>
+      <div class="q-hint">e.g. requirements from mining or government clients around data handling, SSL, access controls</div>
+      <textarea class="textarea-input" name="q_security" placeholder="e.g. All inquiry data must be stored in Australia. Admin access must use two-factor authentication..."></textarea>
+    </div>
+
+    <div class="q">
+      <div class="q-label">Any other information you would like to provide about technical requirements?</div>
+      <textarea class="textarea-input" name="q_extra_7" placeholder="Add anything else relevant here..."></textarea>
+    </div>
 
     <div class="nav">
       <button class="btn btn-secondary" onclick="prev()">← Back</button>
@@ -632,6 +739,11 @@
       <div style="font-size:12px;color:#78350f;line-height:1.6;">AI features are not a one-time cost. They run on live models that charge per request — the more customers use them, the higher the monthly bill. We will include a full usage-based cost estimate in the proposal so there are no surprises after launch.</div>
     </div>
 
+    <div class="q">
+      <div class="q-label">Any other information you would like to provide about AI features?</div>
+      <textarea class="textarea-input" name="q_extra_8" placeholder="Add anything else relevant here..."></textarea>
+    </div>
+
     <div class="nav">
       <button class="btn btn-secondary" onclick="prev()">← Back</button>
       <div class="counter">8 of 10</div>
@@ -667,6 +779,15 @@
       </div>
     </div>
 
+    <div class="q">
+      <div class="q-label">Who will own the website code and all assets after delivery? <span class="req">*</span></div>
+      <div class="q-hint">Full code ownership means TES receives all source files, design assets, and hosting access at handover</div>
+      <div class="radio-group">
+        <label class="radio-row"><input type="radio" name="q_ownership" value="TES owns everything - full transfer at handover"><span>TES owns everything - full code and asset transfer at handover</span></label>
+        <label class="radio-row"><input type="radio" name="q_ownership" value="Shared - SingSingh AI retains codebase, TES owns content"><span>Shared - SingSingh AI retains codebase, TES owns content and domain</span></label>
+        <label class="radio-row"><input type="radio" name="q_ownership" value="Open to recommendation"><span>Open to recommendation</span></label>
+      </div>
+    </div>
 
 
 
@@ -674,6 +795,12 @@
 
 
 
+
+
+    <div class="q">
+      <div class="q-label">Any other information you would like to provide about timeline or governance?</div>
+      <textarea class="textarea-input" name="q_extra_9" placeholder="Add anything else relevant here..."></textarea>
+    </div>
 
     <div class="nav">
       <button class="btn btn-secondary" onclick="prev()">← Back</button>
@@ -693,30 +820,22 @@
     <div class="q">
       <div class="q-label">What is the primary goal of this website? <span class="req">*</span></div>
       <div class="radio-group">
-        <label class="radio-row"><input type="radio" name="q_primary" value="Close direct equipment sales online"><span>Close direct equipment sales online</span></label>
         <label class="radio-row"><input type="radio" name="q_primary" value="Generate qualified inquiries that the team closes by phone"><span>Generate qualified inquiries that the team closes by phone</span></label>
+        <label class="radio-row"><input type="radio" name="q_primary" value="Close direct equipment sales online"><span>Close direct equipment sales online</span></label>
         <label class="radio-row"><input type="radio" name="q_primary" value="Both equally"><span>Both equally</span></label>
       </div>
     </div>
 
     <div class="q">
-      <div class="q-label">How many qualified inquiries per month would make this website worth the investment? <span class="req">*</span></div>
-      <div class="radio-pills">
-        <label class="pill-label"><input type="radio" name="q_inq" value="1 to 5"><span>1 to 5</span></label>
-        <label class="pill-label"><input type="radio" name="q_inq" value="5 to 10"><span>5 to 10</span></label>
-        <label class="pill-label"><input type="radio" name="q_inq" value="10 to 20"><span>10 to 20</span></label>
-        <label class="pill-label"><input type="radio" name="q_inq" value="20+"><span>20+</span></label>
-        <label class="pill-label"><input type="radio" name="q_inq" value="Not sure"><span>Not sure</span></label>
-      </div>
-    </div>
-
-    <div class="q">
-      <div class="q-label">When do you expect the website to start paying for itself? <span class="req">*</span></div>
-      <div class="radio-pills">
-        <label class="pill-label"><input type="radio" name="q_roi" value="Within 3 months"><span>Within 3 months</span></label>
-        <label class="pill-label"><input type="radio" name="q_roi" value="Within 6 months"><span>Within 6 months</span></label>
-        <label class="pill-label"><input type="radio" name="q_roi" value="Within 12 months"><span>Within 12 months</span></label>
-        <label class="pill-label"><input type="radio" name="q_roi" value="Not a priority right now"><span>Not a priority right now</span></label>
+      <div class="q-label">What is the secondary role of this website? <span class="req">*</span></div>
+      <div class="q-hint">Tick all that apply</div>
+      <div class="check-group">
+        <label class="check-row"><input type="checkbox" name="q_secondary" value="Educate customers (product guides, specs, how cranes work)"><span>Educate customers</span></label>
+        <label class="check-row"><input type="checkbox" name="q_secondary" value="Build brand awareness and online presence"><span>Build brand / online presence</span></label>
+        <label class="check-row"><input type="checkbox" name="q_secondary" value="Content marketing / blog"><span>Content marketing / blog</span></label>
+        <label class="check-row"><input type="checkbox" name="q_secondary" value="Customer support and FAQ"><span>Customer support / FAQ</span></label>
+        <label class="check-row"><input type="checkbox" name="q_secondary" value="Showcase past projects and case studies"><span>Showcase past projects</span></label>
+        <label class="check-row"><input type="checkbox" name="q_secondary" value="Recruit talent / careers page"><span>Recruit talent / careers</span></label>
       </div>
     </div>
 
@@ -770,13 +889,13 @@
   }
 
   function preFill() {
-    setRadio('q1', '6–10');
+    setCheckboxes('q1', ['Tower cranes','Luffing cranes','Hoists','Loading platforms','Battery systems']);
     setCheckboxes('q2', ['Tower cranes','Luffing cranes','Hoists','Loading platforms','Battery systems','Spare parts']);
     setCheckboxes('q3', ['Jib length','Lifting capacity','Colour / livery','Signage / branding','Accessories (skips, hooks)','Anti-collision software']);
     setRadio('q18', 'Yes - always B2B');
     setRadio('q21', 'Australia + NZ');
     setRadio('q28', 'Rebuild and redesign on a new platform');
-    setCheckboxes('q30', ['Accounting (Xero)','Google Analytics']);
+    setCheckboxes('q30', ['Google Analytics']);
   }
 
   function goTo(idx) {
@@ -822,31 +941,41 @@ Generated: ${new Date().toLocaleDateString('en-AU', {day:'numeric',month:'long',
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 01 · PRODUCT CATALOG
-Models: ${getRadio('q1')}
+Equipment types: ${getChecked('q1')}
+Spare parts: ${getRadio('q_spare')}
 Categories at launch: ${getChecked('q2')}
 Configurable options: ${getChecked('q3')}
+Technical notes: ${getText('q_tech_notes')}
+Other: ${getText('q_extra_1')}
+
 02 · CONFIGURATOR
 Live price update: ${getRadio('q6')}
 Save build: ${getRadio('q7')}
 PDF download: ${getRadio('q8')}
 Share via link: ${getRadio('q9')}
 3D visual render: ${getRadio('q10')}
+Other: ${getText('q_extra_2')}
 
 03 · PRICING
 Price ranges: ${getText('q11')}
 Show prices on site: ${getRadio('q12')}
+Other: ${getText('q_extra_3')}
+
 04 · LEAD FLOW
-Lead email: ${getText('q14_dest')}
+Lead routing: ${getRadio('q14_routing')}${getText('q14_routing_names') !== '-' ? ' - ' + getText('q14_routing_names') : ''}
 Inquiry form fields: ${getChecked('q15')}
 CRM: ${getRadio('q16')}${getText('q16_crm') !== '-' ? ' - ' + getText('q16_crm') : ''}
 Response time: ${getText('q17')}
+Other: ${getText('q_extra_4')}
 
 05 · AUDIENCE
 B2B only: ${getRadio('q18')}
 Decision maker: ${getRadio('q19')}
 Primary device: ${getRadio('q20')}
 Geographic scope: ${getRadio('q21')}
-Two user types: (not asked)
+Primary customer segment: ${getChecked('q_seg_primary')}
+Secondary customer segment: ${getChecked('q_seg_secondary')}
+Other: ${getText('q_extra_5')}
 
 06 · CONTENT
 Existing copy: ${getRadio('q23')}
@@ -854,23 +983,29 @@ Case studies / photos: ${getRadio('q24')}
 Video footage: ${getRadio('q25')}
 Blog / resources section: ${getRadio('q26')}
 Brand guidelines: ${getRadio('q27')}
+Other: ${getText('q_extra_6')}
 
 07 · TECHNICAL
 Website goal: ${getRadio('q28')}
-Platform: React (agreed)
 Integrations: ${getChecked('q30')}
 AI chatbot: ${getRadio('q31')}
+Other: ${getText('q_extra_7')}
 
 08 · AI FEATURES
 AI features selected: ${getChecked('q_ai')}
 Chatbot scope: ${getChecked('q_ai_scope')}
 AI companion mode: ${getRadio('q_ai_mode')}
+Other: ${getText('q_extra_8')}
+
 09 · TIMELINE & GOVERNANCE
 Go-live date: ${getRadio('q33')}${getText('q33_date') !== '-' ? ' - ' + getText('q33_date') : ''}
 Phased launch: ${getRadio('q34')}
+Code / asset ownership: ${getRadio('q_ownership')}
+Other: ${getText('q_extra_9')}
+
+10 · SUCCESS METRICS
 Primary goal: ${getRadio('q_primary')}
-Inquiries target per month: ${getRadio('q_inq')}
-Expected ROI timeline: ${getRadio('q_roi')}
+Secondary role: ${getChecked('q_secondary')}
 Additional notes: ${getText('q_notes')}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 For: SingSingh AI · Re: TES Website`;
@@ -989,9 +1124,11 @@ For: SingSingh AI · Re: TES Website`;
 </div>
 
 ${sec('01','Product Catalog',
-  q('How many crane models does TES currently sell?', `<div class="opts">${renderRadio('q1')}</div>`) +
+  q('How many product models does TES currently offer?', `<div class="opts">${renderRadio('q1')}</div>`) +
+  q('Are spare parts and accessories sold alongside equipment?', `<div class="opts col1">${renderRadio('q_spare')}</div>`) +
   q('Which product categories at launch?', `<div class="opts">${renderCheck('q2')}</div>`) +
-  q('What can a customer configure?', `<div class="opts">${renderCheck('q3')}</div>`)
+  q('What can a customer configure?', `<div class="opts">${renderCheck('q3')}</div>`) +
+  q('Additional technical details', renderText(txt('q_tech_notes')))
 )}
 
 ${sec('02','The Configurator',
@@ -1008,7 +1145,7 @@ ${sec('03','Pricing',
 )}
 
 ${sec('04','Lead Flow',
-  q('Lead email address', renderText(txt('q14_dest'))) +
+  q('Who should website leads be sent to?', `<div class="opts col1">${renderRadio('q14_routing')}</div>${txt('q14_routing_names') ? renderText(txt('q14_routing_names')) : ''}`) +
   q('Information required in the inquiry form', `<div class="opts">${renderCheck('q15')}</div>`) +
   q('Do you have a CRM?', `<div class="opts col1">${renderRadio('q16')}</div>${txt('q16_crm') ? renderText(txt('q16_crm')) : ''}`) +
   q('Expected response time to an inquiry', renderText(txt('q17')))
@@ -1018,7 +1155,9 @@ ${sec('05','Audience',
   q('Is the buyer always B2B?', `<div class="opts col1">${renderRadio('q18')}</div>`) +
   q('Primary decision maker', `<div class="opts col1">${renderRadio('q19')}</div>`) +
   q('Primary device used when researching', `<div class="opts">${renderRadio('q20')}</div>`) +
-  q('Geographic scope', `<div class="opts">${renderRadio('q21')}</div>`)
+  q('Geographic scope', `<div class="opts">${renderRadio('q21')}</div>`) +
+  q('Primary customer segment', `<div class="opts">${renderCheck('q_seg_primary')}</div>`) +
+  q('Secondary customer segment', `<div class="opts">${renderCheck('q_seg_secondary')}</div>`)
 )}
 
 ${sec('06','Content',
@@ -1032,7 +1171,10 @@ ${sec('06','Content',
 ${sec('07','Technical',
   q('Goal for totalequipmentsales.com.au', `<div class="opts col1">${renderRadio('q28')}</div>`) +
   q('Integrations needed', `<div class="opts">${renderCheck('q30')}</div>`) +
-  q('AI chatbot at launch', `<div class="opts col1">${renderRadio('q31')}</div>`)
+  q('AI chatbot at launch', `<div class="opts col1">${renderRadio('q31')}</div>`) +
+  q('Who will manage the website after launch?', `<div class="opts col1">${renderRadio('q_cms')}</div>`) +
+  q('Accessibility standards (WCAG)', `<div class="opts">${renderRadio('q_access')}</div>`) +
+  q('Security / compliance requirements', renderText(txt('q_security')))
 )}
 
 ${sec('08','AI Features',
@@ -1041,15 +1183,15 @@ ${sec('08','AI Features',
   q('AI companion mode', `<div class="opts col1">${renderRadio('q_ai_mode')}</div>`)
 )}
 
-${sec('09','Timeline',
+${sec('09','Timeline & Governance',
   q('Target go-live date', `<div class="opts col1">${renderRadio('q33')}</div>${txt('q33_date') ? renderText(txt('q33_date')) : ''}`) +
-  q('Phased launch acceptable', `<div class="opts col1">${renderRadio('q34')}</div>`)
+  q('Phased launch acceptable', `<div class="opts col1">${renderRadio('q34')}</div>`) +
+  q('Who will own the website code and all assets after delivery?', `<div class="opts col1">${renderRadio('q_ownership')}</div>`)
 )}
 
 ${sec('10','Success Metrics',
   q('Primary goal of the website', `<div class="opts col1">${renderRadio('q_primary')}</div>`) +
-  q('Qualified inquiries per month target', `<div class="opts">${renderRadio('q_inq')}</div>`) +
-  q('When do you expect the website to start paying for itself', `<div class="opts">${renderRadio('q_roi')}</div>`) +
+  q('Secondary role of the website', `<div class="opts">${renderCheck('q_secondary')}</div>`) +
   q('Additional notes', renderText(txt('q_notes')))
 )}
 
