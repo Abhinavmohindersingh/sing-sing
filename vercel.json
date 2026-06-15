@@ -4,6 +4,7 @@
   },
   "rewrites": [
     { "source": "/png_education-proposal", "destination": "/png_education-proposal.html" },
+    { "source": "/TES_scoping_form", "destination": "/TES_Scoping_Form.html" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
