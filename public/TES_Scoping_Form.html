@@ -1116,7 +1116,8 @@ ${sec('01','Product Catalog',
   q('Are spare parts and accessories sold alongside equipment?', `<div class="opts col1">${renderRadio('q_spare')}</div>`) +
   q('Which product categories at launch?', `<div class="opts">${renderCheck('q2')}</div>`) +
   q('What can a customer configure?', `<div class="opts">${renderCheck('q3')}</div>`) +
-  q('Additional technical details', renderText(txt('q_tech_notes')))
+  q('Additional technical details', renderText(txt('q_tech_notes'))) +
+  (txt('q_extra_1') ? q('Other information', renderText(txt('q_extra_1'))) : '')
 )}
 
 ${sec('02','The Configurator',
@@ -1124,19 +1125,22 @@ ${sec('02','The Configurator',
   q('Can customers save their build and return later?', `<div class="opts">${renderRadio('q7')}</div>`) +
   q('Can customers download a PDF summary of their build?', `<div class="opts">${renderRadio('q8')}</div>`) +
   q('Can customers share their build via a unique link?', `<div class="opts">${renderRadio('q9')}</div>`) +
-  q('Is a live 3D visual render required?', `<div class="opts col1">${renderRadio('q10')}</div>`)
+  q('Is a live 3D visual render required?', `<div class="opts col1">${renderRadio('q10')}</div>`) +
+  (txt('q_extra_2') ? q('Other information', renderText(txt('q_extra_2'))) : '')
 )}
 
 ${sec('03','Pricing',
   q('Rough price range per category', renderText(txt('q11'))) +
-  q('Should the website show price ranges?', `<div class="opts col1">${renderRadio('q12')}</div>`)
+  q('Should the website show price ranges?', `<div class="opts col1">${renderRadio('q12')}</div>`) +
+  (txt('q_extra_3') ? q('Other information', renderText(txt('q_extra_3'))) : '')
 )}
 
 ${sec('04','Lead Flow',
   q('Who should website leads be sent to?', `<div class="opts col1">${renderRadio('q14_routing')}</div>${txt('q14_routing_names') ? renderText(txt('q14_routing_names')) : ''}`) +
   q('Information required in the inquiry form', `<div class="opts">${renderCheck('q15')}</div>`) +
   q('Do you have a CRM?', `<div class="opts col1">${renderRadio('q16')}</div>${txt('q16_crm') ? renderText(txt('q16_crm')) : ''}`) +
-  q('Expected response time to an inquiry', renderText(txt('q17')))
+  q('Expected response time to an inquiry', renderText(txt('q17'))) +
+  (txt('q_extra_4') ? q('Other information', renderText(txt('q_extra_4'))) : '')
 )}
 
 ${sec('05','Audience',
@@ -1145,7 +1149,8 @@ ${sec('05','Audience',
   q('Primary device used when researching', `<div class="opts">${renderRadio('q20')}</div>`) +
   q('Geographic scope', `<div class="opts">${renderRadio('q21')}</div>`) +
   q('Primary customer segment', `<div class="opts">${renderCheck('q_seg_primary')}</div>`) +
-  q('Secondary customer segment', `<div class="opts">${renderCheck('q_seg_secondary')}</div>`)
+  q('Secondary customer segment', `<div class="opts">${renderCheck('q_seg_secondary')}</div>`) +
+  (txt('q_extra_5') ? q('Other information', renderText(txt('q_extra_5'))) : '')
 )}
 
 ${sec('06','Content',
@@ -1153,7 +1158,8 @@ ${sec('06','Content',
   q('Customer case studies or project photos', `<div class="opts">${renderRadio('q24')}</div>`) +
   q('Video footage of cranes in operation', `<div class="opts">${renderRadio('q25')}</div>`) +
   q('Blog or resources section at launch', `<div class="opts">${renderRadio('q26')}</div>`) +
-  q('TES brand guidelines exist', `<div class="opts col1">${renderRadio('q27')}</div>`)
+  q('TES brand guidelines exist', `<div class="opts col1">${renderRadio('q27')}</div>`) +
+  (txt('q_extra_6') ? q('Other information', renderText(txt('q_extra_6'))) : '')
 )}
 
 ${sec('07','Technical',
@@ -1162,19 +1168,22 @@ ${sec('07','Technical',
   q('AI chatbot at launch', `<div class="opts col1">${renderRadio('q31')}</div>`) +
   q('Who will manage the website after launch?', `<div class="opts col1">${renderRadio('q_cms')}</div>`) +
   q('Accessibility standards (WCAG)', `<div class="opts">${renderRadio('q_access')}</div>`) +
-  q('Security / compliance requirements', renderText(txt('q_security')))
+  q('Security / compliance requirements', renderText(txt('q_security'))) +
+  (txt('q_extra_7') ? q('Other information', renderText(txt('q_extra_7'))) : '')
 )}
 
 ${sec('08','AI Features',
   q('AI features selected', `<div class="opts">${renderCheck('q_ai')}</div>`) +
   q('Chatbot and voice assistant scope', `<div class="opts">${renderCheck('q_ai_scope')}</div>`) +
-  q('AI companion mode', `<div class="opts col1">${renderRadio('q_ai_mode')}</div>`)
+  q('AI companion mode', `<div class="opts col1">${renderRadio('q_ai_mode')}</div>`) +
+  (txt('q_extra_8') ? q('Other information', renderText(txt('q_extra_8'))) : '')
 )}
 
 ${sec('09','Timeline & Governance',
   q('Target go-live date', `<div class="opts col1">${renderRadio('q33')}</div>${txt('q33_date') ? renderText(txt('q33_date')) : ''}`) +
   q('Phased launch acceptable', `<div class="opts col1">${renderRadio('q34')}</div>`) +
-  q('Who will own the website code and all assets after delivery?', `<div class="opts col1">${renderRadio('q_ownership')}</div>`)
+  q('Who will own the website code and all assets after delivery?', `<div class="opts col1">${renderRadio('q_ownership')}</div>`) +
+  (txt('q_extra_9') ? q('Other information', renderText(txt('q_extra_9'))) : '')
 )}
 
 ${sec('10','Success Metrics',
