@@ -159,21 +159,6 @@
       [style*="background:#fffbeb"] { padding: 0.8rem 0.9rem !important; }
     }
 
-    /* Print view: always in render tree, just off-screen */
-    #print-view {
-      position: fixed; left: -9999px; top: 0;
-      width: 1px; height: 1px; overflow: hidden;
-      font-family: -apple-system, "Helvetica Neue", Arial, sans-serif; color: #1a1a1a;
-    }
-    @media print {
-      @page { margin: 1.5cm; size: A4; }
-      #progress-bar, .header, .steps-bar, .wrap, #modal { display: none !important; }
-      #print-view {
-        position: static !important; left: auto !important;
-        width: auto !important; height: auto !important;
-        overflow: visible !important; display: block !important;
-      }
-    }
   </style>
 
 </head>
@@ -989,6 +974,9 @@ Other: ${getText('q_extra_6')}
 Website goal: ${getRadio('q28')}
 Integrations: ${getChecked('q30')}
 AI chatbot: ${getRadio('q31')}
+Website management: ${getRadio('q_cms')}
+WCAG accessibility: ${getRadio('q_access')}
+Security / compliance: ${getText('q_security')}
 Other: ${getText('q_extra_7')}
 
 08 · AI FEATURES
@@ -1124,7 +1112,7 @@ For: SingSingh AI · Re: TES Website`;
 </div>
 
 ${sec('01','Product Catalog',
-  q('How many product models does TES currently offer?', `<div class="opts">${renderRadio('q1')}</div>`) +
+  q('What types of equipment does TES currently sell?', `<div class="opts">${renderCheck('q1')}</div>`) +
   q('Are spare parts and accessories sold alongside equipment?', `<div class="opts col1">${renderRadio('q_spare')}</div>`) +
   q('Which product categories at launch?', `<div class="opts">${renderCheck('q2')}</div>`) +
   q('What can a customer configure?', `<div class="opts">${renderCheck('q3')}</div>`) +
@@ -1197,16 +1185,12 @@ ${sec('10','Success Metrics',
 
 </body></html>`;
 
-    // Extract style + body content (no full doc wrapper, no screen display)
-    const styleMatch = html.match(/<style>([\s\S]*?)<\/style>/);
-    const bodyMatch = html.match(/<body>([\s\S]*?)<\/body>/s);
-    const styles = styleMatch ? '<style>' + styleMatch[1] + '</style>' : '';
-    const body = bodyMatch ? bodyMatch[1].replace(/<script[\s\S]*?<\/script>/gi, '') : '';
-
-    const pv = document.getElementById('print-view');
-    pv.innerHTML = styles + body;
-    window.print();
-    setTimeout(() => { pv.innerHTML = ''; }, 1200);
+    const win = window.open('', '_blank');
+    win.document.write(html);
+    win.document.close();
+    win.focus();
+    win.print();
+    win.onafterprint = () => win.close();
   }
   function closeModal() { document.getElementById('modal').classList.remove('open'); }
   function copyToClipboard() {
@@ -1224,6 +1208,5 @@ ${sec('10','Success Metrics',
   preFill();
   updateBar();
 </script>
-<div id="print-view"></div>
 </body>
 </html>
