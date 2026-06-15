@@ -1,0 +1,1087 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Total Equipment Sales: Website Scoping Form</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #2563eb; --navy: #0f1c2e; --red: #c8102e;
+      --green: #16a34a; --text: #334155; --muted: #64748b;
+      --border: #e2e8f0; --font: "Inter", sans-serif; --mono: "IBM Plex Mono", monospace;
+    }
+    html, body { background: #f1f5f9; color: var(--text); font-family: var(--font); -webkit-font-smoothing: antialiased; }
+
+    #progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, #c8102e, #2563eb); transition: width 0.2s; z-index: 100; }
+
+    .header { background: var(--navy); padding: 2rem 0; }
+    .header-inner { max-width: 760px; margin: 0 auto; padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; }
+    .header-brand { display: flex; flex-direction: column; gap: 0.25rem; }
+    .header-tag { font-family: var(--mono); font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: #94a3b8; }
+    .header-title { font-size: 1.1rem; font-weight: 700; color: #fff; }
+    .header-sub { font-size: 12px; color: #64748b; margin-top: 0.1rem; }
+    .header-pill { background: rgba(37,99,235,0.2); border: 1px solid rgba(37,99,235,0.35); border-radius: 100px; padding: 0.35rem 0.9rem; font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; color: #93c5fd; text-transform: uppercase; white-space: nowrap; }
+
+    .steps-bar { background: #fff; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; }
+    .steps-inner { max-width: 760px; margin: 0 auto; padding: 0 1.5rem; display: flex; overflow-x: auto; gap: 0; }
+    .step-btn { flex-shrink: 0; padding: 0.75rem 1rem; font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); border: none; background: none; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; white-space: nowrap; }
+    .step-btn.active { color: var(--blue); border-bottom-color: var(--blue); }
+    .step-btn.done { color: var(--green); }
+
+    .wrap { max-width: 760px; margin: 0 auto; padding: 2rem 1.5rem 6rem; }
+
+    .section { display: none; }
+    .section.active { display: block; }
+
+    .section-head { margin-bottom: 2rem; }
+    .section-num { font-family: var(--mono); font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--blue); margin-bottom: 0.4rem; display: flex; align-items: center; gap: 8px; }
+    .section-num::before { content: ""; width: 16px; height: 1px; background: var(--blue); }
+    .section-title { font-size: 1.3rem; font-weight: 700; color: var(--navy); margin-bottom: 0.3rem; }
+    .section-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+    .q { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 1.4rem 1.5rem; margin-bottom: 1rem; }
+    .q-label { font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 0.1rem; line-height: 1.4; }
+    .q-hint { font-size: 11px; color: var(--muted); margin-bottom: 0.9rem; margin-top: 0.2rem; line-height: 1.5; }
+    .req { color: var(--red); margin-left: 2px; }
+
+    .radio-group { display: flex; flex-direction: column; gap: 0.5rem; }
+    .radio-row { display: flex; align-items: center; gap: 0.6rem; cursor: pointer; }
+    .radio-row input[type=radio] { accent-color: var(--blue); width: 15px; height: 15px; cursor: pointer; flex-shrink: 0; }
+    .radio-row span { font-size: 13px; color: var(--text); }
+
+    .radio-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .pill-label { cursor: pointer; }
+    .pill-label input { display: none; }
+    .pill-label span { display: inline-block; padding: 0.4rem 0.9rem; border-radius: 100px; border: 1.5px solid var(--border); font-size: 12px; color: var(--muted); transition: all 0.15s; background: #f8fafc; }
+    .pill-label input:checked + span { border-color: var(--blue); background: rgba(37,99,235,0.07); color: var(--blue); font-weight: 600; }
+
+    .check-group { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+    @media (max-width: 500px) { .check-group { grid-template-columns: 1fr; } }
+    .check-row { display: flex; align-items: center; gap: 0.6rem; cursor: pointer; }
+    .check-row input[type=checkbox] { accent-color: var(--blue); width: 15px; height: 15px; cursor: pointer; flex-shrink: 0; }
+    .check-row span { font-size: 13px; color: var(--text); }
+
+    .text-input, .textarea-input, .select-input { width: 100%; border: 1.5px solid var(--border); border-radius: 8px; padding: 0.65rem 0.85rem; font-family: var(--font); font-size: 13px; color: var(--navy); background: #fff; outline: none; transition: border-color 0.15s; margin-top: 0.5rem; }
+    .text-input:focus, .textarea-input:focus, .select-input:focus { border-color: var(--blue); }
+    .textarea-input { resize: vertical; min-height: 90px; line-height: 1.6; }
+    .select-input { cursor: pointer; }
+
+    .other-input { display: none; margin-top: 0.6rem; }
+    .other-input.visible { display: block; }
+
+    .nav { display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; }
+    .btn { padding: 0.75rem 1.8rem; border-radius: 8px; font-family: var(--font); font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: all 0.15s; }
+    .btn-primary { background: var(--blue); color: #fff; }
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-secondary { background: #fff; color: var(--navy); border: 1.5px solid var(--border); }
+    .btn-secondary:hover { border-color: #94a3b8; }
+    .btn-submit { background: var(--navy); color: #fff; padding: 0.85rem 2.5rem; font-size: 14px; }
+    .btn-submit:hover { background: #162032; }
+    .counter { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.1em; }
+
+    #modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 200; align-items: center; justify-content: center; padding: 1rem; }
+    #modal.open { display: flex; }
+    .modal-box { background: #fff; border-radius: 14px; max-width: 680px; width: 100%; max-height: 90vh; overflow-y: auto; }
+    .modal-head { padding: 1.5rem 1.8rem 1rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .modal-head h3 { font-size: 1rem; font-weight: 700; color: var(--navy); }
+    .modal-close { background: none; border: none; font-size: 1.3rem; cursor: pointer; color: var(--muted); }
+    .modal-body { padding: 1.5rem 1.8rem; }
+    #summary-text { font-family: var(--mono); font-size: 11px; line-height: 1.8; color: var(--text); white-space: pre-wrap; background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 1rem; max-height: 380px; overflow-y: auto; }
+    .modal-foot { padding: 1rem 1.8rem 1.5rem; display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; }
+    .btn-copy { background: var(--blue); color: #fff; padding: 0.65rem 1.4rem; border-radius: 8px; border: none; font-size: 13px; font-weight: 600; cursor: pointer; }
+    .btn-email { background: var(--navy); color: #fff; padding: 0.65rem 1.4rem; border-radius: 8px; border: none; font-size: 13px; font-weight: 600; cursor: pointer; }
+    .copy-confirm { font-size: 12px; color: var(--green); display: none; font-weight: 600; }
+
+    /* ── Mobile ─────────────────────────────────────── */
+    @media (max-width: 640px) {
+      /* Progress bar thicker for visibility */
+      #progress-bar { height: 4px; }
+
+      /* Header */
+      .header { padding: 1.25rem 0; }
+      .header-inner { padding: 0 1rem; }
+      .header-title { font-size: 1rem; }
+      .header-sub { font-size: 11px; }
+
+      /* Steps bar: hide text labels, show only number */
+      .steps-inner { padding: 0 0.5rem; gap: 0; }
+      .step-btn { padding: 0.65rem 0.6rem; font-size: 8px; letter-spacing: 0.06em; }
+
+      /* Main content padding */
+      .wrap { padding: 1.25rem 1rem 5rem; }
+
+      /* Section header */
+      .section-head { margin-bottom: 1.25rem; }
+      .section-title { font-size: 1.15rem; }
+      .section-desc { font-size: 12px; }
+
+      /* Question cards */
+      .q { padding: 1rem 1rem; margin-bottom: 0.75rem; border-radius: 8px; }
+      .q-label { font-size: 13px; line-height: 1.45; }
+      .q-hint { font-size: 11px; margin-bottom: 0.75rem; }
+
+      /* Radio rows — bigger touch targets */
+      .radio-row { padding: 0.35rem 0; min-height: 44px; align-items: center; }
+      .radio-row input[type=radio] { width: 18px; height: 18px; }
+      .radio-row span { font-size: 14px; }
+
+      /* Checkbox rows — bigger touch targets */
+      .check-group { grid-template-columns: 1fr; gap: 0.35rem; }
+      .check-row { padding: 0.35rem 0; min-height: 44px; align-items: center; }
+      .check-row input[type=checkbox] { width: 18px; height: 18px; }
+      .check-row span { font-size: 14px; }
+
+      /* Pills — full width on mobile */
+      .radio-pills { gap: 0.4rem; }
+      .pill-label span { padding: 0.5rem 1rem; font-size: 13px; min-height: 40px; display: flex; align-items: center; }
+
+      /* Inputs */
+      .text-input, .textarea-input, .select-input { font-size: 16px; padding: 0.75rem 0.9rem; } /* 16px prevents iOS zoom */
+
+      /* Nav buttons — stack on mobile */
+      .nav { flex-direction: column-reverse; gap: 0.6rem; margin-top: 1.5rem; }
+      .btn { width: 100%; text-align: center; padding: 0.9rem 1rem; font-size: 14px; }
+      .btn-submit { padding: 0.9rem 1rem; }
+      .counter { order: -1; margin-bottom: 0.2rem; }
+
+      /* Modal — full screen on mobile */
+      #modal { padding: 0; align-items: flex-end; }
+      .modal-box { border-radius: 16px 16px 0 0; max-height: 85vh; }
+      .modal-head { padding: 1.1rem 1.2rem 0.8rem; }
+      .modal-body { padding: 1rem 1.2rem; }
+      .modal-foot { padding: 0.75rem 1.2rem 1.5rem; flex-direction: column; }
+      .btn-copy, .btn-email { width: 100%; text-align: center; padding: 0.8rem; }
+      #summary-text { font-size: 10px; max-height: 260px; }
+
+      /* Warning callout box in AI section */
+      [style*="background:#fffbeb"] { padding: 0.8rem 0.9rem !important; }
+    }
+
+    /* Print view: always in render tree, just off-screen */
+    #print-view {
+      position: fixed; left: -9999px; top: 0;
+      width: 1px; height: 1px; overflow: hidden;
+      font-family: -apple-system, "Helvetica Neue", Arial, sans-serif; color: #1a1a1a;
+    }
+    @media print {
+      @page { margin: 1.5cm; size: A4; }
+      #progress-bar, .header, .steps-bar, .wrap, #modal { display: none !important; }
+      #print-view {
+        position: static !important; left: auto !important;
+        width: auto !important; height: auto !important;
+        overflow: visible !important; display: block !important;
+      }
+    }
+  </style>
+
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="header-brand">
+      <div class="header-tag">SingSingh AI × Total Equipment Sales</div>
+      <div class="header-title">Website Project Scoping Form</div>
+      <div class="header-sub">Review each question and update anything that needs changing</div>
+    </div>
+  </div>
+</div>
+
+<div class="steps-bar">
+  <div class="steps-inner">
+    <button class="step-btn active" onclick="goTo(0)">01 Products</button>
+    <button class="step-btn" onclick="goTo(1)">02 Configurator</button>
+    <button class="step-btn" onclick="goTo(2)">03 Pricing</button>
+    <button class="step-btn" onclick="goTo(3)">04 Leads</button>
+    <button class="step-btn" onclick="goTo(4)">05 Audience</button>
+    <button class="step-btn" onclick="goTo(5)">06 Content</button>
+    <button class="step-btn" onclick="goTo(6)">07 Tech</button>
+    <button class="step-btn" onclick="goTo(7)">08 AI</button>
+    <button class="step-btn" onclick="goTo(8)">09 Timeline</button>
+    <button class="step-btn" onclick="goTo(9)">10 KPIs</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- SECTION 1: Products -->
+  <div class="section active" id="sec-0">
+    <div class="section-head">
+      <div class="section-num">Section 01 of 08</div>
+      <div class="section-title">Product Catalog</div>
+      <div class="section-desc">What TES is selling and which products should be on the website.</div>
+    </div>
+
+    <div class="q">
+      <div class="q-label">How many crane models does TES currently sell? <span class="req">*</span></div>
+      <div class="radio-pills">
+        <label class="pill-label"><input type="radio" name="q1" value="1–5"><span>1–5 models</span></label>
+        <label class="pill-label"><input type="radio" name="q1" value="6–10"><span>6–10 models</span></label>
+        <label class="pill-label"><input type="radio" name="q1" value="11–20"><span>11–20 models</span></label>
+        <label class="pill-label"><input type="radio" name="q1" value="20+"><span>20+ models</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-label">Which product categories should be on the website at launch? <span class="req">*</span></div>
+      <div class="q-hint">Untick anything that should not be included</div>
+      <div class="check-group">
+        <label class="check-row"><input type="checkbox" name="q2" value="Tower cranes"><span>Tower cranes</span></label>
+        <label class="check-row"><input type="checkbox" name="q2" value="Luffing cranes"><span>Luffing cranes</span></label>
+        <label class="check-row"><input type="checkbox" name="q2" value="Mobile cranes"><span>Mobile cranes</span></label>
+        <label class="check-row"><input type="checkbox" name="q2" value="Self-erecting cranes"><span>Self-erecting cranes</span></label>
+        <label class="check-row"><input type="checkbox" name="q2" value="Hoists"><span>Hoists</span></label>
+        <label class="check-row"><input type="checkbox" name="q2" value="Loading platforms"><span>Loading platforms</span></label>
+        <label class="check-row"><input type="checkbox" name="q2" value="Battery systems"><span>Battery systems</span></label>
+        <label class="check-row"><input type="checkbox" name="q2" value="Spare parts"><span>Spare parts</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-label">What can a customer configure when buying a crane? <span class="req">*</span></div>
+      <div class="q-hint">Tick all that apply - remove anything not offered</div>
+      <div class="check-group">
+        <label class="check-row"><input type="checkbox" name="q3" value="Jib length"><span>Jib length</span></label>
+        <label class="check-row"><input type="checkbox" name="q3" value="Lifting capacity"><span>Lifting capacity</span></label>
+        <label class="check-row"><input type="checkbox" name="q3" value="Hook height"><span>Hook height</span></label>
+        <label class="check-row"><input type="checkbox" name="q3" value="Colour / livery"><span>Colour / livery</span></label>
+        <label class="check-row"><input type="checkbox" name="q3" value="Signage / branding"><span>Signage / branding</span></label>
+        <label class="check-row"><input type="checkbox" name="q3" value="Accessories (skips, hooks)"><span>Accessories</span></label>
+        <label class="check-row"><input type="checkbox" name="q3" value="Battery / power options"><span>Battery / power</span></label>
+        <label class="check-row"><input type="checkbox" name="q3" value="Anti-collision software"><span>Anti-collision software</span></label>
+      </div>
+    </div>
+
+
+
+    <div class="nav">
+      <div class="counter">1 of 8</div>
+      <button class="btn btn-primary" onclick="next()">Next →</button>
+    </div>
+  </div>
+
+  <!-- SECTION 2: Configurator -->
+  <div class="section" id="sec-1">
+    <div class="section-head">
+      <div class="section-num">Section 02 of 08</div>
+      <div class="section-title">The Configurator</div>
+      <div class="section-desc">The Porsche-style build experience. These are business decisions that directly determine build complexity and cost.</div>
+    </div>
+
+    <div class="q">
+      <div class="q-label">Should the price range update live as a customer configures? <span class="req">*</span></div>
+      <div class="radio-group">
+        <label class="radio-row"><input type="radio" name="q6" value="Yes - show live price range as they configure"><span>Yes - show a live price range as they add options</span></label>
+        <label class="radio-row"><input type="radio" name="q6" value="No - always end with request a quote"><span>No - always end with "request a quote" regardless</span></label>
+        <label class="radio-row"><input type="radio" name="q6" value="Not sure - open to recommendation"><span>Not sure - open to recommendation</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-label">Should customers be able to save their build and return later? <span class="req">*</span></div>
+      <div class="radio-pills">
+        <label class="pill-label"><input type="radio" name="q7" value="Must have"><span>Must have</span></label>
+        <label class="pill-label"><input type="radio" name="q7" value="Nice to have"><span>Nice to have</span></label>
+        <label class="pill-label"><input type="radio" name="q7" value="Not needed"><span>Not needed</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-label">Should customers be able to download a PDF summary of their build? <span class="req">*</span></div>
+      <div class="radio-pills">
+        <label class="pill-label"><input type="radio" name="q8" value="Must have"><span>Must have</span></label>
+        <label class="pill-label"><input type="radio" name="q8" value="Nice to have"><span>Nice to have</span></label>
+        <label class="pill-label"><input type="radio" name="q8" value="Not needed"><span>Not needed</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-label">Should customers be able to share their build via a unique link? <span class="req">*</span></div>
+      <div class="q-hint">Like a Porsche Code - share spec with a colleague or revisit later</div>
+      <div class="radio-pills">
+        <label class="pill-label"><input type="radio" name="q9" value="Must have"><span>Must have</span></label>
+        <label class="pill-label"><input type="radio" name="q9" value="Nice to have"><span>Nice to have</span></label>
+        <label class="pill-label"><input type="radio" name="q9" value="Not needed"><span>Not needed</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-label">Is a live 3D visual render required? <span class="req">*</span></div>
+      <div class="q-hint">A 3D model that updates as options are selected - significant build time</div>
+      <div class="radio-group">
+        <label class="radio-row"><input type="radio" name="q10" value="Must have"><span>Must have</span></label>
+        <label class="radio-row"><input type="radio" name="q10" value="Nice to have"><span>Nice to have</span></label>
+        <label class="radio-row"><input type="radio" name="q10" value="Not needed"><span>Not needed</span></label>
+      </div>
+    </div>
+
+    <div class="nav">
+      <button class="btn btn-secondary" onclick="prev()">← Back</button>
+      <div class="counter">2 of 8</div>
+      <button class="btn btn-primary" onclick="next()">Next →</button>
+    </div>
+  </div>
+
+  <!-- SECTION 3: Pricing -->
+  <div class="section" id="sec-2">
+    <div class="section-head">
+      <div class="section-num">Section 03 of 08</div>
+      <div class="section-title">Pricing</div>
+      <div class="section-desc">How pricing appears - or doesn't appear - is one of the biggest trust decisions for a high-value B2B site.</div>
+    </div>
+
+    <div class="q">
+      <div class="q-label">Rough price range per product category?</div>
+      <div class="q-hint">Ranges are fine - helps us design how pricing is communicated</div>
+      <textarea class="textarea-input" name="q11" placeholder="e.g. Tower cranes: $300K–$600K&#10;Luffing cranes: $400K–$800K&#10;Hoists: $50K–$120K&#10;Loading platforms: $15K–$40K"></textarea>
+    </div>
+
+    <div class="q">
+      <div class="q-label">Should the website show price ranges at all? <span class="req">*</span></div>
+      <div class="radio-group">
+        <label class="radio-row"><input type="radio" name="q12" value="Yes - show indicative price ranges"><span>Yes - show indicative ranges so customers know what they're getting into</span></label>
+        <label class="radio-row"><input type="radio" name="q12" value="No - request a quote only"><span>No - always "request a quote", no numbers visible</span></label>
+        <label class="radio-row"><input type="radio" name="q12" value="Not sure - open to recommendation"><span>Not sure - open to recommendation</span></label>
+      </div>
+    </div>
+
+
+
+    <div class="nav">
+      <button class="btn btn-secondary" onclick="prev()">← Back</button>
+      <div class="counter">3 of 8</div>
+      <button class="btn btn-primary" onclick="next()">Next →</button>
+    </div>
+  </div>
+
+  <!-- SECTION 4: Leads -->
+  <div class="section" id="sec-3">
+    <div class="section-head">
+      <div class="section-num">Section 04 of 08</div>
+      <div class="section-title">Lead Flow</div>
+      <div class="section-desc">What happens the moment someone hits submit - and what information do you need from them.</div>
+    </div>
+
+    <div class="q">
+      <div class="q-label">Which email address should leads be sent to? <span class="req">*</span></div>
+      <div class="q-hint">All inquiries submitted through the website will land here</div>
+      <input type="text" class="text-input" name="q14_dest" placeholder="e.g. sales@totalequipmentsales.com.au">
+    </div>
+
+    <div class="q">
+      <div class="q-label">What information do you need from the customer in the inquiry form? <span class="req">*</span></div>
+      <div class="check-group">
+        <label class="check-row"><input type="checkbox" name="q15" value="Full name"><span>Full name</span></label>
+        <label class="check-row"><input type="checkbox" name="q15" value="Company name"><span>Company name</span></label>
+        <label class="check-row"><input type="checkbox" name="q15" value="ABN"><span>ABN</span></label>
+        <label class="check-row"><input type="checkbox" name="q15" value="Email address"><span>Email address</span></label>
+        <label class="check-row"><input type="checkbox" name="q15" value="Phone number"><span>Phone number</span></label>
+        <label class="check-row"><input type="checkbox" name="q15" value="Project type"><span>Project type</span></label>
+        <label class="check-row"><input type="checkbox" name="q15" value="Site location / state"><span>Site location / state</span></label>
+        <label class="check-row"><input type="checkbox" name="q15" value="Project timeline"><span>Project timeline</span></label>
+        <label class="check-row"><input type="checkbox" name="q15" value="Budget range"><span>Budget range</span></label>
+        <label class="check-row"><input type="checkbox" name="q15" value="Number of units needed"><span>Units needed</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-label">Do you have a CRM to push leads into? <span class="req">*</span></div>
+      <div class="radio-group">
+        <label class="radio-row"><input type="radio" name="q16" value="Yes - existing CRM" onclick="toggleOther('crm-other', true)"><span>Yes - existing CRM</span></label>
+        <label class="radio-row"><input type="radio" name="q16" value="No - email only for now" onclick="toggleOther('crm-other', false)"><span>No - email only for now</span></label>
+        <label class="radio-row"><input type="radio" name="q16" value="Set one up as part of this project" onclick="toggleOther('crm-other', false)"><span>Set one up as part of this project</span></label>
+      </div>
+      <input type="text" class="text-input other-input" id="crm-other" name="q16_crm" placeholder="Which CRM? (e.g. HubSpot, Pipedrive, Salesforce)">
+    </div>
+
+    <div class="q">
+      <div class="q-label">Expected response time to an inquiry? <span class="req">*</span></div>
+      <select class="select-input" name="q17">
+        <option value="">Select one...</option>
+        <option>Same day</option>
+        <option>Within 24 hours</option>
+        <option>Within 48 hours</option>
+        <option>Within a week</option>
+      </select>
+    </div>
+
+    <div class="nav">
+      <button class="btn btn-secondary" onclick="prev()">← Back</button>
+      <div class="counter">4 of 8</div>
+      <button class="btn btn-primary" onclick="next()">Next →</button>
+    </div>
+  </div>
+
+  <!-- SECTION 5: Audience -->
+  <div class="section" id="sec-4">
+    <div class="section-head">
+      <div class="section-num">Section 05 of 08</div>
+      <div class="section-title">Target Audience</div>
+      <div class="section-desc">Every design and copy decision flows from who we're building this for.</div>
+    </div>
+
+    <div class="q">
+      <div class="q-label">Is the buyer always B2B? <span class="req">*</span></div>
+      <div class="radio-group">
+        <label class="radio-row"><input type="radio" name="q18" value="Yes - always B2B"><span>Yes - always B2B (construction companies, mining groups)</span></label>
+        <label class="radio-row"><input type="radio" name="q18" value="Mostly B2B but some individual buyers"><span>Mostly B2B but some individual buyers</span></label>
+        <label class="radio-row"><input type="radio" name="q18" value="Mixed"><span>Mixed</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-label">Who is the primary decision maker in the buying process? <span class="req">*</span></div>
+      <div class="q-hint">Who pulls the trigger on a $500K crane purchase?</div>
+      <div class="radio-group">
+        <label class="radio-row"><input type="radio" name="q19" value="Director / Owner"><span>Director / Owner</span></label>
+        <label class="radio-row"><input type="radio" name="q19" value="Procurement Manager"><span>Procurement Manager</span></label>
+        <label class="radio-row"><input type="radio" name="q19" value="Site / Project Manager"><span>Site / Project Manager</span></label>
+        <label class="radio-row"><input type="radio" name="q19" value="Mixed - depends on company"><span>Mixed - depends on company size</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-label">What device does your typical buyer use when researching? <span class="req">*</span></div>
+      <div class="radio-pills">
+        <label class="pill-label"><input type="radio" name="q20" value="Mostly desktop"><span>Mostly desktop</span></label>
+        <label class="pill-label"><input type="radio" name="q20" value="Mostly mobile"><span>Mostly mobile</span></label>
+        <label class="pill-label"><input type="radio" name="q20" value="Equal mix"><span>Equal mix</span></label>
+        <label class="pill-label"><input type="radio" name="q20" value="Not sure"><span>Not sure</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-label">Geographic scope for this website? <span class="req">*</span></div>
+      <div class="radio-pills">
+        <label class="pill-label"><input type="radio" name="q21" value="Australia only"><span>Australia only</span></label>
+        <label class="pill-label"><input type="radio" name="q21" value="Australia + NZ"><span>Australia + NZ</span></label>
+        <label class="pill-label"><input type="radio" name="q21" value="International"><span>International</span></label>
+      </div>
+    </div>
+
+
+
+    <div class="nav">
+      <button class="btn btn-secondary" onclick="prev()">← Back</button>
+      <div class="counter">5 of 8</div>
+      <button class="btn btn-primary" onclick="next()">Next →</button>
+    </div>
+  </div>
+
+  <!-- SECTION 6: Content -->
+  <div class="section" id="sec-5">
+    <div class="section-head">
+      <div class="section-num">Section 06 of 08</div>
+      <div class="section-title">Content</div>
+      <div class="section-desc">Content readiness is usually the biggest project bottleneck - be honest here so we can plan accurately.</div>
+    </div>
+
+    <div class="q">
+      <div class="q-label">Does TES have existing product copy for each model? <span class="req">*</span></div>
+      <div class="radio-group">
+        <label class="radio-row"><input type="radio" name="q23" value="Yes - all models have copy ready"><span>Yes - all descriptions ready to go</span></label>
+        <label class="radio-row"><input type="radio" name="q23" value="Some do, some need writing"><span>Some do, some need to be written</span></label>
+        <label class="radio-row"><input type="radio" name="q23" value="No - all copy needs to be written"><span>No - all copy needs to be written</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-label">Are there customer case studies or project photos available? <span class="req">*</span></div>
+      <div class="radio-pills">
+        <label class="pill-label"><input type="radio" name="q24" value="Yes - ready to use"><span>Yes - ready</span></label>
+        <label class="pill-label"><input type="radio" name="q24" value="Some available"><span>Some available</span></label>
+        <label class="pill-label"><input type="radio" name="q24" value="No - needs creating"><span>No</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-label">Is video footage of cranes in operation available? <span class="req">*</span></div>
+      <div class="q-hint">Video is one of the highest-converting assets on a high-value product page</div>
+      <div class="radio-pills">
+        <label class="pill-label"><input type="radio" name="q25" value="Yes - existing footage"><span>Yes - available</span></label>
+        <label class="pill-label"><input type="radio" name="q25" value="Can be arranged"><span>Can be arranged</span></label>
+        <label class="pill-label"><input type="radio" name="q25" value="No"><span>No</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-label">Is a blog or resources section needed? <span class="req">*</span></div>
+      <div class="radio-pills">
+        <label class="pill-label"><input type="radio" name="q26" value="Must have"><span>Must have</span></label>
+        <label class="pill-label"><input type="radio" name="q26" value="Nice to have"><span>Nice to have</span></label>
+        <label class="pill-label"><input type="radio" name="q26" value="Not needed"><span>Not needed</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-label">Do TES brand guidelines currently exist? <span class="req">*</span></div>
+      <div class="radio-group">
+        <label class="radio-row"><input type="radio" name="q27" value="Yes - full brand guidelines exist"><span>Yes - full guidelines, logo, colours all ready</span></label>
+        <label class="radio-row"><input type="radio" name="q27" value="Logo exists but no full guidelines"><span>Logo exists but no full brand guidelines</span></label>
+        <label class="radio-row"><input type="radio" name="q27" value="No - needs to be developed"><span>No - brand identity needs to be developed as part of this</span></label>
+      </div>
+    </div>
+
+    <div class="nav">
+      <button class="btn btn-secondary" onclick="prev()">← Back</button>
+      <div class="counter">6 of 8</div>
+      <button class="btn btn-primary" onclick="next()">Next →</button>
+    </div>
+  </div>
+
+  <!-- SECTION 7: Technical -->
+  <div class="section" id="sec-6">
+    <div class="section-head">
+      <div class="section-num">Section 07 of 08</div>
+      <div class="section-title">Technical</div>
+      <div class="section-desc">Platform, integrations, and certifications.</div>
+    </div>
+
+    <div class="q">
+      <div class="q-label">Goal for the current totalequipmentsales.com.au? <span class="req">*</span></div>
+      <div class="radio-group">
+        <label class="radio-row"><input type="radio" name="q28" value="Rebuild and redesign on a new platform"><span>Rebuild and redesign on a new platform</span></label>
+        <label class="radio-row"><input type="radio" name="q28" value="Start completely fresh"><span>Start completely fresh - new platform, new domain if needed</span></label>
+        <label class="radio-row"><input type="radio" name="q28" value="Improve the existing site"><span>Improve / update what's already there</span></label>
+      </div>
+    </div>
+
+
+
+    <div class="q">
+      <div class="q-label">What does the website need to connect to? <span class="req">*</span></div>
+      <div class="check-group">
+        <label class="check-row"><input type="checkbox" name="q30" value="CRM"><span>CRM</span></label>
+        <label class="check-row"><input type="checkbox" name="q30" value="Email marketing"><span>Email marketing tool</span></label>
+        <label class="check-row"><input type="checkbox" name="q30" value="Accounting (Xero)"><span>Accounting / Xero</span></label>
+        <label class="check-row"><input type="checkbox" name="q30" value="Google Analytics"><span>Google Analytics</span></label>
+        <label class="check-row"><input type="checkbox" name="q30" value="Heatmap / session recording"><span>Heatmap / session recording</span></label>
+        <label class="check-row"><input type="checkbox" name="q30" value="None currently"><span>None currently</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-label">Should the AI chatbot be included? <span class="req">*</span></div>
+      <div class="radio-group">
+        <label class="radio-row"><input type="radio" name="q31" value="Must have - text chatbot"><span>Must have (text chatbot)</span></label>
+        <label class="radio-row"><input type="radio" name="q31" value="Must have - voice and TTS"><span>Must have (voice and TTS)</span></label>
+        <label class="radio-row"><input type="radio" name="q31" value="Nice to have"><span>Nice to have</span></label>
+        <label class="radio-row"><input type="radio" name="q31" value="Not needed"><span>Not needed</span></label>
+      </div>
+    </div>
+
+
+
+    <div class="nav">
+      <button class="btn btn-secondary" onclick="prev()">← Back</button>
+      <div class="counter">7 of 10</div>
+      <button class="btn btn-primary" onclick="next()">Next →</button>
+    </div>
+  </div>
+
+  <!-- SECTION 8: AI Features -->
+  <div class="section" id="sec-7">
+    <div class="section-head">
+      <div class="section-num">Section 08 of 10</div>
+      <div class="section-title">AI Features</div>
+      <div class="section-desc">Add-on AI capabilities we can build into the website. Each one adds to the initial build cost and carries ongoing monthly running and operating costs — itemised separately in the proposal.</div>
+    </div>
+
+    <div class="q">
+      <div class="q-label">Which AI features would you like on the website? <span class="req">*</span></div>
+      <div class="q-hint">Tick everything you want — we will cost each one separately</div>
+      <div class="check-group">
+        <label class="check-row"><input type="checkbox" name="q_ai" value="AI chatbot (text-based)"><span>AI chatbot (text-based)</span></label>
+        <label class="check-row"><input type="checkbox" name="q_ai" value="Voice assistant with TTS"><span>Voice assistant with TTS</span></label>
+        <label class="check-row"><input type="checkbox" name="q_ai" value="AI product guide (configurator companion)"><span>AI product guide / configurator companion</span></label>
+        <label class="check-row"><input type="checkbox" name="q_ai" value="Smart crane recommendations based on project input"><span>Smart crane recommendations</span></label>
+        <label class="check-row"><input type="checkbox" name="q_ai" value="Not needed"><span>Not needed</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-label">If a chatbot or voice assistant is included, what should it handle?</div>
+      <div class="q-hint">Tick all that apply</div>
+      <div class="check-group">
+        <label class="check-row"><input type="checkbox" name="q_ai_scope" value="Product specs and comparisons"><span>Product specs and comparisons</span></label>
+        <label class="check-row"><input type="checkbox" name="q_ai_scope" value="Pricing guidance and indicative ranges"><span>Pricing guidance and ranges</span></label>
+        <label class="check-row"><input type="checkbox" name="q_ai_scope" value="Process and timeline questions"><span>Process and timeline questions</span></label>
+        <label class="check-row"><input type="checkbox" name="q_ai_scope" value="Compliance and certification queries"><span>Compliance and certification</span></label>
+        <label class="check-row"><input type="checkbox" name="q_ai_scope" value="Escalate to a human via WhatsApp or email"><span>Escalate to human (WhatsApp / email)</span></label>
+        <label class="check-row"><input type="checkbox" name="q_ai_scope" value="Guide through the configurator step by step"><span>Guide through the configurator</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-label">Should the AI companion be proactive or reactive?</div>
+      <div class="q-hint">Proactive means it appears with tips as the customer browses. Reactive means it waits to be asked.</div>
+      <div class="radio-group">
+        <label class="radio-row"><input type="radio" name="q_ai_mode" value="Proactive - appears with tips and guidance as they browse"><span>Proactive - appears with tips as they browse</span></label>
+        <label class="radio-row"><input type="radio" name="q_ai_mode" value="Reactive - only when the customer clicks to ask for help"><span>Reactive - only when they click to ask</span></label>
+        <label class="radio-row"><input type="radio" name="q_ai_mode" value="Both"><span>Both</span></label>
+        <label class="radio-row"><input type="radio" name="q_ai_mode" value="No AI companion needed"><span>No AI companion needed</span></label>
+      </div>
+    </div>
+
+    <div style="background:#fffbeb;border:1px solid #fde68a;border-left:3px solid #f59e0b;border-radius:8px;padding:1rem 1.2rem;margin-bottom:1rem;">
+      <div style="font-size:12px;font-weight:600;color:#92400e;margin-bottom:0.25rem;">Running and operating costs</div>
+      <div style="font-size:12px;color:#78350f;line-height:1.6;">AI features are not a one-time cost. They run on live models that charge per request — the more customers use them, the higher the monthly bill. We will include a full usage-based cost estimate in the proposal so there are no surprises after launch.</div>
+    </div>
+
+    <div class="nav">
+      <button class="btn btn-secondary" onclick="prev()">← Back</button>
+      <div class="counter">8 of 10</div>
+      <button class="btn btn-primary" onclick="next()">Next →</button>
+    </div>
+  </div>
+
+  <!-- SECTION 9: Timeline -->
+  <div class="section" id="sec-8">
+    <div class="section-head">
+      <div class="section-num">Section 09 of 10</div>
+      <div class="section-title">Timeline & Governance</div>
+      <div class="section-desc">Deadlines, approvals, and what happens after launch.</div>
+    </div>
+
+    <div class="q">
+      <div class="q-label">Is there a target go-live date? <span class="req">*</span></div>
+      <div class="radio-group">
+        <label class="radio-row"><input type="radio" name="q33" value="Yes" onclick="toggleOther('date-other', true)"><span>Yes - specific date in mind</span></label>
+        <label class="radio-row"><input type="radio" name="q33" value="ASAP" onclick="toggleOther('date-other', false)"><span>No - as soon as possible</span></label>
+        <label class="radio-row"><input type="radio" name="q33" value="Flexible" onclick="toggleOther('date-other', false)"><span>Flexible - quality over speed</span></label>
+      </div>
+      <input type="text" class="text-input other-input" id="date-other" name="q33_date" placeholder="Target date (e.g. end of September 2026)">
+    </div>
+
+    <div class="q">
+      <div class="q-label">Is a phased launch acceptable? <span class="req">*</span></div>
+      <div class="q-hint">Core site + product pages first → full configurator as phase 2</div>
+      <div class="radio-group">
+        <label class="radio-row"><input type="radio" name="q34" value="Yes - phase it"><span>Yes - get something live quickly, add configurator after</span></label>
+        <label class="radio-row"><input type="radio" name="q34" value="No - full site at once"><span>No - want the full site including configurator at launch</span></label>
+        <label class="radio-row"><input type="radio" name="q34" value="Open to recommendation"><span>Open to recommendation</span></label>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+    <div class="nav">
+      <button class="btn btn-secondary" onclick="prev()">← Back</button>
+      <div class="counter">9 of 10</div>
+      <button class="btn btn-primary" onclick="next()">Next →</button>
+    </div>
+  </div>
+
+  <!-- SECTION 10: KPIs -->
+  <div class="section" id="sec-9">
+    <div class="section-head">
+      <div class="section-num">Section 10 of 10</div>
+      <div class="section-title">Success Metrics</div>
+      <div class="section-desc">What this website needs to do for TES to consider it a success.</div>
+    </div>
+
+    <div class="q">
+      <div class="q-label">What is the primary goal of this website? <span class="req">*</span></div>
+      <div class="radio-group">
+        <label class="radio-row"><input type="radio" name="q_primary" value="Close direct equipment sales online"><span>Close direct equipment sales online</span></label>
+        <label class="radio-row"><input type="radio" name="q_primary" value="Generate qualified inquiries that the team closes by phone"><span>Generate qualified inquiries that the team closes by phone</span></label>
+        <label class="radio-row"><input type="radio" name="q_primary" value="Both equally"><span>Both equally</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-label">How many qualified inquiries per month would make this website worth the investment? <span class="req">*</span></div>
+      <div class="radio-pills">
+        <label class="pill-label"><input type="radio" name="q_inq" value="1 to 5"><span>1 to 5</span></label>
+        <label class="pill-label"><input type="radio" name="q_inq" value="5 to 10"><span>5 to 10</span></label>
+        <label class="pill-label"><input type="radio" name="q_inq" value="10 to 20"><span>10 to 20</span></label>
+        <label class="pill-label"><input type="radio" name="q_inq" value="20+"><span>20+</span></label>
+        <label class="pill-label"><input type="radio" name="q_inq" value="Not sure"><span>Not sure</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-label">When do you expect the website to start paying for itself? <span class="req">*</span></div>
+      <div class="radio-pills">
+        <label class="pill-label"><input type="radio" name="q_roi" value="Within 3 months"><span>Within 3 months</span></label>
+        <label class="pill-label"><input type="radio" name="q_roi" value="Within 6 months"><span>Within 6 months</span></label>
+        <label class="pill-label"><input type="radio" name="q_roi" value="Within 12 months"><span>Within 12 months</span></label>
+        <label class="pill-label"><input type="radio" name="q_roi" value="Not a priority right now"><span>Not a priority right now</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-label">Anything else you want us to know before we put together the proposal?</div>
+      <textarea class="textarea-input" name="q_notes" placeholder="Budget range, timeline pressures, concerns, things that have not worked before..."></textarea>
+    </div>
+
+    <div class="nav">
+      <button class="btn btn-secondary" onclick="prev()">← Back</button>
+      <div class="counter">10 of 10</div>
+      <button class="btn btn-submit" onclick="downloadPDF()">Download PDF →</button>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- Summary Modal -->
+<div id="modal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3>TES Website Scoping - Your Answers</h3>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:12px;color:#64748b;margin-bottom:1rem;line-height:1.6">Copy this and send to the SingSingh AI team, or use the email button below.</p>
+      <pre id="summary-text"></pre>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-copy" onclick="copyToClipboard()">Copy to clipboard</button>
+      <button class="btn-email" onclick="sendEmail()">Send via email</button>
+      <span class="copy-confirm" id="copy-confirm">Copied!</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  let current = 0;
+  const total = 10;
+
+  function setRadio(name, value) {
+    document.querySelectorAll(`input[name="${name}"]`).forEach(el => { if (el.value === value) el.checked = true; });
+  }
+  function setCheckboxes(name, values) {
+    document.querySelectorAll(`input[name="${name}"]`).forEach(el => { if (values.includes(el.value)) el.checked = true; });
+  }
+  function setTextarea(name, value) {
+    const el = document.querySelector(`[name="${name}"]`);
+    if (el) el.value = value;
+  }
+
+  function preFill() {
+    setRadio('q1', '6–10');
+    setCheckboxes('q2', ['Tower cranes','Luffing cranes','Hoists','Loading platforms','Battery systems','Spare parts']);
+    setCheckboxes('q3', ['Jib length','Lifting capacity','Colour / livery','Signage / branding','Accessories (skips, hooks)','Anti-collision software']);
+    setRadio('q18', 'Yes - always B2B');
+    setRadio('q21', 'Australia + NZ');
+    setRadio('q28', 'Rebuild and redesign on a new platform');
+    setCheckboxes('q30', ['Accounting (Xero)','Google Analytics']);
+  }
+
+  function goTo(idx) {
+    document.querySelectorAll('.section').forEach((s, i) => s.classList.toggle('active', i === idx));
+    document.querySelectorAll('.step-btn').forEach((b, i) => {
+      b.classList.remove('active','done');
+      if (i === idx) b.classList.add('active');
+      if (i < idx) b.classList.add('done');
+    });
+    current = idx;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    updateBar();
+  }
+  function next() { if (current < total - 1) goTo(current + 1); }
+  function prev() { if (current > 0) goTo(current - 1); }
+
+  function updateBar() {
+    document.getElementById('progress-bar').style.width = ((current + 1) / total * 100) + '%';
+  }
+
+  function toggleOther(id, show) {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('visible', show);
+  }
+
+  function getChecked(name) {
+    const vals = [];
+    document.querySelectorAll(`input[name="${name}"]:checked`).forEach(el => vals.push(el.value));
+    return vals.length ? vals.join(', ') : '-';
+  }
+  function getRadio(name) {
+    const el = document.querySelector(`input[name="${name}"]:checked`);
+    return el ? el.value : '-';
+  }
+  function getText(name) {
+    const el = document.querySelector(`[name="${name}"]`);
+    return el && el.value.trim() ? el.value.trim() : '-';
+  }
+
+  function buildSummary() {
+    return `TES WEBSITE - SCOPING RESPONSES
+Generated: ${new Date().toLocaleDateString('en-AU', {day:'numeric',month:'long',year:'numeric'})}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+01 · PRODUCT CATALOG
+Models: ${getRadio('q1')}
+Categories at launch: ${getChecked('q2')}
+Configurable options: ${getChecked('q3')}
+02 · CONFIGURATOR
+Live price update: ${getRadio('q6')}
+Save build: ${getRadio('q7')}
+PDF download: ${getRadio('q8')}
+Share via link: ${getRadio('q9')}
+3D visual render: ${getRadio('q10')}
+
+03 · PRICING
+Price ranges: ${getText('q11')}
+Show prices on site: ${getRadio('q12')}
+04 · LEAD FLOW
+Lead email: ${getText('q14_dest')}
+Inquiry form fields: ${getChecked('q15')}
+CRM: ${getRadio('q16')}${getText('q16_crm') !== '-' ? ' - ' + getText('q16_crm') : ''}
+Response time: ${getText('q17')}
+
+05 · AUDIENCE
+B2B only: ${getRadio('q18')}
+Decision maker: ${getRadio('q19')}
+Primary device: ${getRadio('q20')}
+Geographic scope: ${getRadio('q21')}
+Two user types: (not asked)
+
+06 · CONTENT
+Existing copy: ${getRadio('q23')}
+Case studies / photos: ${getRadio('q24')}
+Video footage: ${getRadio('q25')}
+Blog / resources section: ${getRadio('q26')}
+Brand guidelines: ${getRadio('q27')}
+
+07 · TECHNICAL
+Website goal: ${getRadio('q28')}
+Platform: React (agreed)
+Integrations: ${getChecked('q30')}
+AI chatbot: ${getRadio('q31')}
+
+08 · AI FEATURES
+AI features selected: ${getChecked('q_ai')}
+Chatbot scope: ${getChecked('q_ai_scope')}
+AI companion mode: ${getRadio('q_ai_mode')}
+09 · TIMELINE & GOVERNANCE
+Go-live date: ${getRadio('q33')}${getText('q33_date') !== '-' ? ' - ' + getText('q33_date') : ''}
+Phased launch: ${getRadio('q34')}
+Primary goal: ${getRadio('q_primary')}
+Inquiries target per month: ${getRadio('q_inq')}
+Expected ROI timeline: ${getRadio('q_roi')}
+Additional notes: ${getText('q_notes')}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+For: SingSingh AI · Re: TES Website`;
+  }
+
+  function submitForm() {
+    document.getElementById('summary-text').textContent = buildSummary();
+    document.getElementById('modal').classList.add('open');
+  }
+
+  function downloadPDF() {
+    const date = new Date().toLocaleDateString('en-AU', {day:'numeric',month:'long',year:'numeric'});
+
+    function opts(name) {
+      const all = [], checked = [];
+      document.querySelectorAll(`input[name="${name}"]`).forEach(el => {
+        all.push(el.value);
+        if (el.checked) checked.push(el.value);
+      });
+      return { all, checked };
+    }
+    function radio(name) {
+      const el = document.querySelector(`input[name="${name}"]:checked`);
+      return el ? el.value : '';
+    }
+    function txt(name) {
+      const el = document.querySelector(`[name="${name}"]`);
+      return el ? el.value.trim() : '';
+    }
+
+    function renderRadio(name) {
+      const sel = radio(name);
+      return document.querySelectorAll(`input[name="${name}"]`).length
+        ? [...document.querySelectorAll(`input[name="${name}"]`)].map(el =>
+            `<div class="opt${el.value === sel ? ' sel' : ''}"><span class="dot">${el.value === sel ? '●' : '○'}</span><span>${el.value}</span></div>`
+          ).join('')
+        : '';
+    }
+    function renderCheck(name) {
+      return [...document.querySelectorAll(`input[name="${name}"]`)].map(el =>
+        `<div class="opt${el.checked ? ' sel' : ''}"><span class="dot">${el.checked ? '☑' : '☐'}</span><span>${el.value}</span></div>`
+      ).join('');
+    }
+    function renderText(val) {
+      return val
+        ? `<div class="tval">${val.replace(/\n/g,'<br>')}</div>`
+        : `<div class="tval empty">Not filled in</div>`;
+    }
+    function q(label, body) {
+      return `<div class="q"><div class="ql">${label}</div>${body}</div>`;
+    }
+    function sec(num, title, content) {
+      return `<div class="sec"><div class="sec-header"><span class="sec-num">${num}</span><span class="stitle">${title}</span></div>${content}</div>`;
+    }
+
+    const html = `<!doctype html><html><head><meta charset="UTF-8"/>
+<title>TES Website Scoping - ${date}</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:-apple-system,"Helvetica Neue",Arial,sans-serif;
+    color:#1a1a1a;background:#fff;font-size:10.5pt;line-height:1.6;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+  /* Cover page */
+  .cover{
+    min-height:100vh;display:flex;flex-direction:column;justify-content:center;
+    padding:3cm 2.5cm;background:#0f1c2e;page-break-after:always;break-after:page;
+  }
+  .cover-tag{font-size:8pt;letter-spacing:.25em;text-transform:uppercase;color:#94a3b8;margin-bottom:.8rem}
+  .cover h1{font-size:28pt;font-weight:700;color:#fff;line-height:1.1;margin-bottom:.5rem}
+  .cover-sub{font-size:11pt;color:#64748b;margin-bottom:2rem}
+  .cover-bar{width:40px;height:3px;background:linear-gradient(90deg,#c8102e,#2563eb);border-radius:2px;margin-bottom:2rem}
+  .cover-meta{font-size:9pt;color:#475569}
+  .cover-meta span{color:#94a3b8}
+  /* Sections — each on its own page */
+  .sec{
+    padding:1.8cm 2cm 1.2cm;
+    page-break-before:always;break-before:page;
+    page-break-inside:avoid;break-inside:avoid;
+  }
+  .sec-header{
+    display:flex;align-items:center;gap:12px;
+    padding-bottom:.8rem;margin-bottom:1.2rem;
+    border-bottom:1px solid #e2e8f0;
+  }
+  .sec-num{
+    font-size:8pt;font-weight:700;letter-spacing:.15em;text-transform:uppercase;
+    color:#fff;background:#2563eb;padding:.25rem .6rem;border-radius:4px;
+    white-space:nowrap;
+  }
+  .stitle{font-size:13pt;font-weight:700;color:#0f1c2e;letter-spacing:-.01em}
+  /* Questions */
+  .q{margin-bottom:1rem;padding-bottom:.9rem;border-bottom:1px solid #f0f4f8}
+  .q:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+  .ql{font-size:9.5pt;font-weight:600;color:#0f1c2e;margin-bottom:.4rem}
+  /* Options grid */
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:3px}
+  .opts.col1{grid-template-columns:1fr}
+  .opt{display:flex;align-items:flex-start;gap:7px;padding:3px 0;font-size:9.5pt;color:#94a3b8}
+  .opt.sel{color:#0f1c2e;font-weight:600}
+  .dot{flex-shrink:0;width:16px;color:#cbd5e1;font-size:11pt;line-height:1.3}
+  .opt.sel .dot{color:#2563eb}
+  /* Text values */
+  .tval{font-size:9.5pt;color:#334155;padding:6px 10px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:5px;min-height:26px;margin-top:2px}
+  .tval.empty{color:#94a3b8;font-style:italic}
+  /* Footer on each page */
+  @page{margin:0;size:A4}
+</style></head><body>
+<div class="cover">
+  <div class="cover-tag">SingSingh AI × Total Equipment Sales</div>
+  <h1>Website<br>Scoping</h1>
+  <div class="cover-bar"></div>
+  <div class="cover-sub">Project requirements and preferences</div>
+  <div class="cover-meta">Submitted <span>${date}</span> &nbsp;·&nbsp; Prepared for <span>SingSingh AI</span></div>
+</div>
+
+${sec('01','Product Catalog',
+  q('How many crane models does TES currently sell?', `<div class="opts">${renderRadio('q1')}</div>`) +
+  q('Which product categories at launch?', `<div class="opts">${renderCheck('q2')}</div>`) +
+  q('What can a customer configure?', `<div class="opts">${renderCheck('q3')}</div>`)
+)}
+
+${sec('02','The Configurator',
+  q('Should the price range update live as a customer configures?', `<div class="opts col1">${renderRadio('q6')}</div>`) +
+  q('Can customers save their build and return later?', `<div class="opts">${renderRadio('q7')}</div>`) +
+  q('Can customers download a PDF summary of their build?', `<div class="opts">${renderRadio('q8')}</div>`) +
+  q('Can customers share their build via a unique link?', `<div class="opts">${renderRadio('q9')}</div>`) +
+  q('Is a live 3D visual render required?', `<div class="opts col1">${renderRadio('q10')}</div>`)
+)}
+
+${sec('03','Pricing',
+  q('Rough price range per category', renderText(txt('q11'))) +
+  q('Should the website show price ranges?', `<div class="opts col1">${renderRadio('q12')}</div>`)
+)}
+
+${sec('04','Lead Flow',
+  q('Lead email address', renderText(txt('q14_dest'))) +
+  q('Information required in the inquiry form', `<div class="opts">${renderCheck('q15')}</div>`) +
+  q('Do you have a CRM?', `<div class="opts col1">${renderRadio('q16')}</div>${txt('q16_crm') ? renderText(txt('q16_crm')) : ''}`) +
+  q('Expected response time to an inquiry', renderText(txt('q17')))
+)}
+
+${sec('05','Audience',
+  q('Is the buyer always B2B?', `<div class="opts col1">${renderRadio('q18')}</div>`) +
+  q('Primary decision maker', `<div class="opts col1">${renderRadio('q19')}</div>`) +
+  q('Primary device used when researching', `<div class="opts">${renderRadio('q20')}</div>`) +
+  q('Geographic scope', `<div class="opts">${renderRadio('q21')}</div>`)
+)}
+
+${sec('06','Content',
+  q('Existing product copy for each model', `<div class="opts col1">${renderRadio('q23')}</div>`) +
+  q('Customer case studies or project photos', `<div class="opts">${renderRadio('q24')}</div>`) +
+  q('Video footage of cranes in operation', `<div class="opts">${renderRadio('q25')}</div>`) +
+  q('Blog or resources section at launch', `<div class="opts">${renderRadio('q26')}</div>`) +
+  q('TES brand guidelines exist', `<div class="opts col1">${renderRadio('q27')}</div>`)
+)}
+
+${sec('07','Technical',
+  q('Goal for totalequipmentsales.com.au', `<div class="opts col1">${renderRadio('q28')}</div>`) +
+  q('Integrations needed', `<div class="opts">${renderCheck('q30')}</div>`) +
+  q('AI chatbot at launch', `<div class="opts col1">${renderRadio('q31')}</div>`)
+)}
+
+${sec('08','AI Features',
+  q('AI features selected', `<div class="opts">${renderCheck('q_ai')}</div>`) +
+  q('Chatbot and voice assistant scope', `<div class="opts">${renderCheck('q_ai_scope')}</div>`) +
+  q('AI companion mode', `<div class="opts col1">${renderRadio('q_ai_mode')}</div>`)
+)}
+
+${sec('09','Timeline',
+  q('Target go-live date', `<div class="opts col1">${renderRadio('q33')}</div>${txt('q33_date') ? renderText(txt('q33_date')) : ''}`) +
+  q('Phased launch acceptable', `<div class="opts col1">${renderRadio('q34')}</div>`)
+)}
+
+${sec('10','Success Metrics',
+  q('Primary goal of the website', `<div class="opts col1">${renderRadio('q_primary')}</div>`) +
+  q('Qualified inquiries per month target', `<div class="opts">${renderRadio('q_inq')}</div>`) +
+  q('When do you expect the website to start paying for itself', `<div class="opts">${renderRadio('q_roi')}</div>`) +
+  q('Additional notes', renderText(txt('q_notes')))
+)}
+
+</body></html>`;
+
+    // Extract style + body content (no full doc wrapper, no screen display)
+    const styleMatch = html.match(/<style>([\s\S]*?)<\/style>/);
+    const bodyMatch = html.match(/<body>([\s\S]*?)<\/body>/s);
+    const styles = styleMatch ? '<style>' + styleMatch[1] + '</style>' : '';
+    const body = bodyMatch ? bodyMatch[1].replace(/<script[\s\S]*?<\/script>/gi, '') : '';
+
+    const pv = document.getElementById('print-view');
+    pv.innerHTML = styles + body;
+    window.print();
+    setTimeout(() => { pv.innerHTML = ''; }, 1200);
+  }
+  function closeModal() { document.getElementById('modal').classList.remove('open'); }
+  function copyToClipboard() {
+    navigator.clipboard.writeText(document.getElementById('summary-text').textContent).then(() => {
+      const el = document.getElementById('copy-confirm');
+      el.style.display = 'inline';
+      setTimeout(() => { el.style.display = 'none'; }, 2500);
+    });
+  }
+  function sendEmail() {
+    const body = encodeURIComponent(document.getElementById('summary-text').textContent);
+    window.location.href = `mailto:henry.ho@singsinghai.com.au?subject=${encodeURIComponent('TES Website Scoping - Responses')}&body=${body}`;
+  }
+
+  preFill();
+  updateBar();
+</script>
+<div id="print-view"></div>
+</body>
+</html>
