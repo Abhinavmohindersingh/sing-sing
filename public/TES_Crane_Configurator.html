@@ -36,7 +36,7 @@
     /* ── Canvas side ─────────────────────────────────── */
     .canvas-wrap { flex: 1; position: relative; background: #080f1c; overflow: hidden; min-width: 0; transition: background .6s ease; }
     .vignette { transition: opacity .6s ease; }
-    #c { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+    #c { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
 
     #app { position: absolute; inset: 0; }
 
@@ -206,6 +206,67 @@
     .vcard-spec { font-size: 9.5px; color: #6b7280; margin-top: .08rem; }
     .vcard-price { font-size: 9px; color: #9ca3af; font-family: 'IBM Plex Mono', monospace; margin-top: .12rem; }
     .ocard.vcard.active .vcard-price { color: #374151; font-weight: 600; }
+
+    /* ============================================================
+       RESPONSIVE — stack canvas over panel on phones/tablets
+       ============================================================ */
+    @media (max-width: 860px) {
+      /* Stack: 3D canvas on top, options panel below */
+      .cfg-main { flex-direction: column; }
+      .canvas-wrap { flex: none; height: 44vh; min-height: 260px; }
+      .cfg-panel { width: 100%; min-width: 0; flex: 1; min-height: 0; border-left: none; border-top: 1px solid #e5e7eb; }
+
+      /* Topbar — keep it to the essentials */
+      .topbar { padding: 0 .9rem; }
+      .topbar-left { gap: .7rem; }
+      .topbar-action, .topbar-sep { display: none; }
+      .topbar-price-lbl { display: none; }
+      .topbar-price-val { font-size: 12px; }
+      .topbar-right { gap: .6rem; }
+      .topbar-btn { padding: .38rem .7rem; font-size: 11px; }
+      .topbar-btn:not(.topbar-btn-primary) { display: none; }
+
+      /* Canvas overlays — scale down so they don't crowd the smaller canvas */
+      .canvas-controls { top: .6rem; left: .6rem; gap: .4rem; }
+      .seg button { padding: .3rem .55rem; font-size: 10px; }
+      .zoom-controls { right: .6rem; bottom: 1rem; }
+      .canvas-badge { bottom: .8rem; left: .8rem; }
+      .rotate-hint { display: none; }
+
+      /* Depiction card — compact and out of the canvas centre */
+      #depiction-overlay { width: calc(100% - 1.4rem); bottom: .7rem; padding: .8rem 1rem; border-radius: 12px; }
+      .dep-title { font-size: 12px; }
+      .dep-body { font-size: 9px; margin-bottom: .7rem; }
+      .dep-btn { padding: .4rem .9rem; font-size: 10px; }
+
+      /* Panel header tightening */
+      .panel-header { padding: .9rem 1.1rem .7rem; }
+      .panel-model-name { font-size: 1.2rem; }
+      .panel-search { padding: .6rem 1.1rem; }
+    }
+
+    @media (max-width: 860px) {
+      /* Panel scrolls on its own without dragging the whole page / 3D rotation */
+      .cfg-panel { overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+      /* Bigger tap targets for option rows + zoom buttons */
+      .ocard { min-height: 44px; }
+      .zoom-btn { width: 38px; height: 38px; }
+    }
+
+    @media (max-width: 480px) {
+      .canvas-wrap { height: 40vh; min-height: 220px; }
+      .topbar-price-val { font-size: 11px; }
+      .topbar-back span, .topbar-back { font-size: 11px; }
+      .cfg-panel { font-size: 12px; }
+    }
+
+    /* Landscape phones — viewport is short, give the 3D model more room
+       and let the panel sit beside it again so both stay usable */
+    @media (max-width: 900px) and (orientation: landscape) and (max-height: 520px) {
+      .cfg-main { flex-direction: row; }
+      .canvas-wrap { flex: 1; height: auto; min-height: 0; }
+      .cfg-panel { width: 300px; min-width: 300px; flex: none; border-left: 1px solid #e5e7eb; border-top: none; }
+    }
   </style>
 </head>
 <body>

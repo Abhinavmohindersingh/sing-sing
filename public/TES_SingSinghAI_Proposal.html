@@ -66,10 +66,10 @@
     .s2-item { display: flex; flex-direction: column; gap: .5rem; }
     .s2-title { font-size: 13px; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: .06em; font-family: var(--mono); margin-bottom: .2rem; }
     .s2-arrows { display: flex; flex-direction: column; gap: .35rem; }
-    .s2-arrow { display: flex; align-items: flex-start; gap: .7rem; font-size: 14px; color: var(--charcoal); line-height: 1.6; }
-    .s2-arrow::before { content: "→"; color: var(--blue); font-weight: 600; flex-shrink: 0; margin-top: .1rem; }
-    .s2-arrow strong { color: var(--navy); font-weight: 700; display: block; }
-    .s2-arrow span { color: var(--grey); font-size: 13px; display: block; }
+    .s2-arrow { display: flex; align-items: center; gap: .5rem; font-size: 13px; color: var(--charcoal); line-height: 1.4; }
+    .s2-arrow::before { content: "→"; color: var(--blue); font-weight: 600; flex-shrink: 0; }
+    .s2-arrow strong { color: var(--navy); font-weight: 700; display: inline; }
+    .s2-arrow span { color: var(--grey); font-size: 13px; display: inline; margin-left: .3rem; }
 
     /* Slide 3 */
     .s3-flow { display: flex; flex-direction: column; gap: 0; max-width: 900px; }
@@ -86,6 +86,10 @@
     .s3-product-group { display: flex; flex-direction: column; gap: .4rem; }
     .s3-product-label { font-size: 11px; font-weight: 700; color: var(--navy); font-family: var(--mono); text-transform: uppercase; letter-spacing: .06em; margin-bottom: .2rem; }
     .s3-configbadge { font-size: 9px; background: #FEF9C3; color: #854D0E; border: 1px solid #FDE047; border-radius: 4px; padding: .1rem .4rem; letter-spacing: .04em; text-transform: uppercase; font-weight: 600; vertical-align: middle; }
+    .s3-li { position: relative; padding-left: 1rem; font-size: 12px; color: var(--charcoal); line-height: 1.3; }
+    .s3-li::before { content: ""; position: absolute; left: 0; top: .42em; width: 5px; height: 5px; border-radius: 50%; background: var(--blue); }
+    .s3-grp { font-family: var(--mono); font-size: 10px; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: .06em; }
+    .s3-cfg { display: inline-block; margin-top: .3rem; font-size: 8.5px; background: #FEF9C3; color: #854D0E; border: 1px solid #FDE047; border-radius: 4px; padding: .12rem .45rem; letter-spacing: .04em; text-transform: uppercase; font-weight: 700; }
 
     /* Flip card */
     .fc-wrap { position: relative; height: calc(100vh - 160px); perspective: 1400px; }
@@ -238,6 +242,19 @@
     .fc-back-item::before { content: "→"; color: rgba(255,255,255,.3); font-weight: 600; flex-shrink: 0; margin-top: .1rem; font-size: 13px; }
     .fc-back-item-title { font-size: 12px; font-weight: 700; color: #fff; line-height: 1.4; margin-bottom: .2rem; }
     .fc-back-item-desc { font-size: 11px; color: rgba(255,255,255,.5); line-height: 1.6; }
+
+    /* Light back — 4-card rationale grid */
+    .fc-back--light { background: #fff; padding: 1.6rem 1.8rem; }
+    .bgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; flex: 1; min-height: 0; }
+    .bcard { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
+    .bcard-head { background: var(--navy); padding: .7rem 1.1rem; }
+    .bcard-head span { font-family: var(--mono); font-size: 11px; font-weight: 700; color: #fff; letter-spacing: .1em; text-transform: uppercase; }
+    .bcard-body { background: #fff; flex: 1; display: flex; flex-direction: column; }
+    .brow { display: flex; gap: .9rem; padding: .7rem 1.1rem; align-items: center; border-bottom: 1px solid #f1f5f9; }
+    .brow:last-child { border-bottom: none; }
+    .brow-ic { width: 42px; height: 42px; border-radius: 50%; background: #E8F0FE; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .brow-title { font-size: 13px; font-weight: 700; color: var(--navy); line-height: 1.3; margin-bottom: .12rem; }
+    .brow-desc { font-size: 11.5px; color: var(--grey); line-height: 1.4; }
 
     /* Cranes Category Page — three-panel */
     .cp-nav-link { cursor: pointer; transition: color .15s; }
@@ -434,6 +451,86 @@
       .slide { page-break-after: always; break-after: page; height: 100vh; min-height: unset; overflow: hidden; padding: 3vh 0 2vh !important; }
       .wrap { padding-bottom: 1.5rem !important; }
     }
+
+    /* ============================================================
+       RESPONSIVE — tablet & mobile
+       ============================================================ */
+
+    /* Tablet */
+    @media (max-width: 1024px) {
+      .wrap { max-width: 100% !important; padding: 0 5vw 4rem !important; }
+      .fc-wrap { height: calc(100vh - 150px); }
+    }
+
+    /* Mobile — phones */
+    @media (max-width: 768px) {
+      html, body { font-size: 12px; }
+      .slide { min-height: auto; padding: 7vh 0 9vh; }
+      .wrap { padding: 0 5vw 4rem !important; }
+      h1 { font-size: clamp(26px, 8vw, 36px) !important; }
+      .s-intro { font-size: 13px !important; margin: .7rem 0 1.6rem !important; }
+
+      /* Stack every multi-column inline grid */
+      [style*="grid-template-columns:1fr 1fr"],
+      [style*="grid-template-columns: 1fr 1fr"],
+      [style*="grid-template-columns:1fr 2.5fr"] { grid-template-columns: 1fr !important; }
+
+      /* Flip-back card grids → single column */
+      .bgrid { grid-template-columns: 1fr !important; gap: .8rem !important; }
+      .fc-back-cols { grid-template-columns: 1fr !important; gap: 1.2rem !important; }
+      .fc-back--light { padding: 1.1rem 1.1rem !important; }
+      .fc-back-title { font-size: 14px !important; margin-bottom: .9rem !important; }
+
+      /* Slide 1 — cover */
+      .s1-logos { gap: 1.5rem !important; flex-wrap: wrap; }
+      .s1-logos .divider { display: none !important; }
+
+      /* Slide 2 — feature cards */
+      .s2-arrow { font-size: 12px !important; }
+
+      /* Slide 3 — collapse horizontal flow into a vertical stack */
+      .s3-header { flex-direction: column !important; }
+      .s3-header > div:last-child { width: 100% !important; }
+      .s3-line, .s3-nums { display: none !important; }
+      .s3-outcome { flex-direction: column !important; align-items: flex-start !important; }
+
+      /* Flip cards — keep flip working, let inner panels scroll */
+      .fc-wrap { height: calc(100vh - 120px); }
+      .fc-mockup { overflow-x: auto; }
+      .fc-back { padding: 1.2rem; }
+
+      /* Slide foot — keep compact */
+      .slide-foot { padding: .5rem 5vw; }
+      .slide-foot span:first-child { max-width: 60%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    }
+
+    /* Small phones */
+    @media (max-width: 430px) {
+      h1 { font-size: clamp(22px, 8vw, 30px) !important; }
+      .brow { padding: .6rem .8rem !important; }
+      .brow-ic { width: 36px !important; height: 36px !important; }
+      .brow-ic svg { width: 18px; height: 18px; }
+      .brow-title { font-size: 12px !important; }
+      .brow-desc { font-size: 11px !important; }
+    }
+
+    /* ── Tablet & touch: device mockups and embedded configurator ── */
+    @media (max-width: 1024px) {
+      /* Horizontal-row mockups (Investment summary) stack vertically */
+      .fc-mockup[style*="flex-direction:row"] { flex-direction: column !important; overflow-y: auto !important; }
+      /* Fixed-width fake-site panels inside mockups: allow gentle horizontal
+         scroll instead of clipping, with smooth touch momentum */
+      .fc-mockup { -webkit-overflow-scrolling: touch; }
+    }
+
+    @media (max-width: 768px) {
+      /* The Investment breakdown is a 2-col grid → single column on phones */
+      .fc-mockup[style*="flex-direction:row"] > div[style*="grid-template-columns:1fr 1fr"] {
+        grid-template-columns: 1fr !important;
+      }
+      /* Embedded live configurator: give the stacked canvas+panel real height */
+      #cfg-iframe, #cfg-iframe-s9 { min-height: 78vh; }
+    }
   </style>
 </head>
 <body>
@@ -498,18 +595,16 @@
         </div>
       </div>
 
-      <!-- Customer Segment -->
+      <!-- Target Markets -->
       <div style="background:#f0f4ff;border-radius:12px;padding:1.8rem;display:flex;flex-direction:column;gap:1rem">
         <div style="display:flex;align-items:flex-start;gap:1rem">
           <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
             <circle cx="24" cy="24" r="20" fill="#E8F0FE"/>
-            <circle cx="16" cy="16" r="3" fill="#1A73EB"/>
-            <circle cx="32" cy="16" r="3" fill="#1A73EB"/>
-            <circle cx="24" cy="26" r="3" fill="#1A73EB"/>
-            <path d="M12 22c0-2 2-4 4-4M32 22c0-2 2-4 4-4M19 32c0-2 2.5-4 5-4" stroke="#1A73EB" stroke-width="1.5" fill="none"/>
+            <circle cx="24" cy="16" r="5" fill="#1A73EB"/>
+            <path d="M14 35c0-5.5 4.5-10 10-10s10 4.5 10 10" fill="#1A73EB"/>
           </svg>
           <div>
-            <div class="s2-title" style="margin-bottom:.8rem">Customer Segment</div>
+            <div class="s2-title" style="margin-bottom:.8rem">Target Markets</div>
             <div style="width:80px;height:1px;background:#1A73EB;margin-bottom:1rem"></div>
           </div>
         </div>
@@ -520,26 +615,25 @@
         </div>
       </div>
 
-      <!-- Audience & Reach -->
+      <!-- Geographic & Product Reach -->
       <div style="background:#f0f4ff;border-radius:12px;padding:1.8rem;display:flex;flex-direction:column;gap:1rem">
         <div style="display:flex;align-items:flex-start;gap:1rem">
           <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
             <circle cx="24" cy="24" r="20" fill="#E8F0FE"/>
-            <circle cx="24" cy="24" r="10" stroke="#1A73EB" stroke-width="2" fill="none"/>
-            <line x1="24" y1="14" x2="24" y2="34" stroke="#1A73EB" stroke-width="1.5"/>
-            <line x1="14" y1="24" x2="34" y2="24" stroke="#1A73EB" stroke-width="1.5"/>
-            <path d="M16 18c1.5 2 2.5 5 2.5 8s-1 6-2.5 8" stroke="#1A73EB" stroke-width="1.5" fill="none"/>
-            <path d="M32 18c-1.5 2-2.5 5-2.5 8s1 6 2.5 8" stroke="#1A73EB" stroke-width="1.5" fill="none"/>
+            <circle cx="24" cy="24" r="9" stroke="#1A73EB" stroke-width="2" fill="none"/>
+            <circle cx="24" cy="24" r="5.5" stroke="#1A73EB" stroke-width="1.5" fill="none"/>
+            <line x1="24" y1="15" x2="24" y2="33" stroke="#1A73EB" stroke-width="1.5"/>
+            <line x1="15" y1="24" x2="33" y2="24" stroke="#1A73EB" stroke-width="1.5"/>
           </svg>
           <div>
-            <div class="s2-title" style="margin-bottom:.8rem">Audience & Reach</div>
+            <div class="s2-title" style="margin-bottom:.8rem">What We're Offering</div>
             <div style="width:80px;height:1px;background:#1A73EB;margin-bottom:1rem"></div>
           </div>
         </div>
         <div class="s2-arrows">
           <div class="s2-arrow"><strong>Australia-wide</strong><span>desktop and mobile equally</span></div>
-          <div class="s2-arrow"><strong>Tower cranes</strong><span>from $800K</span></div>
-          <div class="s2-arrow"><strong>Hoists & batteries</strong><span>from $100K – $200K</span></div>
+          <div class="s2-arrow"><strong>Tower cranes</strong><span>from $800K+</span></div>
+          <div class="s2-arrow"><strong>Hoists & batteries</strong><span>from $100K–$200K</span></div>
         </div>
       </div>
 
@@ -548,11 +642,10 @@
         <div style="display:flex;align-items:flex-start;gap:1rem">
           <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
             <circle cx="24" cy="24" r="20" fill="#E8F0FE"/>
-            <rect x="13" y="15" width="22" height="15" rx="2" stroke="#1A73EB" stroke-width="2.5" fill="none"/>
-            <path d="M18 32h12" stroke="#1A73EB" stroke-width="2" stroke-linecap="round"/>
-            <rect x="22" y="32" width="4" height="2" fill="#1A73EB" rx="0.5"/>
-            <circle cx="24" cy="22" r="2.5" fill="#1A73EB"/>
-            <path d="M24 22l3-2v4l-3 2z" fill="#1A73EB"/>
+            <rect x="13" y="14" width="22" height="16" rx="1.5" stroke="#1A73EB" stroke-width="2" fill="none"/>
+            <line x1="18" y1="32" x2="30" y2="32" stroke="#1A73EB" stroke-width="2" stroke-linecap="round"/>
+            <rect x="22" y="32" width="4" height="3" fill="#1A73EB" rx="1"/>
+            <rect x="15" y="16" width="18" height="12" rx="1" fill="none" stroke="#1A73EB" stroke-width="1" opacity="0.3"/>
           </svg>
           <div>
             <div class="s2-title" style="margin-bottom:.8rem">What We're Delivering</div>
@@ -576,85 +669,184 @@
 <div class="slide" id="s3">
   <div class="wrap">
 
-    <div class="s-label">Structure</div>
-    <h1>Website Map</h1>
-    <p class="s-intro">30–40 pages across 5 sections. Every page has a job. More pages, more modular structure — better SEO coverage across every product and search term.</p>
-    <p class="s-note"><strong>Important consideration:</strong> Built lightweight and performance-optimised — fast load times on both desktop and mobile.</p>
-
-    <div class="s3-flow">
-
-      <div class="s3-step">
-        <div class="s3-step-head">Homepage</div>
-        <div class="s3-step-items">
-          <span>Hero</span><span>Product categories</span><span>Configurator CTA</span><span>Why TES</span><span>Testimonials</span><span>Contact</span>
+    <!-- Header row: title left, pages badge right -->
+    <div class="s3-header" style="display:flex;justify-content:space-between;align-items:flex-start;gap:2rem;margin-bottom:1.4rem">
+      <div style="flex:1">
+        <div class="s-label">Structure</div>
+        <h1>Website Map</h1>
+        <p class="s-intro" style="margin-bottom:0">This is the structure we're planning. 30 to 40 pages across five clear sections, built so Google can find every page and buyers can navigate easily. A clean layout, smart linking between pages, and a dedicated page for every product you sell.</p>
+      </div>
+      <div style="flex-shrink:0;width:300px;border:1px solid var(--border);border-radius:14px;padding:1.4rem 1.5rem;background:#fafbfe">
+        <div style="display:flex;align-items:center;gap:1rem;margin-bottom:.9rem">
+          <div style="width:52px;height:52px;border-radius:50%;background:#E8F0FE;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 3h8l4 4v14a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z" stroke="#1A73EB" stroke-width="1.7"/><path d="M14 3v4h4" stroke="#1A73EB" stroke-width="1.7"/><path d="M8 12h8M8 15h8M8 18h5" stroke="#1A73EB" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div>
+            <div style="font-size:34px;font-weight:800;color:var(--blue);line-height:1;letter-spacing:-.02em">30–40</div>
+            <div style="font-family:var(--mono);font-size:11px;font-weight:700;color:var(--navy);letter-spacing:.1em">PAGES</div>
+          </div>
         </div>
+        <div style="height:1px;background:var(--border);margin-bottom:.8rem"></div>
+        <div style="font-size:12px;color:var(--grey);line-height:1.55">Room to add new products and sections as your range grows.</div>
+      </div>
+    </div>
+
+    <p class="s-note" style="margin-bottom:2.2rem;max-width:760px"><strong>Important consideration:</strong> Built lightweight and performance-optimised — fast load times on both desktop and mobile.</p>
+
+    <!-- Flow: numbered nav + cards -->
+    <div style="position:relative;margin-bottom:1.8rem">
+
+      <!-- connector line behind numbers -->
+      <div class="s3-line" style="position:absolute;top:14px;left:6%;right:6%;height:2px;background:#c3d9f7;z-index:0"></div>
+
+      <!-- number row -->
+      <div class="s3-nums" style="display:grid;grid-template-columns:1fr 2.5fr 1.1fr 1.1fr 1.15fr;gap:1rem;position:relative;z-index:1;margin-bottom:1rem">
+        <div style="justify-self:center"><span style="display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;font-family:var(--mono);font-size:11px;font-weight:700">01</span></div>
+        <div style="justify-self:center"><span style="display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--blue);color:#fff;font-family:var(--mono);font-size:11px;font-weight:700">02</span></div>
+        <div style="justify-self:center"><span style="display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;font-family:var(--mono);font-size:11px;font-weight:700">03</span></div>
+        <div style="justify-self:center"><span style="display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;font-family:var(--mono);font-size:11px;font-weight:700">04</span></div>
+        <div style="justify-self:center"><span style="display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;font-family:var(--mono);font-size:11px;font-weight:700">05</span></div>
       </div>
 
-      <div class="s3-arrow">↓</div>
+      <!-- card row -->
+      <div style="display:grid;grid-template-columns:1fr 2.5fr 1.1fr 1.1fr 1.15fr;gap:1rem;align-items:stretch">
 
-      <div class="s3-step s3-step-products">
-        <div class="s3-step-head">Products <span class="s3-count">20–30 pages</span></div>
-        <div class="s3-products-grid">
-
-          <div class="s3-product-group">
-            <div class="s3-product-label">BQ Cranes <span class="s3-configbadge">★ configurable</span></div>
-            <div class="s3-step-items">
-              <span>GHD6050–20</span><span>GHD6062–24</span><span>GHD6032–18</span>
-              <span>GHD5527–14</span><span>GHD5020A–10</span><span>GHD4510–6</span>
+        <!-- 01 Homepage -->
+        <div style="border:1px solid var(--border);border-radius:12px;padding:1.3rem 1.1rem;display:flex;flex-direction:column">
+          <div style="display:flex;justify-content:center;margin-bottom:.6rem">
+            <div style="width:54px;height:54px;border-radius:50%;background:#E8F0FE;display:flex;align-items:center;justify-content:center">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M3 11l9-7 9 7" stroke="#1A73EB" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 10v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-9" stroke="#1A73EB" stroke-width="1.8" stroke-linejoin="round"/><path d="M10 20v-5h4v5" stroke="#1A73EB" stroke-width="1.6"/></svg>
             </div>
           </div>
+          <div style="text-align:center;font-size:14px;font-weight:800;color:var(--navy);margin-bottom:.4rem">Homepage</div>
+          <div style="text-align:center;margin-bottom:1rem"><span style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--blue);background:#E8F0FE;border-radius:20px;padding:.2rem .6rem;letter-spacing:.05em">1 PAGE</span></div>
+          <div style="display:flex;flex-direction:column;gap:.5rem">
+            <div class="s3-li">Hero</div>
+            <div class="s3-li">Product categories</div>
+            <div class="s3-li">Configurator CTA</div>
+            <div class="s3-li">Why TES</div>
+            <div class="s3-li">Testimonials</div>
+            <div class="s3-li">Contact</div>
+          </div>
+        </div>
 
-          <div class="s3-product-group">
-            <div class="s3-product-label">Potain Cranes <span class="s3-configbadge">★ configurable</span></div>
-            <div class="s3-step-items">
-              <span>Topless / Flat-Top</span><span>Luffing Jib</span><span>Self-Erecting</span>
+        <!-- 02 Products -->
+        <div style="border:1px solid var(--border);border-radius:12px;padding:1.3rem 1rem;display:flex;flex-direction:column">
+          <div style="display:flex;justify-content:center;margin-bottom:.6rem">
+            <div style="width:54px;height:54px;border-radius:50%;background:#E8F0FE;display:flex;align-items:center;justify-content:center">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M4 21h16" stroke="#1A73EB" stroke-width="1.8" stroke-linecap="round"/><path d="M7 21V6l11-2" stroke="#1A73EB" stroke-width="1.8" stroke-linejoin="round"/><path d="M7 6l11 3" stroke="#1A73EB" stroke-width="1.6"/><path d="M12 9v4" stroke="#1A73EB" stroke-width="1.6"/><path d="M7 6L4 9h14" stroke="#1A73EB" stroke-width="1.6" stroke-linejoin="round"/></svg>
             </div>
           </div>
+          <div style="text-align:center;font-size:14px;font-weight:800;color:var(--navy);margin-bottom:.4rem">Products</div>
+          <div style="text-align:center;margin-bottom:1.1rem"><span style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--blue);background:#E8F0FE;border-radius:20px;padding:.2rem .6rem;letter-spacing:.05em">20–30 PAGES</span></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.8rem">
 
-          <div class="s3-product-group">
-            <div class="s3-product-label">YHX Hoists <span class="s3-configbadge">★ configurable</span></div>
-            <div class="s3-step-items">
-              <span>SC220</span><span>SC300</span><span>SC1432-48</span>
+            <div>
+              <div class="s3-grp">BQ Cranes</div>
+              <div class="s3-cfg">★ Configurable</div>
+              <div style="display:flex;flex-direction:column;gap:.4rem;margin-top:.6rem">
+                <div class="s3-li">GHD6050–20</div>
+                <div class="s3-li">GHD6062–24</div>
+                <div class="s3-li">GHD6032–18</div>
+                <div class="s3-li">GHD5527–14</div>
+                <div class="s3-li">GHD5020A–10</div>
+                <div class="s3-li">GHD4510–6</div>
+              </div>
+            </div>
+
+            <div>
+              <div class="s3-grp">Other Brands</div>
+              <div class="s3-cfg" style="background:#f1f5f9;color:#64748b;border-color:#e2e8f0">If stocked</div>
+              <div style="display:flex;flex-direction:column;gap:.4rem;margin-top:.6rem">
+                <div class="s3-li">Topless / Flat-Top</div>
+                <div class="s3-li">Luffing Jib</div>
+                <div class="s3-li">Self-Erecting</div>
+              </div>
+              <div class="s3-grp" style="margin-top:1.1rem">YHX Hoists</div>
+              <div class="s3-cfg">★ Configurable</div>
+              <div style="display:flex;flex-direction:column;gap:.4rem;margin-top:.6rem">
+                <div class="s3-li">SC220</div>
+                <div class="s3-li">SC300</div>
+                <div class="s3-li">SC1432–48</div>
+              </div>
+            </div>
+
+            <div>
+              <div class="s3-grp">Other</div>
+              <div class="s3-cfg">★ Configurable</div>
+              <div style="display:flex;flex-direction:column;gap:.4rem;margin-top:.6rem">
+                <div class="s3-li">Loading Platforms</div>
+                <div class="s3-li">Battery Systems</div>
+                <div class="s3-li">Spare Parts</div>
+                <div class="s3-li">Rigging & Accessories</div>
+                <div class="s3-li">Signage & Lightboxes</div>
+                <div class="s3-li">Software & Remote Monitoring</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- 03 3D Configurator -->
+        <div style="border:1px solid var(--border);border-radius:12px;padding:1.3rem 1.1rem;display:flex;flex-direction:column">
+          <div style="display:flex;justify-content:center;margin-bottom:.6rem">
+            <div style="width:54px;height:54px;border-radius:50%;background:#E8F0FE;display:flex;align-items:center;justify-content:center">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3Z" stroke="#1A73EB" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5" stroke="#1A73EB" stroke-width="1.6" stroke-linejoin="round"/></svg>
             </div>
           </div>
+          <div style="text-align:center;font-size:14px;font-weight:800;color:var(--navy);margin-bottom:.4rem">3D Configurator</div>
+          <div style="text-align:center;margin-bottom:1rem"><span style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--blue);background:#E8F0FE;border-radius:20px;padding:.2rem .6rem;letter-spacing:.05em">1 PAGE</span></div>
+          <div style="display:flex;flex-direction:column;gap:.5rem">
+            <div class="s3-li">Build your crane in 3D</div>
+            <div class="s3-li">Save & return to build</div>
+            <div class="s3-li">Download PDF spec sheet</div>
+            <div class="s3-li">AI companion guide</div>
+            <div class="s3-li">Submit inquiry to TES</div>
+          </div>
+        </div>
 
-          <div class="s3-product-group">
-            <div class="s3-product-label">Other <span class="s3-configbadge">★ configurable</span></div>
-            <div class="s3-step-items">
-              <span>Loading Platforms</span><span>Battery Systems</span><span>Spare Parts</span><span>Rigging & Accessories</span><span>Signage & Lightboxes</span><span>Software & Remote Monitoring</span>
+        <!-- 04 Additional Services -->
+        <div style="border:1px solid var(--border);border-radius:12px;padding:1.3rem 1.1rem;display:flex;flex-direction:column">
+          <div style="display:flex;justify-content:center;margin-bottom:.6rem">
+            <div style="width:54px;height:54px;border-radius:50%;background:#E8F0FE;display:flex;align-items:center;justify-content:center">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M14.5 5.5a3.5 3.5 0 0 0-4.6 4.3l-5.4 5.4a1.5 1.5 0 0 0 2.1 2.1l5.4-5.4a3.5 3.5 0 0 0 4.3-4.6l-2.1 2.1-2-2 2.3-1.9Z" stroke="#1A73EB" stroke-width="1.7" stroke-linejoin="round"/></svg>
             </div>
           </div>
-
+          <div style="text-align:center;font-size:14px;font-weight:800;color:var(--navy);margin-bottom:.4rem">Additional Services</div>
+          <div style="text-align:center;margin-bottom:1rem"><span style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--blue);background:#E8F0FE;border-radius:20px;padding:.2rem .6rem;letter-spacing:.05em">3–5 PAGES</span></div>
+          <div style="display:flex;flex-direction:column;gap:.5rem">
+            <div class="s3-li">Repairs & Maintenance</div>
+            <div class="s3-li">Commissioning & Training</div>
+            <div class="s3-li">Storage — Yatala yard</div>
+          </div>
         </div>
-      </div>
 
-      <div class="s3-arrow">↓</div>
-
-      <div class="s3-step">
-        <div class="s3-step-head">Configurator <span class="s3-count">1 page</span></div>
-        <div class="s3-step-items">
-          <span>Build your crane in 3D</span><span>Save & return to build</span><span>Download PDF spec sheet</span><span>AI companion guide</span><span>Submit inquiry to TES</span>
+        <!-- 05 About & Contact -->
+        <div style="border:1px solid var(--border);border-radius:12px;padding:1.3rem 1.1rem;display:flex;flex-direction:column">
+          <div style="display:flex;justify-content:center;margin-bottom:.6rem">
+            <div style="width:54px;height:54px;border-radius:50%;background:#E8F0FE;display:flex;align-items:center;justify-content:center">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="9" r="3" stroke="#1A73EB" stroke-width="1.7"/><circle cx="17" cy="10" r="2.3" stroke="#1A73EB" stroke-width="1.6"/><path d="M4 19c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round"/><path d="M15 15c2.2 0 4 1.6 4 4" stroke="#1A73EB" stroke-width="1.6" stroke-linecap="round"/></svg>
+            </div>
+          </div>
+          <div style="text-align:center;font-size:14px;font-weight:800;color:var(--navy);margin-bottom:.4rem">About & Contact</div>
+          <div style="text-align:center;margin-bottom:1rem"><span style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--blue);background:#E8F0FE;border-radius:20px;padding:.2rem .6rem;letter-spacing:.05em">4–6 PAGES</span></div>
+          <div style="display:flex;flex-direction:column;gap:.5rem">
+            <div class="s3-li">About TES</div>
+            <div class="s3-li">Contact & Lead Form</div>
+            <div class="s3-li">Privacy Policy</div>
+            <div class="s3-li">Terms & Conditions</div>
+          </div>
         </div>
+
       </div>
+    </div>
 
-      <div class="s3-arrow">↓</div>
-
-      <div class="s3-step">
-        <div class="s3-step-head">Additional Services</div>
-        <div class="s3-step-items">
-          <span>Repairs & Maintenance</span><span>Commissioning & Training</span><span>Storage — Yatala yard</span>
-        </div>
+    <!-- Outcome bar -->
+    <div class="s3-outcome" style="background:#eef3fe;border-radius:14px;padding:1.3rem 1.6rem;display:flex;align-items:center;gap:1rem">
+      <div style="width:48px;height:48px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#fff" stroke-width="1.8"/><circle cx="12" cy="12" r="4" stroke="#fff" stroke-width="1.6"/><circle cx="12" cy="12" r="1.3" fill="#fff"/></svg>
       </div>
-
-      <div class="s3-arrow">↓</div>
-
-      <div class="s3-step">
-        <div class="s3-step-head">About & Contact</div>
-        <div class="s3-step-items">
-          <span>About TES</span><span>Contact & Lead Form</span><span>Privacy Policy</span><span>Terms & Conditions</span>
-        </div>
-      </div>
-
+      <div style="font-size:13px;color:var(--charcoal);line-height:1.5"><strong style="color:var(--navy)">Outcome:</strong> A clear journey from landing page to inquiry. More visibility on Google, more qualified leads, more sales.</div>
     </div>
 
   </div>
@@ -894,48 +1086,84 @@
         </div>
 
         <!-- BACK — Reasoning -->
-        <div class="fc-back">
+        <div class="fc-back fc-back--light">
           <div class="fc-back-content">
-            <div class="fc-back-title">Homepage — Design Decisions</div>
-            <div class="fc-back-cols">
+            <div class="fc-back-title" style="color:var(--navy)">Homepage — Design Decisions</div>
+            <div class="bgrid">
 
-              <div class="fc-back-col">
-                <div class="fc-back-section">Two CTAs — Two Buyer Types</div>
-                <div class="fc-back-arrows">
-                  <div class="fc-back-arrow"><strong>Primary CTA → Configurator</strong><span>Crane buyer lands and goes straight into building — no friction, no browsing required</span></div>
-                  <div class="fc-back-arrow"><strong>Secondary CTA → Explore Range</strong><span>For hoists, batteries, software, services — homepage runs like a live ad per category</span></div>
-                  <div class="fc-back-arrow"><strong>One job per CTA</strong><span>No mixed signals, no choice paralysis</span></div>
-                </div>
-
-                <div class="fc-back-section" style="margin-top:1.2rem">Category Tabs — Running as Advertisement</div>
-                <div class="fc-back-arrows">
-                  <div class="fc-back-arrow"><strong>Each tab slides its own panel</strong><span>Compact highlights, key specs, and a direct CTA into that product line</span></div>
-                  <div class="fc-back-arrow"><strong>Not a static grid</strong><span>It moves, draws attention, sells each category on its own terms</span></div>
-                  <div class="fc-back-arrow"><strong>Every card links deeper</strong><span>Product page, configurator, or inquiry — nothing is a dead end</span></div>
-                </div>
-
-                <div class="fc-back-section" style="margin-top:1.2rem">Partners — Trust at the Consideration Stage</div>
-                <div class="fc-back-arrows">
-                  <div class="fc-back-arrow"><strong>Potain · BQ · YHX · Techway mid-page</strong><span>Not the footer — buyer sees brand names at the exact moment they're deciding whether to go further</span></div>
-                  <div class="fc-back-arrow"><strong>Answers "are these people legit?"</strong><span>Before the buyer even thinks to ask it</span></div>
+              <!-- Guide every visitor -->
+              <div class="bcard">
+                <div class="bcard-head"><span>Guide Every Visitor</span></div>
+                <div class="bcard-body">
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#1A73EB" stroke-width="1.7"/><circle cx="12" cy="12" r="4" stroke="#1A73EB" stroke-width="1.6"/><circle cx="12" cy="12" r="1.3" fill="#1A73EB"/></svg></div>
+                    <div><div class="brow-title">Primary CTA → Configurator</div><div class="brow-desc">Crane buyers start building immediately. No browsing required.</div></div>
+                  </div>
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 5h16l-6 7v6l-4 2v-8L4 5Z" stroke="#1A73EB" stroke-width="1.7" stroke-linejoin="round"/></svg></div>
+                    <div><div class="brow-title">Secondary CTA → Explore Range</div><div class="brow-desc">Hoists, batteries, software and services each get their own path.</div></div>
+                  </div>
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 7h14M5 12h14M5 17h14" stroke="#1A73EB" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+                    <div><div class="brow-title">One job per button</div><div class="brow-desc">No mixed signals, no choice paralysis.</div></div>
+                  </div>
                 </div>
               </div>
 
-              <div class="fc-back-col">
-                <div class="fc-back-section">Conversion Funnel — Open → Engage → Trust → Act</div>
-                <div class="fc-back-arrows">
-                  <div class="fc-back-arrow"><strong>Open</strong><span>Hero video/photo — sets the premium industrial tone, first impression is everything at this price point</span></div>
-                  <div class="fc-back-arrow"><strong>Engage</strong><span>Category tabs — visitor self-selects into their product; compact info, no noise</span></div>
-                  <div class="fc-back-arrow"><strong>Trust</strong><span>Partner logos + In the Field case studies — proof before the ask</span></div>
-                  <div class="fc-back-arrow"><strong>Act</strong><span>Every section has a CTA directing toward configurator, product page, or quote</span></div>
+              <!-- Sell every category -->
+              <div class="bcard">
+                <div class="bcard-head"><span>Sell Every Category</span></div>
+                <div class="bcard-body">
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="4" y="5" width="16" height="14" rx="1.5" stroke="#1A73EB" stroke-width="1.7"/><path d="M4 9h16M9 9v10" stroke="#1A73EB" stroke-width="1.5"/></svg></div>
+                    <div><div class="brow-title">Tabs slide their own panel</div><div class="brow-desc">Each category shows highlights, key specs and a direct CTA.</div></div>
+                  </div>
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3Z" stroke="#1A73EB" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5" stroke="#1A73EB" stroke-width="1.5"/></svg></div>
+                    <div><div class="brow-title">Not a static grid</div><div class="brow-desc">It moves, draws attention, sells each line on its own terms.</div></div>
+                  </div>
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M6 4l13 7-5 2-2 5L6 4Z" stroke="#1A73EB" stroke-width="1.7" stroke-linejoin="round"/></svg></div>
+                    <div><div class="brow-title">Every card links deeper</div><div class="brow-desc">Product page, configurator or inquiry. Nothing is a dead end.</div></div>
+                  </div>
                 </div>
+              </div>
 
-                <div class="fc-back-section" style="margin-top:1.2rem">In the Field — Credibility + SEO</div>
-                <div class="fc-back-arrows">
-                  <div class="fc-back-arrow"><strong>Case studies</strong><span>Real projects, real equipment, real durations — not badges</span></div>
-                  <div class="fc-back-arrow"><strong>Client quote</strong><span>One specific statement from a real client outperforms any marketing claim</span></div>
-                  <div class="fc-back-arrow"><strong>View all projects →</strong><span>Each project page = an SEO target indexed by location, crane model, and industry</span></div>
-                  <div class="fc-back-arrow"><strong>Testimonials + partner names</strong><span>Tie credibility signals directly to the SEO foundation of the site</span></div>
+              <!-- Build trust fast -->
+              <div class="bcard">
+                <div class="bcard-head"><span>Build Trust Fast</span></div>
+                <div class="bcard-body">
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9 12a3 3 0 1 0 0-4l-3 3a3 3 0 0 0 0 4l1 1" stroke="#1A73EB" stroke-width="1.6" stroke-linecap="round"/><path d="M15 12a3 3 0 1 0 0 4l3-3a3 3 0 0 0 0-4l-1-1" stroke="#1A73EB" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+                    <div><div class="brow-title">Partner brands sit mid-page</div><div class="brow-desc">BQ, YHX & Techway shown right when buyers are deciding.</div></div>
+                  </div>
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 3h7l4 4v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z" stroke="#1A73EB" stroke-width="1.6"/><path d="M14 3v4h4M9 13h6M9 16h4" stroke="#1A73EB" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+                    <div><div class="brow-title">Real project case studies</div><div class="brow-desc">Real equipment, real durations. Proof before the ask.</div></div>
+                  </div>
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M8 7c-2 0-3 1.5-3 3.5S6 14 8 14c0 2-1 3-3 3.5 4 0 6-2.5 6-7C11 8.5 9.8 7 8 7Z" fill="#1A73EB"/><path d="M17 7c-2 0-3 1.5-3 3.5S15 14 17 14c0 2-1 3-3 3.5 4 0 6-2.5 6-7C20 8.5 18.8 7 17 7Z" fill="#1A73EB"/></svg></div>
+                    <div><div class="brow-title">One specific client quote</div><div class="brow-desc">Beats any marketing claim we could write.</div></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SEO that works -->
+              <div class="bcard">
+                <div class="bcard-head"><span>SEO That Works</span></div>
+                <div class="bcard-body">
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#1A73EB" stroke-width="1.7"/><path d="M16 16l4 4" stroke="#1A73EB" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+                    <div><div class="brow-title">Every project page is a target</div><div class="brow-desc">Indexed by location, crane model and industry.</div></div>
+                  </div>
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 20V11M10 20V7M16 20v-6" stroke="#1A73EB" stroke-width="1.8" stroke-linecap="round"/><path d="M3 9l5-4 4 3 6-5" stroke="#1A73EB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                    <div><div class="brow-title">A clear funnel: open → act</div><div class="brow-desc">Every section points the visitor toward a next step.</div></div>
+                  </div>
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9 12a3 3 0 0 1 3-3h3a3 3 0 0 1 0 6h-1" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round"/><path d="M15 12a3 3 0 0 1-3 3H9a3 3 0 0 1 0-6h1" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+                    <div><div class="brow-title">Testimonials feed the SEO base</div><div class="brow-desc">Credibility signals tie into the site structure.</div></div>
+                  </div>
                 </div>
               </div>
 
@@ -1164,40 +1392,83 @@
         </div>
 
         <!-- BACK — Reasoning -->
-        <div class="fc-back">
+        <div class="fc-back fc-back--light">
           <div class="fc-back-content">
-            <div class="fc-back-title">Products & Services — Design Decisions</div>
-            <div class="fc-back-cols">
-              <div class="fc-back-col">
-                <div class="fc-back-section">One Page, Full Range</div>
-                <div class="fc-back-arrows">
-                  <div class="fc-back-arrow"><strong>Everything in one place</strong><span>Cranes, hoists, batteries, software, services — a buyer shouldn't have to hunt across five separate pages to understand what TES sells</span></div>
-                  <div class="fc-back-arrow"><strong>Left sidebar = filter, not navigation</strong><span>Clicking Cranes or Hoists doesn't take you away — it filters the gallery in place. The buyer stays oriented, nothing reloads</span></div>
-                  <div class="fc-back-arrow"><strong>Nav bar mirrors the sidebar</strong><span>Cranes, Hoists, Batteries, Services in the top nav go straight to the relevant filter — so a buyer arriving from any page lands exactly where they need to be</span></div>
-                </div>
+            <div class="fc-back-title" style="color:var(--navy)">Products & Services — Design Decisions</div>
+            <div class="bgrid">
 
-                <div class="fc-back-section" style="margin-top:1.2rem">Gallery Grid — Why Not a List</div>
-                <div class="fc-back-arrows">
-                  <div class="fc-back-arrow"><strong>3D renders need space</strong><span>TES will have 3D renders of every crane — a vertical list buries them; a grid gives each model a visual moment</span></div>
-                  <div class="fc-back-arrow"><strong>2-column layout</strong><span>Wide enough for the image to read clearly, compact enough to show 4–6 models without scrolling — buyer gets orientation fast</span></div>
-                  <div class="fc-back-arrow"><strong>Configure button per card</strong><span>Buyer doesn't need to click into a model page just to start a build — the CTA is right there on the card</span></div>
+              <!-- Find what you need -->
+              <div class="bcard">
+                <div class="bcard-head"><span>Find What You Need</span></div>
+                <div class="bcard-body">
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#1A73EB" stroke-width="1.7"/><circle cx="12" cy="12" r="4" stroke="#1A73EB" stroke-width="1.6"/><circle cx="12" cy="12" r="1.3" fill="#1A73EB"/></svg></div>
+                    <div><div class="brow-title">Everything in one place</div><div class="brow-desc">Cranes, hoists, batteries, software, services — all on one page.</div></div>
+                  </div>
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 5h16l-6 7v6l-4 2v-8L4 5Z" stroke="#1A73EB" stroke-width="1.7" stroke-linejoin="round"/></svg></div>
+                    <div><div class="brow-title">Left sidebar = filter, not navigation</div><div class="brow-desc">Filters the gallery; keeps you oriented and nothing reloads.</div></div>
+                  </div>
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 7h14M5 12h14M5 17h14" stroke="#1A73EB" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+                    <div><div class="brow-title">Nav bar mirrors the sidebar</div><div class="brow-desc">Top nav matches filters — so you always know where to find what you need.</div></div>
+                  </div>
                 </div>
               </div>
 
-              <div class="fc-back-col">
-                <div class="fc-back-section">Spec Pills — Not a Table</div>
-                <div class="fc-back-arrows">
-                  <div class="fc-back-arrow"><strong>Capacity · Jib length · Type</strong><span>The three things a crane buyer looks for first — on the card, no clicking required. This is the difference between a buyer staying and a buyer bouncing</span></div>
-                  <div class="fc-back-arrow"><strong>Tables belong on the model page</strong><span>Full spec sheets are for the decision stage — this page is for orientation. Keep it scannable</span></div>
-                </div>
-
-                <div class="fc-back-section" style="margin-top:1.2rem">SEO — Every Card is a Landing Page</div>
-                <div class="fc-back-arrows">
-                  <div class="fc-back-arrow"><strong>Each card links to its own URL</strong><span>/cranes/bq-5013 — "BQ 5013 tower crane Australia" becomes an indexable page Google can rank independently</span></div>
-                  <div class="fc-back-arrow"><strong>Products & Services page itself</strong><span>Targets "tower cranes for sale Australia", "construction hoists QLD", "battery energy storage construction" — broad top-of-funnel terms</span></div>
-                  <div class="fc-back-arrow"><strong>Filter views create context</strong><span>A buyer filtering to BQ signals intent — that click behaviour feeds remarketing and helps TES understand which product lines drive the most interest</span></div>
+              <!-- Decide with confidence -->
+              <div class="bcard">
+                <div class="bcard-head"><span>Decide With Confidence</span></div>
+                <div class="bcard-body">
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="6" y="3" width="6" height="18" rx="1.5" stroke="#1A73EB" stroke-width="1.7" transform="rotate(-45 9 12)"/><path d="M9.5 8.5l1.5 1.5M12 11l1.5 1.5M7 11l1.5 1.5" stroke="#1A73EB" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+                    <div><div class="brow-title">Spec pills, not a table</div><div class="brow-desc">Capacity, jib length and type — the 3 things buyers look for first. No clicking required.</div></div>
+                  </div>
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 3h7l4 4v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z" stroke="#1A73EB" stroke-width="1.6"/><path d="M14 3v4h4M9 13h6M9 16h4" stroke="#1A73EB" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+                    <div><div class="brow-title">Specs on the model page</div><div class="brow-desc">Full spec sheets are for the decision stage. Keep it scannable and focused.</div></div>
+                  </div>
                 </div>
               </div>
+
+              <!-- See and compare easily -->
+              <div class="bcard">
+                <div class="bcard-head"><span>See and Compare Easily</span></div>
+                <div class="bcard-body">
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3Z" stroke="#1A73EB" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5" stroke="#1A73EB" stroke-width="1.5"/></svg></div>
+                    <div><div class="brow-title">3D renders need space</div><div class="brow-desc">A vertical list gives each crane room to shine — no clutter.</div></div>
+                  </div>
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="4" y="5" width="16" height="14" rx="1.5" stroke="#1A73EB" stroke-width="1.7"/><path d="M12 5v14" stroke="#1A73EB" stroke-width="1.5"/></svg></div>
+                    <div><div class="brow-title">2-column layout</div><div class="brow-desc">Wide enough to read, compact enough to show 4–6 models without scrolling.</div></div>
+                  </div>
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M6 4l13 7-5 2-2 5L6 4Z" stroke="#1A73EB" stroke-width="1.7" stroke-linejoin="round"/></svg></div>
+                    <div><div class="brow-title">Configure button per card</div><div class="brow-desc">Start building fast — the CTA is always visible and accessible.</div></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SEO that works -->
+              <div class="bcard">
+                <div class="bcard-head"><span>SEO That Works</span></div>
+                <div class="bcard-body">
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9 12a3 3 0 0 1 3-3h3a3 3 0 0 1 0 6h-1" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round"/><path d="M15 12a3 3 0 0 1-3 3H9a3 3 0 0 1 0-6h1" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+                    <div><div class="brow-title">Each card links to its own URL</div><div class="brow-desc">Every crane gets an indexable page. Google can rank it independently.</div></div>
+                  </div>
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#1A73EB" stroke-width="1.7"/><path d="M16 16l4 4" stroke="#1A73EB" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+                    <div><div class="brow-title">Products & Services page is optimized</div><div class="brow-desc">Targets key terms buyers search for (e.g. "tower cranes for sale Australia").</div></div>
+                  </div>
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 20V11M10 20V7M16 20v-6" stroke="#1A73EB" stroke-width="1.8" stroke-linecap="round"/><path d="M3 9l5-4 4 3 6-5" stroke="#1A73EB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                    <div><div class="brow-title">Filter views create context</div><div class="brow-desc">Filters feed remarketing and help TES see which product lines drive interest.</div></div>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
@@ -1238,7 +1509,8 @@
               id="cfg-iframe"
               src=""
               data-src="TES_Crane_Configurator.html"
-              style="width:100%;flex:1;border:none;display:block"
+              scrolling="yes"
+              style="position:absolute;inset:0;width:100%;height:100%;border:none;display:block"
               allow="accelerometer; gyroscope"
             ></iframe>
             <!-- AI companion bubble — consistent with Slide 9 proactive tip -->
@@ -1262,37 +1534,83 @@
         </div>
 
         <!-- BACK -->
-        <div class="fc-back">
+        <div class="fc-back fc-back--light">
           <div class="fc-back-content">
-            <div class="fc-back-title">Configurator — Design Decisions</div>
-            <div class="fc-back-cols">
-              <div class="fc-back-col">
-                <div class="fc-back-section">Why One Page</div>
-                <div class="fc-back-arrows">
-                  <div class="fc-back-arrow"><strong>No competitor in AU has this</strong><span>Titan, Morrow, Select Plant — none offer a self-serve crane configurator. TES owns this space the moment it goes live</span></div>
-                  <div class="fc-back-arrow"><strong>One page, all products</strong><span>Crane, hoist, battery, software — configured in sequence on a single page. No jumping between pages, no losing context</span></div>
-                  <div class="fc-back-arrow"><strong>Phase 2 adds product-specific URLs</strong><span>For SEO — /configure/bq-5013 becomes its own indexable page. Phase 1 proves the concept</span></div>
-                </div>
-                <div class="fc-back-section" style="margin-top:1.2rem">Step-by-Step Build Panel</div>
-                <div class="fc-back-arrows">
-                  <div class="fc-back-arrow"><strong>Four steps in sequence</strong><span>Select crane → add hoist → battery system → software. Each step reveals options only after the previous is decided — reduces overwhelm</span></div>
-                  <div class="fc-back-arrow"><strong>Options collapse when done</strong><span>Completed steps compress — buyer always sees where they are and what's left. No scrolling back through a wall of options</span></div>
-                </div>
-              </div>
-              <div class="fc-back-col">
-                <div class="fc-back-section">3D Preview — Centre Stage</div>
-                <div class="fc-back-arrows">
-                  <div class="fc-back-arrow"><strong>Live 3D model updates as options change</strong><span>Select a hoist and it appears on the crane. Select a battery pack and it renders on-site. Buyer sees exactly what they're buying</span></div>
-                  <div class="fc-back-arrow"><strong>Rotate · Zoom · Inspect</strong><span>The buyer can examine the configuration from any angle before requesting a quote — removes doubt, builds confidence</span></div>
-                  <div class="fc-back-arrow"><strong>Spec bar overlaid at bottom</strong><span>Key numbers always visible — model, capacity, jib length, hoist. No guessing what's been selected</span></div>
-                </div>
-                <div class="fc-back-section" style="margin-top:1.2rem">Right Panel — Your Build + AI</div>
-                <div class="fc-back-arrows">
-                  <div class="fc-back-arrow"><strong>Request Quote</strong><span>Primary CTA — sends the full build spec to TES instantly. No back-and-forth email, no "what model were you looking at?"</span></div>
-                  <div class="fc-back-arrow"><strong>Download Spec Sheet</strong><span>PDF of the full configuration — buyer can take it to their board, their engineer, their project director</span></div>
-                  <div class="fc-back-arrow"><strong>AI Companion</strong><span>Suggests the right hoist for the selected crane, flags load path mismatches, recommends battery capacity for the jib length — like having a TES rep on call</span></div>
+            <div class="fc-back-title" style="color:var(--navy)">Configurator — Design Decisions</div>
+            <div class="bgrid">
+
+              <!-- One page, no competitor -->
+              <div class="bcard">
+                <div class="bcard-head"><span>One Page, No Competitor</span></div>
+                <div class="bcard-body">
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 4h10v4a5 5 0 0 1-10 0V4Z" stroke="#1A73EB" stroke-width="1.7" stroke-linejoin="round"/><path d="M7 5H4v2a3 3 0 0 0 3 3M17 5h3v2a3 3 0 0 1-3 3M10 14h4M9 20h6M12 14v6" stroke="#1A73EB" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+                    <div><div class="brow-title">No competitor in AU has this</div><div class="brow-desc">Titan, Morrow, Select Plant — none offer a self-serve configurator. TES owns it.</div></div>
+                  </div>
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3Z" stroke="#1A73EB" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5" stroke="#1A73EB" stroke-width="1.5"/></svg></div>
+                    <div><div class="brow-title">One page, all products</div><div class="brow-desc">Crane, hoist, battery, software configured in sequence. No lost context.</div></div>
+                  </div>
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9 12a3 3 0 0 1 3-3h3a3 3 0 0 1 0 6h-1" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round"/><path d="M15 12a3 3 0 0 1-3 3H9a3 3 0 0 1 0-6h1" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+                    <div><div class="brow-title">Phase 2 adds product URLs</div><div class="brow-desc">/configure/bq-5013 becomes its own indexable page for SEO.</div></div>
+                  </div>
                 </div>
               </div>
+
+              <!-- Step-by-step build -->
+              <div class="bcard">
+                <div class="bcard-head"><span>Step-by-Step Build</span></div>
+                <div class="bcard-body">
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 7h14M5 12h14M5 17h9" stroke="#1A73EB" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+                    <div><div class="brow-title">Four steps in sequence</div><div class="brow-desc">Crane → hoist → battery → software. Each step reveals options as you go.</div></div>
+                  </div>
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3l9 5-9 5-9-5 9-5Z" stroke="#1A73EB" stroke-width="1.6" stroke-linejoin="round"/><path d="M3 13l9 5 9-5" stroke="#1A73EB" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+                    <div><div class="brow-title">Options collapse when done</div><div class="brow-desc">Completed steps compress — you always see where you are and what's left.</div></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 3D preview centre stage -->
+              <div class="bcard">
+                <div class="bcard-head"><span>3D Preview, Centre Stage</span></div>
+                <div class="bcard-body">
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3Z" stroke="#1A73EB" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5" stroke="#1A73EB" stroke-width="1.5"/></svg></div>
+                    <div><div class="brow-title">Live 3D updates as options change</div><div class="brow-desc">Select a hoist and it appears on the crane. See exactly what you're buying.</div></div>
+                  </div>
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M20 12a8 8 0 1 1-2.3-5.6" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round"/><path d="M20 4v3.5h-3.5" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                    <div><div class="brow-title">Rotate, zoom, inspect</div><div class="brow-desc">Examine the build from any angle before requesting a quote.</div></div>
+                  </div>
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="4" y="14" width="16" height="5" rx="1.5" stroke="#1A73EB" stroke-width="1.6"/><path d="M7 16.5h2M12 16.5h5" stroke="#1A73EB" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+                    <div><div class="brow-title">Spec bar overlaid at the bottom</div><div class="brow-desc">Model, capacity, jib length and hoist always visible.</div></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Your build + AI -->
+              <div class="bcard">
+                <div class="bcard-head"><span>Your Build + AI</span></div>
+                <div class="bcard-body">
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M21 4L3 11l6 2.5L21 4Z" stroke="#1A73EB" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 13.5V20l3.5-4" stroke="#1A73EB" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+                    <div><div class="brow-title">Request a quote</div><div class="brow-desc">Sends the full build spec to TES instantly. No back-and-forth email.</div></div>
+                  </div>
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 4v10m0 0l-4-4m4 4l4-4" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 18h14" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+                    <div><div class="brow-title">Download spec sheet</div><div class="brow-desc">A PDF of the full configuration for the board, engineer or director.</div></div>
+                  </div>
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 4l1.8 4.2L18 10l-4.2 1.8L12 16l-1.8-4.2L6 10l4.2-1.8L12 4Z" stroke="#1A73EB" stroke-width="1.5" stroke-linejoin="round"/><path d="M18 15l.7 1.6L20 17l-1.3.4L18 19l-.7-1.6L16 17l1.3-.4L18 15Z" fill="#1A73EB"/></svg></div>
+                    <div><div class="brow-title">AI companion</div><div class="brow-desc">Suggests the right hoist, flags mismatches — like a TES rep on call.</div></div>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
@@ -1524,36 +1842,79 @@
         </div>
 
         <!-- BACK -->
-        <div class="fc-back">
+        <div class="fc-back fc-back--light">
           <div class="fc-back-content">
-            <div class="fc-back-title">After the Build — Design Decisions</div>
-            <div class="fc-back-cols">
-              <div class="fc-back-col">
-                <div class="fc-back-section">Why This Page Exists</div>
-                <div class="fc-back-arrows">
-                  <div class="fc-back-arrow"><strong>The build is the lead</strong><span>By this point the buyer has invested 5–10 minutes configuring — they are qualified. This page captures that intent before it disappears</span></div>
-                  <div class="fc-back-arrow"><strong>Four exits, one clear primary</strong><span>Download PDF is the primary CTA — it's tangible, shareable, and keeps TES in the buyer's inbox long after they leave the site</span></div>
-                  <div class="fc-back-arrow"><strong>Submit inquiry sends the full spec</strong><span>TES receives exactly what was configured — no "what model were you looking at?" back-and-forth. Converts a lead into a qualified RFQ instantly</span></div>
-                </div>
-                <div class="fc-back-section" style="margin-top:1.2rem">Save & Return</div>
-                <div class="fc-back-arrows">
-                  <div class="fc-back-arrow"><strong>B2B sales cycles are long</strong><span>A crane buyer rarely decides the same day — they take the spec to their board, their engineer, their site manager. Save & Return keeps them coming back</span></div>
-                  <div class="fc-back-arrow"><strong>Profile creation as a side effect</strong><span>Saving a build requires an account — TES builds its own customer database without a CRM push or marketing spend</span></div>
-                </div>
-              </div>
-              <div class="fc-back-col">
-                <div class="fc-back-section">AI Companion — Post-Build</div>
-                <div class="fc-back-arrows">
-                  <div class="fc-back-arrow"><strong>Flags mismatches before submission</strong><span>If the hoist rating is too low for the selected jib at full radius — the AI says so before TES has to. Reduces spec errors in RFQs</span></div>
-                  <div class="fc-back-arrow"><strong>Upgrades suggested in context</strong><span>Not a popup — a contextual recommendation after the build is done. Feels like advice, not upselling</span></div>
-                  <div class="fc-back-arrow"><strong>One-click apply</strong><span>Buyer clicks "Apply SC300 upgrade" — the build updates instantly, PDF re-generates. No going back into the configurator</span></div>
-                </div>
-                <div class="fc-back-section" style="margin-top:1.2rem">Shareable Build Link</div>
-                <div class="fc-back-arrows">
-                  <div class="fc-back-arrow"><strong>One short URL, full spec</strong><span>tes.com.au/b/TES-5013-xxx — the buyer pastes it into a WhatsApp message to their site engineer. No login, full build visible</span></div>
-                  <div class="fc-back-arrow"><strong>TES sees every share</strong><span>Every link view is tracked — TES knows when a build is being circulated internally, which is a strong buying signal</span></div>
+            <div class="fc-back-title" style="color:var(--navy)">After the Build — Design Decisions</div>
+            <div class="bgrid">
+
+              <!-- Why this page exists -->
+              <div class="bcard">
+                <div class="bcard-head"><span>Why This Page Exists</span></div>
+                <div class="bcard-body">
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#1A73EB" stroke-width="1.7"/><circle cx="12" cy="12" r="4" stroke="#1A73EB" stroke-width="1.6"/><circle cx="12" cy="12" r="1.3" fill="#1A73EB"/></svg></div>
+                    <div><div class="brow-title">The build is the lead</div><div class="brow-desc">5–10 minutes configuring means they're qualified. Capture that intent now.</div></div>
+                  </div>
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 4v10m0 0l-4-4m4 4l4-4" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 18h14" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+                    <div><div class="brow-title">Download PDF is the primary exit</div><div class="brow-desc">Tangible, shareable, and keeps TES in the buyer's inbox after they leave.</div></div>
+                  </div>
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M21 4L3 11l6 2.5L21 4Z" stroke="#1A73EB" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 13.5V20l3.5-4" stroke="#1A73EB" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+                    <div><div class="brow-title">Submit sends the full spec</div><div class="brow-desc">TES gets exactly what was configured. A qualified RFQ, instantly.</div></div>
+                  </div>
                 </div>
               </div>
+
+              <!-- Save & return -->
+              <div class="bcard">
+                <div class="bcard-head"><span>Save &amp; Return</span></div>
+                <div class="bcard-body">
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#1A73EB" stroke-width="1.7"/><path d="M12 8v4l3 2" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                    <div><div class="brow-title">B2B sales cycles are long</div><div class="brow-desc">Buyers take the spec to their board. Save &amp; Return brings them back.</div></div>
+                  </div>
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="9" r="3.5" stroke="#1A73EB" stroke-width="1.7"/><path d="M5 20c0-3.9 3.1-7 7-7s7 3.1 7 7" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+                    <div><div class="brow-title">Profile creation as a side effect</div><div class="brow-desc">Saving needs an account. TES builds its database with no CRM spend.</div></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- AI companion post-build -->
+              <div class="bcard">
+                <div class="bcard-head"><span>AI Companion, Post-Build</span></div>
+                <div class="bcard-body">
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 4l9 15H3L12 4Z" stroke="#1A73EB" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 10v4M12 16.5v.5" stroke="#1A73EB" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+                    <div><div class="brow-title">Flags mismatches before submission</div><div class="brow-desc">Hoist rating too low for the jib? The AI says so first. Fewer spec errors.</div></div>
+                  </div>
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 4l1.8 4.2L18 10l-4.2 1.8L12 16l-1.8-4.2L6 10l4.2-1.8L12 4Z" stroke="#1A73EB" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
+                    <div><div class="brow-title">Upgrades suggested in context</div><div class="brow-desc">A recommendation after the build, not a popup. Advice, not upselling.</div></div>
+                  </div>
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M6 4l13 7-5 2-2 5L6 4Z" stroke="#1A73EB" stroke-width="1.7" stroke-linejoin="round"/></svg></div>
+                    <div><div class="brow-title">One-click apply</div><div class="brow-desc">Build updates instantly, PDF regenerates. No going back into the configurator.</div></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Shareable build link -->
+              <div class="bcard">
+                <div class="bcard-head"><span>Shareable Build Link</span></div>
+                <div class="bcard-body">
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9 12a3 3 0 0 1 3-3h3a3 3 0 0 1 0 6h-1" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round"/><path d="M15 12a3 3 0 0 1-3 3H9a3 3 0 0 1 0-6h1" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+                    <div><div class="brow-title">One short URL, full spec</div><div class="brow-desc">Paste into WhatsApp to the site engineer. No login, full build visible.</div></div>
+                  </div>
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12Z" stroke="#1A73EB" stroke-width="1.7" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke="#1A73EB" stroke-width="1.7"/></svg></div>
+                    <div><div class="brow-title">TES sees every share</div><div class="brow-desc">Each view is tracked. Internal circulation is a strong buying signal.</div></div>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
@@ -2090,26 +2451,71 @@
         </div><!-- end fc-front -->
 
         <!-- BACK -->
-        <div class="fc-back">
+        <div class="fc-back fc-back--light">
           <div class="fc-back-content">
-            <div class="fc-back-title">Knowledge Hub — Design Decisions</div>
-            <div class="fc-back-items">
-              <div class="fc-back-item">
-                <div class="fc-back-item-title">AJ already has everything</div>
-                <div class="fc-back-item-desc">Case studies ✓ — video footage ✓ — product copy ✓ — brand guidelines ✓. This page doesn't require new content creation. It surfaces what TES already has in a format that works online.</div>
+            <div class="fc-back-title" style="color:var(--navy)">Knowledge Hub — Design Decisions</div>
+            <div class="bgrid">
+
+              <!-- Content already exists -->
+              <div class="bcard">
+                <div class="bcard-head"><span>Content Already Exists</span></div>
+                <div class="bcard-body">
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 3h7l4 4v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z" stroke="#1A73EB" stroke-width="1.6"/><path d="M14 3v4h4M9 14l2 2 4-4" stroke="#1A73EB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                    <div><div class="brow-title">TES already has it all</div><div class="brow-desc">Case studies, video footage, product copy and brand guidelines.</div></div>
+                  </div>
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="5" rx="1.5" stroke="#1A73EB" stroke-width="1.6"/><path d="M5 9v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9M10 13h4" stroke="#1A73EB" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+                    <div><div class="brow-title">No new content creation</div><div class="brow-desc">This page surfaces existing assets in a format that works online.</div></div>
+                  </div>
+                </div>
               </div>
-              <div class="fc-back-item">
-                <div class="fc-back-item-title">SEO: every page is a search landing</div>
-                <div class="fc-back-item-desc">A buyer searching "tower crane hire Brisbane" or "Potain MDT specs Australia" lands on a TES resource page — not a competitor. Each brochure, project, and guide is an indexed URL with a job to do.</div>
+
+              <!-- Found on search -->
+              <div class="bcard">
+                <div class="bcard-head"><span>Found on Search</span></div>
+                <div class="bcard-body">
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#1A73EB" stroke-width="1.7"/><path d="M16 16l4 4" stroke="#1A73EB" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+                    <div><div class="brow-title">Every page is a search landing</div><div class="brow-desc">"Tower crane hire Brisbane" lands on a TES page, not a competitor.</div></div>
+                  </div>
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9 12a3 3 0 0 1 3-3h3a3 3 0 0 1 0 6h-1" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round"/><path d="M15 12a3 3 0 0 1-3 3H9a3 3 0 0 1 0-6h1" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+                    <div><div class="brow-title">Each asset is an indexed URL</div><div class="brow-desc">Every brochure, project and guide has a job to do.</div></div>
+                  </div>
+                </div>
               </div>
-              <div class="fc-back-item">
-                <div class="fc-back-item-title">Brochures close offline deals</div>
-                <div class="fc-back-item-desc">A Director downloads the Potain spec sheet, shares it in a board meeting, and TES is the brand in the room. Downloadable brochures extend TES's reach beyond the website visit.</div>
+
+              <!-- Closes offline deals -->
+              <div class="bcard">
+                <div class="bcard-head"><span>Closes Offline Deals</span></div>
+                <div class="bcard-body">
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 4v10m0 0l-4-4m4 4l4-4" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 18h14" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+                    <div><div class="brow-title">Brochures travel</div><div class="brow-desc">A Director downloads the spec sheet and shares it in a board meeting.</div></div>
+                  </div>
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 20V8l8-4 8 4v12" stroke="#1A73EB" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 20v-5h6v5M9 11h.01M15 11h.01" stroke="#1A73EB" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+                    <div><div class="brow-title">TES is the brand in the room</div><div class="brow-desc">Downloads extend reach beyond the website visit.</div></div>
+                  </div>
+                </div>
               </div>
-              <div class="fc-back-item">
-                <div class="fc-back-item-title">Blog marked "nice to have" — not a content strategy</div>
-                <div class="fc-back-item-desc">AJ didn't ask for an editorial calendar. This hub is structured so TES can add content as they go — no ongoing production required at launch. The structure supports future growth without demanding it.</div>
+
+              <!-- Built to grow -->
+              <div class="bcard">
+                <div class="bcard-head"><span>Built to Grow</span></div>
+                <div class="bcard-body">
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 19l3-1L18 8l-2-2L6 16l-1 3Z" stroke="#1A73EB" stroke-width="1.6" stroke-linejoin="round"/><path d="M14 6l2 2" stroke="#1A73EB" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+                    <div><div class="brow-title">Blog is a nice-to-have</div><div class="brow-desc">No editorial calendar required at launch.</div></div>
+                  </div>
+                  <div class="brow">
+                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 20V11M10 20V7M16 20v-6" stroke="#1A73EB" stroke-width="1.8" stroke-linecap="round"/><path d="M3 9l5-4 4 3 6-5" stroke="#1A73EB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                    <div><div class="brow-title">Add content as you go</div><div class="brow-desc">The structure supports future growth without demanding it.</div></div>
+                  </div>
+                </div>
               </div>
+
             </div>
           </div>
         </div>
@@ -2217,26 +2623,71 @@
         </div><!-- end fc-front -->
 
         <!-- BACK -->
-        <div class="fc-back">
+        <div class="fc-back fc-back--light">
           <div class="fc-back-content">
-            <div class="fc-back-title">AI Companion — Design Rationale</div>
-            <div class="fc-back-items">
-              <div class="fc-back-item">
-                <div class="fc-back-item-title">Why companion, not chatbot</div>
-                <div class="fc-back-item-desc">A generic chatbot answers questions. A companion knows what the buyer has already built and gives advice that's specific to their current configuration. AJ's buyers are Directors spending $800k–$1.8M — they don't need a FAQ bot, they need a knowledgeable guide.</div>
+            <div class="fc-back-title" style="color:var(--navy)">AI Companion — Design Rationale</div>
+            <div class="bgrid">
+
+              <!-- Companion, not chatbot -->
+              <div class="bcard">
+                <div class="bcard-head" style="background:#4c1d95"><span>Companion, Not Chatbot</span></div>
+                <div class="bcard-body">
+                  <div class="brow">
+                    <div class="brow-ic" style="background:#f3f0ff"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 4l1.8 4.2L18 10l-4.2 1.8L12 16l-1.8-4.2L6 10l4.2-1.8L12 4Z" stroke="#7c3aed" stroke-width="1.5" stroke-linejoin="round"/><path d="M18 15l.7 1.6L20 17l-1.3.4L18 19l-.7-1.6L16 17l1.3-.4L18 15Z" fill="#7c3aed"/></svg></div>
+                    <div><div class="brow-title">It knows what you've built</div><div class="brow-desc">Advice specific to your current configuration, not a generic FAQ.</div></div>
+                  </div>
+                  <div class="brow">
+                    <div class="brow-ic" style="background:#f3f0ff"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="9" r="3.5" stroke="#7c3aed" stroke-width="1.7"/><path d="M5 20c0-3.9 3.1-7 7-7s7 3.1 7 7" stroke="#7c3aed" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+                    <div><div class="brow-title">Built for Directors</div><div class="brow-desc">Buyers spending $800k–$1.8M need a guide, not a FAQ bot.</div></div>
+                  </div>
+                </div>
               </div>
-              <div class="fc-back-item">
-                <div class="fc-back-item-title">Both modes, one goal</div>
-                <div class="fc-back-item-desc">Proactive mode surfaces contextual tips without the buyer needing to ask — reducing drop-off mid-configure. Reactive mode handles deeper questions that would otherwise require a phone call to AJ. Both modes funnel toward the inquiry form.</div>
+
+              <!-- Both modes, one goal -->
+              <div class="bcard">
+                <div class="bcard-head" style="background:#4c1d95"><span>Both Modes, One Goal</span></div>
+                <div class="bcard-body">
+                  <div class="brow">
+                    <div class="brow-ic" style="background:#f3f0ff"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3a6 6 0 0 0-3 11v2h6v-2a6 6 0 0 0-3-11Z" stroke="#7c3aed" stroke-width="1.6" stroke-linejoin="round"/><path d="M10 20h4" stroke="#7c3aed" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+                    <div><div class="brow-title">Proactive tips</div><div class="brow-desc">Surfaces contextual tips without being asked. Reduces mid-build drop-off.</div></div>
+                  </div>
+                  <div class="brow">
+                    <div class="brow-ic" style="background:#f3f0ff"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 5h16v11H8l-4 3V5Z" stroke="#7c3aed" stroke-width="1.6" stroke-linejoin="round"/><path d="M8 9h8M8 12h5" stroke="#7c3aed" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+                    <div><div class="brow-title">Reactive answers</div><div class="brow-desc">Handles deeper questions that would otherwise need a call to AJ.</div></div>
+                  </div>
+                </div>
               </div>
-              <div class="fc-back-item">
-                <div class="fc-back-item-title">Narrow by design</div>
-                <div class="fc-back-item-desc">Pricing, compliance, and human escalation are out of scope deliberately. Pricing is undecided (per scoping form). Compliance queries need a qualified human. Keeping the AI narrow means it stays accurate — and doesn't give TES a liability problem.</div>
+
+              <!-- Narrow by design -->
+              <div class="bcard">
+                <div class="bcard-head" style="background:#4c1d95"><span>Narrow by Design</span></div>
+                <div class="bcard-body">
+                  <div class="brow">
+                    <div class="brow-ic" style="background:#f3f0ff"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3Z" stroke="#7c3aed" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+                    <div><div class="brow-title">Pricing & compliance out of scope</div><div class="brow-desc">Pricing is undecided; compliance needs a qualified human.</div></div>
+                  </div>
+                  <div class="brow">
+                    <div class="brow-ic" style="background:#f3f0ff"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#7c3aed" stroke-width="1.7"/><path d="M8.5 12l2.2 2.2L15.5 9.5" stroke="#7c3aed" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                    <div><div class="brow-title">Stays accurate</div><div class="brow-desc">A narrow scope keeps it reliable and avoids a liability problem.</div></div>
+                  </div>
+                </div>
               </div>
-              <div class="fc-back-item">
-                <div class="fc-back-item-title">Our recommendation: add smart crane matching</div>
-                <div class="fc-back-item-desc">AJ didn't tick "smart crane recommendations" — but it's the most natural Phase 3 extension. A buyer who types "I need a crane for a 35-storey job in Brisbane" should get a model suggestion immediately. It takes one extra training layer. We recommend including it.</div>
+
+              <!-- Our recommendation -->
+              <div class="bcard">
+                <div class="bcard-head" style="background:#4c1d95"><span>Our Recommendation</span></div>
+                <div class="bcard-body">
+                  <div class="brow">
+                    <div class="brow-ic" style="background:#f3f0ff"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#7c3aed" stroke-width="1.7"/><circle cx="12" cy="12" r="4" stroke="#7c3aed" stroke-width="1.6"/><circle cx="12" cy="12" r="1.3" fill="#7c3aed"/></svg></div>
+                    <div><div class="brow-title">Add smart crane matching</div><div class="brow-desc">"A crane for a 35-storey job in Brisbane" should get an instant suggestion.</div></div>
+                  </div>
+                  <div class="brow">
+                    <div class="brow-ic" style="background:#f3f0ff"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3l9 5-9 5-9-5 9-5Z" stroke="#7c3aed" stroke-width="1.6" stroke-linejoin="round"/><path d="M3 13l9 5 9-5" stroke="#7c3aed" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+                    <div><div class="brow-title">One extra training layer</div><div class="brow-desc">The most natural Phase 3 extension. We recommend including it.</div></div>
+                  </div>
+                </div>
               </div>
+
             </div>
           </div>
         </div>
