@@ -137,9 +137,32 @@
     @media print { #bar { display:none; } .slide { page-break-after:always; break-after:page; height:100vh; min-height:unset; overflow:hidden; } }
 
     @media (max-width:768px) {
-      .scope-grid { grid-template-columns:1fr !important; }
-      .ns-grid    { grid-template-columns:1fr !important; }
-      .tl-week    { grid-template-columns:80px 1fr; gap:1rem; }
+      .scope-grid  { grid-template-columns:1fr !important; }
+      .ns-grid     { grid-template-columns:1fr !important; }
+      .cvs-wrap    { grid-template-columns:1fr !important; }
+      .tl-week     { grid-template-columns:80px 1fr; gap:1rem; }
+      .inv-row     { grid-template-columns:1fr; }
+      .inv-row-price { text-align:left; }
+      .inv-total   { grid-template-columns:1fr; gap:.4rem; }
+      .inv-total-price { font-size:28px; }
+      .s1-logos    { gap:1.5rem; }
+      h1           { font-size:clamp(26px,7vw,42px); }
+      .wrap        { padding:0 5vw 4rem; }
+    }
+
+    @media (max-width:600px) {
+      /* Timeline 2-col → stack */
+      #s3 [style*="grid-template-columns:1fr 1fr"] { display:flex !important; flex-direction:column !important; }
+      /* Preview mockup inner 2-col → stack */
+      #s4 [style*="grid-template-columns:1fr 1fr"] { display:flex !important; flex-direction:column !important; }
+      /* Next steps 2-col → stack */
+      #s6 [style*="grid-template-columns:1fr 1fr"] { display:flex !important; flex-direction:column !important; }
+      /* Investment next-steps card grid */
+      #s6 [style*="grid-template-columns:1fr 1fr"] { display:flex !important; flex-direction:column !important; }
+      /* Browser mockup URL bar font size */
+      #s4 [style*="font-size:9px"] { font-size:8px; }
+      /* Battery selector buttons wrap */
+      #s4 [style*="display:flex;gap:.6rem"] { flex-wrap:wrap; }
     }
   </style>
 </head>
