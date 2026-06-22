@@ -1,0 +1,2225 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>TES — Crane Configurator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100vh; overflow: hidden; font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; background: #fff; }
+
+    /* ── Top bar ─────────────────────────────────────── */
+    .topbar {
+      height: 52px; display: flex; align-items: center; justify-content: space-between;
+      padding: 0 1.4rem; border-bottom: 1px solid #e5e7eb;
+      background: #fff; flex-shrink: 0; position: relative; z-index: 50;
+    }
+    .topbar-left { display: flex; align-items: center; gap: 1.2rem; }
+    .topbar-back { display: flex; align-items: center; gap: .4rem; font-size: 12px; color: #374151; cursor: pointer; text-decoration: none; }
+    .topbar-back:hover { color: #111; }
+    .topbar-sep { width: 1px; height: 16px; background: #e5e7eb; }
+    .topbar-action { font-size: 12px; color: #6b7280; cursor: pointer; display: flex; align-items: center; gap: .3rem; transition: color .15s; }
+    .topbar-action:hover { color: #111; }
+    .topbar-right { display: flex; align-items: center; gap: 1rem; }
+    .topbar-price-wrap { display: flex; flex-direction: column; align-items: flex-end; }
+    .topbar-price-val { font-size: 13px; font-weight: 700; color: #111; letter-spacing: -.01em; line-height: 1; }
+    .topbar-price-lbl { font-family: 'IBM Plex Mono', monospace; font-size: 8.5px; color: #9ca3af; letter-spacing: .08em; text-transform: uppercase; margin-top: .15rem; }
+    .topbar-btn { padding: .42rem .95rem; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; border: 1px solid #d1d5db; background: #fff; color: #374151; transition: all .15s; }
+    .topbar-btn:hover { background: #f9fafb; }
+    .topbar-btn-primary { background: #111; color: #fff; border-color: #111; font-weight: 600; }
+    .topbar-btn-primary:hover { background: #222; }
+
+    /* ── Main layout ─────────────────────────────────── */
+    .cfg-main { display: flex; height: calc(100vh - 52px); overflow: hidden; }
+
+    /* ── Canvas side ─────────────────────────────────── */
+    .canvas-wrap { flex: 1; position: relative; background: #080f1c; overflow: hidden; min-width: 0; transition: background .6s ease; }
+    .vignette { transition: opacity .6s ease; }
+    #c { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+    #app { position: absolute; inset: 0; }
+
+    /* ── Canvas overlays ─────────────────────────────── */
+    .vignette { position: absolute; inset: 0; pointer-events: none; z-index: 2; background: radial-gradient(ellipse 80% 70% at 50% 42%, transparent 55%, rgba(0,0,0,0.5) 100%); }
+
+    .canvas-badge { position: absolute; bottom: 2rem; left: 2rem; z-index: 10; transition: color .5s; }
+    .canvas-badge-model { font-size: 1.6rem; font-weight: 700; color: #fff; letter-spacing: -.02em; line-height: 1; transition: color .5s; }
+    .crane-spec { font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.35); margin-top: .4rem; transition: color .5s; }
+    .canvas-wrap.studio .canvas-badge-model { color: #111; }
+    .canvas-wrap.studio .crane-spec { color: rgba(0,0,0,.35); }
+    .canvas-wrap.studio .rotate-hint { color: rgba(0,0,0,.18); }
+    .canvas-wrap.studio .zoom-btn { background: rgba(255,255,255,.8); border-color: #ddd; color: #333; }
+    .canvas-wrap.studio .zoom-btn:hover { background: #fff; }
+    .canvas-wrap.studio .seg { background: rgba(255,255,255,.8); border-color: #ddd; }
+    .canvas-wrap.studio .seg button { color: rgba(0,0,0,.4); }
+    .canvas-wrap.studio .seg button.active { background: rgba(0,0,0,.08); color: #111; }
+
+    .canvas-controls { position: absolute; top: 1rem; left: 1rem; z-index: 12; display: flex; gap: .5rem; }
+    .seg { display: flex; background: rgba(8,15,28,.7); border: 1px solid rgba(255,255,255,.1); border-radius: 7px; padding: 3px; backdrop-filter: blur(12px); }
+    .seg button { padding: .35rem .75rem; border: none; background: none; cursor: pointer; color: rgba(255,255,255,.45); font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; border-radius: 5px; transition: all .18s; }
+    .seg button.active { background: rgba(255,255,255,.15); color: #fff; }
+
+    .zoom-controls { position: absolute; right: 1rem; bottom: 2rem; display: flex; flex-direction: column; gap: .35rem; z-index: 12; }
+    .zoom-btn { width: 36px; height: 36px; border-radius: 8px; background: rgba(8,15,28,.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,.1); color: #fff; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .15s; user-select: none; }
+    .zoom-btn:hover { background: rgba(255,255,255,.18); }
+    .zoom-btn:active { transform: scale(.92); }
+    .zoom-btn.reset { font-size: 15px; margin-top: .2rem; }
+
+    .rotate-hint { position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%); font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: .22em; text-transform: uppercase; color: rgba(255,255,255,.18); pointer-events: none; z-index: 5; transition: opacity .6s; }
+    .rotate-hint.gone { opacity: 0; }
+
+    /* ── Depiction overlay ───────────────────────────── */
+    #depiction-overlay {
+      position: absolute; bottom: 3.8rem; left: 50%; transform: translateX(-50%);
+      z-index: 15; width: calc(100% - 3rem); max-width: 430px;
+      background: rgba(6, 12, 24, 0.78); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,.11); border-radius: 16px;
+      padding: 1.15rem 1.5rem 1.1rem; color: #fff; text-align: center;
+      transition: opacity .45s, transform .45s; box-shadow: 0 8px 40px rgba(0,0,0,.45);
+    }
+    #depiction-overlay.dep-hidden { opacity: 0; pointer-events: none; transform: translateX(-50%) translateY(10px); }
+    #dep-close { position: absolute; top: .55rem; right: .7rem; background: none; border: none; color: rgba(255,255,255,.35); font-size: 18px; cursor: pointer; line-height: 1; padding: 0 .2rem; transition: color .15s; }
+    #dep-close:hover { color: rgba(255,255,255,.8); }
+    .dep-eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: 8px; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.4); margin-bottom: .55rem; display: flex; align-items: center; justify-content: center; gap: .5rem; }
+    .dep-eyebrow::before, .dep-eyebrow::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,.1); max-width: 40px; }
+    .dep-title { font-size: 14px; font-weight: 700; letter-spacing: -.02em; margin-bottom: .45rem; line-height: 1.25; }
+    .dep-title span { color: rgba(255,200,80,1); }
+    .dep-body { font-size: 10px; color: rgba(255,255,255,.55); line-height: 1.65; margin-bottom: 1rem; }
+    .dep-body strong { color: rgba(255,255,255,.8); font-weight: 600; }
+    .dep-btn { display: inline-flex; align-items: center; gap: .4rem; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18); color: #fff; padding: .5rem 1.2rem; border-radius: 8px; font-size: 11px; font-weight: 600; cursor: pointer; letter-spacing: .01em; transition: background .2s, border-color .2s; font-family: 'Inter', sans-serif; }
+    .dep-btn:hover { background: rgba(255,255,255,.18); border-color: rgba(255,255,255,.3); }
+    .dep-btn svg { opacity: .7; }
+
+    /* ── Loading overlay ─────────────────────────────── */
+    #loading-overlay { position: absolute; inset: 0; z-index: 20; background: rgba(8,15,28,.9); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.4rem; pointer-events: none; transition: opacity .5s; }
+    .loading-spinner { width: 44px; height: 44px; border-radius: 50%; border: 2px solid rgba(255,255,255,.08); border-top-color: rgba(255,255,255,.7); animation: spin .9s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .25em; text-transform: uppercase; color: rgba(255,255,255,.3); }
+    .loading-bar-wrap { width: 160px; height: 2px; background: rgba(255,255,255,.08); border-radius: 2px; overflow: hidden; }
+    .loading-bar { height: 100%; width: 0%; background: rgba(255,255,255,.5); border-radius: 2px; animation: loadbar 4s cubic-bezier(.4,0,.6,1) forwards; }
+    @keyframes loadbar { 0%{width:0%} 60%{width:72%} 90%{width:88%} 100%{width:92%} }
+
+    /* ── Right config panel ──────────────────────────── */
+    .cfg-panel { width: 390px; min-width: 390px; background: #fff; border-left: 1px solid #e5e7eb; display: flex; flex-direction: column; overflow: hidden; }
+
+    .panel-header { padding: 1.2rem 1.4rem .9rem; border-bottom: 1px solid #f3f4f6; flex-shrink: 0; }
+    .panel-model-name { font-size: 1.45rem; font-weight: 700; color: #111; letter-spacing: -.02em; display: flex; align-items: center; gap: .6rem; }
+    .panel-year { font-size: 11px; font-weight: 600; color: #6b7280; background: #f3f4f6; padding: .15rem .5rem; border-radius: 4px; font-family: 'IBM Plex Mono', monospace; }
+    .panel-tech-link { font-size: 11px; color: #6b7280; text-decoration: underline; cursor: pointer; display: block; margin-top: .35rem; text-underline-offset: 2px; }
+
+    .panel-search { padding: .7rem 1.4rem; border-bottom: 1px solid #f3f4f6; flex-shrink: 0; }
+    .panel-search-input { width: 100%; padding: .5rem .75rem .5rem 2.1rem; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 12px; color: #374151; outline: none; background: #f9fafb; font-family: 'Inter', sans-serif; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: .65rem center; }
+    .panel-search-input::placeholder { color: #9ca3af; }
+    .panel-search-input:focus { border-color: #d1d5db; background-color: #fff; }
+
+    .panel-sections { flex: 1; overflow-y: auto; }
+    .panel-sections::-webkit-scrollbar { width: 3px; }
+    .panel-sections::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 2px; }
+
+    /* Section */
+    .cfg-section { border-bottom: 1px solid #f3f4f6; }
+    .cfg-section-head { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.4rem; cursor: pointer; user-select: none; }
+    .cfg-section-head:hover { background: #fafafa; }
+    .cfg-section-title { font-size: 13px; font-weight: 600; color: #111; }
+    .cfg-section-meta { display: flex; align-items: center; gap: .5rem; }
+    .cfg-section-badge { font-size: 11px; color: #6b7280; }
+    .cfg-section-chevron { color: #9ca3af; font-size: 10px; transition: transform .2s; }
+    .cfg-section.closed .cfg-section-chevron { transform: rotate(-90deg); }
+    .cfg-section.closed .cfg-section-body { display: none; }
+    .cfg-section-body { padding: 0 1.4rem 1.1rem; }
+
+    /* Colour swatches — Porsche square style */
+    .colour-group { margin-bottom: .9rem; }
+    .colour-group-label { display: flex; justify-content: space-between; font-size: 11px; font-weight: 600; color: #374151; margin-bottom: .5rem; }
+    .colour-group-price { font-weight: 400; color: #6b7280; }
+    .colour-swatches { display: flex; gap: .4rem; flex-wrap: wrap; }
+    .swatch { width: 50px; height: 50px; border-radius: 7px; cursor: pointer; border: 2px solid transparent; transition: all .15s; position: relative; flex-shrink: 0; }
+    .swatch:hover { transform: scale(1.06); }
+    .swatch.active { border-color: #111; box-shadow: 0 0 0 3px #fff, 0 0 0 5px #111; }
+    .colour-selected { font-size: 12px; color: #374151; font-weight: 500; margin: .5rem 0 .8rem; }
+    .colour-selected span { color: #9ca3af; font-weight: 400; }
+
+    /* Finish pills */
+    .finish-label { font-size: 11px; font-weight: 600; color: #374151; margin-bottom: .4rem; }
+    .radio-pills { display: flex; gap: .35rem; flex-wrap: wrap; }
+    .pill { padding: .35rem .75rem; border-radius: 6px; border: 1px solid #e5e7eb; font-size: 11px; color: #374151; cursor: pointer; transition: all .15s; background: #fff; font-family: 'Inter', sans-serif; }
+    .pill:hover { border-color: #9ca3af; }
+    .pill.active { border-color: #111; background: #111; color: #fff; }
+
+    /* Option cards — white panel row style */
+    .option-cards { display: flex; flex-direction: column; gap: .4rem; }
+    .ocard { padding: .75rem .9rem; border-radius: 8px; border: 1px solid #e5e7eb; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: .8rem; transition: all .15s; background: #fff; }
+    .ocard:hover { border-color: #9ca3af; background: #fafafa; }
+    .ocard.active { border-color: #111; background: #fafafa; }
+    .ocard-left { display: flex; flex-direction: column; gap: .12rem; flex: 1; }
+    .ocard-name { font-size: 12px; font-weight: 600; color: #111; }
+    .ocard-spec { font-size: 11px; color: #6b7280; }
+    .ocard-price { font-size: 11px; font-weight: 600; color: #6b7280; font-family: 'IBM Plex Mono', monospace; flex-shrink: 0; }
+    .ocard.active .ocard-price { color: #111; }
+    .ocard-check { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid #d1d5db; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+    .ocard.active .ocard-check { border-color: #111; background: #111; }
+    .ocard.active .ocard-check::after { content: ''; display: block; width: 6px; height: 6px; border-radius: 50%; background: #fff; }
+
+    /* Toggle rows — white panel style */
+    .acc-list { display: flex; flex-direction: column; gap: .4rem; }
+    .acc-row { padding: .55rem .65rem; border-radius: 8px; border: 1px solid #e5e7eb; display: flex; align-items: center; gap: .7rem; background: #fff; transition: border-color .15s; }
+    .acc-row:has(input:checked) { border-color: #111; }
+    .acc-icon { width: 42px; height: 42px; min-width: 42px; background: #f9fafb; border-radius: 8px; border: 1px solid #f3f4f6; display: flex; align-items: center; justify-content: center; transition: all .2s; }
+    .acc-row:has(input:checked) .acc-icon { background: #111; border-color: #111; }
+    .acc-row:has(input:checked) .acc-icon svg .ico-stroke { stroke: #fff; }
+    .acc-row:has(input:checked) .acc-icon svg .ico-fill   { fill:   #fff; }
+    .acc-row:has(input:checked) .acc-icon svg .ico-accent { opacity: .7; }
+    .acc-row-body { flex: 1; min-width: 0; }
+    .acc-label { font-size: 12px; font-weight: 600; color: #111; display: flex; justify-content: space-between; align-items: center; }
+    .acc-price { font-size: 11px; color: #6b7280; font-family: 'IBM Plex Mono', monospace; }
+    .acc-desc { font-size: 10.5px; color: #9ca3af; margin-top: .15rem; line-height: 1.4; }
+    .toggle { position: relative; width: 38px; height: 22px; cursor: pointer; flex-shrink: 0; }
+    .toggle input { display: none; }
+    .toggle-track { width: 38px; height: 22px; border-radius: 11px; background: #e5e7eb; transition: background .2s; border: 1px solid #d1d5db; }
+    .toggle input:checked + .toggle-track { background: #111; border-color: #111; }
+    .toggle-thumb { position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.2); transition: transform .2s; pointer-events: none; }
+    .toggle input:checked ~ .toggle-thumb { transform: translateX(16px); }
+
+    /* Summary section */
+    .sum-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+    .sum-item { display: flex; flex-direction: column; gap: .15rem; padding: .6rem .7rem; border: 1px solid #f3f4f6; border-radius: 7px; background: #fafafa; }
+    .sum-lbl { font-family: 'IBM Plex Mono', monospace; font-size: 8.5px; color: #9ca3af; letter-spacing: .08em; text-transform: uppercase; }
+    .sum-val { font-size: 12px; font-weight: 600; color: #111; }
+    .sum-price-row { grid-column: 1/-1; background: #111; border-color: #111; }
+    .sum-price-row .sum-lbl { color: rgba(255,255,255,.4); }
+    .sum-price-row .sum-val { color: #fff; font-size: 14px; }
+
+    /* Hidden placeholder for old tab JS (unused but harmless) */
+    .tab, .tab-content { display: none; }
+
+    /* ── Visual grid cards (Height, Jib, Power) ───────────────────── */
+    .vcards { display: grid; grid-template-columns: repeat(3, 1fr); gap: .45rem; }
+    .ocard.vcard { flex-direction: column; align-items: stretch; padding: 0; gap: 0; }
+    .ocard.vcard:hover { background: #fff; }
+    .ocard.vcard.active { border-color: #111; border-width: 1.5px; }
+    .vcard-img { height: 76px; background: #f9fafb; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #f3f4f6; border-radius: 6px 6px 0 0; transition: background .15s; }
+    .ocard.vcard.active .vcard-img { background: #f0f0f0; }
+    .ocard.vcard:hover .vcard-img { background: #f5f5f5; }
+    .vcard-info { padding: .38rem .5rem .42rem; }
+    .vcard-name { font-size: 11px; font-weight: 600; color: #111; }
+    .vcard-spec { font-size: 9.5px; color: #6b7280; margin-top: .08rem; }
+    .vcard-price { font-size: 9px; color: #9ca3af; font-family: 'IBM Plex Mono', monospace; margin-top: .12rem; }
+    .ocard.vcard.active .vcard-price { color: #374151; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<!-- ── Top bar ─────────────────────────────────────────── -->
+<div class="topbar">
+  <div class="topbar-left">
+    <a class="topbar-back" href="javascript:history.back()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
+      Back
+    </a>
+    <div class="topbar-sep"></div>
+    <div class="topbar-action">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+      Save
+    </div>
+    <div class="topbar-action">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+      Create TES Build
+    </div>
+  </div>
+  <div class="topbar-right">
+    <div class="topbar-price-wrap">
+      <div class="topbar-price-val" id="price-val">$800K – $1.1M</div>
+      <div class="topbar-price-lbl">Indicative range · Excl. GST</div>
+    </div>
+    <button class="topbar-btn">Summary</button>
+    <button class="topbar-btn topbar-btn-primary" onclick="requestQuote()">Request Quote →</button>
+  </div>
+</div>
+
+<!-- ── Main layout ─────────────────────────────────────── -->
+<div class="cfg-main">
+
+  <!-- Canvas side -->
+  <div class="canvas-wrap">
+    <canvas id="c"></canvas>
+    <div class="vignette"></div>
+
+    <!-- Model name overlay -->
+    <div class="canvas-badge">
+      <div class="canvas-badge-model">BQ GHD5527</div>
+      <div id="crane-spec" class="crane-spec">Luffing Tower Crane · Standard Jib · Yellow</div>
+    </div>
+
+    <!-- View / Time controls -->
+    <div class="canvas-controls">
+      <div class="seg" id="seg-view">
+        <button onclick="setView(false,this)">Parametric</button>
+        <button class="active" onclick="setView(true,this)">Realistic</button>
+      </div>
+      <div class="seg" id="seg-time">
+        <button class="active" onclick="setTime(false,this)">Day</button>
+        <button onclick="setTime(true,this)">Night</button>
+      </div>
+    </div>
+
+    <!-- Zoom controls -->
+    <div class="zoom-controls">
+      <button class="zoom-btn" onclick="zoomCam(false)" title="Zoom in">+</button>
+      <button class="zoom-btn" onclick="zoomCam(true)" title="Zoom out">−</button>
+      <button class="zoom-btn reset" onclick="zoomReset()" title="Reset view">⤢</button>
+    </div>
+
+    <!-- Depiction notice — visible in Realistic mode only -->
+    <div id="depiction-overlay">
+      <button id="dep-close" onclick="document.getElementById('depiction-overlay').classList.add('dep-hidden')" title="Dismiss">×</button>
+      <div class="dep-eyebrow">3D Model</div>
+      <div class="dep-title">Visual depiction only — <span>not the prototype</span></div>
+      <div class="dep-body">
+        This realistic view is built from <strong>CAD exports &amp; GLB files</strong> modelled in Blender.<br>
+        It shows how the live configurator will look on the final website.<br><br>
+        To explore <strong>prototype functionality</strong> — crane models, jib options, hoists, safety systems and live pricing — switch to <strong>Parametric</strong>.
+      </div>
+      <button class="dep-btn" onclick="setView(false, document.querySelector('#seg-view button'))">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 12 5 19 12"/><polyline points="5 19 12 12 19 19"/></svg>
+        Switch to Parametric
+      </button>
+    </div>
+
+    <div class="rotate-hint" id="hint">DRAG TO ROTATE · SCROLL TO ZOOM</div>
+
+    <div id="loading-overlay">
+      <div class="loading-spinner"></div>
+      <div class="loading-bar-wrap"><div class="loading-bar" id="loading-bar"></div></div>
+      <div class="loading-label">Loading Realistic Model</div>
+    </div>
+  </div>
+
+  <!-- ── Right config panel ───────────────────────────── -->
+  <div class="cfg-panel">
+
+    <div class="panel-header">
+      <div class="panel-model-name">BQ GHD5527 <span class="panel-year">2024</span></div>
+      <a class="panel-tech-link">Technical data and standard equipment</a>
+    </div>
+
+    <div class="panel-search">
+      <input class="panel-search-input" placeholder="Search equipment options" />
+    </div>
+
+    <div class="panel-sections">
+
+      <!-- 00 Crane Model -->
+      <div class="cfg-section" id="sec-model">
+        <div class="cfg-section-head" onclick="focusSection('model');toggleSection('sec-model')">
+          <span class="cfg-section-title">Crane Model</span>
+          <div class="cfg-section-meta">
+            <span class="cfg-section-badge" id="model-badge">BQ GHD5527 · Luffing</span>
+            <span class="cfg-section-chevron">▾</span>
+          </div>
+        </div>
+        <div class="cfg-section-body">
+          <!-- Potain MDT 219 commented out — TES sells BQ cranes exclusively
+          <div class="colour-group-label" style="margin-bottom:.5rem"><span>Potain · Hammerhead</span><span class="colour-group-price">Self-erecting</span></div>
+          <div class="option-cards">
+            <div class="ocard" onclick="setModel('mdt219',this)">
+              <div class="ocard-left"><div class="ocard-name">Potain MDT 219</div><div class="ocard-spec">Flat-top hammerhead · 8–16 t · wide reach</div></div>
+              <div class="ocard-price">from $800K</div><div class="ocard-check"></div>
+            </div>
+          </div>
+          -->
+          <div class="colour-group-label" style="margin-bottom:.5rem"><span>BQ · Luffing Tower Cranes</span><span class="colour-group-price">Tight urban sites</span></div>
+          <div class="option-cards">
+            <div class="ocard active" onclick="setModel('ghd5527',this)">
+              <div class="ocard-left"><div class="ocard-name">BQ GHD5527</div><div class="ocard-spec">14 t · mid-rise · balanced power &amp; reach</div></div>
+              <div class="ocard-price">from $880K</div><div class="ocard-check"></div>
+            </div>
+            <!-- other BQ models available — prototype covers GHD5527 only
+            <div class="ocard" onclick="setModel('ghd4510',this)">
+              <div class="ocard-left"><div class="ocard-name">BQ GHD4510</div><div class="ocard-spec">6 t · smaller-scale projects · easy install</div></div>
+              <div class="ocard-price">from $520K</div><div class="ocard-check"></div>
+            </div>
+            <div class="ocard" onclick="setModel('ghd5020a',this)">
+              <div class="ocard-left"><div class="ocard-name">BQ GHD5020A</div><div class="ocard-spec">10 t · sturdy, durable, high efficiency</div></div>
+              <div class="ocard-price">from $680K</div><div class="ocard-check"></div>
+            </div>
+            <div class="ocard" onclick="setModel('ghd6032',this)">
+              <div class="ocard-left"><div class="ocard-name">BQ GHD6032</div><div class="ocard-spec">18 t · compact yet powerful · medium-large</div></div>
+              <div class="ocard-price">from $1.15M</div><div class="ocard-check"></div>
+            </div>
+            <div class="ocard" onclick="setModel('ghd6050',this)">
+              <div class="ocard-left"><div class="ocard-name">BQ GHD6050</div><div class="ocard-spec">20 t · high capacity · tight urban worksites</div></div>
+              <div class="ocard-price">from $1.48M</div><div class="ocard-check"></div>
+            </div>
+            <div class="ocard" onclick="setModel('ghd6062',this)">
+              <div class="ocard-left"><div class="ocard-name">BQ GHD6062</div><div class="ocard-spec">24 t · advanced lifting · modern safety/control</div></div>
+              <div class="ocard-price">from $1.75M</div><div class="ocard-check"></div>
+            </div>
+            -->
+          </div>
+        </div>
+      </div>
+
+      <!-- 01 Exterior Colour -->
+      <div class="cfg-section" id="sec-colour">
+        <div class="cfg-section-head" onclick="focusSection('colour');toggleSection('sec-colour')">
+          <span class="cfg-section-title">Exterior Colour</span>
+          <div class="cfg-section-meta">
+            <span class="cfg-section-badge" id="color-name-val">Yellow · Gloss</span>
+            <span class="cfg-section-chevron">▾</span>
+          </div>
+        </div>
+        <div class="cfg-section-body">
+          <div class="colour-group">
+            <div class="colour-group-label"><span>Standard</span><span class="colour-group-price">Included</span></div>
+            <div class="colour-swatches">
+              <div class="swatch active" style="background:#FFD700" onclick="setColor('#FFD700','Yellow',this)" title="Yellow"></div>
+              <div class="swatch" style="background:#F0F0EC;border:1px solid #ddd" onclick="setColor('#F0F0EC','Arctic White',this)" title="Arctic White"></div>
+              <div class="swatch" style="background:#1a3a6b" onclick="setColor('#1a3a6b','TES Blue',this)" title="TES Blue"></div>
+              <div class="swatch" style="background:#CC1020" onclick="setColor('#CC1020','Signal Red',this)" title="Signal Red"></div>
+            </div>
+          </div>
+          <div class="colour-group">
+            <div class="colour-group-label"><span>Premium</span><span class="colour-group-price">+ $15K</span></div>
+            <div class="colour-swatches">
+              <div class="swatch" style="background:#e87211" onclick="setColor('#e87211','Hi-Vis Orange',this)" title="Hi-Vis Orange"></div>
+              <div class="swatch" style="background:#1f7a3d" onclick="setColor('#1f7a3d','Forest Green',this)" title="Forest Green"></div>
+              <div class="swatch" style="background:#4a4e58" onclick="setColor('#4a4e58','Gunmetal',this)" title="Gunmetal"></div>
+              <div class="swatch" style="background:#0e0e10" onclick="setColor('#0e0e10','Onyx Black',this)" title="Onyx Black"></div>
+            </div>
+          </div>
+          <div class="finish-label">Finish</div>
+          <div class="radio-pills">
+            <button class="pill active" onclick="setFinish('Gloss',this)">Gloss</button>
+            <button class="pill" onclick="setFinish('Matte',this)">Matte · +$15K</button>
+            <button class="pill" onclick="setFinish('Metallic',this)">Metallic · +$40K</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 02 Hook Height -->
+      <div class="cfg-section" id="sec-height">
+        <div class="cfg-section-head" onclick="focusSection('height');toggleSection('sec-height')">
+          <span class="cfg-section-title">Hook Height</span>
+          <div class="cfg-section-meta">
+            <span class="cfg-section-badge">Standard · 40m</span>
+            <span class="cfg-section-chevron">▾</span>
+          </div>
+        </div>
+        <div class="cfg-section-body">
+          <div class="vcards">
+            <!-- Standard 40m — short silhouette -->
+            <div class="ocard vcard active" onclick="setHeight('Standard',40,14,0,this)">
+              <div class="vcard-img">
+                <svg width="42" height="66" viewBox="0 0 42 66" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <line x1="1" y1="61" x2="41" y2="61" stroke="#e5e7eb" stroke-width="1"/>
+                  <rect x="15" y="56" width="12" height="5" rx="1" fill="#9ca3af"/>
+                  <rect x="19" y="35" width="4" height="22" fill="#374151"/>
+                  <rect x="5" y="33" width="15" height="2.5" rx="1" fill="#374151"/>
+                  <rect x="23" y="33" width="15" height="2.5" rx="1" fill="#374151"/>
+                  <polygon points="21,20 18.5,34 23.5,34" fill="#6b7280"/>
+                  <line x1="21" y1="20" x2="5" y2="33" stroke="#d1d5db" stroke-width="0.8"/>
+                  <line x1="21" y1="20" x2="38" y2="33" stroke="#d1d5db" stroke-width="0.8"/>
+                  <line x1="35" y1="35" x2="35" y2="43" stroke="#d1d5db" stroke-width="1"/>
+                  <path d="M32.5 43 Q32.5 47 35 47 Q37.5 47 37.5 43" stroke="#9ca3af" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="vcard-info">
+                <div class="vcard-name">Standard</div>
+                <div class="vcard-spec">40m height</div>
+                <div class="vcard-price">Base spec</div>
+              </div>
+            </div>
+            <!-- Tall 60m — medium silhouette -->
+            <div class="ocard vcard" onclick="setHeight('Tall',60,20,120000,this)">
+              <div class="vcard-img">
+                <svg width="42" height="66" viewBox="0 0 42 66" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <line x1="1" y1="61" x2="41" y2="61" stroke="#e5e7eb" stroke-width="1"/>
+                  <rect x="15" y="56" width="12" height="5" rx="1" fill="#9ca3af"/>
+                  <rect x="19" y="21" width="4" height="36" fill="#374151"/>
+                  <rect x="5" y="19" width="15" height="2.5" rx="1" fill="#374151"/>
+                  <rect x="23" y="19" width="15" height="2.5" rx="1" fill="#374151"/>
+                  <polygon points="21,6 18.5,20 23.5,20" fill="#6b7280"/>
+                  <line x1="21" y1="6" x2="5" y2="19" stroke="#d1d5db" stroke-width="0.8"/>
+                  <line x1="21" y1="6" x2="38" y2="19" stroke="#d1d5db" stroke-width="0.8"/>
+                  <line x1="35" y1="21" x2="35" y2="30" stroke="#d1d5db" stroke-width="1"/>
+                  <path d="M32.5 30 Q32.5 34 35 34 Q37.5 34 37.5 30" stroke="#9ca3af" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="vcard-info">
+                <div class="vcard-name">Tall</div>
+                <div class="vcard-spec">60m height</div>
+                <div class="vcard-price">+ $120K</div>
+              </div>
+            </div>
+            <!-- Super-Tall 80m — full-height silhouette -->
+            <div class="ocard vcard" onclick="setHeight('Super-Tall',80,26,260000,this)">
+              <div class="vcard-img">
+                <svg width="42" height="66" viewBox="0 0 42 66" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <line x1="1" y1="61" x2="41" y2="61" stroke="#e5e7eb" stroke-width="1"/>
+                  <rect x="15" y="56" width="12" height="5" rx="1" fill="#9ca3af"/>
+                  <rect x="19" y="9" width="4" height="48" fill="#374151"/>
+                  <rect x="5" y="7" width="15" height="2.5" rx="1" fill="#374151"/>
+                  <rect x="23" y="7" width="15" height="2.5" rx="1" fill="#374151"/>
+                  <polygon points="21,2 18.5,8 23.5,8" fill="#6b7280"/>
+                  <line x1="21" y1="2" x2="5" y2="7" stroke="#d1d5db" stroke-width="0.8"/>
+                  <line x1="21" y1="2" x2="38" y2="7" stroke="#d1d5db" stroke-width="0.8"/>
+                  <line x1="35" y1="9" x2="35" y2="18" stroke="#d1d5db" stroke-width="1"/>
+                  <path d="M32.5 18 Q32.5 22 35 22 Q37.5 22 37.5 18" stroke="#9ca3af" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="vcard-info">
+                <div class="vcard-name">Super-Tall</div>
+                <div class="vcard-spec">80m height</div>
+                <div class="vcard-price">+ $260K</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 03 Jib & Reach -->
+      <div class="cfg-section" id="sec-jib">
+        <div class="cfg-section-head" onclick="focusSection('jib');toggleSection('sec-jib')">
+          <span class="cfg-section-title">Jib & Reach</span>
+          <div class="cfg-section-meta">
+            <span class="cfg-section-badge" id="jib-badge">Standard · 55m radius</span>
+            <span class="cfg-section-chevron">▾</span>
+          </div>
+        </div>
+        <div class="cfg-section-body">
+          <div class="vcards" id="jib-vcards"><!-- populated per model by renderJibOptions() --></div>
+        </div>
+      </div>
+
+      <!-- 04 Lifting Capacity -->
+      <div class="cfg-section" id="sec-cap">
+        <div class="cfg-section-head" onclick="focusSection('cap');toggleSection('sec-cap')">
+          <span class="cfg-section-title">Lifting Capacity</span>
+          <div class="cfg-section-meta">
+            <span class="cfg-section-badge">Standard · 8t max</span>
+            <span class="cfg-section-chevron">▾</span>
+          </div>
+        </div>
+        <div class="cfg-section-body">
+          <div class="option-cards">
+            <div class="ocard active" onclick="setCap('Standard','8 tonne max',0,this)">
+              <div class="ocard-left"><div class="ocard-name">Standard</div><div class="ocard-spec">8 tonne max load</div></div>
+              <div class="ocard-price">Base spec</div><div class="ocard-check"></div>
+            </div>
+            <div class="ocard" onclick="setCap('Heavy','12 tonne max',180000,this)">
+              <div class="ocard-left"><div class="ocard-name">Heavy-Lift</div><div class="ocard-spec">12 tonne max load</div></div>
+              <div class="ocard-price">+ $180K</div><div class="ocard-check"></div>
+            </div>
+            <div class="ocard" onclick="setCap('High-Cap','16 tonne max',320000,this)">
+              <div class="ocard-left"><div class="ocard-name">High-Cap</div><div class="ocard-spec">16 tonne max load</div></div>
+              <div class="ocard-price">+ $320K</div><div class="ocard-check"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 05 Hoist & Loading Platform -->
+      <div class="cfg-section" id="sec-hoist">
+        <div class="cfg-section-head" onclick="focusSection('hoist');toggleSection('sec-hoist')">
+          <span class="cfg-section-title">Hoist &amp; Loading Platform</span>
+          <div class="cfg-section-meta">
+            <span class="cfg-section-badge" id="hoist-badge">None selected</span>
+            <span class="cfg-section-chevron">▾</span>
+          </div>
+        </div>
+        <div class="cfg-section-body">
+          <div class="acc-list">
+
+            <!-- YHX SC200 -->
+            <div class="acc-row">
+              <div class="acc-icon">
+                <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="10" y="2" width="6" height="18" rx="1.5" fill="#374151" class="ico-fill"/>
+                  <rect x="7" y="18" width="12" height="3" rx="1" fill="#374151" class="ico-fill"/>
+                  <rect x="9" y="21" width="8" height="2" rx="1" fill="#9ca3af" class="ico-stroke"/>
+                  <line x1="13" y1="2" x2="13" y2="0" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" class="ico-stroke"/>
+                  <path d="M7 8 L4 8 L4 14 L7 14" stroke="#3b82f6" stroke-width="1.2" fill="none" stroke-linecap="round" class="ico-accent"/>
+                  <path d="M19 8 L22 8 L22 14 L19 14" stroke="#3b82f6" stroke-width="1.2" fill="none" stroke-linecap="round" class="ico-accent"/>
+                  <circle cx="13" cy="11" r="2" fill="#3b82f6" class="ico-accent"/>
+                </svg>
+              </div>
+              <div class="acc-row-body">
+                <div class="acc-label">YHX SC200 Hoist <span class="acc-price">+ $120K</span></div>
+                <div class="acc-desc">200kg capacity · Residential &amp; low-rise commercial · 80m lift height</div>
+              </div>
+              <label class="toggle"><input type="checkbox" onchange="setHoist('sc200',this.checked)"/><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+            </div>
+
+            <!-- YHX SC220 -->
+            <div class="acc-row">
+              <div class="acc-icon">
+                <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="10" y="2" width="6" height="18" rx="1.5" fill="#374151" class="ico-fill"/>
+                  <rect x="7" y="18" width="12" height="3" rx="1" fill="#374151" class="ico-fill"/>
+                  <rect x="9" y="21" width="8" height="2" rx="1" fill="#9ca3af" class="ico-stroke"/>
+                  <line x1="13" y1="2" x2="13" y2="0" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" class="ico-stroke"/>
+                  <path d="M7 7 L3 7 L3 15 L7 15" stroke="#10b981" stroke-width="1.2" fill="none" stroke-linecap="round" class="ico-accent"/>
+                  <path d="M19 7 L23 7 L23 15 L19 15" stroke="#10b981" stroke-width="1.2" fill="none" stroke-linecap="round" class="ico-accent"/>
+                  <circle cx="13" cy="11" r="2.5" fill="#10b981" class="ico-accent"/>
+                </svg>
+              </div>
+              <div class="acc-row-body">
+                <div class="acc-label">YHX SC220 Hoist <span class="acc-price">+ $180K</span></div>
+                <div class="acc-desc">220kg capacity · Standard commercial &amp; high-rise · 120m lift height</div>
+              </div>
+              <label class="toggle"><input type="checkbox" onchange="setHoist('sc220',this.checked)"/><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+            </div>
+
+            <!-- YHX SC320 -->
+            <div class="acc-row">
+              <div class="acc-icon">
+                <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="10" y="2" width="6" height="18" rx="1.5" fill="#374151" class="ico-fill"/>
+                  <rect x="7" y="18" width="12" height="3" rx="1" fill="#374151" class="ico-fill"/>
+                  <rect x="9" y="21" width="8" height="2" rx="1" fill="#9ca3af" class="ico-stroke"/>
+                  <line x1="13" y1="2" x2="13" y2="0" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" class="ico-stroke"/>
+                  <path d="M7 6 L2 6 L2 16 L7 16" stroke="#f59e0b" stroke-width="1.4" fill="none" stroke-linecap="round" class="ico-accent"/>
+                  <path d="M19 6 L24 6 L24 16 L19 16" stroke="#f59e0b" stroke-width="1.4" fill="none" stroke-linecap="round" class="ico-accent"/>
+                  <circle cx="13" cy="11" r="3" fill="#f59e0b" class="ico-accent"/>
+                </svg>
+              </div>
+              <div class="acc-row-body">
+                <div class="acc-label">YHX SC320 Hoist <span class="acc-price">+ $260K</span></div>
+                <div class="acc-desc">320kg capacity · Heavy materials &amp; formwork · 150m lift height · dual-cage option</div>
+              </div>
+              <label class="toggle"><input type="checkbox" onchange="setHoist('sc320',this.checked)"/><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+            </div>
+
+            <!-- Loading Platform -->
+            <div class="acc-row">
+              <div class="acc-icon">
+                <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="3" y="14" width="20" height="4" rx="1" fill="#374151" class="ico-fill"/>
+                  <rect x="5" y="12" width="4" height="2" rx=".5" fill="#6b7280" class="ico-stroke"/>
+                  <rect x="17" y="12" width="4" height="2" rx=".5" fill="#6b7280" class="ico-stroke"/>
+                  <line x1="7" y1="18" x2="7" y2="24" stroke="#6b7280" stroke-width="1.4" stroke-linecap="round" class="ico-stroke"/>
+                  <line x1="19" y1="18" x2="19" y2="24" stroke="#6b7280" stroke-width="1.4" stroke-linecap="round" class="ico-stroke"/>
+                  <rect x="1" y="8" width="24" height="1.5" rx=".75" fill="#3b82f6" opacity=".4" class="ico-accent"/>
+                  <line x1="13" y1="2" x2="13" y2="8" stroke="#3b82f6" stroke-width="1.4" stroke-linecap="round" class="ico-accent"/>
+                  <rect x="9" y="4" width="8" height="4" rx=".75" fill="#dbeafe" stroke="#3b82f6" stroke-width=".8" class="ico-accent"/>
+                </svg>
+              </div>
+              <div class="acc-row-body">
+                <div class="acc-label">Linc Deck Loading Platform <span class="acc-price">+ $95K</span></div>
+                <div class="acc-desc">Australian-made · Width-adjustable · LD Quick Hitch® · Replaceable panels · SWMS compliant</div>
+              </div>
+              <label class="toggle"><input type="checkbox" onchange="setHoist('platform',this.checked)"/><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- 06 Power System -->
+      <div class="cfg-section" id="sec-power">
+        <div class="cfg-section-head" onclick="focusSection('power');toggleSection('sec-power')">
+          <span class="cfg-section-title">Power System</span>
+          <div class="cfg-section-meta">
+            <span class="cfg-section-badge">Grid · Mains powered</span>
+            <span class="cfg-section-chevron">▾</span>
+          </div>
+        </div>
+        <div class="cfg-section-body">
+          <div class="vcards">
+            <!-- Grid -->
+            <div class="ocard vcard active" onclick="setPower('Grid',this)">
+              <div class="vcard-img">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="15" y="21" width="18" height="15" rx="3" fill="#374151"/>
+                  <rect x="18.5" y="11" width="3.5" height="11" rx="1.75" fill="#6b7280"/>
+                  <rect x="26" y="11" width="3.5" height="11" rx="1.75" fill="#6b7280"/>
+                  <line x1="24" y1="36" x2="24" y2="42" stroke="#9ca3af" stroke-width="2.5" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="vcard-info">
+                <div class="vcard-name">Grid</div>
+                <div class="vcard-spec">Mains power</div>
+                <div class="vcard-price">Base spec</div>
+              </div>
+            </div>
+            <!-- Battery -->
+            <div class="ocard vcard" onclick="setPower('Battery',this)">
+              <div class="vcard-img">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="10" y="15" width="28" height="9" rx="2" fill="#374151"/>
+                  <rect x="10" y="25" width="28" height="9" rx="2" fill="#374151"/>
+                  <rect x="19" y="11" width="10" height="4" rx="1" fill="#6b7280"/>
+                  <rect x="13" y="17.5" width="4.5" height="4" rx="0.5" fill="#22c55e"/>
+                  <rect x="19.5" y="17.5" width="4.5" height="4" rx="0.5" fill="#22c55e"/>
+                  <rect x="26" y="17.5" width="4.5" height="4" rx="0.5" fill="#22c55e"/>
+                  <rect x="13" y="27.5" width="4.5" height="4" rx="0.5" fill="#22c55e"/>
+                  <rect x="19.5" y="27.5" width="4.5" height="4" rx="0.5" fill="#22c55e"/>
+                  <rect x="26" y="27.5" width="4.5" height="4" rx="0.5" fill="#22c55e"/>
+                </svg>
+              </div>
+              <div class="vcard-info">
+                <div class="vcard-name">Battery</div>
+                <div class="vcard-spec">Zero emission</div>
+                <div class="vcard-price">+ $200–280K</div>
+              </div>
+            </div>
+            <!-- Hybrid -->
+            <div class="ocard vcard" onclick="setPower('Hybrid',this)">
+              <div class="vcard-img">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <!-- mini plug left -->
+                  <rect x="4" y="22" width="13" height="11" rx="2" fill="#374151"/>
+                  <rect x="7" y="14" width="2.5" height="9" rx="1.2" fill="#6b7280"/>
+                  <rect x="11.5" y="14" width="2.5" height="9" rx="1.2" fill="#6b7280"/>
+                  <!-- plus connector -->
+                  <line x1="17" y1="27" x2="22" y2="27" stroke="#d1d5db" stroke-width="1" stroke-dasharray="2 1.5"/>
+                  <text x="25" y="31" text-anchor="middle" font-size="10" fill="#9ca3af" font-family="Arial, sans-serif" font-weight="600">+</text>
+                  <!-- mini battery right -->
+                  <rect x="29" y="17" width="16" height="7" rx="1.5" fill="#374151"/>
+                  <rect x="29" y="25" width="16" height="7" rx="1.5" fill="#374151"/>
+                  <rect x="33" y="13" width="8" height="4" rx="1" fill="#6b7280"/>
+                  <rect x="31.5" y="19" width="3.5" height="3" rx="0.4" fill="#22c55e"/>
+                  <rect x="36.5" y="19" width="3.5" height="3" rx="0.4" fill="#22c55e"/>
+                  <rect x="31.5" y="27" width="3.5" height="3" rx="0.4" fill="#22c55e"/>
+                  <rect x="36.5" y="27" width="3.5" height="3" rx="0.4" fill="#22c55e"/>
+                </svg>
+              </div>
+              <div class="vcard-info">
+                <div class="vcard-name">Hybrid</div>
+                <div class="vcard-spec">Grid + battery</div>
+                <div class="vcard-price">+ $300–360K</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 06 Lighting -->
+      <div class="cfg-section" id="sec-light">
+        <div class="cfg-section-head" onclick="focusSection('light');toggleSection('sec-light')">
+          <span class="cfg-section-title">Lighting</span>
+          <div class="cfg-section-meta">
+            <span class="cfg-section-badge">None selected</span>
+            <span class="cfg-section-chevron">▾</span>
+          </div>
+        </div>
+        <div class="cfg-section-body">
+          <div class="acc-list">
+            <!-- Aviation Beacon -->
+            <div class="acc-row">
+              <div class="acc-icon">
+                <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <line x1="13" y1="14" x2="13" y2="25" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" class="ico-stroke"/>
+                  <circle cx="13" cy="10" r="5" fill="#fca5a5" class="ico-accent"/>
+                  <circle cx="13" cy="10" r="3" fill="#ef4444" class="ico-accent"/>
+                  <line x1="13" y1="3" x2="13" y2="1" stroke="#f87171" stroke-width="1.5" stroke-linecap="round" class="ico-accent"/>
+                  <line x1="19" y1="5" x2="21" y2="3" stroke="#f87171" stroke-width="1.5" stroke-linecap="round" class="ico-accent"/>
+                  <line x1="7" y1="5" x2="5" y2="3" stroke="#f87171" stroke-width="1.5" stroke-linecap="round" class="ico-accent"/>
+                  <line x1="21" y1="10" x2="24" y2="10" stroke="#f87171" stroke-width="1.5" stroke-linecap="round" class="ico-accent"/>
+                  <line x1="5" y1="10" x2="2" y2="10" stroke="#f87171" stroke-width="1.5" stroke-linecap="round" class="ico-accent"/>
+                </svg>
+              </div>
+              <div class="acc-row-body">
+                <div class="acc-label">Aviation Beacon <span class="acc-price">+ $18K</span></div>
+                <div class="acc-desc">Flashing obstruction light at the apex — CASA compliant</div>
+              </div>
+              <label class="toggle"><input type="checkbox" onchange="setLight('beacon',this.checked)"/><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+            </div>
+            <!-- Night Floodlights -->
+            <div class="acc-row">
+              <div class="acc-icon">
+                <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="9" y="6" width="8" height="5" rx="1.5" fill="#374151" class="ico-fill"/>
+                  <path d="M9 11 L5 22 L21 22 L17 11 Z" fill="#fbbf24" opacity="0.2" class="ico-accent"/>
+                  <path d="M9 11 L5 22 L21 22 L17 11 Z" stroke="#f59e0b" stroke-width="1" fill="none" class="ico-accent"/>
+                  <ellipse cx="13" cy="11" rx="4" ry="2" fill="#fef9c3" class="ico-accent"/>
+                  <line x1="3" y1="18" x2="1" y2="20" stroke="#fbbf24" stroke-width="1" stroke-linecap="round" class="ico-accent"/>
+                  <line x1="23" y1="18" x2="25" y2="20" stroke="#fbbf24" stroke-width="1" stroke-linecap="round" class="ico-accent"/>
+                </svg>
+              </div>
+              <div class="acc-row-body">
+                <div class="acc-label">Night Floodlights <span class="acc-price">+ $60K</span></div>
+                <div class="acc-desc">LED array for 24/7 site operation — switch to Night mode to preview</div>
+              </div>
+              <label class="toggle"><input type="checkbox" onchange="setLight('floods',this.checked)"/><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+            </div>
+            <!-- Jib LED Strip -->
+            <div class="acc-row">
+              <div class="acc-icon">
+                <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="2" y="12" width="22" height="2" rx="1" fill="#374151" class="ico-fill"/>
+                  <rect x="3" y="10.5" width="20" height="5" rx="2.5" fill="#93c5fd" opacity="0.25" class="ico-accent"/>
+                  <circle cx="6" cy="13" r="1.8" fill="#3b82f6" class="ico-accent"/>
+                  <circle cx="11" cy="13" r="1.8" fill="#3b82f6" class="ico-accent"/>
+                  <circle cx="16" cy="13" r="1.8" fill="#3b82f6" class="ico-accent"/>
+                  <circle cx="21" cy="13" r="1.8" fill="#3b82f6" class="ico-accent"/>
+                  <!-- small mast stub -->
+                  <line x1="3" y1="8" x2="3" y2="12" stroke="#374151" stroke-width="1.5" stroke-linecap="round" class="ico-stroke"/>
+                </svg>
+              </div>
+              <div class="acc-row-body">
+                <div class="acc-label">Jib LED Strip <span class="acc-price">+ $35K</span></div>
+                <div class="acc-desc">Full-length jib edge lighting for visibility and site presence</div>
+              </div>
+              <label class="toggle"><input type="checkbox" onchange="setLight('led',this.checked)"/><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 07 Safety Technology -->
+      <div class="cfg-section" id="sec-safety">
+        <div class="cfg-section-head" onclick="focusSection('safety');toggleSection('sec-safety')">
+          <span class="cfg-section-title">Safety Technology</span>
+          <div class="cfg-section-meta">
+            <span class="cfg-section-badge">None selected</span>
+            <span class="cfg-section-chevron">▾</span>
+          </div>
+        </div>
+        <div class="cfg-section-body">
+          <div class="acc-list">
+            <!-- Anti-Collision System -->
+            <div class="acc-row">
+              <div class="acc-icon">
+                <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8 14 A6 6 0 0 1 18 14" stroke="#374151" stroke-width="1.1" fill="none" stroke-dasharray="2 1.2" class="ico-stroke"/>
+                  <path d="M4 14 A10 10 0 0 1 22 14" stroke="#374151" stroke-width="1.1" fill="none" stroke-dasharray="2 1.2" opacity="0.55" class="ico-stroke"/>
+                  <path d="M1 14 A13 13 0 0 1 25 14" stroke="#374151" stroke-width="1" fill="none" stroke-dasharray="2 1.5" opacity="0.28" class="ico-stroke"/>
+                  <line x1="13" y1="14" x2="13" y2="8" stroke="#374151" stroke-width="1.3" stroke-linecap="round" class="ico-stroke"/>
+                  <circle cx="13" cy="14" r="2.2" fill="#374151" class="ico-fill"/>
+                  <circle cx="19" cy="9" r="2.2" fill="#f87171" class="ico-accent"/>
+                  <circle cx="7" cy="9" r="2.2" fill="#f87171" class="ico-accent"/>
+                </svg>
+              </div>
+              <div class="acc-row-body">
+                <div class="acc-label">Anti-Collision System <span class="acc-price">+ $52K</span></div>
+                <div class="acc-desc">Radar zone-protection with warning lights on apex and jib tip</div>
+              </div>
+              <label class="toggle"><input type="checkbox" onchange="setSafety('anti',this.checked)"/><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+            </div>
+            <!-- Load Moment Indicator -->
+            <div class="acc-row">
+              <div class="acc-icon">
+                <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M4 20 A10 10 0 0 1 22 20" stroke="#e5e7eb" stroke-width="3" fill="none" stroke-linecap="round"/>
+                  <path d="M4 20 A10 10 0 0 1 18 11" stroke="#fbbf24" stroke-width="3" fill="none" stroke-linecap="round" class="ico-accent"/>
+                  <path d="M18 11 A10 10 0 0 1 22 20" stroke="#ef4444" stroke-width="3" fill="none" stroke-linecap="round" class="ico-accent"/>
+                  <line x1="13" y1="20" x2="18" y2="12" stroke="#374151" stroke-width="1.6" stroke-linecap="round" class="ico-stroke"/>
+                  <circle cx="13" cy="20" r="2.2" fill="#374151" class="ico-fill"/>
+                </svg>
+              </div>
+              <div class="acc-row-body">
+                <div class="acc-label">Load Moment Indicator <span class="acc-price">+ $28K</span></div>
+                <div class="acc-desc">Real-time load display and overload cut-out in the cab</div>
+              </div>
+              <label class="toggle"><input type="checkbox" onchange="setSafety('load',this.checked)"/><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+            </div>
+            <!-- Wind Anemometer -->
+            <div class="acc-row">
+              <div class="acc-icon">
+                <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <line x1="13" y1="13" x2="13" y2="25" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" class="ico-stroke"/>
+                  <circle cx="13" cy="13" r="2.2" fill="#374151" class="ico-fill"/>
+                  <line x1="13" y1="13" x2="13" y2="6" stroke="#6b7280" stroke-width="1.2" stroke-linecap="round" class="ico-stroke"/>
+                  <line x1="13" y1="13" x2="19.5" y2="17" stroke="#6b7280" stroke-width="1.2" stroke-linecap="round" class="ico-stroke"/>
+                  <line x1="13" y1="13" x2="6.5" y2="17" stroke="#6b7280" stroke-width="1.2" stroke-linecap="round" class="ico-stroke"/>
+                  <path d="M11 4 Q13 2 15 4 Q13 7 11 4 Z" fill="#374151" class="ico-fill"/>
+                  <path d="M20 15 Q22 17.5 20 19.5 Q17.5 18 20 15 Z" fill="#374151" class="ico-fill"/>
+                  <path d="M6 15 Q4 17.5 6 19.5 Q8.5 18 6 15 Z" fill="#374151" class="ico-fill"/>
+                </svg>
+              </div>
+              <div class="acc-row-body">
+                <div class="acc-label">Wind Anemometer <span class="acc-price">+ $12K</span></div>
+                <div class="acc-desc">Spinning-cup wind monitor at the apex with operator alerts</div>
+              </div>
+              <label class="toggle"><input type="checkbox" onchange="setSafety('anemo',this.checked)"/><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+            </div>
+            <!-- Hook Camera -->
+            <div class="acc-row">
+              <div class="acc-icon">
+                <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="4" y="7" width="18" height="2" rx="1" fill="#374151" class="ico-fill"/>
+                  <circle cx="8" cy="8" r="2" fill="#6b7280" class="ico-fill"/>
+                  <circle cx="18" cy="8" r="2" fill="#6b7280" class="ico-fill"/>
+                  <line x1="13" y1="9" x2="13" y2="12" stroke="#9ca3af" stroke-width="1.2" stroke-linecap="round" class="ico-stroke"/>
+                  <rect x="9" y="12" width="8" height="7" rx="2" fill="#374151" class="ico-fill"/>
+                  <circle cx="13" cy="15.5" r="2.5" fill="#1e3a6b" class="ico-accent"/>
+                  <circle cx="13" cy="15.5" r="1.3" fill="#3b82f6" class="ico-accent"/>
+                  <circle cx="13" cy="15.5" r="0.6" fill="#bfdbfe" class="ico-accent"/>
+                </svg>
+              </div>
+              <div class="acc-row-body">
+                <div class="acc-label">Hook Camera <span class="acc-price">+ $22K</span></div>
+                <div class="acc-desc">Trolley-mounted camera streaming the load to the operator</div>
+              </div>
+              <label class="toggle"><input type="checkbox" onchange="setSafety('camera',this.checked)"/><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+            </div>
+            <!-- Remote Control System -->
+            <div class="acc-row">
+              <div class="acc-icon">
+                <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="8" y="9" width="10" height="14" rx="2.5" fill="#374151" class="ico-fill"/>
+                  <circle cx="13" cy="13" r="2.4" fill="#3b82f6" class="ico-accent"/>
+                  <line x1="13" y1="13" x2="13" y2="11" stroke="#bfdbfe" stroke-width="1.1" stroke-linecap="round" class="ico-accent"/>
+                  <rect x="10.5" y="17.5" width="2.2" height="2.2" rx="0.5" fill="#9ca3af" class="ico-stroke"/>
+                  <rect x="13.8" y="17.5" width="2.2" height="2.2" rx="0.5" fill="#9ca3af" class="ico-stroke"/>
+                  <line x1="13" y1="9" x2="13" y2="5" stroke="#6b7280" stroke-width="1.2" stroke-linecap="round" class="ico-stroke"/>
+                  <path d="M9 4 Q13 1 17 4" stroke="#3b82f6" stroke-width="1.1" fill="none" stroke-linecap="round" class="ico-accent"/>
+                  <path d="M10.5 5.6 Q13 3.8 15.5 5.6" stroke="#3b82f6" stroke-width="1.1" fill="none" stroke-linecap="round" opacity="0.6" class="ico-accent"/>
+                </svg>
+              </div>
+              <div class="acc-row-body">
+                <div class="acc-label">Remote Control System <span class="acc-price">+ $34K</span></div>
+                <div class="acc-desc">Universal wireless joystick — operate the crane at a safe distance from the load</div>
+              </div>
+              <label class="toggle"><input type="checkbox" onchange="setSafety('remote',this.checked)"/><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+            </div>
+            <!-- Remote Data Monitoring -->
+            <div class="acc-row">
+              <div class="acc-icon">
+                <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="3" y="6" width="20" height="13" rx="2" fill="#374151" class="ico-fill"/>
+                  <rect x="5" y="8" width="16" height="9" rx="1" fill="#0f2237" class="ico-accent"/>
+                  <polyline points="6,15 9,12 12,14 15,10 18,11 20,9" stroke="#22d3ee" stroke-width="1.3" fill="none" stroke-linecap="round" stroke-linejoin="round" class="ico-accent"/>
+                  <circle cx="15" cy="10" r="1" fill="#67e8f9" class="ico-accent"/>
+                  <line x1="9" y1="19" x2="9" y2="22" stroke="#6b7280" stroke-width="1.2" class="ico-stroke"/>
+                  <line x1="17" y1="19" x2="17" y2="22" stroke="#6b7280" stroke-width="1.2" class="ico-stroke"/>
+                  <line x1="7" y1="22" x2="19" y2="22" stroke="#9ca3af" stroke-width="1.3" stroke-linecap="round" class="ico-stroke"/>
+                </svg>
+              </div>
+              <div class="acc-row-body">
+                <div class="acc-label">Remote Data Monitoring <span class="acc-price">+ $18K</span></div>
+                <div class="acc-desc">Live lifecycle &amp; usage telemetry for preventative maintenance and uptime</div>
+              </div>
+              <label class="toggle"><input type="checkbox" onchange="setSafety('telemetry',this.checked)"/><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 08 Branding -->
+      <div class="cfg-section" id="sec-brand">
+        <div class="cfg-section-head" onclick="focusSection('brand');toggleSection('sec-brand')">
+          <span class="cfg-section-title">Branding & Signage</span>
+          <div class="cfg-section-meta">
+            <span class="cfg-section-badge">Not included</span>
+            <span class="cfg-section-chevron">▾</span>
+          </div>
+        </div>
+        <div class="cfg-section-body">
+          <div class="acc-list">
+            <!-- Signage & Light Boxes -->
+            <div class="acc-row">
+              <div class="acc-icon">
+                <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="3" y="7" width="20" height="12" rx="2" fill="#374151" class="ico-fill"/>
+                  <rect x="4" y="8" width="18" height="10" rx="1.5" fill="#fef9c3" class="ico-accent"/>
+                  <rect x="6" y="10" width="14" height="2.5" rx="0.5" fill="#1a3a6b" opacity="0.6" class="ico-accent"/>
+                  <rect x="8" y="14" width="10" height="1.5" rx="0.5" fill="#374151" opacity="0.3" class="ico-accent"/>
+                  <line x1="13" y1="19" x2="13" y2="25" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" class="ico-stroke"/>
+                  <line x1="3" y1="7" x2="1" y2="5" stroke="#fbbf24" stroke-width="1" stroke-linecap="round" class="ico-accent"/>
+                  <line x1="23" y1="7" x2="25" y2="5" stroke="#fbbf24" stroke-width="1" stroke-linecap="round" class="ico-accent"/>
+                  <line x1="3" y1="19" x2="1" y2="21" stroke="#fbbf24" stroke-width="1" stroke-linecap="round" class="ico-accent"/>
+                  <line x1="23" y1="19" x2="25" y2="21" stroke="#fbbf24" stroke-width="1" stroke-linecap="round" class="ico-accent"/>
+                </svg>
+              </div>
+              <div class="acc-row-body">
+                <div class="acc-label">Signage & Light Boxes <span class="acc-price">+ $45K</span></div>
+                <div class="acc-desc">Branded boards and illuminated light boxes on both jib sides</div>
+              </div>
+              <label class="toggle"><input type="checkbox" onchange="setSafety('sign',this.checked)"/><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 09 Build Summary -->
+      <div class="cfg-section" id="sec-summary">
+        <div class="cfg-section-head" onclick="focusSection('summary');toggleSection('sec-summary')">
+          <span class="cfg-section-title">Build Summary</span>
+          <div class="cfg-section-meta"><span class="cfg-section-chevron">▾</span></div>
+        </div>
+        <div class="cfg-section-body">
+          <div id="summary-grid" class="sum-grid"></div>
+        </div>
+      </div>
+
+    </div><!-- /panel-sections -->
+  </div><!-- /cfg-panel -->
+
+</div><!-- /cfg-main -->
+
+<script>
+function toggleSection(id) {
+  document.getElementById(id).classList.toggle('closed');
+}
+</script>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
+
+// Realistic model file (loaded on demand when the user switches view)
+const LIEBHERR = 'liebherr_compressed.glb';
+
+// ── State ─────────────────────────────────────────────────────────────
+// Pricing aligned to TES scoping doc (18 Jun 2026): cranes $800K–$1.8M,
+// Potain batteries $200K–$400K, signage & light boxes $10K–$70K.
+const cfg = {
+  craneType: 'luff', modelKey: 'ghd5527', modelName: 'BQ GHD5527', modelYear: '2024',
+  modelBaseLo: 880000, modelBaseHi: 1150000, modelTon: '14 t', modelLF: 1.0,
+  color: '#FFD700', colorName: 'Yellow',
+  finish: 'Gloss',
+  height: 'Standard', heightM: 40, heightWorld: 14, heightAdd: 0,
+  jib: 7, jibName: 'Standard', jibRadius: 50, jibAdd: 0,
+  capName: 'Standard', capSpec: '14 tonne max', capAdd: 0,
+  power: 'Grid',
+  hoist: { sc200: false, sc220: false, sc320: false, platform: false },
+  light: { beacon: false, floods: false, led: false },
+  safety: { anti: false, load: false, anemo: false, camera: false, remote: false, telemetry: false },
+  sign: false,
+  night: false, realistic: true,
+};
+
+// lf = luffing size factor: scales jib reach, structural heft & ballast so a 6t and a 24t look visibly different
+const CRANE_MODELS = {
+  mdt219:   { type: 'hammer', name: 'Potain MDT 219', year: '2024', ton: '8 t',  lo: 800000,  hi: 1100000, lf: 1.0  },
+  ghd4510:  { type: 'luff',   name: 'BQ GHD4510',     year: '2024', ton: '6 t',  lo: 520000,  hi: 680000,  lf: 0.74 },
+  ghd5020a: { type: 'luff',   name: 'BQ GHD5020A',    year: '2024', ton: '10 t', lo: 680000,  hi: 880000,  lf: 0.88 },
+  ghd5527:  { type: 'luff',   name: 'BQ GHD5527',     year: '2024', ton: '14 t', lo: 880000,  hi: 1150000, lf: 1.0  },
+  ghd6032:  { type: 'luff',   name: 'BQ GHD6032',     year: '2024', ton: '18 t', lo: 1150000, hi: 1480000, lf: 1.14 },
+  ghd6050:  { type: 'luff',   name: 'BQ GHD6050',     year: '2024', ton: '20 t', lo: 1480000, hi: 1750000, lf: 1.26 },
+  ghd6062:  { type: 'luff',   name: 'BQ GHD6062',     year: '2024', ton: '24 t', lo: 1750000, hi: 2100000, lf: 1.4  },
+};
+
+// Each crane only offers the jib radii that are realistic for its size (middle = base spec)
+const JIB_OPTIONS = {
+  mdt219:   [ { r: 40, name: 'Short', add: -70000 }, { r: 55, name: 'Standard', add: 0 }, { r: 70, name: 'Extended', add: 120000 } ],
+  ghd4510:  [ { r: 30, name: 'Short', add: -45000 }, { r: 40, name: 'Standard', add: 0 }, { r: 45, name: 'Extended', add: 60000  } ],
+  ghd5020a: [ { r: 35, name: 'Short', add: -50000 }, { r: 45, name: 'Standard', add: 0 }, { r: 50, name: 'Extended', add: 70000  } ],
+  ghd5527:  [ { r: 40, name: 'Short', add: -55000 }, { r: 50, name: 'Standard', add: 0 }, { r: 55, name: 'Extended', add: 80000  } ],
+  ghd6032:  [ { r: 45, name: 'Short', add: -60000 }, { r: 55, name: 'Standard', add: 0 }, { r: 60, name: 'Extended', add: 95000  } ],
+  ghd6050:  [ { r: 45, name: 'Short', add: -65000 }, { r: 55, name: 'Standard', add: 0 }, { r: 60, name: 'Extended', add: 110000 } ],
+  ghd6062:  [ { r: 50, name: 'Short', add: -70000 }, { r: 60, name: 'Standard', add: 0 }, { r: 65, name: 'Extended', add: 130000 } ],
+};
+
+const FINISH_ADD = { Gloss: 0, Matte: 15000, Metallic: 40000 };
+const POWER_ADD = { Grid: [0, 0], Battery: [200000, 280000], Hybrid: [300000, 360000] };
+const HOIST_ADD = { sc200: 120000, sc220: 180000, sc320: 260000, platform: 95000 };
+const HOIST_NAME = { sc200: 'YHX SC200', sc220: 'YHX SC220', sc320: 'YHX SC320', platform: 'Linc Deck' };
+const LIGHT_ADD = { beacon: 18000, floods: 60000, led: 35000 };
+const SAFETY_ADD = { anti: [45000, 60000], load: [28000, 28000], anemo: [12000, 12000], camera: [22000, 22000], remote: [34000, 34000], telemetry: [18000, 18000] };
+
+function price() {
+  let lo = cfg.modelBaseLo, hi = cfg.modelBaseHi;
+  lo += FINISH_ADD[cfg.finish]; hi += FINISH_ADD[cfg.finish];
+  lo += cfg.heightAdd; hi += cfg.heightAdd;
+  lo += cfg.jibAdd; hi += cfg.jibAdd;
+  lo += cfg.capAdd; hi += cfg.capAdd;
+  lo += POWER_ADD[cfg.power][0]; hi += POWER_ADD[cfg.power][1];
+  for (const k in cfg.hoist) if (cfg.hoist[k]) { lo += HOIST_ADD[k]; hi += HOIST_ADD[k]; }
+  for (const k in cfg.light) if (cfg.light[k]) { lo += LIGHT_ADD[k]; hi += LIGHT_ADD[k]; }
+  for (const k in cfg.safety) if (cfg.safety[k]) { lo += SAFETY_ADD[k][0]; hi += SAFETY_ADD[k][1]; }
+  if (cfg.sign) { lo += 20000; hi += 55000; }
+  const f = n => '$' + (n >= 1000000 ? (n / 1000000).toFixed(2) + 'M' : (n / 1000).toFixed(0) + 'K');
+  return f(lo) + ' – ' + f(hi);
+}
+
+function countOn(o) { return Object.values(o).filter(Boolean).length; }
+
+function updateUI() {
+  const p = price();
+  document.getElementById('price-val').textContent = p;
+  const typeLabel = cfg.craneType === 'luff' ? 'Luffing Tower Crane' : 'Hammerhead Tower Crane';
+  document.getElementById('crane-spec').textContent =
+    typeLabel + ' · ' + cfg.heightM + 'm · ' + cfg.jibName + ' Jib · ' + cfg.colorName;
+  const cnv = document.getElementById('color-name-val');
+  if (cnv) cnv.textContent = cfg.colorName + ' · ' + cfg.finish;
+  const hn = document.querySelector('.panel-model-name');
+  if (hn) hn.innerHTML = cfg.modelName + ' <span class="panel-year">' + cfg.modelYear + '</span>';
+
+  const lights = countOn(cfg.light), safety = countOn(cfg.safety);
+  const hoistSelected = Object.keys(cfg.hoist).filter(k => cfg.hoist[k]);
+  const hoistBadge = document.getElementById('hoist-badge');
+  if (hoistBadge) hoistBadge.textContent = hoistSelected.length ? hoistSelected.map(k => HOIST_NAME[k]).join(' · ') : 'None selected';
+  const rows = [
+    ['Model', cfg.modelName],
+    ['Type', cfg.craneType === 'luff' ? 'Luffing' : 'Hammerhead'],
+    ['Exterior', cfg.colorName + ' · ' + cfg.finish],
+    ['Hook Height', cfg.height + ' · ' + cfg.heightM + 'm'],
+    ['Jib', cfg.jibName + ' · ' + cfg.jibRadius + 'm radius'],
+    ['Capacity', cfg.craneType === 'luff' ? cfg.modelTon : (cfg.capName + ' · ' + cfg.capSpec.replace(' max', ''))],
+    ['Hoist / Platform', hoistSelected.length ? hoistSelected.map(k => HOIST_NAME[k]).join(', ') : 'None'],
+    ['Power', cfg.power],
+    ['Lighting', lights ? lights + ' package' + (lights > 1 ? 's' : '') : 'None'],
+    ['Safety Tech', safety ? safety + ' system' + (safety > 1 ? 's' : '') : 'None'],
+    ['Signage', cfg.sign ? 'Included' : '—'],
+  ];
+  const grid = document.getElementById('summary-grid');
+  if (grid) {
+    grid.innerHTML = rows.map(([l, v]) =>
+      `<div class="sum-item"><div class="sum-lbl">${l}</div><div class="sum-val">${v}</div></div>`
+    ).join('') +
+    `<div class="sum-item sum-price-row"><div class="sum-lbl">Indicative Range · Excl. GST</div><div class="sum-val">${p}</div></div>`;
+  }
+}
+
+// ── Renderer / Scene / Camera ─────────────────────────────────────────
+const canvas = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.0;
+
+const scene = new THREE.Scene();
+// Atmospheric haze matching the studio horizon so distant ground fades away
+scene.fog = new THREE.Fog(0x44566c, 55, 150);
+
+// ── Sky dome (gradient: deep blue zenith → hazy horizon) ──────────────
+const skyMat = new THREE.ShaderMaterial({
+  side: THREE.BackSide, depthWrite: false,
+  uniforms: {
+    top:    { value: new THREE.Color(0x0c1320) },   // deep slate zenith
+    mid:    { value: new THREE.Color(0x27425e) },   // refined studio blue-grey
+    bottom: { value: new THREE.Color(0x5b6b80) },   // soft horizon
+    glow:   { value: new THREE.Color(0x9fb4cc) },   // spotlight glow behind product
+  },
+  vertexShader: `
+    varying vec3 vPos;
+    void main(){ vPos = position; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }
+  `,
+  fragmentShader: `
+    varying vec3 vPos;
+    uniform vec3 top; uniform vec3 mid; uniform vec3 bottom; uniform vec3 glow;
+    void main(){
+      vec3 d = normalize(vPos);
+      float h = d.y;
+      vec3 col = h > 0.0 ? mix(mid, top, pow(h, 0.5)) : mix(mid, bottom, pow(-h, 0.5));
+      // soft radial studio glow low on the horizon (behind the crane)
+      float g = pow(max(0.0, 1.0 - length(d.xy - vec2(0.0, 0.12)) * 1.15), 3.0);
+      col = mix(col, glow, g * 0.5);
+      gl_FragColor = vec4(col, 1.0);
+    }
+  `,
+});
+const sky = new THREE.Mesh(new THREE.SphereGeometry(150, 32, 16), skyMat);
+scene.add(sky);
+
+// Two pre-baked env maps: studio lights for parametric, outdoor sky for realistic
+const pmrem = new THREE.PMREMGenerator(renderer);
+// Studio: 3-point soft-box setup baked into PMREM (no external dependency)
+const _studioScene = new THREE.Scene();
+_studioScene.add(new THREE.HemisphereLight(0xffffff, 0xf0f0f0, 3.5));
+const _keyL = new THREE.DirectionalLight(0xffffff, 2.5); _keyL.position.set(5, 8, 5); _studioScene.add(_keyL);
+const _fillL = new THREE.DirectionalLight(0xf0f4ff, 1.5); _fillL.position.set(-5, 4, -3); _studioScene.add(_fillL);
+const _rimL  = new THREE.DirectionalLight(0xffffff, 1.0); _rimL.position.set(0, -2, -8); _studioScene.add(_rimL);
+const studioEnvTex = pmrem.fromScene(_studioScene, 0.04).texture;
+// Outdoor: warm sky/ground bounce matching the dramatic daylight scene
+const envScene = new THREE.Scene();
+envScene.add(new THREE.HemisphereLight(0xbcd6f0, 0xb0a890, 1.4));
+const outdoorEnvTex = pmrem.fromScene(envScene, 0.5).texture;
+// Start with outdoor (realistic is default on load)
+scene.environment = outdoorEnvTex;
+
+const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 400);
+camera.position.set(22, 26, 50);
+
+const controls = new OrbitControls(camera, canvas);
+controls.target.set(3, 12, 0);
+controls.enableDamping = true;
+controls.dampingFactor = 0.06;
+controls.minDistance = 6;
+controls.maxDistance = 90;
+controls.zoomSpeed = 1.8;        // faster, easier scroll/pinch zoom
+controls.zoomToCursor = true;    // zoom toward where the cursor is
+controls.maxPolarAngle = Math.PI / 2.05;
+controls.autoRotate = true;
+controls.autoRotateSpeed = 0.3;
+controls.update();
+
+canvas.addEventListener('pointerdown', () => {
+  controls.autoRotate = false;
+  document.getElementById('hint').classList.add('gone');
+}, { once: true });
+
+// ── Lighting (daylight) ───────────────────────────────────────────────
+// Sky/ground bounce — natural outdoor ambient
+const hemi = new THREE.HemisphereLight(0xbcd6f0, 0x9a8c70, 1.6);
+scene.add(hemi);
+
+// The sun — warm, casts long crisp shadows
+const sun = new THREE.DirectionalLight(0xfff4e2, 3.4);
+sun.position.set(18, 26, 12);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+sun.shadow.camera.near = 1;
+sun.shadow.camera.far = 90;
+sun.shadow.camera.left = -24;
+sun.shadow.camera.right = 24;
+sun.shadow.camera.top = 26;
+sun.shadow.camera.bottom = -6;
+sun.shadow.bias = -0.0004;
+scene.add(sun);
+
+// Cool sky fill from the opposite side
+const skyFill = new THREE.DirectionalLight(0x9ec0e8, 0.8);
+skyFill.position.set(-12, 8, -8);
+scene.add(skyFill);
+
+// ── Ground (procedural concrete — speckle + roughness variation) ──────
+function concreteTextures(size, base, speckle) {
+  const c = document.createElement('canvas'); c.width = c.height = size;
+  const x = c.getContext('2d');
+  x.fillStyle = base; x.fillRect(0, 0, size, size);
+  // fine speckle/aggregate
+  for (let i = 0; i < size * size * 0.12; i++) {
+    const g = speckle + Math.floor((Math.random() - 0.5) * 40);
+    x.fillStyle = `rgb(${g},${g},${g - 4})`;
+    x.fillRect(Math.random() * size, Math.random() * size, 1, 1);
+  }
+  // subtle stains/patches
+  for (let i = 0; i < 40; i++) {
+    x.globalAlpha = 0.04 + Math.random() * 0.05;
+    x.fillStyle = Math.random() > 0.5 ? '#5e5e58' : '#b8b8b0';
+    x.beginPath();
+    x.arc(Math.random() * size, Math.random() * size, 20 + Math.random() * 90, 0, 7);
+    x.fill();
+  }
+  x.globalAlpha = 1;
+  const map = new THREE.CanvasTexture(c);
+  map.colorSpace = THREE.SRGBColorSpace;
+  map.wrapS = map.wrapT = THREE.RepeatWrapping;
+  map.anisotropy = 8;
+  return map;
+}
+const groundMap = concreteTextures(1024, '#6a6c70', 110);
+groundMap.repeat.set(14, 14);
+const gnd = new THREE.Mesh(
+  new THREE.CircleGeometry(150, 96),
+  new THREE.MeshStandardMaterial({ map: groundMap, roughness: 0.9, metalness: 0.05 })
+);
+gnd.rotation.x = -Math.PI / 2;
+gnd.receiveShadow = true;
+scene.add(gnd);
+
+// Site pad — a cleaner poured slab the crane stands on
+const padMap = concreteTextures(512, '#9a9a93', 150);
+const pad = new THREE.Mesh(
+  new THREE.CircleGeometry(13, 64),
+  new THREE.MeshStandardMaterial({ map: padMap, roughness: 0.9 })
+);
+pad.rotation.x = -Math.PI / 2;
+pad.position.y = 0.008;
+pad.receiveShadow = true;
+scene.add(pad);
+
+// Faint expansion-joint lines on the pad
+const grid = new THREE.GridHelper(26, 8, 0x70706a, 0x80807a);
+grid.position.y = 0.015;
+grid.material.transparent = true;
+grid.material.opacity = 0.18;
+scene.add(grid);
+
+
+// Soft radial contact shadow (studio grounding)
+const shadowTex = (() => {
+  const c = document.createElement('canvas'); c.width = c.height = 256;
+  const ctx = c.getContext('2d');
+  const g = ctx.createRadialGradient(128, 128, 10, 128, 128, 128);
+  g.addColorStop(0, 'rgba(0,0,0,0.55)');
+  g.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = g; ctx.fillRect(0, 0, 256, 256);
+  return new THREE.CanvasTexture(c);
+})();
+const contactShadow = new THREE.Mesh(
+  new THREE.PlaneGeometry(14, 14),
+  new THREE.MeshBasicMaterial({ map: shadowTex, transparent: true, depthWrite: false })
+);
+contactShadow.rotation.x = -Math.PI / 2;
+contactShadow.position.y = 0.02;
+scene.add(contactShadow);
+
+// Branded TES sign / light-box texture (drawn once)
+const signTex = (() => {
+  const c = document.createElement('canvas'); c.width = 512; c.height = 200;
+  const x = c.getContext('2d');
+  x.fillStyle = '#ffffff'; x.fillRect(0, 0, 512, 200);
+  x.fillStyle = '#1a3a6b'; x.fillRect(0, 0, 512, 14); x.fillRect(0, 186, 512, 14);
+  x.fillStyle = '#c8102e'; x.fillRect(0, 150, 512, 6);
+  x.fillStyle = '#0f1c2e';
+  x.font = 'bold 110px Helvetica, Arial, sans-serif';
+  x.textAlign = 'center'; x.textBaseline = 'middle';
+  x.fillText('TES', 256, 80);
+  x.fillStyle = '#475569';
+  x.font = '500 26px Helvetica, Arial, sans-serif';
+  x.fillText('TOTAL EQUIPMENT SALES', 256, 172);
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.SRGBColorSpace;
+  t.anisotropy = 8;
+  return t;
+})();
+
+// ── Crane builder ─────────────────────────────────────────────────────
+let craneGroup = null;
+let loadedModel = null;       // the real GLB, once loaded
+let bodyTintMats = [];        // materials we re-colour on swatch change
+let spinners = [];            // animated parts (anemometer cups)
+
+// ── Real model loader (GLB) ───────────────────────────────────────────
+function loadModel(url) {
+  const loader = new GLTFLoader();
+  const draco = new DRACOLoader();
+  draco.setDecoderPath('https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/libs/draco/');
+  loader.setDRACOLoader(draco);
+
+  loader.load(url, (gltf) => {
+    const model = gltf.scene;
+
+    // Auto-fit: scale so the crane is ~12 units tall, sit it on the pad, centre x/z
+    const box0 = new THREE.Box3().setFromObject(model);
+    const size = box0.getSize(new THREE.Vector3());
+    const scale = 12 / size.y;
+    model.scale.setScalar(scale);
+
+    const box1 = new THREE.Box3().setFromObject(model);
+    const c = box1.getCenter(new THREE.Vector3());
+    model.position.x -= c.x;
+    model.position.z -= c.z;
+    model.position.y -= box1.min.y;   // drop onto ground
+
+    // Shadows + collect colourable materials
+    bodyTintMats = [];
+    model.traverse((o) => {
+      if (o.isMesh) {
+        o.castShadow = true; o.receiveShadow = true;
+        o.material.envMapIntensity = 1.1;
+        const col = o.material.color;
+        if (col) {
+          // bright/saturated parts = paintable body; dark steel stays
+          const lum = 0.299 * col.r + 0.587 * col.g + 0.114 * col.b;
+          if (lum > 0.25) bodyTintMats.push(o.material);
+        }
+      }
+    });
+
+    if (craneGroup) { scene.remove(craneGroup); craneGroup = null; }
+    scene.add(model);
+    loadedModel = model;
+    model.visible = cfg.realistic;
+    applyColor();
+    const hint = document.getElementById('hint');
+    hint.textContent = 'DRAG TO ROTATE · SCROLL TO ZOOM';
+    hint.classList.add('gone');
+    const ov = document.getElementById('loading-overlay');
+    if (ov) { ov.style.opacity = '0'; setTimeout(() => ov.style.display = 'none', 500); }
+  },
+  undefined,
+  (err) => {
+    console.warn('GLB failed to load, reverting to parametric:', err);
+    document.getElementById('hint').textContent = 'REALISTIC MODEL FAILED TO LOAD';
+    const ov = document.getElementById('loading-overlay');
+    if (ov) { ov.style.opacity = '0'; setTimeout(() => ov.style.display = 'none', 500); }
+  });
+}
+
+// Re-tint the real model's body materials to the selected colour
+function applyColor() {
+  if (!loadedModel) return;
+  bodyTintMats.forEach(m => m.color.set(cfg.color));
+}
+
+function buildCrane() {
+  if (cfg.realistic) return;   // realistic GLB in use — skip primitives
+  if (craneGroup) scene.remove(craneGroup);
+  const g = new THREE.Group();
+
+  spinners = [];
+  // Paint finish drives the surface character (gloss / matte / metallic)
+  const fin = cfg.finish === 'Matte'
+    ? { roughness: 0.85, metalness: 0.2, clearcoat: 0.0, cc: 0.6, env: 0.5 }
+    : cfg.finish === 'Metallic'
+    ? { roughness: 0.3, metalness: 0.75, clearcoat: 0.7, cc: 0.15, env: 1.3 }
+    : { roughness: 0.5, metalness: 0.35, clearcoat: 0.35, cc: 0.4, env: 0.9 }; // Gloss
+  const bodyMat = new THREE.MeshPhysicalMaterial({
+    color: new THREE.Color(cfg.color), roughness: fin.roughness, metalness: fin.metalness,
+    clearcoat: fin.clearcoat, clearcoatRoughness: fin.cc, envMapIntensity: fin.env
+  });
+  const darkMat = new THREE.MeshStandardMaterial({ color: 0x2a3340, roughness: 0.72, metalness: 0.55, envMapIntensity: 0.9 });
+  const steelMat = new THREE.MeshStandardMaterial({ color: 0x9aa7b5, roughness: 0.3, metalness: 0.9, envMapIntensity: 1.1 });
+  const glassMat = new THREE.MeshPhysicalMaterial({ color: 0x1a3a6b, roughness: 0.04, metalness: 0, transmission: 0.6, transparent: true, opacity: 0.85, envMapIntensity: 1.5 });
+
+  function box(w, h, d, mat, x, y, z) {
+    const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
+    m.position.set(x, y, z);
+    m.castShadow = true; m.receiveShadow = true;
+    g.add(m); return m;
+  }
+  function cyl(rt, rb, h, seg, mat, x, y, z, rx, rz) {
+    const m = new THREE.Mesh(new THREE.CylinderGeometry(rt, rb, h, seg), mat);
+    m.position.set(x, y, z);
+    if (rx !== undefined) m.rotation.x = rx;
+    if (rz !== undefined) m.rotation.z = rz;
+    m.castShadow = true;
+    g.add(m); return m;
+  }
+  // General strut between two 3D points (the building block of a lattice)
+  const _up = new THREE.Vector3(0, 1, 0);
+  function strut(ax, ay, az, bx, by, bz, r, mat) {
+    const A = new THREE.Vector3(ax, ay, az);
+    const B = new THREE.Vector3(bx, by, bz);
+    const dir = new THREE.Vector3().subVectors(B, A);
+    const len = dir.length();
+    const m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, len, 6), mat);
+    m.position.copy(A).add(B).multiplyScalar(0.5);
+    m.quaternion.setFromUnitVectors(_up, dir.normalize());
+    m.castShadow = true;
+    g.add(m);
+    return m;
+  }
+  function cable(ax, ay, bx, by) { strut(ax, ay, 0, bx, by, 0, 0.03, steelMat); }
+
+  // ── Dimensions (a real tower crane is modular: stacked sections) ──────
+  const BASE_Y = 0.28;
+  const MAST_H = cfg.heightWorld;    // tower height (driven by Height option)
+  const mw = 0.5;                    // mast half-width
+  const TOP = BASE_Y + MAST_H;       // top of tower
+  const JIB = cfg.jib * 2.4;         // jib reach (more sections = longer jib)
+  const jw = 0.42;                   // jib half-width
+  const jh = 0.7;                    // jib truss height
+  const JY = TOP + 1.5;              // jib bottom-chord height
+  const APEX = TOP + 4.2;            // tower-top apex (A-frame peak)
+  const CJ = JIB * 0.32 + 2;         // counter-jib length (balances the jib)
+  // Capacity drives counterweight + structure heft (heavier loads need more ballast)
+  const capF = cfg.capName === 'High-Cap' ? 1.6 : cfg.capName === 'Heavy' ? 1.3 : 1.0;
+  const cr = 0.07 * (0.9 + 0.1 * capF) * (cfg.modelLF || 1);   // chord radius (beefier at higher capacity / bigger model)
+  const dr = 0.045;                       // diagonal/bracing radius
+
+  // ── Base / foundation ─────────────────────────────────────────────────
+  box(3.4, 0.5, 3.4, darkMat, 0, BASE_Y, 0);
+  box(2.4, 0.3, 2.4, bodyMat, 0, BASE_Y + 0.35, 0);
+
+  // ── Tower mast: 4 corner chords + rungs + zig-zag bracing ────────────
+  const mc = [[mw, mw], [mw, -mw], [-mw, mw], [-mw, -mw]];
+  mc.forEach(([x, z]) => strut(x, BASE_Y + 0.5, z, x, TOP, z, cr, bodyMat));
+  const mastBays = Math.round(MAST_H / 1.4);
+  for (let i = 0; i <= mastBays; i++) {
+    const y = BASE_Y + 0.5 + (i / mastBays) * (MAST_H - 0.5);
+    // horizontal rungs (square ring)
+    strut( mw, y,  mw,  mw, y, -mw, dr, darkMat);
+    strut( mw, y, -mw, -mw, y, -mw, dr, darkMat);
+    strut(-mw, y, -mw, -mw, y,  mw, dr, darkMat);
+    strut(-mw, y,  mw,  mw, y,  mw, dr, darkMat);
+  }
+  for (let i = 0; i < mastBays; i++) {
+    const y0 = BASE_Y + 0.5 + (i / mastBays) * (MAST_H - 0.5);
+    const y1 = BASE_Y + 0.5 + ((i + 1) / mastBays) * (MAST_H - 0.5);
+    // full X-bracing on all four faces (dense, realistic lattice)
+    strut( mw, y0,  mw,  mw, y1, -mw, dr, darkMat); strut( mw, y0, -mw,  mw, y1,  mw, dr, darkMat); // +x
+    strut(-mw, y0,  mw, -mw, y1, -mw, dr, darkMat); strut(-mw, y0, -mw, -mw, y1,  mw, dr, darkMat); // -x
+    strut( mw, y0,  mw, -mw, y1,  mw, dr, darkMat); strut(-mw, y0,  mw,  mw, y1,  mw, dr, darkMat); // +z
+    strut( mw, y0, -mw, -mw, y1, -mw, dr, darkMat); strut(-mw, y0, -mw,  mw, y1, -mw, dr, darkMat); // -z
+  }
+  // climbing ladder up the +z face (two rails + rungs)
+  strut(0.12, BASE_Y + 0.5, mw, 0.12, TOP, mw, 0.025, steelMat);
+  strut(-0.12, BASE_Y + 0.5, mw, -0.12, TOP, mw, 0.025, steelMat);
+  for (let y = BASE_Y + 1; y < TOP; y += 0.5) strut(-0.12, y, mw, 0.12, y, mw, 0.018, steelMat);
+
+  // ── Slewing unit + operator cab + access platform ────────────────────
+  cyl(0.85, 0.7, 0.35, 24, darkMat, 0, TOP + 0.17, 0);   // slew ring
+  cyl(0.7, 0.7, 0.5, 24, bodyMat, 0, TOP + 0.55, 0);     // turret
+  // safety platform with railing around the turret
+  box(2.2, 0.06, 2.2, darkMat, 0, TOP + 0.05, 0);
+  [[1.05, 1.05], [1.05, -1.05], [-1.05, 1.05], [-1.05, -1.05]].forEach(([x, z]) => {
+    strut(x, TOP + 0.05, z, x, TOP + 0.55, z, 0.025, steelMat);
+  });
+  strut( 1.05, TOP + 0.55,  1.05,  1.05, TOP + 0.55, -1.05, 0.02, steelMat);
+  strut(-1.05, TOP + 0.55,  1.05, -1.05, TOP + 0.55, -1.05, 0.02, steelMat);
+  strut( 1.05, TOP + 0.55,  1.05, -1.05, TOP + 0.55,  1.05, 0.02, steelMat);
+  strut( 1.05, TOP + 0.55, -1.05, -1.05, TOP + 0.55, -1.05, 0.02, steelMat);
+  // operator cab (glazed)
+  box(1.0, 1.05, 1.0, bodyMat, -1.15, TOP + 1.0, 0);
+  box(0.9, 0.6, 0.06, glassMat, -1.15, TOP + 1.15, 0.5);
+  box(0.06, 0.6, 0.9, glassMat, -1.64, TOP + 1.15, 0);
+  box(0.9, 0.6, 0.06, glassMat, -1.15, TOP + 1.15, -0.5);
+
+  // ── A-frame apex above the tower ─────────────────────────────────────
+  strut( mw, TOP,  mw, 0, APEX, 0, cr, bodyMat);
+  strut( mw, TOP, -mw, 0, APEX, 0, cr, bodyMat);
+  strut(-mw, TOP,  mw, 0, APEX, 0, cr, bodyMat);
+  strut(-mw, TOP, -mw, 0, APEX, 0, cr, bodyMat);
+
+  // ── Crane-type anchors (hammerhead horizontal vs luffing angled jib) ──
+  const isLuff = cfg.craneType === 'luff';
+  const luffReach = JIB;                                   // jib length is driven by the selected radius
+  const LA = 0.92, cL = Math.cos(LA), sL = Math.sin(LA);   // luffing up-angle ~53°
+  const PXp = 0.3, PYp = JY;                               // luffing pivot at tower top
+  const jp = (d, h) => ({ x: PXp + d * cL - h * sL, y: PYp + d * sL + h * cL });
+  // a point at fraction along the jib + perpendicular-up offset — works for both crane types
+  const jibPt = (frac, hOff) => isLuff ? jp(frac * luffReach, hOff) : { x: 0.3 + frac * (JIB - 0.3), y: JY + hOff };
+
+  if (!isLuff) {
+  // ── Jib: modern flat-top truss (4 chords), length driven by cfg.jib ──
+  const jx0 = 0.3, jx1 = JIB, tipZ = jw * 0.45;
+  // four main chords (top pair + bottom pair), tapering slightly to the tip
+  strut(jx0, JY + jh,  jw, jx1, JY + jh,  tipZ, cr, bodyMat);
+  strut(jx0, JY + jh, -jw, jx1, JY + jh, -tipZ, cr, bodyMat);
+  strut(jx0, JY,       jw, jx1, JY,       tipZ, cr, bodyMat);
+  strut(jx0, JY,      -jw, jx1, JY,      -tipZ, cr, bodyMat);
+  const jibBays = Math.max(6, Math.round(JIB / 1.25));
+  for (let i = 0; i <= jibBays; i++) {
+    const t = i / jibBays, x = jx0 + t * (jx1 - jx0);
+    const zz = jw - (jw - tipZ) * t;
+    // corner posts + top & bottom cross members (a full square frame each bay)
+    strut(x, JY, zz, x, JY + jh, zz, dr, darkMat);
+    strut(x, JY, -zz, x, JY + jh, -zz, dr, darkMat);
+    strut(x, JY + jh, zz, x, JY + jh, -zz, dr, darkMat);
+    strut(x, JY, zz, x, JY, -zz, dr, darkMat);
+    if (i < jibBays) {
+      const t2 = (i + 1) / jibBays, x2 = jx0 + t2 * (jx1 - jx0);
+      const zz2 = jw - (jw - tipZ) * t2, flip = i % 2 === 0;
+      strut(x, JY, flip ? zz : -zz, x2, JY, flip ? -zz2 : zz2, dr, darkMat);          // bottom web
+      strut(x, JY + jh, flip ? -zz : zz, x2, JY + jh, flip ? zz2 : -zz2, dr, darkMat);// top web
+      strut(x, JY, zz, x2, JY + jh, zz2, dr, darkMat);                                 // +z side web
+      strut(x, JY, -zz, x2, JY + jh, -zz2, dr, darkMat);                               // -z side web
+    }
+  }
+  // jib nose
+  strut(jx1, JY + jh, tipZ, jx1 + 0.7, JY + jh * 0.5, 0, dr, bodyMat);
+  strut(jx1, JY + jh, -tipZ, jx1 + 0.7, JY + jh * 0.5, 0, dr, bodyMat);
+  strut(jx1, JY, tipZ, jx1 + 0.7, JY + jh * 0.5, 0, dr, bodyMat);
+  strut(jx1, JY, -tipZ, jx1 + 0.7, JY + jh * 0.5, 0, dr, bodyMat);
+  // maintenance walkway handrail along the +z side
+  strut(jx0, JY + jh + 0.4, jw + 0.06, jx1, JY + jh + 0.4, tipZ + 0.06, 0.02, steelMat);
+  for (let i = 0; i <= jibBays; i += 2) {
+    const t = i / jibBays, x = jx0 + t * (jx1 - jx0), zz = jw - (jw - tipZ) * t + 0.06;
+    strut(x, JY + jh, zz, x, JY + jh + 0.4, zz, 0.016, steelMat);
+  }
+
+  // ── Counter-jib (flat-top) + stacked concrete counterweight ──────────
+  const cx0 = -0.3, cx1 = -CJ, cjh = jh * 0.85;
+  strut(cx0, JY + cjh,  jw, cx1, JY + cjh,  jw, cr, bodyMat);
+  strut(cx0, JY + cjh, -jw, cx1, JY + cjh, -jw, cr, bodyMat);
+  strut(cx0, JY,        jw, cx1, JY,        jw, cr, bodyMat);
+  strut(cx0, JY,       -jw, cx1, JY,       -jw, cr, bodyMat);
+  const cjBays = Math.max(4, Math.round(CJ / 1.25));
+  for (let i = 0; i <= cjBays; i++) {
+    const t = i / cjBays, x = cx0 + t * (cx1 - cx0);
+    strut(x, JY, jw, x, JY + cjh, jw, dr, darkMat);
+    strut(x, JY, -jw, x, JY + cjh, -jw, dr, darkMat);
+    strut(x, JY + cjh, jw, x, JY + cjh, -jw, dr, darkMat);
+    strut(x, JY, jw, x, JY, -jw, dr, darkMat);
+    if (i < cjBays) {
+      const x2 = cx0 + ((i + 1) / cjBays) * (cx1 - cx0), flip = i % 2 === 0;
+      strut(x, JY, flip ? jw : -jw, x2, JY, flip ? -jw : jw, dr, darkMat);
+      strut(x, JY + cjh, flip ? -jw : jw, x2, JY + cjh, flip ? jw : -jw, dr, darkMat);
+    }
+  }
+  // Counterweight — stacked concrete slabs hung under the counter-jib end.
+  // More slabs = higher capacity (physically how cranes balance heavier loads).
+  const concreteMat = new THREE.MeshStandardMaterial({ color: 0x9c988c, roughness: 0.92, metalness: 0.02 });
+  const slabs = capF >= 1.6 ? 4 : capF >= 1.3 ? 3 : 2;
+  const slabW = 0.5, slabH = 1.7, slabD = 1.9;
+  const cwX = cx1 + 0.6;
+  for (let s = 0; s < slabs; s++) {
+    box(slabW, slabH, slabD, concreteMat, cwX + s * (slabW + 0.07), JY - 0.55, 0);
+    box(slabW + 0.04, 0.12, slabD + 0.04, darkMat, cwX + s * (slabW + 0.07), JY + 0.28, 0); // cap frame
+  }
+  // hanger brackets from counter-jib chords to the counterweight
+  strut(cx1, JY, jw, cwX, JY + 0.2, slabD / 2, dr, darkMat);
+  strut(cx1, JY, -jw, cwX, JY + 0.2, -slabD / 2, dr, darkMat);
+
+  // ── Forestay / backstay tie bars (apex to jib & counter-jib) ─────────
+  cable(0, APEX, JIB * 0.62, JY + jh * 0.45);
+  cable(0, APEX, JIB * 0.95, JY + 0.2);
+  cable(0, APEX, -CJ + 0.3, JY + 0.1);
+
+  // ── Trolley + hoist rope + hook block ────────────────────────────────
+  const TX = JIB * 0.6;
+  box(0.5, 0.2, 0.5, darkMat, TX, JY - 0.16, 0);
+  [[-0.16, 0.22], [0.16, 0.22], [-0.16, -0.22], [0.16, -0.22]].forEach(([ox, oz]) => {
+    cyl(0.07, 0.07, 0.06, 10, steelMat, TX + ox, JY - 0.05, oz, Math.PI / 2);
+  });
+  const RL = JY - 2.6;
+  strut(TX, JY - 0.28, 0, TX, JY - 0.28 - RL, 0, 0.025, steelMat);
+  box(0.3, 0.4, 0.3, darkMat, TX, JY - 0.28 - RL - 0.2, 0);
+  cyl(0.18, 0.18, 0.12, 12, steelMat, TX, JY - 0.28 - RL - 0.5, 0);
+
+  } else {
+  // ── Luffing jib: angled lattice + gantry pendants + compact ballast ──
+  const LF = cfg.modelLF || 1;                              // model size factor (6t ≈ 0.74 → 24t ≈ 1.4)
+  const tipZ = jw * 0.5 * LF, jwL = jw * (0.85 + 0.15 * LF);// wider truss on bigger models
+  const lchord = (h, z, zt) => { const a = jp(0.5, h), b = jp(luffReach, h); strut(a.x, a.y, z, b.x, b.y, zt, cr, bodyMat); };
+  lchord(jh, jwL, tipZ); lchord(jh, -jwL, -tipZ); lchord(0, jwL, tipZ); lchord(0, -jwL, -tipZ);
+  const lbays = Math.max(5, Math.round(luffReach / 1.25));
+  for (let i = 0; i <= lbays; i++) {
+    const t = i / lbays, d = 0.5 + t * (luffReach - 0.5), z = jwL - (jwL - tipZ) * t;
+    const lo0 = jp(d, 0), hi0 = jp(d, jh);
+    strut(lo0.x, lo0.y, z, hi0.x, hi0.y, z, dr, darkMat);            // +z post
+    strut(lo0.x, lo0.y, -z, hi0.x, hi0.y, -z, dr, darkMat);         // -z post
+    strut(hi0.x, hi0.y, z, hi0.x, hi0.y, -z, dr, darkMat);          // top ring
+    strut(lo0.x, lo0.y, z, lo0.x, lo0.y, -z, dr, darkMat);          // bottom ring
+    if (i < lbays) {
+      const t2 = (i + 1) / lbays, d2 = 0.5 + t2 * (luffReach - 0.5), z2 = jwL - (jwL - tipZ) * t2;
+      const a = jp(d, 0), b = jp(d2, jh); strut(a.x, a.y, z, b.x, b.y, z2, dr, darkMat);   // +z diagonal
+      const c = jp(d, jh), e = jp(d2, 0); strut(c.x, c.y, -z, e.x, e.y, -z2, dr, darkMat); // -z diagonal
+    }
+  }
+  // pivot bearing block where the jib meets the slewing tower top
+  box(0.55, 0.7, 1.15, darkMat, PXp, JY + 0.15, 0);
+  // gantry pendant tie ropes from the apex down to the jib (luffing rig)
+  const lm1 = jp(luffReach * 0.6, jh), lm2 = jp(luffReach * 0.92, jh);
+  cable(0, APEX, lm1.x, lm1.y);
+  cable(0, APEX, lm2.x, lm2.y);
+  // compact counter-jib stub + stacked ballast at the slew rear (heavier on bigger models)
+  const cwX2 = -(CJ * 0.45) * (0.85 + 0.15 * LF);
+  cable(0, APEX, cwX2, JY + 0.1);                                   // rear backstay
+  strut(-0.3, JY, jw, cwX2, JY - 0.1, jw, cr, bodyMat);
+  strut(-0.3, JY, -jw, cwX2, JY - 0.1, -jw, cr, bodyMat);
+  strut(-0.3, JY, jw, -0.3, JY, -jw, dr, darkMat);
+  const concreteMatL = new THREE.MeshStandardMaterial({ color: 0x9c988c, roughness: 0.92, metalness: 0.02 });
+  const slabsL = LF >= 1.3 ? 5 : LF >= 1.1 ? 4 : LF >= 0.95 ? 3 : 2;
+  const slabHL = 1.2 + 0.5 * LF;
+  for (let s = 0; s < slabsL; s++) box(0.45, slabHL, 1.7, concreteMatL, cwX2 - s * 0.5, JY - 0.4 - slabHL / 2, 0);
+  box(0.5, 0.3, 1.9, darkMat, cwX2 - (slabsL - 1) * 0.25, JY + 0.15, 0);
+  // hook + rope hanging straight down from the angled jib tip
+  const tip = jp(luffReach, jh * 0.5);
+  const hookBaseY = JY - 1.0, RLl = tip.y - hookBaseY;
+  strut(tip.x, tip.y - 0.1, 0, tip.x, tip.y - 0.1 - RLl, 0, 0.025, steelMat);
+  box(0.3, 0.4, 0.3, darkMat, tip.x, hookBaseY - 0.2, 0);
+  cyl(0.18, 0.18, 0.12, 12, steelMat, tip.x, hookBaseY - 0.5, 0);
+  }
+
+  const night = cfg.night;
+
+  // ── Safety: Anti-collision radar + warning lights ────────────────────
+  if (cfg.safety.anti) {
+    const redMat = new THREE.MeshStandardMaterial({
+      color: 0xff1500, emissive: 0xff1500, emissiveIntensity: night ? 6 : 3, roughness: 0.1
+    });
+    cyl(0.08, 0.08, 0.16, 8, redMat, 0, APEX + 0.12, 0);
+    const aTip = jibPt(1, 0.6), aMid = jibPt(0.5, jh + 0.2);
+    cyl(0.07, 0.07, 0.12, 8, redMat, aTip.x, aTip.y, 0);
+    box(0.22, 0.22, 0.22, darkMat, aMid.x, aMid.y, 0);  // radar sensor box
+    const ptL = new THREE.PointLight(0xff2200, night ? 6 : 3, 6);
+    ptL.position.set(0, APEX + 0.2, 0); g.add(ptL);
+  }
+
+  // ── Safety: Load-moment indicator (cab-mounted display box) ──────────
+  if (cfg.safety.load) {
+    const lmiMat = new THREE.MeshStandardMaterial({ color: 0x10b981, emissive: 0x10b981, emissiveIntensity: night ? 2.5 : 1.1, roughness: 0.4 });
+    const lP = jibPt(0.18, jh + 0.25);
+    box(0.5, 0.3, 0.12, lmiMat, lP.x, lP.y, 0.1);
+  }
+
+  // ── Safety: Wind anemometer (spinning cups at the apex) ──────────────
+  if (cfg.safety.anemo) {
+    const spinner = new THREE.Group();
+    cyl(0.025, 0.025, 0.5, 6, steelMat, 0, 0, 0);
+    [0, 1, 2].forEach(k => {
+      const a = (k / 3) * Math.PI * 2;
+      const arm = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.5, 5), steelMat);
+      arm.position.set(Math.cos(a) * 0.25, 0.22, Math.sin(a) * 0.25);
+      arm.rotation.z = Math.PI / 2; arm.rotation.y = -a; spinner.add(arm);
+      const cup = new THREE.Mesh(new THREE.SphereGeometry(0.09, 8, 8, 0, Math.PI), steelMat);
+      cup.position.set(Math.cos(a) * 0.5, 0.22, Math.sin(a) * 0.5); spinner.add(cup);
+    });
+    spinner.position.set(-0.4, APEX + 0.1, 0);
+    g.add(spinner); spinners.push(spinner);
+  }
+
+  // ── Safety: Hook camera (dome on the trolley) ────────────────────────
+  if (cfg.safety.camera) {
+    const camMat = new THREE.MeshStandardMaterial({ color: 0x0e0e10, roughness: 0.3, metalness: 0.5 });
+    const cP = jibPt(0.6, -0.34), cP2 = jibPt(0.6, -0.44);
+    box(0.2, 0.12, 0.2, camMat, cP.x, cP.y, 0.25);
+    cyl(0.1, 0.1, 0.12, 12, glassMat, cP2.x, cP2.y, 0.25);
+  }
+
+  // ── Safety: Remote control system (cab receiver + ground pendant) ─────
+  if (cfg.safety.remote) {
+    const rcMat   = new THREE.MeshStandardMaterial({ color: 0x1f2937, roughness: 0.4, metalness: 0.5 });
+    const tipMat  = new THREE.MeshStandardMaterial({ color: 0x3b82f6, emissive: 0x3b82f6, emissiveIntensity: night ? 5 : 2.4, roughness: 0.2 });
+    // Receiver box on the cab/slew with whip antenna + glowing signal tip
+    box(0.3, 0.22, 0.22, rcMat, -0.9, TOP + 1.55, 0.4);
+    cyl(0.02, 0.02, 0.6, 6, steelMat, -0.9, TOP + 1.95, 0.4);
+    cyl(0.06, 0.06, 0.1, 10, tipMat, -0.9, TOP + 2.28, 0.4);
+    // Handheld pendant transmitter standing near the base
+    const px = 3.2, pz = -2.6;
+    cyl(0.025, 0.025, 1.1, 6, rcMat, px, 0.55, pz);            // stand pole
+    box(0.34, 0.5, 0.1, rcMat, px, 1.2, pz);                   // pendant body
+    box(0.24, 0.18, 0.04, tipMat, px, 1.32, pz + 0.07);        // glowing screen
+    cyl(0.02, 0.02, 0.32, 6, steelMat, px - 0.12, 1.5, pz, 0, 0.5);  // joystick
+    if (night) { const pl = new THREE.PointLight(0x3b82f6, 3, 5); pl.position.set(-0.9, TOP + 2.3, 0.4); g.add(pl); }
+  }
+
+  // ── Safety: Remote data monitoring (telemetry dish on counter-jib) ───
+  if (cfg.safety.telemetry) {
+    const tmMat   = new THREE.MeshStandardMaterial({ color: 0x111827, roughness: 0.4, metalness: 0.6 });
+    const nodeMat = new THREE.MeshStandardMaterial({ color: 0x22d3ee, emissive: 0x22d3ee, emissiveIntensity: night ? 5 : 2.6, roughness: 0.2 });
+    const TXt = -CJ * 0.55;
+    // Mast + small satellite/telemetry dish + blinking data node
+    cyl(0.022, 0.022, 0.7, 6, steelMat, TXt, JY + 0.45, 0);
+    box(0.26, 0.16, 0.22, tmMat, TXt, JY + 0.85, 0);                              // telemetry enclosure
+    const dish = new THREE.Mesh(new THREE.SphereGeometry(0.2, 14, 14, 0, Math.PI * 2, 0, Math.PI / 2.4), tmMat);
+    dish.position.set(TXt, JY + 1.05, 0.18); dish.rotation.x = -Math.PI / 3;
+    dish.castShadow = true; g.add(dish);
+    cyl(0.05, 0.05, 0.1, 8, nodeMat, TXt, JY + 1.18, 0);                          // status node
+    if (night) { const pl = new THREE.PointLight(0x22d3ee, 2.5, 4); pl.position.set(TXt, JY + 1.2, 0); g.add(pl); }
+  }
+
+  // ── Lighting: Aviation beacon (apex) ─────────────────────────────────
+  if (cfg.light.beacon) {
+    const bMat = new THREE.MeshStandardMaterial({ color: 0xff3030, emissive: 0xff0000, emissiveIntensity: night ? 7 : 3.5, roughness: 0.2 });
+    cyl(0.12, 0.1, 0.18, 10, bMat, 0, APEX + 0.3, 0);
+    if (night) { const pl = new THREE.PointLight(0xff2020, 8, 10); pl.position.set(0, APEX + 0.35, 0); g.add(pl); }
+  }
+
+  // ── Lighting: Night floodlights (array on cab + counter-jib) ─────────
+  if (cfg.light.floods) {
+    const housing = new THREE.MeshStandardMaterial({ color: 0x1a1a1c, roughness: 0.4, metalness: 0.6 });
+    const lens = new THREE.MeshStandardMaterial({ color: 0xfff8e0, emissive: 0xfff4d0, emissiveIntensity: night ? 9 : 1.5, roughness: 0.1 });
+    const mount = (x, y, z, tx, tz) => {
+      box(0.34, 0.26, 0.16, housing, x, y, z);
+      const l = new THREE.Mesh(new THREE.PlaneGeometry(0.28, 0.2), lens);
+      l.position.set(x, y, z + 0.09); g.add(l);
+      if (night) {
+        const sp = new THREE.SpotLight(0xfff2d8, 90, 60, Math.PI / 7, 0.4, 1.2);
+        sp.position.set(x, y, z); sp.target.position.set(tx, 0, tz);
+        g.add(sp); g.add(sp.target);
+      }
+    };
+    mount(-1.15, TOP + 1.7, 0.55, JIB * 0.5, 6);
+    const fP = jibPt(0.45, -0.4);
+    mount(fP.x, fP.y, 0.3, fP.x + 2, 4);
+    mount(fP.x, fP.y, -0.3, fP.x + 2, -4);
+  }
+
+  // ── Lighting: Jib LED edge strip ─────────────────────────────────────
+  if (cfg.light.led) {
+    const ledMat = new THREE.MeshStandardMaterial({ color: 0x4ea8ff, emissive: 0x3b9eff, emissiveIntensity: night ? 6 : 2.2, roughness: 0.3 });
+    const lA = jibPt(0.04, -0.02), lB = jibPt(1, -0.02);
+    [jw + 0.05, -(jw + 0.05)].forEach(z => strut(lA.x, lA.y, z, lB.x, lB.y, z, 0.05, ledMat));
+  }
+
+  // Signage & light boxes — branded TES banner mounted on the jib sides
+  if (cfg.sign) {
+    const frameMat = new THREE.MeshStandardMaterial({ color: 0x1a3a6b, roughness: 0.5, metalness: 0.3 });
+    const faceMat = new THREE.MeshStandardMaterial({
+      map: signTex, emissive: 0xffffff, emissiveMap: signTex, emissiveIntensity: cfg.night ? 1.4 : 0.35, roughness: 0.6
+    });
+    const sc = jibPt(0.3, jh / 2), SW = 3.2, SH = 1.3, SZ = jw + 0.18;
+    [SZ, -SZ].forEach((z) => {
+      const sgn = Math.sign(z);
+      box(SW + 0.16, SH + 0.16, 0.08, frameMat, sc.x, sc.y, z);      // frame
+      const face = new THREE.Mesh(new THREE.PlaneGeometry(SW, SH), faceMat);
+      face.position.set(sc.x, sc.y, z + sgn * 0.05);
+      face.rotation.y = sgn > 0 ? 0 : Math.PI;
+      face.castShadow = true; g.add(face);
+      // standoff brackets to the jib chords
+      strut(sc.x - SW / 2, sc.y, jw * sgn, sc.x - SW / 2, sc.y, z, 0.03, frameMat);
+      strut(sc.x + SW / 2, sc.y, jw * sgn, sc.x + SW / 2, sc.y, z, 0.03, frameMat);
+    });
+  }
+
+  // ── Power: Potain battery / hybrid unit (container beside the base) ───
+  if (cfg.power === 'Battery' || cfg.power === 'Hybrid') {
+    const battMat = new THREE.MeshStandardMaterial({ color: 0x1f7a3d, roughness: 0.45, metalness: 0.5, envMapIntensity: 1 });
+    const trimMat = new THREE.MeshStandardMaterial({ color: 0x12351f, roughness: 0.6, metalness: 0.4 });
+    box(2.4, 1.1, 1.2, battMat, 3.4, BASE_Y + 0.55, 1.9);
+    box(2.5, 0.12, 1.3, trimMat, 3.4, BASE_Y + 1.12, 1.9);
+    for (let i = 0; i < 3; i++) box(0.05, 0.7, 1.25, trimMat, 2.5 + i * 0.9, BASE_Y + 0.55, 1.9);
+    // Hybrid adds a roof solar panel on the unit
+    if (cfg.power === 'Hybrid') {
+      const solar = new THREE.MeshStandardMaterial({ color: 0x10243f, roughness: 0.2, metalness: 0.4, emissive: 0x0a1830, emissiveIntensity: 0.3 });
+      box(2.3, 0.05, 1.1, solar, 3.4, BASE_Y + 1.22, 1.9);
+    }
+  }
+
+  // ── Hoist tower(s) ───────────────────────────────────────────────────
+  const anyHoist = cfg.hoist.sc200 || cfg.hoist.sc220 || cfg.hoist.sc320;
+  if (anyHoist) {
+    const hoistMat  = new THREE.MeshStandardMaterial({ color: 0xf59e0b, roughness: 0.48, metalness: 0.45, envMapIntensity: 0.9 });
+    const hoistDark = new THREE.MeshStandardMaterial({ color: 0x2d3748, roughness: 0.65, metalness: 0.55 });
+    const hoistH = cfg.hoist.sc320 ? MAST_H * 0.88
+                 : cfg.hoist.sc220 ? MAST_H * 0.72
+                 :                   MAST_H * 0.55;
+    const hx = -4.6, hz = -2.8;
+    const hr = 0.04;
+
+    // ── Building shell the hoist climbs (so it reads as a materials/people lift) ──
+    const concreteMatB = new THREE.MeshStandardMaterial({ color: 0xcdcfd2, roughness: 0.9, metalness: 0.03 });
+    const bandMat = new THREE.MeshStandardMaterial({ color: 0x9a9da1, roughness: 0.85, metalness: 0.05 });
+    const bW = 5.2, bDepth = 3.0, bH = hoistH + 1.2;
+    const bFrontZ = hz - 0.24;                 // front wall face, just behind the mast
+    const bCenterZ = bFrontZ - bDepth / 2;
+    box(bW, bH, bDepth, concreteMatB, hx, BASE_Y + bH / 2, bCenterZ);          // main mass
+    box(bW + 0.14, 0.2, bDepth + 0.14, bandMat, hx, BASE_Y + bH + 0.08, bCenterZ); // parapet cap
+    const floors = Math.max(3, Math.round(bH / 1.8));
+    for (let f = 1; f < floors; f++) {
+      const fy = BASE_Y + (f / floors) * bH;
+      box(bW + 0.06, 0.12, 0.06, bandMat, hx, fy, bFrontZ + 0.01);             // floor-edge band
+      for (let w = -1; w <= 1; w++)                                            // window row
+        box(0.95, 0.72, 0.05, glassMat, hx + w * 1.55, fy - (bH / floors) * 0.42, bFrontZ + 0.03);
+    }
+    // tie-ins clamping the hoist mast back to the building wall
+    for (let ty = BASE_Y + 2.4; ty < BASE_Y + hoistH; ty += 2.6)
+      strut(hx, ty, hz - 0.16, hx, ty, bFrontZ, 0.04, hoistDark);
+
+    // 4 corner guide rails
+    [[0.16,0.16],[0.16,-0.16],[-0.16,0.16],[-0.16,-0.16]].forEach(([x,z]) =>
+      strut(hx+x, BASE_Y, hz+z, hx+x, BASE_Y+hoistH, hz+z, hr, hoistDark)
+    );
+    // Horizontal ring frames every 1.4m
+    for (let i = 0; i <= hoistH; i += 1.4) {
+      const y = BASE_Y + i;
+      strut(hx+.16, y, hz+.16, hx-.16, y, hz+.16, 0.025, hoistDark);
+      strut(hx-.16, y, hz+.16, hx-.16, y, hz-.16, 0.025, hoistDark);
+      strut(hx-.16, y, hz-.16, hx+.16, y, hz-.16, 0.025, hoistDark);
+      strut(hx+.16, y, hz-.16, hx+.16, y, hz+.16, 0.025, hoistDark);
+    }
+    // Cage at ~55% travel height
+    const cageY = BASE_Y + hoistH * 0.55;
+    const cageH = cfg.hoist.sc320 ? 1.3 : 1.0;
+    box(0.55, cageH, 0.46, hoistMat, hx, cageY, hz);
+    // Cage door cage bars (front face)
+    box(0.04, cageH * 0.82, 0.05, hoistDark, hx+0.14, cageY, hz+0.26);
+    box(0.04, cageH * 0.82, 0.05, hoistDark, hx-0.14, cageY, hz+0.26);
+    box(0.52, 0.04, 0.05, hoistDark, hx, cageY + cageH*0.25, hz+0.26);
+    // Guide shoes (top + bottom clamp onto rails)
+    box(0.38, 0.09, 0.38, hoistDark, hx, cageY + cageH*0.5 + 0.05, hz);
+    box(0.38, 0.09, 0.38, hoistDark, hx, cageY - cageH*0.5 - 0.05, hz);
+    // Drive/motor unit on top
+    box(0.48, 0.38, 0.42, hoistDark, hx, BASE_Y + hoistH + 0.22, hz);
+    box(0.30, 0.12, 0.30, hoistMat,  hx, BASE_Y + hoistH + 0.50, hz);
+    // SC320 dual-cage: second cage offset down
+    if (cfg.hoist.sc320) {
+      const cage2Y = cageY - 1.8;
+      box(0.55, cageH, 0.46, hoistMat, hx, cage2Y, hz);
+      box(0.04, cageH * 0.82, 0.05, hoistDark, hx+0.14, cage2Y, hz+0.26);
+      box(0.04, cageH * 0.82, 0.05, hoistDark, hx-0.14, cage2Y, hz+0.26);
+      box(0.38, 0.09, 0.38, hoistDark, hx, cage2Y + cageH*0.5 + 0.05, hz);
+      box(0.38, 0.09, 0.38, hoistDark, hx, cage2Y - cageH*0.5 - 0.05, hz);
+    }
+    // Base footing
+    box(0.9, 0.22, 0.9, hoistDark, hx, BASE_Y + 0.11, hz);
+  }
+
+  // ── Loading platform ──────────────────────────────────────────────────
+  if (cfg.hoist.platform) {
+    const platMat    = new THREE.MeshStandardMaterial({ color: 0x6b7280, roughness: 0.6, metalness: 0.45 });
+    const platYellow = new THREE.MeshStandardMaterial({ color: 0xfbbf24, roughness: 0.5, metalness: 0.3 });
+    const platY = BASE_Y + MAST_H * 0.44;
+    const px = 2.4, pz = 0.2;
+    // Deck
+    box(2.0, 0.1, 1.3, platMat, px, platY, pz);
+    // Toeboard strip
+    box(2.0, 0.14, 0.05, platYellow, px, platY + 0.12, pz + 0.63);
+    box(2.0, 0.14, 0.05, platYellow, px, platY + 0.12, pz - 0.63);
+    // 4 corner uprights
+    [[px-0.9,pz-0.6],[px+0.9,pz-0.6],[px-0.9,pz+0.6],[px+0.9,pz+0.6]].forEach(([x,z]) => {
+      strut(x, platY+0.1, z, x, platY+0.9, z, 0.032, platYellow);
+    });
+    // Top handrails
+    strut(px-0.9, platY+0.9, pz-0.6, px+0.9, platY+0.9, pz-0.6, 0.025, platYellow);
+    strut(px-0.9, platY+0.9, pz+0.6, px+0.9, platY+0.9, pz+0.6, 0.025, platYellow);
+    strut(px-0.9, platY+0.9, pz-0.6, px-0.9, platY+0.9, pz+0.6, 0.025, platYellow);
+    strut(px+0.9, platY+0.9, pz-0.6, px+0.9, platY+0.9, pz+0.6, 0.025, platYellow);
+    // Mid rails
+    strut(px-0.9, platY+0.5, pz-0.6, px+0.9, platY+0.5, pz-0.6, 0.02, platYellow);
+    strut(px-0.9, platY+0.5, pz+0.6, px+0.9, platY+0.5, pz+0.6, 0.02, platYellow);
+    // Diagonal support brackets back to mast base
+    strut(px-0.8, platY, pz, mw, platY - 1.1, 0, 0.045, platMat);
+    strut(px+0.4, platY, pz, mw, platY - 0.6, 0, 0.045, platMat);
+  }
+
+  scene.add(g);
+  craneGroup = g;
+}
+
+// ── Resize ────────────────────────────────────────────────────────────
+function resize() {
+  const W = canvas.clientWidth, H = canvas.clientHeight;
+  renderer.setSize(W, H, false);
+  camera.aspect = W / H;
+  camera.updateProjectionMatrix();
+}
+window.addEventListener('resize', resize);
+resize();
+
+// ── Camera choreography (glide to focus, Porsche-style) ───────────────
+const camAnim = { active: false, t: 0,
+  fromPos: new THREE.Vector3(), toPos: new THREE.Vector3(),
+  fromTgt: new THREE.Vector3(), toTgt: new THREE.Vector3() };
+
+function flyTo(pos, tgt) {
+  camAnim.fromPos.copy(camera.position);
+  camAnim.toPos.set(pos.x, pos.y, pos.z);
+  camAnim.fromTgt.copy(controls.target);
+  camAnim.toTgt.set(tgt.x, tgt.y, tgt.z);
+  camAnim.t = 0; camAnim.active = true;
+  controls.autoRotate = false;
+  document.getElementById('hint').classList.add('gone');
+}
+
+const VIEWS = {
+  model:   { pos: { x: 24, y: 26, z: 50 }, tgt: { x: 3,  y: 12, z: 0 } },
+  colour:  { pos: { x: 22, y: 26, z: 50 }, tgt: { x: 3,  y: 12, z: 0 } },
+  height:  { pos: { x: 20, y: 26, z: 46 }, tgt: { x: 0,  y: 13, z: 0 } },
+  jib:     { pos: { x: 8,  y: 24, z: 38 }, tgt: { x: 6,  y: 18, z: 0 } },
+  cap:     { pos: { x: 22, y: 18, z: 36 }, tgt: { x: 2,  y: 11, z: 0 } },
+  power:   { pos: { x: 14, y: 7,  z: 22 }, tgt: { x: 3,  y: 3,  z: 1 } },
+  light:   { pos: { x: 14, y: 22, z: 34 }, tgt: { x: 5,  y: 17, z: 0 } },
+  safety:  { pos: { x: 12, y: 22, z: 32 }, tgt: { x: 4,  y: 17, z: 0 } },
+  brand:   { pos: { x: 16, y: 20, z: 34 }, tgt: { x: 5,  y: 14, z: 0 } },
+  summary: { pos: { x: 24, y: 26, z: 50 }, tgt: { x: 3,  y: 12, z: 0 } },
+};
+
+// Per-feature camera fly-to: fires when each toggle is turned ON
+// Calibrated for BQ GHD5527 luffing crane at Standard height (world=14):
+//   apex y≈14.3 · jib tip (x≈4.5, y≈19.6) at LA=0.92 rad · counter-jib in -x
+const FEATURE_VIEWS = {
+  beacon:    { pos: { x: 10.3, y: 6.1,  z: 18.2 }, tgt: { x: 0.3,  y: 14.3, z: 0   } },
+  floods:    { pos: { x: 8.1,  y: 5.3,  z: 14.3 }, tgt: { x: -1,   y: 12.8, z: 0   } },
+  led:       { pos: { x: 0.6,  y: 11.8, z: 33.8 }, tgt: { x: 2.5,  y: 17,   z: 0   } },
+  anti:      { pos: { x: 15,   y: 4.8,  z: 26   }, tgt: { x: 2,    y: 14.3, z: 0   } },
+  load:      { pos: { x: 5.5,  y: 6.5,  z: 13   }, tgt: { x: -1,   y: 13,   z: 0   } },
+  anemo:     { pos: { x: 6.4,  y: 6.1,  z: 10.4 }, tgt: { x: 0.3,  y: 14.3, z: 0   } },
+  camera:    { pos: { x: 3.2,  y: 11.9, z: 28.6 }, tgt: { x: 2.5,  y: 16.8, z: 0   } },
+  sign:      { pos: { x: 3.7,  y: 5.4,  z: 34.2 }, tgt: { x: 2.5,  y: 12,   z: 0.8 } },
+  remote:    { pos: { x: 11.4, y: 6.3,  z: 15.9 }, tgt: { x: 1,    y: 5,    z: -1  } },
+  telemetry: { pos: { x: -9.5, y: 7.5,  z: 15.6 }, tgt: { x: -3,   y: 14,   z: 0   } },
+};
+
+const easeInOut = t => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+
+// Shift any stored view's Y positions to match the current tower height.
+// Views were authored at Standard height (world=14). For taller cranes the
+// jib/cab/beacon are higher; base-level features (power box, remote pendant) stay put.
+// We interpolate: views targeting high Y values get the full height delta applied;
+// views targeting the base get little or none.
+function heightView(pos, tgt) {
+  const delta = cfg.heightWorld - 14;  // 0=Standard, 6=Tall, 12=Super-Tall
+  if (delta === 0) return { pos, tgt };
+  // frac: 0 at ground level (tgt.y ≤ 3), 1 at jib level (tgt.y ≥ 15)
+  const frac = Math.max(0, Math.min(1, (tgt.y - 3) / 12));
+  const dy = delta * frac;
+  return {
+    pos: { x: pos.x, y: pos.y + dy, z: pos.z },
+    tgt: { x: tgt.x, y: tgt.y + dy, z: tgt.z },
+  };
+}
+function flyToView(v) { const a = heightView(v.pos, v.tgt); flyTo(a.pos, a.tgt); }
+
+// ── Render loop ───────────────────────────────────────────────────────
+let rafId = null;
+let renderPaused = false;
+
+function tick() {
+  rafId = requestAnimationFrame(tick);
+  if (renderPaused) return;
+  if (camAnim.active) {
+    camAnim.t = Math.min(camAnim.t + 0.022, 1);
+    const e = easeInOut(camAnim.t);
+    camera.position.lerpVectors(camAnim.fromPos, camAnim.toPos, e);
+    controls.target.lerpVectors(camAnim.fromTgt, camAnim.toTgt, e);
+    if (camAnim.t >= 1) camAnim.active = false;
+  }
+  for (const s of spinners) s.rotation.y += 0.14;
+  controls.update();
+  renderer.render(scene, camera);
+}
+tick();
+
+// Pause render loop when tab/iframe is hidden — saves CPU when not in view
+document.addEventListener('visibilitychange', () => {
+  renderPaused = document.hidden;
+  if (!renderPaused) renderer.render(scene, camera); // one frame on resume
+});
+
+// ── Initial ───────────────────────────────────────────────────────────
+loadModel(LIEBHERR);
+renderJibOptions(cfg.modelKey);
+updateUI();
+
+// ── Expose to HTML onclick handlers ───────────────────────────────────
+window.setColor = (hex, name, el) => {
+  cfg.color = hex; cfg.colorName = name;
+  document.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+  if (cfg.realistic && loadedModel) applyColor(); else buildCrane();
+  updateUI();
+};
+
+// Selected radius (in metres) drives the 3D jib length directly — no hidden multipliers
+function setJibState(r, name, add) {
+  cfg.jibRadius = r; cfg.jibName = name; cfg.jibAdd = add;
+  cfg.jib = r / 55 * 7;   // map metres → world-length units (55m ≈ the original Standard)
+  const b = document.getElementById('jib-badge');
+  if (b) b.textContent = name + ' · ' + r + 'm radius';
+}
+
+// Rebuild the jib option cards to match the selected crane's realistic radii
+function renderJibOptions(key) {
+  const opts = JIB_OPTIONS[key] || JIB_OPTIONS.mdt219;
+  const wrap = document.getElementById('jib-vcards');
+  if (!wrap) return;
+  const arcR = [13, 19, 25], tipX = [41, 47, 53];
+  wrap.innerHTML = opts.map((o, i) => {
+    const price = o.add < 0 ? '− $' + Math.abs(o.add / 1000) + 'K' : o.add > 0 ? '+ $' + (o.add / 1000) + 'K' : 'Base spec';
+    const active = i === 1 ? ' active' : '';
+    return `<div class="ocard vcard${active}" onclick="setJib(${o.r},'${o.name}',${o.add},this)">
+      <div class="vcard-img">
+        <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="28" cy="28" r="${arcR[i]}" fill="rgba(55,65,81,0.06)" stroke="#374151" stroke-width="1.2" stroke-dasharray="3 2"/>
+          <circle cx="28" cy="28" r="2.5" fill="#374151"/>
+          <line x1="28" y1="28" x2="${tipX[i]}" y2="28" stroke="#374151" stroke-width="1.4" stroke-linecap="round"/>
+          <circle cx="${tipX[i]}" cy="28" r="1.5" fill="#6b7280"/>
+        </svg>
+      </div>
+      <div class="vcard-info">
+        <div class="vcard-name">${o.name}</div>
+        <div class="vcard-spec">${o.r}m radius</div>
+        <div class="vcard-price">${price}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+window.setJib = (r, name, add, el) => {
+  setJibState(r, name, add);
+  el.parentElement.querySelectorAll('.ocard').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  buildCrane(); updateUI();
+};
+
+window.setCap = (name, spec, add, el) => {
+  cfg.capName = name; cfg.capSpec = spec; cfg.capAdd = add;
+  el.parentElement.querySelectorAll('.ocard').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  rebuild(); updateUI();
+};
+
+window.setFinish = (name, el) => {
+  cfg.finish = name;
+  el.parentElement.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  rebuild(); updateUI();
+};
+
+window.setHeight = (name, m, world, add, el) => {
+  cfg.height = name; cfg.heightM = m; cfg.heightWorld = world; cfg.heightAdd = add;
+  el.parentElement.querySelectorAll('.ocard').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  rebuild(); updateUI();
+  // reframe so the whole (now taller/shorter) crane stays in view
+  const tgtY = (0.28 + world) * 0.5;
+  const dist = 26 + (world - 14) * 1.5;
+  flyTo({ x: dist * 0.62, y: tgtY + world * 0.5, z: dist }, { x: 2, y: tgtY, z: 0 });
+};
+
+window.setPower = (name, el) => {
+  cfg.power = name;
+  el.parentElement.querySelectorAll('.ocard').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  rebuild(); updateUI();
+};
+
+window.setModel = (key, el) => {
+  const m = CRANE_MODELS[key]; if (!m) return;
+  cfg.craneType = m.type; cfg.modelKey = key; cfg.modelName = m.name; cfg.modelYear = m.year;
+  cfg.modelBaseLo = m.lo; cfg.modelBaseHi = m.hi; cfg.modelTon = m.ton; cfg.modelLF = m.lf || 1.0;
+  // rebuild the jib choices for this model and default to its Standard radius
+  renderJibOptions(key);
+  const def = (JIB_OPTIONS[key] || JIB_OPTIONS.mdt219)[1];
+  setJibState(def.r, def.name, def.add);
+  document.querySelectorAll('#sec-model .ocard').forEach(c => c.classList.remove('active'));
+  if (el) el.classList.add('active');
+  // Luffing models define their own tonnage → hide the standalone Capacity tier
+  const capSec = document.getElementById('sec-cap');
+  if (capSec) capSec.style.display = m.type === 'luff' ? 'none' : '';
+  if (m.type === 'luff') {
+    cfg.capName = m.name; cfg.capSpec = m.ton + ' max'; cfg.capAdd = 0;
+  } else {
+    cfg.capName = 'Standard'; cfg.capSpec = '8 tonne max'; cfg.capAdd = 0;
+    document.querySelectorAll('#sec-cap .ocard').forEach((c, i) => c.classList.toggle('active', i === 0));
+  }
+  const badge = document.getElementById('model-badge');
+  if (badge) badge.textContent = m.name + ' · ' + (m.type === 'luff' ? 'Luffing' : 'Hammerhead');
+  rebuild(); updateUI();
+};
+
+window.setHoist = (key, val) => {
+  cfg.hoist[key] = val;
+  rebuild(); updateUI();
+};
+
+window.setLight = (key, val) => {
+  cfg.light[key] = val;
+  rebuild(); updateUI();
+  if (val && FEATURE_VIEWS[key]) flyToView(FEATURE_VIEWS[key]);
+};
+
+window.setSafety = (key, val) => {
+  if (key === 'sign') cfg.sign = val; else cfg.safety[key] = val;
+  rebuild(); updateUI();
+  if (val && FEATURE_VIEWS[key]) flyToView(FEATURE_VIEWS[key]);
+};
+
+// rebuild whichever crane is active (parametric vs realistic GLB)
+function rebuild() {
+  if (cfg.realistic && loadedModel) applyColor();
+  else buildCrane();
+}
+
+window.switchTab = (id, btn) => {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + id).classList.add('active');
+  if (VIEWS[id]) flyToView(VIEWS[id]);
+};
+
+// ── Day / Night ───────────────────────────────────────────────────────
+window.setTime = (night, btn) => {
+  cfg.night = night;
+  btn.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  applyTime();
+  rebuild();
+};
+function applyTime() {
+  const n = cfg.night;
+  skyMat.uniforms.top.value.set(n ? 0x05080f : 0x0c1320);
+  skyMat.uniforms.mid.value.set(n ? 0x0d1626 : 0x27425e);
+  skyMat.uniforms.bottom.value.set(n ? 0x1a2740 : 0x5b6b80);
+  skyMat.uniforms.glow.value.set(n ? 0x24405e : 0x9fb4cc);
+  scene.fog.color.set(n ? 0x0d1626 : 0x44566c);
+  sun.intensity = n ? 0.25 : 3.4;
+  sun.color.set(n ? 0x6f86b8 : 0xfff4e2);
+  hemi.intensity = n ? 0.4 : 1.6;
+  skyFill.intensity = n ? 0.15 : 0.8;
+  renderer.toneMappingExposure = n ? 1.15 : 1.0;
+}
+
+// ── Scene environment: studio (parametric) vs outdoor (realistic) ───────
+function applyScene(realistic) {
+  const nightToggle = document.getElementById('seg-time');
+  if (realistic) {
+    // Outdoor dramatic environment — restore from applyTime state
+    applyTime();
+    gnd.material.color.set(0x6a6c70);
+    pad.material.color.set(0x9a9a93);
+    skyFill.color.set(0x9ec0e8);
+    scene.environment = outdoorEnvTex;
+    document.querySelector('.vignette').style.opacity = '1';
+    document.querySelector('.canvas-wrap').style.background = '#080f1c';
+    document.querySelector('.canvas-wrap').classList.remove('studio');
+    if (nightToggle) nightToggle.style.opacity = '1';
+  } else {
+    // Clean white studio environment
+    skyMat.uniforms.top.value.set(0xffffff);
+    skyMat.uniforms.mid.value.set(0xf2f2f2);
+    skyMat.uniforms.bottom.value.set(0xe6e6e6);
+    skyMat.uniforms.glow.value.set(0xffffff);
+    scene.fog.color.set(0xf0f0f0);
+    scene.fog.near = 50; scene.fog.far = 110;
+    sun.intensity = 2.0;
+    sun.color.set(0xffffff);
+    sun.position.set(10, 22, 18);          // more frontal — even studio fill
+    hemi.intensity = 2.6;
+    hemi.color.set(0xffffff);
+    hemi.groundColor.set(0xe8e8e8);
+    skyFill.intensity = 1.6;
+    skyFill.color.set(0xffffff);
+    renderer.toneMappingExposure = 1.25;
+    gnd.material.color.set(0xd4d4d4);
+    pad.material.color.set(0xe8e8e8);
+    scene.environment = studioEnvTex;
+    document.querySelector('.vignette').style.opacity = '0';
+    document.querySelector('.canvas-wrap').style.background = '#f0f0f0';
+    document.querySelector('.canvas-wrap').classList.add('studio');
+    if (nightToggle) nightToggle.style.opacity = '0.3';  // greyed — not applicable in studio
+  }
+}
+
+// ── Parametric ⇄ Realistic model view ─────────────────────────────────
+window.setView = (realistic, btn) => {
+  cfg.realistic = realistic;
+  btn.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  applyScene(realistic);
+  const depOv = document.getElementById('depiction-overlay');
+  if (realistic) {
+    if (craneGroup) { scene.remove(craneGroup); craneGroup = null; }
+    document.getElementById('hint').textContent = 'LOADING REALISTIC MODEL…';
+    document.getElementById('hint').classList.remove('gone');
+    if (!loadedModel) {
+      const ov = document.getElementById('loading-overlay');
+      if (ov) { ov.style.display = 'flex'; ov.style.opacity = '1'; document.getElementById('loading-bar').style.animation = 'none'; void document.getElementById('loading-bar').offsetWidth; document.getElementById('loading-bar').style.animation = 'loadbar 4s cubic-bezier(.4,0,.6,1) forwards'; }
+      loadModel(LIEBHERR);
+    } else {
+      loadedModel.visible = true;
+    }
+    // show depiction notice (re-show if previously dismissed)
+    if (depOv) { depOv.classList.remove('dep-hidden'); }
+  } else {
+    if (loadedModel) { loadedModel.visible = false; }
+    const ov = document.getElementById('loading-overlay');
+    if (ov) { ov.style.opacity = '0'; setTimeout(() => ov.style.display = 'none', 300); }
+    if (depOv) { depOv.classList.add('dep-hidden'); }
+    buildCrane();
+  }
+};
+
+// Smooth button zoom — dolly camera toward/away from the current target
+window.zoomCam = (out) => {
+  const dir = camera.position.clone().sub(controls.target);
+  let dist = dir.length() * (out ? 1.25 : 0.8);
+  dist = Math.max(controls.minDistance, Math.min(controls.maxDistance, dist));
+  const newPos = controls.target.clone().add(dir.normalize().multiplyScalar(dist));
+  flyTo(newPos, controls.target);
+};
+window.zoomReset = () => flyToView(VIEWS.colour);
+
+window.requestQuote = () => {
+  alert('Quote request → to be wired to lead form in production.');
+};
+
+window.focusSection = (id) => {
+  if (VIEWS[id]) flyToView(VIEWS[id]);
+};
+
+// Snapshot mode — ?snapshot hides ALL UI, shows only the clean 3D canvas
+if (new URLSearchParams(location.search).has('snapshot')) {
+  const hide = sel => { const el = document.querySelector(sel); if (el) el.style.display = 'none'; };
+  hide('.topbar');
+  hide('.cfg-panel');
+  hide('.canvas-controls');
+  hide('.zoom-controls');
+  hide('.canvas-badge-model');
+  hide('.crane-spec');
+  hide('.rotate-hint');
+  hide('.vignette');
+  const cfgMain = document.querySelector('.cfg-main');
+  if (cfgMain) cfgMain.style.height = '100vh';
+  cfg.realistic = false;
+  applyScene(false);
+  setView('front');
+}
+</script>
+</body>
+</html>

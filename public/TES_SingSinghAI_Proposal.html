@@ -136,6 +136,32 @@
     .mock-cat-panel { position: absolute; inset: 0; display: flex; gap: 2px; padding: 2px 16px 2px 2px; background: #ddd; pointer-events: none; visibility: hidden; }
     .mock-cat-panel.active { pointer-events: auto; visibility: visible; }
 
+    @keyframes ganttShimmer { 0%{background-position:-200% center} 100%{background-position:200% center} }
+    @keyframes msPulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+    .gb1 { background:linear-gradient(90deg,#3b82f6 35%,#93c5fd 50%,#3b82f6 65%); background-size:250% auto; animation:ganttShimmer 2.8s linear infinite; border-radius:3px; height:14px; }
+    .gb2 { background:linear-gradient(90deg,#10b981 35%,#6ee7b7 50%,#10b981 65%); background-size:250% auto; animation:ganttShimmer 2.8s linear infinite .5s; border-radius:3px; height:14px; }
+    .gb3 { background:linear-gradient(90deg,#a78bfa 35%,#ddd6fe 50%,#a78bfa 65%); background-size:250% auto; animation:ganttShimmer 2.8s linear infinite 1s; border-radius:3px; height:14px; }
+    .gb1.dim { opacity:.65; } .gb2.dim { opacity:.65; } .gb3.dim { opacity:.65; }
+    .gantt-ms { animation:msPulse 1.8s ease-in-out infinite; display:inline-block; }
+    @keyframes cfgBounce {
+      0%,100% { transform: scale(1);        box-shadow: 0 0 0 0 rgba(26,115,235,.5); }
+      20%      { transform: scale(1.12);     box-shadow: 0 0 0 6px rgba(26,115,235,.18); }
+      40%      { transform: scale(.96); }
+      60%      { transform: scale(1.06);     box-shadow: 0 0 0 3px rgba(26,115,235,.1); }
+      80%      { transform: scale(.99); }
+    }
+    .cfg-open-btn {
+      margin-left: auto; display: flex; align-items: center; gap: .35rem;
+      font-size: 11px; font-weight: 700; color: #fff; text-decoration: none;
+      padding: .32rem .8rem; border-radius: 6px; white-space: nowrap; flex-shrink: 0;
+      background: linear-gradient(135deg, #1A73EB 0%, #0EA5E9 100%);
+      border: none; outline: none;
+      box-shadow: 0 2px 10px rgba(26,115,235,.35);
+      animation: cfgBounce 2.2s cubic-bezier(.36,.07,.19,.97) infinite;
+      animation-delay: 1.5s;
+      transition: transform .15s, box-shadow .15s;
+    }
+    .cfg-open-btn:hover { animation: none; transform: scale(1.07); box-shadow: 0 4px 16px rgba(26,115,235,.45); }
     @keyframes cardSlideIn { from { transform: translateX(110%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
     @keyframes cardSlideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(-110%); opacity: 0; } }
     @keyframes cardSlideInRev { from { transform: translateX(-110%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
@@ -380,13 +406,21 @@
     .cp-gallery { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
     .cp-model { background: #fff; border-radius: 8px; overflow: hidden; cursor: pointer; border: 1px solid #e8e8e8; transition: box-shadow .2s; display: flex; flex-direction: column; }
     .cp-model:hover { box-shadow: 0 4px 16px rgba(0,0,0,.1); }
-    .cp-model-name { font-size: 13px; font-weight: 700; color: #111; letter-spacing: -.01em; padding: .6rem .7rem .3rem; }
+    .cp-model-featured { grid-column: 1 / -1; }
+    .cp-model-featured .cp-model-img { height: 110px; }
+    .cp-model-name { font-size: 13px; font-weight: 700; color: #111; letter-spacing: -.01em; padding: .6rem .7rem .2rem; }
+    .cp-model-tagline { font-size: 8px; color: #888; padding: 0 .7rem .35rem; line-height: 1.4; }
     .cp-model-img { height: 90px; background: #e0e0e0; margin: 0 .5rem; border-radius: 6px; display: flex; align-items: center; justify-content: center; }
     .cp-model-img-label { font-family: var(--mono); font-size: 7px; color: #bbb; letter-spacing: .06em; }
     .cp-model-foot { display: flex; align-items: center; justify-content: space-between; padding: .4rem .7rem .6rem; gap: .3rem; }
     .cp-model-pills { display: flex; gap: .25rem; flex-wrap: wrap; }
     .cp-pill { font-size: 7px; background: #f5f5f5; border: 1px solid #e0e0e0; color: #666; padding: .15rem .4rem; border-radius: 20px; font-family: var(--mono); white-space: nowrap; }
+    .cp-model-price { font-size: 8.5px; font-weight: 700; color: var(--navy); font-family: var(--mono); white-space: nowrap; }
     .cp-model-btn { font-size: 7.5px; font-weight: 700; color: #fff; background: #333; padding: .22rem .55rem; border-radius: 3px; white-space: nowrap; cursor: pointer; flex-shrink: 0; }
+    .cp-model-actions { display: flex; flex-direction: column; align-items: flex-end; gap: .25rem; flex-shrink: 0; }
+    .cp-section-sep { grid-column: 1 / -1; display: flex; align-items: center; gap: .5rem; padding: .5rem 0 .1rem; }
+    .cp-section-label { font-family: var(--mono); font-size: 7px; letter-spacing: .14em; text-transform: uppercase; color: #999; white-space: nowrap; }
+    .cp-section-rule { flex: 1; height: 1px; background: #ddd; }
 
     .cp-backdrop { flex: 1; background: rgba(0,0,0,.45); backdrop-filter: blur(1px); display: flex; align-items: flex-start; justify-content: flex-end; padding: .8rem; }
     .cp-close { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,.15); display: flex; align-items: center; justify-content: center; color: #fff; cursor: pointer; }
@@ -440,10 +474,23 @@
     <h1>What We're Building</h1>
     <p class="s-intro">From our initial discovery call and your scoping answers, here is what this project is designed to achieve.</p>
 
-    <div class="s2-list">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;max-width:1000px">
 
-      <div class="s2-item">
-        <div class="s2-title">Primary Objective</div>
+      <!-- Primary Objective -->
+      <div style="background:#f0f4ff;border-radius:12px;padding:1.8rem;display:flex;flex-direction:column;gap:1rem">
+        <div style="display:flex;align-items:flex-start;gap:1rem">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
+            <circle cx="24" cy="24" r="20" fill="#E8F0FE"/>
+            <circle cx="24" cy="24" r="10" stroke="#1A73EB" stroke-width="2" fill="none"/>
+            <circle cx="24" cy="24" r="6" stroke="#1A73EB" stroke-width="2" fill="none"/>
+            <circle cx="24" cy="24" r="2" fill="#1A73EB"/>
+            <line x1="30" y1="18" x2="34" y2="14" stroke="#1A73EB" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <div>
+            <div class="s2-title" style="margin-bottom:.8rem">Primary Objective</div>
+            <div style="width:80px;height:1px;background:#1A73EB;margin-bottom:1rem"></div>
+          </div>
+        </div>
         <div class="s2-arrows">
           <div class="s2-arrow"><strong>Direct sales</strong><span>of cranes and equipment in the Australian market</span></div>
           <div class="s2-arrow"><strong>Qualified inquiry</strong><span>generated by the website</span></div>
@@ -451,8 +498,21 @@
         </div>
       </div>
 
-      <div class="s2-item">
-        <div class="s2-title">Customer Segment</div>
+      <!-- Customer Segment -->
+      <div style="background:#f0f4ff;border-radius:12px;padding:1.8rem;display:flex;flex-direction:column;gap:1rem">
+        <div style="display:flex;align-items:flex-start;gap:1rem">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
+            <circle cx="24" cy="24" r="20" fill="#E8F0FE"/>
+            <circle cx="16" cy="16" r="3" fill="#1A73EB"/>
+            <circle cx="32" cy="16" r="3" fill="#1A73EB"/>
+            <circle cx="24" cy="26" r="3" fill="#1A73EB"/>
+            <path d="M12 22c0-2 2-4 4-4M32 22c0-2 2-4 4-4M19 32c0-2 2.5-4 5-4" stroke="#1A73EB" stroke-width="1.5" fill="none"/>
+          </svg>
+          <div>
+            <div class="s2-title" style="margin-bottom:.8rem">Customer Segment</div>
+            <div style="width:80px;height:1px;background:#1A73EB;margin-bottom:1rem"></div>
+          </div>
+        </div>
         <div class="s2-arrows">
           <div class="s2-arrow"><strong>Construction companies</strong><span>and property developers</span></div>
           <div class="s2-arrow"><strong>Mining operations</strong><span>and crane hire companies</span></div>
@@ -460,8 +520,22 @@
         </div>
       </div>
 
-      <div class="s2-item">
-        <div class="s2-title">Audience & Reach</div>
+      <!-- Audience & Reach -->
+      <div style="background:#f0f4ff;border-radius:12px;padding:1.8rem;display:flex;flex-direction:column;gap:1rem">
+        <div style="display:flex;align-items:flex-start;gap:1rem">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
+            <circle cx="24" cy="24" r="20" fill="#E8F0FE"/>
+            <circle cx="24" cy="24" r="10" stroke="#1A73EB" stroke-width="2" fill="none"/>
+            <line x1="24" y1="14" x2="24" y2="34" stroke="#1A73EB" stroke-width="1.5"/>
+            <line x1="14" y1="24" x2="34" y2="24" stroke="#1A73EB" stroke-width="1.5"/>
+            <path d="M16 18c1.5 2 2.5 5 2.5 8s-1 6-2.5 8" stroke="#1A73EB" stroke-width="1.5" fill="none"/>
+            <path d="M32 18c-1.5 2-2.5 5-2.5 8s1 6 2.5 8" stroke="#1A73EB" stroke-width="1.5" fill="none"/>
+          </svg>
+          <div>
+            <div class="s2-title" style="margin-bottom:.8rem">Audience & Reach</div>
+            <div style="width:80px;height:1px;background:#1A73EB;margin-bottom:1rem"></div>
+          </div>
+        </div>
         <div class="s2-arrows">
           <div class="s2-arrow"><strong>Australia-wide</strong><span>desktop and mobile equally</span></div>
           <div class="s2-arrow"><strong>Tower cranes</strong><span>from $800K</span></div>
@@ -469,8 +543,22 @@
         </div>
       </div>
 
-      <div class="s2-item">
-        <div class="s2-title">What We're Delivering</div>
+      <!-- What We're Delivering -->
+      <div style="background:#f0f4ff;border-radius:12px;padding:1.8rem;display:flex;flex-direction:column;gap:1rem">
+        <div style="display:flex;align-items:flex-start;gap:1rem">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
+            <circle cx="24" cy="24" r="20" fill="#E8F0FE"/>
+            <rect x="13" y="15" width="22" height="15" rx="2" stroke="#1A73EB" stroke-width="2.5" fill="none"/>
+            <path d="M18 32h12" stroke="#1A73EB" stroke-width="2" stroke-linecap="round"/>
+            <rect x="22" y="32" width="4" height="2" fill="#1A73EB" rx="0.5"/>
+            <circle cx="24" cy="22" r="2.5" fill="#1A73EB"/>
+            <path d="M24 22l3-2v4l-3 2z" fill="#1A73EB"/>
+          </svg>
+          <div>
+            <div class="s2-title" style="margin-bottom:.8rem">What We're Delivering</div>
+            <div style="width:80px;height:1px;background:#1A73EB;margin-bottom:1rem"></div>
+          </div>
+        </div>
         <div class="s2-arrows">
           <div class="s2-arrow"><strong>Full website rebuild</strong><span>on a new platform</span></div>
           <div class="s2-arrow"><strong>3D crane configurator</strong><span>with live rendering</span></div>
@@ -939,35 +1027,80 @@
             <!-- Centre — gallery grid -->
             <div class="cp-centre">
               <div class="cp-gallery" id="cp-gallery">
-                <div class="cp-model" data-cat="bq">
-                  <div class="cp-model-name">BQ 5013</div>
+
+                <!-- ── Potain ─────────────────────────────────────── -->
+                <div class="cp-section-sep" data-section="potain">
+                  <span class="cp-section-label">Potain · Hammerhead</span>
+                  <div class="cp-section-rule"></div>
+                </div>
+                <div class="cp-model cp-model-featured" data-cat="potain">
+                  <div class="cp-model-name">Potain MDT 219</div>
+                  <div class="cp-model-tagline">Flat-top hammerhead · 8–16 t · wide reach</div>
                   <div class="cp-model-img"><div class="cp-model-img-label">3D render</div></div>
-                  <div class="cp-model-foot"><div class="cp-model-pills"><span class="cp-pill">Tower Crane</span><span class="cp-pill">5t</span><span class="cp-pill">40m jib</span></div><div class="cp-model-btn">Configure</div></div>
+                  <div class="cp-model-foot">
+                    <div class="cp-model-pills"><span class="cp-pill">Hammerhead</span><span class="cp-pill">8–16 t</span><span class="cp-pill">40–70m jib</span></div>
+                    <div class="cp-model-actions"><div class="cp-model-price">from $800K</div><div class="cp-model-btn">Configure</div></div>
+                  </div>
+                </div>
+
+                <!-- ── BQ Luffing ──────────────────────────────────── -->
+                <div class="cp-section-sep" data-section="bq">
+                  <span class="cp-section-label">BQ · Luffing Tower Cranes · Tight urban sites</span>
+                  <div class="cp-section-rule"></div>
                 </div>
                 <div class="cp-model" data-cat="bq">
-                  <div class="cp-model-name">BQ 6016</div>
+                  <div class="cp-model-name">BQ GHD4510</div>
+                  <div class="cp-model-tagline">6 t · smaller-scale projects · easy install</div>
                   <div class="cp-model-img"><div class="cp-model-img-label">3D render</div></div>
-                  <div class="cp-model-foot"><div class="cp-model-pills"><span class="cp-pill">Tower Crane</span><span class="cp-pill">16t</span><span class="cp-pill">60m jib</span></div><div class="cp-model-btn">Configure</div></div>
+                  <div class="cp-model-foot">
+                    <div class="cp-model-pills"><span class="cp-pill">Luffing</span><span class="cp-pill">6 t</span><span class="cp-pill">30–45m jib</span></div>
+                    <div class="cp-model-actions"><div class="cp-model-price">from $520K</div><div class="cp-model-btn">Configure</div></div>
+                  </div>
                 </div>
                 <div class="cp-model" data-cat="bq">
-                  <div class="cp-model-name">BQ 7020</div>
+                  <div class="cp-model-name">BQ GHD5020A</div>
+                  <div class="cp-model-tagline">10 t · sturdy, durable, high efficiency</div>
                   <div class="cp-model-img"><div class="cp-model-img-label">3D render</div></div>
-                  <div class="cp-model-foot"><div class="cp-model-pills"><span class="cp-pill">Tower Crane</span><span class="cp-pill">20t</span><span class="cp-pill">70m jib</span></div><div class="cp-model-btn">Configure</div></div>
-                </div>
-                <div class="cp-model" data-cat="potain">
-                  <div class="cp-model-name">Potain MDT 389</div>
-                  <div class="cp-model-img"><div class="cp-model-img-label">3D render</div></div>
-                  <div class="cp-model-foot"><div class="cp-model-pills"><span class="cp-pill">Top Slewing</span><span class="cp-pill">18t</span><span class="cp-pill">75m jib</span></div><div class="cp-model-btn">Configure</div></div>
-                </div>
-                <div class="cp-model" data-cat="potain">
-                  <div class="cp-model-name">Potain IGO T 130</div>
-                  <div class="cp-model-img"><div class="cp-model-img-label">3D render</div></div>
-                  <div class="cp-model-foot"><div class="cp-model-pills"><span class="cp-pill">Self-erecting</span><span class="cp-pill">6t</span><span class="cp-pill">45m jib</span></div><div class="cp-model-btn">Configure</div></div>
+                  <div class="cp-model-foot">
+                    <div class="cp-model-pills"><span class="cp-pill">Luffing</span><span class="cp-pill">10 t</span><span class="cp-pill">35–50m jib</span></div>
+                    <div class="cp-model-actions"><div class="cp-model-price">from $680K</div><div class="cp-model-btn">Configure</div></div>
+                  </div>
                 </div>
                 <div class="cp-model" data-cat="bq">
-                  <div class="cp-model-name">BQ 8030</div>
+                  <div class="cp-model-name">BQ GHD5527</div>
+                  <div class="cp-model-tagline">14 t · mid-rise · balanced power &amp; reach</div>
                   <div class="cp-model-img"><div class="cp-model-img-label">3D render</div></div>
-                  <div class="cp-model-foot"><div class="cp-model-pills"><span class="cp-pill">Tower Crane</span><span class="cp-pill">30t</span><span class="cp-pill">80m jib</span></div><div class="cp-model-btn">Configure</div></div>
+                  <div class="cp-model-foot">
+                    <div class="cp-model-pills"><span class="cp-pill">Luffing</span><span class="cp-pill">14 t</span><span class="cp-pill">40–55m jib</span></div>
+                    <div class="cp-model-actions"><div class="cp-model-price">from $880K</div><div class="cp-model-btn">Configure</div></div>
+                  </div>
+                </div>
+                <div class="cp-model" data-cat="bq">
+                  <div class="cp-model-name">BQ GHD6032</div>
+                  <div class="cp-model-tagline">18 t · compact yet powerful · medium-large</div>
+                  <div class="cp-model-img"><div class="cp-model-img-label">3D render</div></div>
+                  <div class="cp-model-foot">
+                    <div class="cp-model-pills"><span class="cp-pill">Luffing</span><span class="cp-pill">18 t</span><span class="cp-pill">45–60m jib</span></div>
+                    <div class="cp-model-actions"><div class="cp-model-price">from $1.15M</div><div class="cp-model-btn">Configure</div></div>
+                  </div>
+                </div>
+                <div class="cp-model" data-cat="bq">
+                  <div class="cp-model-name">BQ GHD6050</div>
+                  <div class="cp-model-tagline">20 t · high capacity · tight urban worksites</div>
+                  <div class="cp-model-img"><div class="cp-model-img-label">3D render</div></div>
+                  <div class="cp-model-foot">
+                    <div class="cp-model-pills"><span class="cp-pill">Luffing</span><span class="cp-pill">20 t</span><span class="cp-pill">45–60m jib</span></div>
+                    <div class="cp-model-actions"><div class="cp-model-price">from $1.48M</div><div class="cp-model-btn">Configure</div></div>
+                  </div>
+                </div>
+                <div class="cp-model" data-cat="bq">
+                  <div class="cp-model-name">BQ GHD6062</div>
+                  <div class="cp-model-tagline">24 t · advanced lifting · modern safety &amp; control</div>
+                  <div class="cp-model-img"><div class="cp-model-img-label">3D render</div></div>
+                  <div class="cp-model-foot">
+                    <div class="cp-model-pills"><span class="cp-pill">Luffing</span><span class="cp-pill">24 t</span><span class="cp-pill">50–65m jib</span></div>
+                    <div class="cp-model-actions"><div class="cp-model-price">from $1.75M</div><div class="cp-model-btn">Configure</div></div>
+                  </div>
                 </div>
 
                 <!-- Hoists -->
@@ -1095,18 +1228,37 @@
           <div class="fc-browser">
             <div class="fc-dots"><span></span><span></span><span></span></div>
             <div class="fc-url">totalequipmentsales.com.au/configure</div>
-            <a href="TES_Crane_Configurator.html" target="_blank" style="margin-left:auto;display:flex;align-items:center;gap:.35rem;font-size:11px;font-weight:600;color:#111;text-decoration:none;padding:.28rem .7rem;border:1px solid #d1d5db;border-radius:6px;background:#fff;white-space:nowrap;flex-shrink:0;transition:all .15s" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='#fff'">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-              Open Full Configurator
+            <a href="TES_Crane_Configurator.html" target="_blank" class="cfg-open-btn">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              Open Full Configurator ↗
             </a>
           </div>
-          <iframe
-            id="cfg-iframe"
-            src=""
-            data-src="TES_Crane_Configurator.html"
-            style="width:100%;flex:1;border:none;display:block"
-            allow="accelerometer; gyroscope"
-          ></iframe>
+          <div style="position:relative;flex:1;min-height:0;display:flex;flex-direction:column">
+            <iframe
+              id="cfg-iframe"
+              src=""
+              data-src="TES_Crane_Configurator.html"
+              style="width:100%;flex:1;border:none;display:block"
+              allow="accelerometer; gyroscope"
+            ></iframe>
+            <!-- AI companion bubble — consistent with Slide 9 proactive tip -->
+            <div style="position:absolute;bottom:1.2rem;right:1.2rem;background:#fff;border-radius:12px;padding:.75rem .9rem;width:210px;box-shadow:0 8px 24px rgba(0,0,0,.18);border:1px solid #ede9fe;pointer-events:none">
+              <div style="display:flex;align-items:center;gap:.45rem;margin-bottom:.45rem">
+                <div style="width:20px;height:20px;border-radius:50%;background:#7c3aed;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                  <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                </div>
+                <div>
+                  <div style="font-size:8.5px;font-weight:700;color:#111">TES AI</div>
+                  <div style="font-size:7px;color:#10b981;font-weight:600">● Online · Ready to help</div>
+                </div>
+              </div>
+              <div style="font-size:8px;color:#374151;line-height:1.6;margin-bottom:.5rem">Need help choosing the right crane for your project? I can compare specs, suggest the right jib length, or walk you through each step.</div>
+              <div style="display:flex;gap:.35rem">
+                <div style="padding:.25rem .55rem;background:#7c3aed;border-radius:5px;font-size:7px;font-weight:700;color:#fff;cursor:pointer">Ask a question</div>
+                <div style="padding:.25rem .55rem;background:#f5f3ff;border-radius:5px;font-size:7px;color:#7c3aed;font-weight:600;cursor:pointer">Guide me →</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- BACK -->
@@ -1188,7 +1340,7 @@
             <!-- Two-panel: hero visual LEFT + spec sheet RIGHT -->
             <div class="pb-body">
             <div class="pb-hero">
-              <img src="image copy.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center" draggable="false"/>
+              <img src="image-copy.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center" draggable="false"/>
               <div class="pb-hero-badge" style="z-index:2;position:relative">Potain MDT 219 J10 · Hammerhead Yellow</div>
               <div class="pb-hero-id">TES-20240618-5013</div>
             </div>
@@ -1974,13 +2126,139 @@
 </div>
 
 <!-- ═══════════════════════════════════════════════════
+     SLIDE 9 — AI COMPANION
+════════════════════════════════════════════════════ -->
+<div class="slide" id="s9">
+  <div class="wrap">
+    <div class="s-label">Phase 3 · AI Companion</div>
+    <h1>Your configurator doesn't just build.<br><span style="color:#7c3aed">It advises.</span></h1>
+    <p class="s-intro">AJ selected one AI feature. We're building it right — product-specific, configurator-aware, and trained entirely on TES equipment.</p>
+
+    <div class="fc-wrap">
+      <div class="fc" id="fc9">
+
+        <!-- FRONT -->
+        <div class="fc-front">
+          <div class="fc-browser">
+            <div class="fc-dots"><span></span><span></span><span></span></div>
+            <div class="fc-url">totalequipmentsales.com.au/configure · AI Companion</div>
+          </div>
+
+          <div class="fc-mockup" style="padding:0;gap:0;position:relative">
+
+            <!-- Same configurator iframe as Slide 6 -->
+            <iframe
+              id="cfg-iframe-s9"
+              src=""
+              data-src="TES_Crane_Configurator.html"
+              style="width:100%;flex:1;border:none;display:block"
+              allow="accelerometer; gyroscope"
+            ></iframe>
+
+            <!-- AI chat overlay — floating panel, bottom-right -->
+            <div style="position:absolute;bottom:1.4rem;right:1.4rem;width:260px;background:#fff;border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,.22);border:1px solid #ede9fe;display:flex;flex-direction:column;overflow:hidden;pointer-events:none">
+
+              <!-- Header -->
+              <div style="padding:.6rem .8rem;background:#7c3aed;display:flex;align-items:center;gap:.5rem">
+                <div style="width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                </div>
+                <div style="flex:1">
+                  <div style="font-size:9px;font-weight:700;color:#fff">TES AI</div>
+                  <div style="font-size:7px;color:rgba(255,255,255,.7)">● Online · Here to help</div>
+                </div>
+                <div style="width:16px;height:16px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center">
+                  <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </div>
+              </div>
+
+              <!-- Messages -->
+              <div style="padding:.7rem .75rem;display:flex;flex-direction:column;gap:.5rem;background:#fafafa">
+
+                <div style="display:flex;gap:.4rem;align-items:flex-start">
+                  <div style="width:18px;height:18px;border-radius:50%;background:#7c3aed;flex-shrink:0;margin-top:.1rem"></div>
+                  <div style="background:#fff;border:1px solid #ede9fe;border-radius:0 8px 8px 8px;padding:.45rem .6rem;flex:1">
+                    <div style="font-size:7.5px;color:#374151;line-height:1.55">Hi — I can see you're building a <strong>Potain MDT 219</strong> with a YHX SC220 hoist. Need help picking the right battery or accessories?</div>
+                  </div>
+                </div>
+
+                <div style="display:flex;justify-content:flex-end">
+                  <div style="background:#7c3aed;border-radius:8px 8px 0 8px;padding:.4rem .6rem;max-width:85%">
+                    <div style="font-size:7.5px;color:#fff;line-height:1.5">Does it support anti-collision software?</div>
+                  </div>
+                </div>
+
+                <div style="display:flex;gap:.4rem;align-items:flex-start">
+                  <div style="width:18px;height:18px;border-radius:50%;background:#7c3aed;flex-shrink:0;margin-top:.1rem"></div>
+                  <div style="background:#fff;border:1px solid #ede9fe;border-radius:0 8px 8px 8px;padding:.45rem .6rem;flex:1">
+                    <div style="font-size:7.5px;color:#374151;line-height:1.55">Yes — Potain anti-collision is an add-on under Accessories in Step 4. Want me to take you there?</div>
+                    <div style="display:flex;gap:.3rem;margin-top:.4rem">
+                      <div style="padding:.2rem .5rem;background:#7c3aed;border-radius:4px;font-size:6.5px;color:#fff;font-weight:600">Yes, take me there</div>
+                      <div style="padding:.2rem .5rem;background:#f3f0ff;border-radius:4px;font-size:6.5px;color:#7c3aed;font-weight:600">Tell me more</div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Input -->
+              <div style="padding:.5rem .7rem;border-top:1px solid #ede9fe;background:#fff">
+                <div style="display:flex;align-items:center;gap:.4rem;background:#f5f3ff;border:1px solid #ddd6fe;border-radius:20px;padding:.3rem .3rem .3rem .7rem">
+                  <div style="flex:1;font-size:7.5px;color:#a78bfa">Ask me anything about TES products…</div>
+                  <div style="width:20px;height:20px;border-radius:50%;background:#7c3aed;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                    <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                  </div>
+                </div>
+              </div>
+
+            </div><!-- end AI overlay -->
+
+          </div><!-- end fc-mockup -->
+        </div><!-- end fc-front -->
+
+        <!-- BACK -->
+        <div class="fc-back">
+          <div class="fc-back-content">
+            <div class="fc-back-title">AI Companion — Design Rationale</div>
+            <div class="fc-back-items">
+              <div class="fc-back-item">
+                <div class="fc-back-item-title">Why companion, not chatbot</div>
+                <div class="fc-back-item-desc">A generic chatbot answers questions. A companion knows what the buyer has already built and gives advice that's specific to their current configuration. AJ's buyers are Directors spending $800k–$1.8M — they don't need a FAQ bot, they need a knowledgeable guide.</div>
+              </div>
+              <div class="fc-back-item">
+                <div class="fc-back-item-title">Both modes, one goal</div>
+                <div class="fc-back-item-desc">Proactive mode surfaces contextual tips without the buyer needing to ask — reducing drop-off mid-configure. Reactive mode handles deeper questions that would otherwise require a phone call to AJ. Both modes funnel toward the inquiry form.</div>
+              </div>
+              <div class="fc-back-item">
+                <div class="fc-back-item-title">Narrow by design</div>
+                <div class="fc-back-item-desc">Pricing, compliance, and human escalation are out of scope deliberately. Pricing is undecided (per scoping form). Compliance queries need a qualified human. Keeping the AI narrow means it stays accurate — and doesn't give TES a liability problem.</div>
+              </div>
+              <div class="fc-back-item">
+                <div class="fc-back-item-title">Our recommendation: add smart crane matching</div>
+                <div class="fc-back-item-desc">AJ didn't tick "smart crane recommendations" — but it's the most natural Phase 3 extension. A buyer who types "I need a crane for a 35-storey job in Brisbane" should get a model suggestion immediately. It takes one extra training layer. We recommend including it.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button class="fc-flip-btn" id="fc9-btn" onclick="var fc=document.getElementById('fc9');fc.classList.toggle('flipped');this.querySelector('svg').style.transform=fc.classList.contains('flipped')?'rotate(180deg)':'';" title="Design rationale">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .4s"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+
+      </div>
+    </div>
+  </div>
+  <div class="slide-foot"><span>SingSingh AI &nbsp;·&nbsp; Total Equipment Sales Proposal</span><span>09</span></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
      SLIDE 10 — TIMELINE (GANTT)
 ════════════════════════════════════════════════════ -->
 <div class="slide" id="s10">
   <div class="wrap">
     <div class="s-label">Delivery</div>
     <h1>Timeline</h1>
-    <p class="s-intro">Three phases. Sixteen weeks. Website foundation first, then the configurator on top of it, then the AI companion to close the loop.</p>
+    <p class="s-intro">Three phases. Eight weeks. Phases overlap — you're not waiting for one to finish before the next begins.</p>
 
     <div class="fc-wrap">
       <div class="fc" id="fc10">
@@ -1992,123 +2270,126 @@
             <div class="fc-url">Project Timeline — TES Website &amp; Configurator</div>
           </div>
 
-          <div class="fc-mockup" style="padding:1.4rem 1.6rem;background:#0d0d0d;overflow:hidden;display:flex;flex-direction:column;gap:1.4rem">
+          <div class="fc-mockup" style="padding:1.4rem 1.6rem;background:#ffffff;overflow:hidden;display:flex;flex-direction:column;gap:1.4rem">
 
             <!-- Phase legend -->
             <div style="display:flex;gap:1.4rem;align-items:center;flex-shrink:0">
-              <div style="display:flex;align-items:center;gap:.4rem"><div style="width:10px;height:10px;border-radius:2px;background:#3b82f6"></div><span style="font-family:var(--mono);font-size:8px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.1em">Phase 1 — Website Setup</span></div>
-              <div style="display:flex;align-items:center;gap:.4rem"><div style="width:10px;height:10px;border-radius:2px;background:#10b981"></div><span style="font-family:var(--mono);font-size:8px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.1em">Phase 2 — Configurator</span></div>
-              <div style="display:flex;align-items:center;gap:.4rem"><div style="width:10px;height:10px;border-radius:2px;background:#a78bfa"></div><span style="font-family:var(--mono);font-size:8px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.1em">Phase 3 — AI Companion</span></div>
+              <div style="display:flex;align-items:center;gap:.4rem"><div style="width:10px;height:10px;border-radius:2px;background:#3b82f6"></div><span style="font-family:var(--mono);font-size:8px;color:#475569;text-transform:uppercase;letter-spacing:.1em">Phase 1 — Website Setup</span></div>
+              <div style="display:flex;align-items:center;gap:.4rem"><div style="width:10px;height:10px;border-radius:2px;background:#10b981"></div><span style="font-family:var(--mono);font-size:8px;color:#475569;text-transform:uppercase;letter-spacing:.1em">Phase 2 — Configurator</span></div>
+              <div style="display:flex;align-items:center;gap:.4rem"><div style="width:10px;height:10px;border-radius:2px;background:#a78bfa"></div><span style="font-family:var(--mono);font-size:8px;color:#475569;text-transform:uppercase;letter-spacing:.1em">Phase 3 — AI Companion</span></div>
             </div>
 
-            <!-- Gantt grid -->
+            <!-- Gantt grid — 8 weeks, phases overlapping -->
             <div style="flex:1;min-height:0;display:flex;flex-direction:column;gap:0">
 
               <!-- Week headers -->
-              <div style="display:grid;grid-template-columns:140px repeat(16,1fr);margin-bottom:.35rem">
+              <div style="display:grid;grid-template-columns:140px repeat(8,1fr);margin-bottom:.35rem">
                 <div></div>
-                <div style="font-family:var(--mono);font-size:6px;color:rgba(255,255,255,.2);text-align:center;letter-spacing:.06em">W1</div>
-                <div style="font-family:var(--mono);font-size:6px;color:rgba(255,255,255,.2);text-align:center;letter-spacing:.06em">W2</div>
-                <div style="font-family:var(--mono);font-size:6px;color:rgba(255,255,255,.2);text-align:center;letter-spacing:.06em">W3</div>
-                <div style="font-family:var(--mono);font-size:6px;color:rgba(255,255,255,.2);text-align:center;letter-spacing:.06em">W4</div>
-                <div style="font-family:var(--mono);font-size:6px;color:rgba(255,255,255,.2);text-align:center;letter-spacing:.06em">W5</div>
-                <div style="font-family:var(--mono);font-size:6px;color:rgba(255,255,255,.2);text-align:center;letter-spacing:.06em">W6</div>
-                <div style="font-family:var(--mono);font-size:6px;color:rgba(255,255,255,.2);text-align:center;letter-spacing:.06em">W7</div>
-                <div style="font-family:var(--mono);font-size:6px;color:rgba(255,255,255,.2);text-align:center;letter-spacing:.06em">W8</div>
-                <div style="font-family:var(--mono);font-size:6px;color:rgba(255,255,255,.2);text-align:center;letter-spacing:.06em">W9</div>
-                <div style="font-family:var(--mono);font-size:6px;color:rgba(255,255,255,.2);text-align:center;letter-spacing:.06em">W10</div>
-                <div style="font-family:var(--mono);font-size:6px;color:rgba(255,255,255,.2);text-align:center;letter-spacing:.06em">W11</div>
-                <div style="font-family:var(--mono);font-size:6px;color:rgba(255,255,255,.2);text-align:center;letter-spacing:.06em">W12</div>
-                <div style="font-family:var(--mono);font-size:6px;color:rgba(255,255,255,.2);text-align:center;letter-spacing:.06em">W13</div>
-                <div style="font-family:var(--mono);font-size:6px;color:rgba(255,255,255,.2);text-align:center;letter-spacing:.06em">W14</div>
-                <div style="font-family:var(--mono);font-size:6px;color:rgba(255,255,255,.2);text-align:center;letter-spacing:.06em">W15</div>
-                <div style="font-family:var(--mono);font-size:6px;color:rgba(255,255,255,.2);text-align:center;letter-spacing:.06em">W16</div>
+                <div style="font-family:var(--mono);font-size:6px;color:#94a3b8;text-align:center;letter-spacing:.06em">W1</div>
+                <div style="font-family:var(--mono);font-size:6px;color:#94a3b8;text-align:center;letter-spacing:.06em">W2</div>
+                <div style="font-family:var(--mono);font-size:6px;color:#94a3b8;text-align:center;letter-spacing:.06em">W3</div>
+                <div style="font-family:var(--mono);font-size:6px;color:#94a3b8;text-align:center;letter-spacing:.06em">W4</div>
+                <div style="font-family:var(--mono);font-size:6px;color:#94a3b8;text-align:center;letter-spacing:.06em">W5</div>
+                <div style="font-family:var(--mono);font-size:6px;color:#94a3b8;text-align:center;letter-spacing:.06em">W6</div>
+                <div style="font-family:var(--mono);font-size:6px;color:#94a3b8;text-align:center;letter-spacing:.06em">W7</div>
+                <div style="font-family:var(--mono);font-size:6px;color:#94a3b8;text-align:center;letter-spacing:.06em">W8</div>
               </div>
 
-              <!-- ── PHASE 1: Website Setup (W1–W6) ── -->
-              <div style="display:grid;grid-template-columns:140px repeat(16,1fr);align-items:center;margin-bottom:.18rem">
+              <!-- ── PHASE 1: Website Setup (W1–W4) ── -->
+              <div style="display:grid;grid-template-columns:140px repeat(8,1fr);align-items:center;margin-bottom:.18rem">
                 <div style="font-family:var(--mono);font-size:7px;font-weight:700;color:#3b82f6;text-transform:uppercase;letter-spacing:.1em;padding-right:.5rem">Phase 1</div>
-                <div style="grid-column:2/8;height:3px;background:rgba(59,130,246,.15);border-radius:2px">
-                  <div style="height:100%;background:#3b82f6;border-radius:2px"></div>
-                </div>
+                <div style="grid-column:2/6;height:3px;background:rgba(59,130,246,.15);border-radius:2px"><div style="height:100%;background:#3b82f6;border-radius:2px"></div></div>
               </div>
-              <div style="display:grid;grid-template-columns:140px repeat(16,1fr);align-items:center;padding:.22rem 0;border-top:1px solid rgba(255,255,255,.04)">
-                <div style="font-size:8.5px;color:rgba(255,255,255,.55);padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Discovery &amp; Design</div>
-                <div style="grid-column:2/4;background:#3b82f6;border-radius:3px;height:14px;opacity:.9"></div>
+              <div style="display:grid;grid-template-columns:140px repeat(8,1fr);align-items:center;padding:.22rem 0;border-top:1px solid #e2e8f0">
+                <div style="font-size:8.5px;font-weight:700;color:#1e293b;padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Discovery &amp; Design</div>
+                <div class="gb1" style="grid-column:2/4"></div>
               </div>
-              <div style="display:grid;grid-template-columns:140px repeat(16,1fr);align-items:center;padding:.22rem 0;border-top:1px solid rgba(255,255,255,.04)">
-                <div style="font-size:8.5px;color:rgba(255,255,255,.55);padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Homepage &amp; Core Pages</div>
-                <div style="grid-column:3/6;background:#3b82f6;border-radius:3px;height:14px;opacity:.9"></div>
+              <div style="display:grid;grid-template-columns:140px repeat(8,1fr);align-items:center;padding:.22rem 0;border-top:1px solid #e2e8f0">
+                <div style="font-size:8.5px;font-weight:700;color:#1e293b;padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Homepage &amp; Core Pages</div>
+                <div class="gb1" style="grid-column:3/5"></div>
               </div>
-              <div style="display:grid;grid-template-columns:140px repeat(16,1fr);align-items:center;padding:.22rem 0;border-top:1px solid rgba(255,255,255,.04)">
-                <div style="font-size:8.5px;color:rgba(255,255,255,.55);padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Product Pages (20–30)</div>
-                <div style="grid-column:4/7;background:#3b82f6;border-radius:3px;height:14px;opacity:.9"></div>
+              <div style="display:grid;grid-template-columns:140px repeat(8,1fr);align-items:center;padding:.22rem 0;border-top:1px solid #e2e8f0">
+                <div style="font-size:8.5px;font-weight:700;color:#1e293b;padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Product Pages (20–30)</div>
+                <div class="gb1" style="grid-column:4/6"></div>
               </div>
-              <div style="display:grid;grid-template-columns:140px repeat(16,1fr);align-items:center;padding:.22rem 0;border-top:1px solid rgba(255,255,255,.04);margin-bottom:.35rem">
-                <div style="font-size:8.5px;color:rgba(255,255,255,.55);padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">SEO Setup &amp; QA</div>
-                <div style="grid-column:6/8;background:#3b82f6;border-radius:3px;height:14px;opacity:.75"></div>
+              <div style="display:grid;grid-template-columns:140px repeat(8,1fr);align-items:center;padding:.22rem 0;border-top:1px solid #e2e8f0;margin-bottom:.35rem">
+                <div style="font-size:8.5px;font-weight:700;color:#1e293b;padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">SEO Setup &amp; QA</div>
+                <div class="gb1 dim" style="grid-column:5/6"></div>
               </div>
-              <!-- Milestone W6 -->
-              <div style="display:grid;grid-template-columns:140px repeat(16,1fr);margin-bottom:.55rem">
+              <!-- Milestone W4 -->
+              <div style="display:grid;grid-template-columns:140px repeat(8,1fr);margin-bottom:.55rem">
                 <div></div>
-                <div style="grid-column:7/10;font-family:var(--mono);font-size:6px;color:#3b82f6;letter-spacing:.05em">▲ Site live</div>
+                <div class="gantt-ms" style="grid-column:5/7;font-family:var(--mono);font-size:6px;color:#3b82f6;letter-spacing:.05em">▲ Site live</div>
               </div>
 
-              <!-- ── PHASE 2: Configurator (W7–W12) ── -->
-              <div style="display:grid;grid-template-columns:140px repeat(16,1fr);align-items:center;margin-bottom:.18rem">
+              <!-- ── PHASE 2: Configurator (W3–W7, overlapping P1) ── -->
+              <div style="display:grid;grid-template-columns:140px repeat(8,1fr);align-items:center;margin-bottom:.18rem">
                 <div style="font-family:var(--mono);font-size:7px;font-weight:700;color:#10b981;text-transform:uppercase;letter-spacing:.1em;padding-right:.5rem">Phase 2</div>
-                <div style="grid-column:8/14;height:3px;background:rgba(16,185,129,.15);border-radius:2px">
-                  <div style="height:100%;background:#10b981;border-radius:2px"></div>
-                </div>
+                <div style="grid-column:4/9;height:3px;background:rgba(16,185,129,.15);border-radius:2px"><div style="height:100%;background:#10b981;border-radius:2px"></div></div>
               </div>
-              <div style="display:grid;grid-template-columns:140px repeat(16,1fr);align-items:center;padding:.22rem 0;border-top:1px solid rgba(255,255,255,.04)">
-                <div style="font-size:8.5px;color:rgba(255,255,255,.55);padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Configurator UX</div>
-                <div style="grid-column:8/10;background:#10b981;border-radius:3px;height:14px;opacity:.9"></div>
+              <div style="display:grid;grid-template-columns:140px repeat(8,1fr);align-items:center;padding:.22rem 0;border-top:1px solid #e2e8f0">
+                <div style="font-size:8.5px;font-weight:700;color:#1e293b;padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Configurator UX</div>
+                <div class="gb2" style="grid-column:4/6"></div>
               </div>
-              <div style="display:grid;grid-template-columns:140px repeat(16,1fr);align-items:center;padding:.22rem 0;border-top:1px solid rgba(255,255,255,.04)">
-                <div style="font-size:8.5px;color:rgba(255,255,255,.55);padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">3D Build &amp; Logic</div>
-                <div style="grid-column:9/13;background:#10b981;border-radius:3px;height:14px;opacity:.9"></div>
+              <div style="display:grid;grid-template-columns:140px repeat(8,1fr);align-items:center;padding:.22rem 0;border-top:1px solid #e2e8f0">
+                <div style="font-size:8.5px;font-weight:700;color:#1e293b;padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">3D Build &amp; Logic</div>
+                <div class="gb2" style="grid-column:5/8"></div>
               </div>
-              <div style="display:grid;grid-template-columns:140px repeat(16,1fr);align-items:center;padding:.22rem 0;border-top:1px solid rgba(255,255,255,.04)">
-                <div style="font-size:8.5px;color:rgba(255,255,255,.55);padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Lead Capture &amp; PDF</div>
-                <div style="grid-column:10/13;background:#10b981;border-radius:3px;height:14px;opacity:.75"></div>
+              <div style="display:grid;grid-template-columns:140px repeat(8,1fr);align-items:center;padding:.22rem 0;border-top:1px solid #e2e8f0">
+                <div style="font-size:8.5px;font-weight:700;color:#1e293b;padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Lead Capture &amp; PDF</div>
+                <div class="gb2 dim" style="grid-column:6/8"></div>
               </div>
-              <div style="display:grid;grid-template-columns:140px repeat(16,1fr);align-items:center;padding:.22rem 0;border-top:1px solid rgba(255,255,255,.04);margin-bottom:.35rem">
-                <div style="font-size:8.5px;color:rgba(255,255,255,.55);padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Testing &amp; Staging</div>
-                <div style="grid-column:12/14;background:#10b981;border-radius:3px;height:14px;opacity:.75"></div>
+              <div style="display:grid;grid-template-columns:140px repeat(8,1fr);align-items:center;padding:.22rem 0;border-top:1px solid #e2e8f0;margin-bottom:.35rem">
+                <div style="font-size:8.5px;font-weight:700;color:#1e293b;padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Testing &amp; Staging</div>
+                <div class="gb2 dim" style="grid-column:7/9"></div>
               </div>
-              <!-- Milestone W12 -->
-              <div style="display:grid;grid-template-columns:140px repeat(16,1fr);margin-bottom:.55rem">
+              <!-- Milestone W7 -->
+              <div style="display:grid;grid-template-columns:140px repeat(8,1fr);margin-bottom:.55rem">
                 <div></div>
-                <div style="grid-column:13/16;font-family:var(--mono);font-size:6px;color:#10b981;letter-spacing:.05em">▲ Configurator live</div>
+                <div class="gantt-ms" style="grid-column:8/9;font-family:var(--mono);font-size:6px;color:#10b981;letter-spacing:.05em">▲ Configurator live</div>
               </div>
 
-              <!-- ── PHASE 3: AI Companion (W13–W16) ── -->
-              <div style="display:grid;grid-template-columns:140px repeat(16,1fr);align-items:center;margin-bottom:.18rem">
-                <div style="font-family:var(--mono);font-size:7px;font-weight:700;color:#a78bfa;text-transform:uppercase;letter-spacing:.1em;padding-right:.5rem">Phase 3</div>
-                <div style="grid-column:14/17;height:3px;background:rgba(167,139,250,.15);border-radius:2px">
-                  <div style="height:100%;background:#a78bfa;border-radius:2px"></div>
+              <!-- ── PHASE 3: AI Companion (W6–W8) — FLAGSHIP ── -->
+              <div style="border:1.5px solid #a78bfa;border-radius:10px;padding:.6rem .7rem .5rem;background:linear-gradient(135deg,#faf5ff 0%,#ede9fe 100%);margin-top:.2rem;box-shadow:0 0 18px rgba(167,139,250,.18)">
+                <div style="display:grid;grid-template-columns:140px repeat(8,1fr);align-items:center;margin-bottom:.35rem">
+                  <div style="display:flex;align-items:center;gap:.4rem">
+                    <span style="font-family:var(--mono);font-size:7px;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:.1em">Phase 3</span>
+                    <span style="background:#7c3aed;color:#fff;font-family:var(--mono);font-size:6px;font-weight:700;letter-spacing:.08em;padding:.1rem .35rem;border-radius:20px;text-transform:uppercase">★ Flagship</span>
+                  </div>
+                  <div style="grid-column:7/9;height:3px;background:rgba(167,139,250,.25);border-radius:2px"><div style="height:100%;background:#a78bfa;border-radius:2px"></div></div>
                 </div>
-              </div>
-              <div style="display:grid;grid-template-columns:140px repeat(16,1fr);align-items:center;padding:.22rem 0;border-top:1px solid rgba(255,255,255,.04)">
-                <div style="font-size:8.5px;color:rgba(255,255,255,.55);padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">AI Companion Build</div>
-                <div style="grid-column:14/16;background:#a78bfa;border-radius:3px;height:14px;opacity:.9"></div>
-              </div>
-              <div style="display:grid;grid-template-columns:140px repeat(16,1fr);align-items:center;padding:.22rem 0;border-top:1px solid rgba(255,255,255,.04)">
-                <div style="font-size:8.5px;color:rgba(255,255,255,.55);padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Training &amp; Handover</div>
-                <div style="grid-column:15/17;background:#a78bfa;border-radius:3px;height:14px;opacity:.9"></div>
-              </div>
-              <div style="display:grid;grid-template-columns:140px repeat(16,1fr);align-items:center;padding:.22rem 0;border-top:1px solid rgba(255,255,255,.04)">
-                <div style="font-size:8.5px;color:rgba(255,255,255,.55);padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Full Code Transfer</div>
-                <div style="grid-column:16/17;background:#a78bfa;border-radius:3px;height:14px;opacity:.9"></div>
+                <div style="display:grid;grid-template-columns:140px repeat(8,1fr);align-items:center;padding:.2rem 0;border-top:1px solid rgba(167,139,250,.2)">
+                  <div style="font-size:8.5px;font-weight:700;color:#4c1d95;padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Crane Selection AI</div>
+                  <div class="gb3" style="grid-column:7/8"></div>
+                </div>
+                <div style="display:grid;grid-template-columns:140px repeat(8,1fr);align-items:center;padding:.2rem 0;border-top:1px solid rgba(167,139,250,.2)">
+                  <div style="font-size:8.5px;font-weight:700;color:#4c1d95;padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Lead Qualification</div>
+                  <div class="gb3" style="grid-column:7/8"></div>
+                </div>
+                <div style="display:grid;grid-template-columns:140px repeat(8,1fr);align-items:center;padding:.2rem 0;border-top:1px solid rgba(167,139,250,.2)">
+                  <div style="font-size:8.5px;font-weight:700;color:#4c1d95;padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Live Spec Comparison</div>
+                  <div class="gb3" style="grid-column:7/9"></div>
+                </div>
+                <div style="display:grid;grid-template-columns:140px repeat(8,1fr);align-items:center;padding:.2rem 0;border-top:1px solid rgba(167,139,250,.2)">
+                  <div style="font-size:8.5px;font-weight:700;color:#4c1d95;padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">CRM Handoff to AJ</div>
+                  <div class="gb3" style="grid-column:7/9"></div>
+                </div>
+                <div style="display:grid;grid-template-columns:140px repeat(8,1fr);align-items:center;padding:.2rem 0;border-top:1px solid rgba(167,139,250,.2)">
+                  <div style="font-size:8.5px;font-weight:700;color:#4c1d95;padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Training &amp; Handover</div>
+                  <div class="gb3" style="grid-column:8/9"></div>
+                </div>
+                <div style="display:grid;grid-template-columns:140px repeat(8,1fr);align-items:center;padding:.2rem 0;border-top:1px solid rgba(167,139,250,.2)">
+                  <div style="font-size:8.5px;font-weight:700;color:#4c1d95;padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Full Code Transfer</div>
+                  <div class="gb3" style="grid-column:8/9"></div>
+                </div>
               </div>
 
             </div><!-- end gantt grid -->
 
             <!-- Bottom note -->
-            <div style="flex-shrink:0;border-top:1px solid rgba(255,255,255,.08);padding-top:.9rem;display:flex;align-items:center;justify-content:space-between">
-              <div style="font-size:9px;color:rgba(255,255,255,.35);line-height:1.5">Website foundation live at <strong style="color:rgba(255,255,255,.6)">Week 6.</strong> Configurator on top at <strong style="color:rgba(255,255,255,.6)">Week 12.</strong> AI companion &amp; full handover at <strong style="color:rgba(255,255,255,.6)">Week 16.</strong></div>
-              <div style="font-family:var(--mono);font-size:7.5px;color:rgba(255,255,255,.25);letter-spacing:.08em">16 WEEKS TOTAL</div>
+            <div style="flex-shrink:0;border-top:1px solid #e2e8f0;padding-top:.9rem;display:flex;align-items:center;justify-content:space-between">
+              <div style="font-size:9px;color:#64748b;line-height:1.5">Site live at <strong style="color:#0f172a">Week 4.</strong> Configurator on top at <strong style="color:#0f172a">Week 7.</strong> AI companion &amp; full handover at <strong style="color:#0f172a">Week 8.</strong></div>
+              <div style="font-family:var(--mono);font-size:7.5px;color:#94a3b8;letter-spacing:.08em">8 WEEKS · 2 MONTHS</div>
             </div>
 
           </div><!-- end fc-mockup -->
@@ -2128,12 +2409,16 @@
                 <div class="fc-back-item-desc">By Week 7 the site is live and indexed. The configurator builds on top of the existing product pages and design language — consistent, not bolted on. Buyers who land on a product page can go straight into the configurator without a jarring transition.</div>
               </div>
               <div class="fc-back-item">
-                <div class="fc-back-item-title">AI companion third — it needs real data first</div>
-                <div class="fc-back-item-desc">The AI companion is trained on actual configurator usage patterns — which models buyers build, where they drop off, what questions they ask. That data only exists once the configurator is live. You can't tune it before it's been used.</div>
+                <div class="fc-back-item-title">Phase 3 is the AI — and it's the whole point</div>
+                <div class="fc-back-item-desc">The AI companion qualifies every buyer before they call — which crane for which job, at which site. It runs live spec comparisons, routes hot leads straight to AJ, and replaces three to five hours of early-stage sales calls per week. The site and configurator are the foundation. The AI is the payoff.</div>
               </div>
               <div class="fc-back-item">
-                <div class="fc-back-item-title">16 weeks is the total. Not per phase.</div>
-                <div class="fc-back-item-desc">Phases overlap — configurator UX work begins in Week 5 while the site SEO and QA is running. The total is 16 weeks of parallel progress, not three sequential chunks added together.</div>
+                <div class="fc-back-item-title">Not a RAG pipeline — Claude with guardrails</div>
+                <div class="fc-back-item-desc">This is not a search engine over thousands of documents. It's Claude (Anthropic's AI) wired to TES's product specs, pricing, and a structured qualification flow. BQ's full crane catalogue fits comfortably in a single context window — no vector database, no embedding pipeline, no infrastructure to maintain. When specs change, you update a file. That's why Phase 3 is two weeks, not three months.</div>
+              </div>
+              <div class="fc-back-item">
+                <div class="fc-back-item-title">8 weeks total. Phases overlap.</div>
+                <div class="fc-back-item-desc">Phase 2 starts while Phase 1 is still in QA. Phase 3 AI build starts while the configurator is in testing. You're not waiting for one thing to finish before the next begins — the team runs in parallel so the full handover is at Week 8.</div>
               </div>
             </div>
           </div>
@@ -2171,241 +2456,185 @@
           <div class="fc-mockup" style="padding:0;background:#fff;display:flex;flex-direction:row;overflow:hidden">
 
             <!-- Left: detailed cost breakdown -->
-            <div style="flex:1;min-width:0;padding:1.1rem 1.4rem;display:flex;flex-direction:column;gap:0;border-right:1px solid #f0f0ee;overflow-y:auto">
+            <div style="flex:1;min-width:0;padding:1.2rem 1.2rem;display:grid;grid-template-columns:1fr 1fr;gap:1rem;overflow-y:auto;align-content:start">
 
-              <!-- Column headers -->
-              <div style="display:grid;grid-template-columns:1fr 52px 68px;gap:.4rem;padding:.3rem .5rem .45rem;border-bottom:1.5px solid #111;margin-bottom:.1rem;flex-shrink:0">
-                <div style="font-family:var(--mono);font-size:7px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.1em">Deliverable</div>
-                <div style="font-family:var(--mono);font-size:7px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.1em;text-align:center">Days</div>
-                <div style="font-family:var(--mono);font-size:7px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.1em;text-align:right">Cost (AUD)</div>
-              </div>
-
-              <!-- ── PHASE 1 ── -->
-              <div style="display:grid;grid-template-columns:1fr 52px 68px;gap:.4rem;padding:.45rem .5rem .3rem;background:#eff6ff;border-bottom:1px solid #dbeafe;flex-shrink:0">
-                <div style="font-size:8.5px;font-weight:800;color:#1d4ed8;letter-spacing:-.01em">Phase 1 — Website Setup</div>
-                <div style="font-family:var(--mono);font-size:7.5px;color:#3b82f6;text-align:center;font-weight:700">18 days</div>
-                <div style="font-size:8.5px;font-weight:800;color:#1d4ed8;text-align:right">$9,500</div>
-              </div>
-              <div style="display:grid;grid-template-columns:1fr 52px 68px;gap:.4rem;padding:.32rem .5rem;border-bottom:1px solid #f3f4f6;flex-shrink:0">
-                <div>
-                  <div style="font-size:8px;font-weight:600;color:#111">Discovery, sitemap &amp; wireframes</div>
-                  <div style="font-size:7px;color:#9ca3af;margin-top:.08rem">Stakeholder brief, IA, low-fi wireframes for all key pages</div>
+              <!-- ── PHASE 1 CARD ── -->
+              <div style="border:1.5px solid #dbeafe;border-radius:10px;padding:1rem;background:#f8fbff;flex-shrink:0">
+                <div style="display:grid;grid-template-columns:1fr 68px;gap:.4rem;margin-bottom:.8rem;flex-shrink:0">
+                  <div style="font-size:10px;font-weight:800;color:#1d4ed8">Phase 1 — Website Setup</div>
+                  <div style="font-size:11px;font-weight:800;color:#1d4ed8;text-align:right">$8,000</div>
                 </div>
-                <div style="font-family:var(--mono);font-size:7.5px;color:#6b7280;text-align:center;align-self:center">3 d</div>
+
+              <!-- Discovery & Strategy -->
+              <div style="margin-bottom:.45rem">
+                <div style="display:grid;grid-template-columns:1fr 68px;gap:.4rem;padding:.3rem .5rem .2rem;margin-bottom:.2rem;flex-shrink:0">
+                  <div style="font-size:9.5px;font-weight:800;color:#1d4ed8">Discovery &amp; Strategy</div>
+                  <div style="font-size:9.5px;font-weight:800;color:#1d4ed8;text-align:right">$1,500</div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 68px;gap:.4rem;padding:.2rem .7rem .2rem;border-left:2px solid #3b82f6;flex-shrink:0">
+                  <div>
+                    <div style="font-size:8px;font-weight:600;color:#111">Discovery, sitemap &amp; working prototype</div>
+                    <div style="font-size:6.5px;color:#9ca3af;margin-top:.05rem">Stakeholder brief, information architecture, clickable functional prototype</div>
+                  </div>
+                  <div style="font-size:8px;font-weight:600;color:#374151;text-align:right;align-self:center">$1,500</div>
+                </div>
+              </div>
+
+              <!-- Design &amp; Pages -->
+              <div style="margin-bottom:.45rem">
+                <div style="display:grid;grid-template-columns:1fr 68px;gap:.4rem;padding:.3rem .5rem .2rem;margin-bottom:.2rem;flex-shrink:0">
+                  <div style="font-size:9.5px;font-weight:800;color:#1d4ed8">Design &amp; Pages</div>
+                  <div style="font-size:9.5px;font-weight:800;color:#1d4ed8;text-align:right">$4,500</div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 68px;gap:.4rem;padding:.2rem .7rem .2rem;border-left:2px solid #3b82f6;margin-bottom:.2rem;flex-shrink:0">
+                  <div>
+                    <div style="font-size:8px;font-weight:600;color:#111">UI &amp; UX Design System</div>
+                    <div style="font-size:6.5px;color:#9ca3af;margin-top:.05rem">Design tokens, component library, homepage &amp; core pages design</div>
+                  </div>
+                  <div style="font-size:8px;font-weight:600;color:#374151;text-align:right;align-self:center">$2,000</div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 68px;gap:.4rem;padding:.2rem .7rem .2rem;border-left:2px solid #3b82f6;flex-shrink:0">
+                  <div>
+                    <div style="font-size:8px;font-weight:600;color:#111">Product Pages &amp; Knowledge Hub</div>
+                    <div style="font-size:6.5px;color:#9ca3af;margin-top:.05rem">30 SEO-structured product pages (BQ, Potain, hoists, batteries) + resource hub</div>
+                  </div>
+                  <div style="font-size:8px;font-weight:600;color:#374151;text-align:right;align-self:center">$2,500</div>
+                </div>
+              </div>
+
+              <!-- Launch & Optimization -->
+              <div style="margin-bottom:0">
+                <div style="display:grid;grid-template-columns:1fr 68px;gap:.4rem;padding:.3rem .5rem .2rem;margin-bottom:.2rem;flex-shrink:0">
+                  <div style="font-size:9.5px;font-weight:800;color:#1d4ed8">Launch &amp; Optimization</div>
+                  <div style="font-size:9.5px;font-weight:800;color:#1d4ed8;text-align:right">$2,000</div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 68px;gap:.4rem;padding:.2rem .7rem .2rem;border-left:2px solid #3b82f6;flex-shrink:0">
+                  <div>
+                    <div style="font-size:8px;font-weight:600;color:#111">SEO, Schema Markup &amp; QA</div>
+                    <div style="font-size:6.5px;color:#9ca3af;margin-top:.05rem">Meta tags, structured data, sitemaps, cross-browser testing &amp; deployment</div>
+                  </div>
+                  <div style="font-size:8px;font-weight:600;color:#374151;text-align:right;align-self:center">$2,000</div>
+                </div>
+              </div>
+              </div><!-- end Phase 1 card -->
+
+              <!-- ── PHASE 2 CARD ── -->
+              <div style="border:1.5px solid #bbf7d0;border-radius:10px;padding:1rem;background:#f0fdf4;flex-shrink:0">
+                <div style="display:grid;grid-template-columns:1fr 68px;gap:.4rem;margin-bottom:.8rem;flex-shrink:0">
+                  <div style="font-size:10px;font-weight:800;color:#065f46">Phase 2 — 3D Crane Configurator</div>
+                  <div style="font-size:11px;font-weight:800;color:#065f46;text-align:right">$12,000</div>
+                </div>
+              <!-- UX/UI & User Experience -->
+              <div style="margin-bottom:.6rem">
+                <div style="display:grid;grid-template-columns:1fr 68px;gap:.4rem;padding:.4rem .5rem .3rem;margin-bottom:.3rem;flex-shrink:0">
+                  <div style="font-size:9.5px;font-weight:800;color:#065f46">UX/UI &amp; User Experience</div>
+                  <div style="font-size:9.5px;font-weight:800;color:#065f46;text-align:right">$2,000</div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 68px;gap:.4rem;padding:.2rem .7rem .2rem;border-left:2px solid #10b981;margin-bottom:.2rem;flex-shrink:0">
+                  <div>
+                    <div style="font-size:8px;font-weight:600;color:#111">Configurator UX/UI design</div>
+                    <div style="font-size:6.5px;color:#9ca3af;margin-top:.05rem">Step-by-step flow, model selector, spec panel, mobile layout</div>
+                  </div>
+                  <div style="font-size:8px;font-weight:600;color:#374151;text-align:right;align-self:center">$1,500</div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 68px;gap:.4rem;padding:.2rem .7rem .2rem;border-left:2px solid #10b981;flex-shrink:0">
+                  <div>
+                    <div style="font-size:8px;font-weight:600;color:#111">Profile management</div>
+                    <div style="font-size:6.5px;color:#9ca3af;margin-top:.05rem">User accounts, save/share configurations, build history, saved specs</div>
+                  </div>
+                  <div style="font-size:8px;font-weight:600;color:#374151;text-align:right;align-self:center">$500</div>
+                </div>
+              </div>
+
+              <!-- 3D Modeling & Build Logic -->
+              <div style="margin-bottom:.6rem">
+                <div style="display:grid;grid-template-columns:1fr 68px;gap:.4rem;padding:.4rem .5rem .3rem;margin-bottom:.3rem;flex-shrink:0">
+                  <div style="font-size:9.5px;font-weight:800;color:#065f46">3D Modeling &amp; Build Logic</div>
+                  <div style="font-size:9.5px;font-weight:800;color:#065f46;text-align:right">$7,500</div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 68px;gap:.4rem;padding:.2rem .7rem .2rem;border-left:2px solid #10b981;margin-bottom:.2rem;flex-shrink:0">
+                  <div>
+                    <div style="font-size:8px;font-weight:600;color:#111">3D Model Integration (CAD artist)</div>
+                    <div style="font-size:6.5px;color:#9ca3af;margin-top:.05rem">CAD exports, Blender modeling, all crane/hoist SKUs, parametric 3D build logic</div>
+                  </div>
+                  <div style="font-size:8px;font-weight:600;color:#374151;text-align:right;align-self:center">$6,000</div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 68px;gap:.4rem;padding:.2rem .7rem .2rem;border-left:2px solid #10b981;flex-shrink:0">
+                  <div>
+                    <div style="font-size:8px;font-weight:600;color:#111">Spec engine &amp; validation rules</div>
+                    <div style="font-size:6.5px;color:#9ca3af;margin-top:.05rem">Flags incompatible configs, auto-calculates capacity at radius</div>
+                  </div>
+                  <div style="font-size:8px;font-weight:600;color:#374151;text-align:right;align-self:center">$1,500</div>
+                </div>
+              </div>
+
+              <!-- Lead Capture & QA -->
+              <div style="margin-bottom:0">
+                <div style="display:grid;grid-template-columns:1fr 68px;gap:.4rem;padding:.3rem .5rem .2rem;margin-bottom:.2rem;flex-shrink:0">
+                  <div style="font-size:9.5px;font-weight:800;color:#065f46">Lead Capture &amp; QA</div>
+                  <div style="font-size:9.5px;font-weight:800;color:#065f46;text-align:right">$2,500</div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 68px;gap:.4rem;padding:.2rem .7rem .2rem;border-left:2px solid #10b981;margin-bottom:.2rem;flex-shrink:0">
+                  <div>
+                    <div style="font-size:8px;font-weight:600;color:#111">Lead capture + PDF spec sheet generator</div>
+                    <div style="font-size:6.5px;color:#9ca3af;margin-top:.05rem">Form → email to TES + auto-generated branded PDF for buyer</div>
+                  </div>
+                  <div style="font-size:8px;font-weight:600;color:#374151;text-align:right;align-self:center">$1,500</div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 68px;gap:.4rem;padding:.2rem .7rem .2rem;border-left:2px solid #10b981;flex-shrink:0">
+                  <div>
+                    <div style="font-size:8px;font-weight:600;color:#111">Cross-device testing &amp; staging</div>
+                    <div style="font-size:6.5px;color:#9ca3af;margin-top:.05rem">Desktop, tablet, mobile — TES URL, performance &amp; load testing</div>
+                  </div>
+                  <div style="font-size:8px;font-weight:600;color:#374151;text-align:right;align-self:center">$1,000</div>
+                </div>
+              </div>
+              </div><!-- end Phase 2 card -->
+
+              <!-- ── PHASE 3 CARD ── -->
+              <div style="border:1.5px solid #ddd6fe;border-radius:10px;padding:1rem;background:#f5f3ff;flex-shrink:0;grid-column:1/-1">
+                <div style="display:grid;grid-template-columns:1fr 68px;gap:.4rem;margin-bottom:.8rem;flex-shrink:0">
+                  <div style="font-size:10px;font-weight:800;color:#4c1d95">Phase 3 — AI Companion + RAG + Handover</div>
+                  <div style="font-size:11px;font-weight:800;color:#4c1d95;text-align:right">$4,000</div>
+                </div>
+              <div style="display:grid;grid-template-columns:1fr 68px;gap:.4rem;padding:.2rem .7rem .2rem;border-left:2px solid #a78bfa;margin-bottom:.2rem;flex-shrink:0">
+                <div>
+                  <div style="font-size:8px;font-weight:600;color:#111">AI Companion &amp; qualification system</div>
+                  <div style="font-size:6.5px;color:#9ca3af;margin-top:.05rem">Product specs, pricing bands, buyer questions, lead qualification flow</div>
+                </div>
                 <div style="font-size:8px;font-weight:600;color:#374151;text-align:right;align-self:center">$1,500</div>
               </div>
-              <div style="display:grid;grid-template-columns:1fr 52px 68px;gap:.4rem;padding:.32rem .5rem;border-bottom:1px solid #f3f4f6;flex-shrink:0">
+              <div style="display:grid;grid-template-columns:1fr 68px;gap:.4rem;padding:.2rem .7rem .2rem;border-left:2px solid #a78bfa;margin-bottom:.2rem;flex-shrink:0">
                 <div>
-                  <div style="font-size:8px;font-weight:600;color:#111">Design system &amp; UI component library</div>
-                  <div style="font-size:7px;color:#9ca3af;margin-top:.08rem">Typography, colour tokens, button/card/nav components</div>
+                  <div style="font-size:8px;font-weight:600;color:#111">RAG pipeline &amp; document processing</div>
+                  <div style="font-size:6.5px;color:#9ca3af;margin-top:.05rem">Vector DB, doc chunking, embeddings — search technical specs, manuals, FAQs</div>
                 </div>
-                <div style="font-family:var(--mono);font-size:7.5px;color:#6b7280;text-align:center;align-self:center">2 d</div>
-                <div style="font-size:8px;font-weight:600;color:#374151;text-align:right;align-self:center">$1,000</div>
+                <div style="font-size:8px;font-weight:600;color:#374151;text-align:right;align-self:center">$1,800</div>
               </div>
-              <div style="display:grid;grid-template-columns:1fr 52px 68px;gap:.4rem;padding:.32rem .5rem;border-bottom:1px solid #f3f4f6;flex-shrink:0">
+              <div style="display:grid;grid-template-columns:1fr 68px;gap:.4rem;padding:.2rem .7rem .2rem;border-left:2px solid #a78bfa;flex-shrink:0">
                 <div>
-                  <div style="font-size:8px;font-weight:600;color:#111">Homepage + 5 core pages</div>
-                  <div style="font-size:7px;color:#9ca3af;margin-top:.08rem">Hero, product categories, about, contact, privacy, T&amp;Cs</div>
+                  <div style="font-size:8px;font-weight:600;color:#111">Configurator integration, testing &amp; deployment</div>
+                  <div style="font-size:6.5px;color:#9ca3af;margin-top:.05rem">AI hooks into live build state, contextual responses, full code handover to your team</div>
                 </div>
-                <div style="font-family:var(--mono);font-size:7.5px;color:#6b7280;text-align:center;align-self:center">3 d</div>
-                <div style="font-size:8px;font-weight:600;color:#374151;text-align:right;align-self:center">$1,500</div>
-              </div>
-              <div style="display:grid;grid-template-columns:1fr 52px 68px;gap:.4rem;padding:.32rem .5rem;border-bottom:1px solid #f3f4f6;flex-shrink:0">
-                <div>
-                  <div style="font-size:8px;font-weight:600;color:#111">Product pages ×30 (SEO-structured)</div>
-                  <div style="font-size:7px;color:#9ca3af;margin-top:.08rem">BQ cranes, Potain cranes, hoists, batteries — per-product URL + schema</div>
-                </div>
-                <div style="font-family:var(--mono);font-size:7.5px;color:#6b7280;text-align:center;align-self:center">7 d</div>
-                <div style="font-size:8px;font-weight:600;color:#374151;text-align:right;align-self:center">$3,500</div>
-              </div>
-              <div style="display:grid;grid-template-columns:1fr 52px 68px;gap:.4rem;padding:.32rem .5rem;border-bottom:1px solid #f3f4f6;flex-shrink:0">
-                <div>
-                  <div style="font-size:8px;font-weight:600;color:#111">Knowledge Hub (3-tab resource page)</div>
-                  <div style="font-size:7px;color:#9ca3af;margin-top:.08rem">Projects, Brochures, Video, Guides — all tab layouts + content</div>
-                </div>
-                <div style="font-family:var(--mono);font-size:7.5px;color:#6b7280;text-align:center;align-self:center">2 d</div>
-                <div style="font-size:8px;font-weight:600;color:#374151;text-align:right;align-self:center">$1,000</div>
-              </div>
-              <div style="display:grid;grid-template-columns:1fr 52px 68px;gap:.4rem;padding:.32rem .5rem;border-bottom:2px solid #e5e7eb;flex-shrink:0">
-                <div>
-                  <div style="font-size:8px;font-weight:600;color:#111">SEO setup, schema markup &amp; QA</div>
-                  <div style="font-size:7px;color:#9ca3af;margin-top:.08rem">Meta tags, structured data, sitemap, cross-browser testing</div>
-                </div>
-                <div style="font-family:var(--mono);font-size:7.5px;color:#6b7280;text-align:center;align-self:center">1 d</div>
-                <div style="font-size:8px;font-weight:600;color:#374151;text-align:right;align-self:center">$1,000</div>
-              </div>
-
-              <!-- ── PHASE 2 ── -->
-              <div style="display:grid;grid-template-columns:1fr 52px 68px;gap:.4rem;padding:.45rem .5rem .3rem;background:#f0fdf4;border-bottom:1px solid #bbf7d0;flex-shrink:0;margin-top:.1rem">
-                <div style="font-size:8.5px;font-weight:800;color:#065f46;letter-spacing:-.01em">Phase 2 — 3D Crane Configurator</div>
-                <div style="font-family:var(--mono);font-size:7.5px;color:#10b981;text-align:center;font-weight:700">13 days</div>
-                <div style="font-size:8.5px;font-weight:800;color:#065f46;text-align:right">$8,500</div>
-              </div>
-              <div style="display:grid;grid-template-columns:1fr 52px 68px;gap:.4rem;padding:.32rem .5rem;border-bottom:1px solid #f3f4f6;flex-shrink:0">
-                <div>
-                  <div style="font-size:8px;font-weight:600;color:#111">Configurator UX/UI design</div>
-                  <div style="font-size:7px;color:#9ca3af;margin-top:.08rem">Step-by-step flow, model selector, spec panel, mobile layout</div>
-                </div>
-                <div style="font-family:var(--mono);font-size:7.5px;color:#6b7280;text-align:center;align-self:center">2 d</div>
-                <div style="font-size:8px;font-weight:600;color:#374151;text-align:right;align-self:center">$1,300</div>
-              </div>
-              <div style="display:grid;grid-template-columns:1fr 52px 68px;gap:.4rem;padding:.32rem .5rem;border-bottom:1px solid #f3f4f6;flex-shrink:0">
-                <div>
-                  <div style="font-size:8px;font-weight:600;color:#111">3D model integration + build logic</div>
-                  <div style="font-size:7px;color:#9ca3af;margin-top:.08rem">All crane SKUs, jib/hook/capacity rules, visual 3D render</div>
-                </div>
-                <div style="font-family:var(--mono);font-size:7.5px;color:#6b7280;text-align:center;align-self:center">5 d</div>
-                <div style="font-size:8px;font-weight:600;color:#374151;text-align:right;align-self:center">$3,250</div>
-              </div>
-              <div style="display:grid;grid-template-columns:1fr 52px 68px;gap:.4rem;padding:.32rem .5rem;border-bottom:1px solid #f3f4f6;flex-shrink:0">
-                <div>
-                  <div style="font-size:8px;font-weight:600;color:#111">Spec engine &amp; validation rules</div>
-                  <div style="font-size:7px;color:#9ca3af;margin-top:.08rem">Flags incompatible configs, auto-calculates capacity at radius</div>
-                </div>
-                <div style="font-family:var(--mono);font-size:7.5px;color:#6b7280;text-align:center;align-self:center">2 d</div>
-                <div style="font-size:8px;font-weight:600;color:#374151;text-align:right;align-self:center">$1,300</div>
-              </div>
-              <div style="display:grid;grid-template-columns:1fr 52px 68px;gap:.4rem;padding:.32rem .5rem;border-bottom:1px solid #f3f4f6;flex-shrink:0">
-                <div>
-                  <div style="font-size:8px;font-weight:600;color:#111">Lead capture + PDF spec sheet generator</div>
-                  <div style="font-size:7px;color:#9ca3af;margin-top:.08rem">Form → email to TES + auto-generated branded PDF for buyer</div>
-                </div>
-                <div style="font-family:var(--mono);font-size:7.5px;color:#6b7280;text-align:center;align-self:center">2 d</div>
-                <div style="font-size:8px;font-weight:600;color:#374151;text-align:right;align-self:center">$1,300</div>
-              </div>
-              <div style="display:grid;grid-template-columns:1fr 52px 68px;gap:.4rem;padding:.32rem .5rem;border-bottom:2px solid #e5e7eb;flex-shrink:0">
-                <div>
-                  <div style="font-size:8px;font-weight:600;color:#111">Cross-device testing &amp; staging</div>
-                  <div style="font-size:7px;color:#9ca3af;margin-top:.08rem">Desktop, tablet, mobile — TES URL, performance audit</div>
-                </div>
-                <div style="font-family:var(--mono);font-size:7.5px;color:#6b7280;text-align:center;align-self:center">2 d</div>
-                <div style="font-size:8px;font-weight:600;color:#374151;text-align:right;align-self:center">$1,300</div>
-              </div>
-
-              <!-- ── PHASE 3 ── -->
-              <div style="display:grid;grid-template-columns:1fr 52px 68px;gap:.4rem;padding:.45rem .5rem .3rem;background:#f5f3ff;border-bottom:1px solid #ddd6fe;flex-shrink:0;margin-top:.1rem">
-                <div style="font-size:8.5px;font-weight:800;color:#4c1d95;letter-spacing:-.01em">Phase 3 — AI Companion + Handover</div>
-                <div style="font-family:var(--mono);font-size:7.5px;color:#a78bfa;text-align:center;font-weight:700">5 days</div>
-                <div style="font-size:8.5px;font-weight:800;color:#4c1d95;text-align:right">$3,500</div>
-              </div>
-              <div style="display:grid;grid-template-columns:1fr 52px 68px;gap:.4rem;padding:.32rem .5rem;border-bottom:1px solid #f3f4f6;flex-shrink:0">
-                <div>
-                  <div style="font-size:8px;font-weight:600;color:#111">AI companion build &amp; product training</div>
-                  <div style="font-size:7px;color:#9ca3af;margin-top:.08rem">Trained on TES products, pricing bands, common buyer questions</div>
-                </div>
-                <div style="font-family:var(--mono);font-size:7.5px;color:#6b7280;text-align:center;align-self:center">2 d</div>
-                <div style="font-size:8px;font-weight:600;color:#374151;text-align:right;align-self:center">$1,400</div>
-              </div>
-              <div style="display:grid;grid-template-columns:1fr 52px 68px;gap:.4rem;padding:.32rem .5rem;border-bottom:1px solid #f3f4f6;flex-shrink:0">
-                <div>
-                  <div style="font-size:8px;font-weight:600;color:#111">Configurator integration &amp; QA</div>
-                  <div style="font-size:7px;color:#9ca3af;margin-top:.08rem">AI hooks into build state — contextual not generic</div>
-                </div>
-                <div style="font-family:var(--mono);font-size:7.5px;color:#6b7280;text-align:center;align-self:center">1 d</div>
                 <div style="font-size:8px;font-weight:600;color:#374151;text-align:right;align-self:center">$700</div>
               </div>
-              <div style="display:grid;grid-template-columns:1fr 52px 68px;gap:.4rem;padding:.32rem .5rem;border-bottom:1px solid #f3f4f6;flex-shrink:0">
-                <div>
-                  <div style="font-size:8px;font-weight:600;color:#111">TES team training session</div>
-                  <div style="font-size:7px;color:#9ca3af;margin-top:.08rem">How to add products, update brochures, read lead data</div>
+              </div><!-- end Phase 3 card -->
+
+              <!-- Total section -->
+              <div style="padding:1.2rem 1.2rem;text-align:center;background:#f0f0f0;border-radius:10px;margin-top:.5rem;flex-shrink:0;grid-column:1/-1">
+                <div style="font-family:var(--mono);font-size:8px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.5rem">Total Investment</div>
+                <div style="display:flex;align-items:baseline;justify-content:center;gap:.3rem">
+                  <div style="font-size:28px;font-weight:800;color:#0f1c2e">$24,000</div>
+                  <div style="font-family:var(--mono);font-size:9px;color:#64748b">AUD · INC. GST</div>
                 </div>
-                <div style="font-family:var(--mono);font-size:7.5px;color:#6b7280;text-align:center;align-self:center">1 d</div>
-                <div style="font-size:8px;font-weight:600;color:#374151;text-align:right;align-self:center">$700</div>
-              </div>
-              <div style="display:grid;grid-template-columns:1fr 52px 68px;gap:.4rem;padding:.32rem .5rem;border-bottom:2px solid #111;flex-shrink:0">
-                <div>
-                  <div style="font-size:8px;font-weight:600;color:#111">Full code documentation &amp; transfer</div>
-                  <div style="font-size:7px;color:#9ca3af;margin-top:.08rem">Commented codebase, README, hosting docs handed to Franel</div>
-                </div>
-                <div style="font-family:var(--mono);font-size:7.5px;color:#6b7280;text-align:center;align-self:center">1 d</div>
-                <div style="font-size:8px;font-weight:600;color:#374151;text-align:right;align-self:center">$700</div>
+                <div style="font-size:8px;color:#64748b;margin-top:.6rem;line-height:1.5">8 weeks · 3 phases · full code handover</div>
               </div>
 
-              <!-- Total row -->
-              <div style="display:grid;grid-template-columns:1fr 52px 68px;gap:.4rem;padding:.6rem .5rem .4rem;flex-shrink:0">
-                <div>
-                  <div style="font-size:9px;font-weight:800;color:#111">Total — 36 days across 16 weeks</div>
-                  <div style="font-size:7.5px;color:#9ca3af;margin-top:.1rem">Anchor range. Final quote within 48 hrs of decisions confirmed.</div>
-                </div>
-                <div style="font-family:var(--mono);font-size:7.5px;color:#111;text-align:center;align-self:center;font-weight:700">36 d</div>
-                <div style="text-align:right;align-self:center">
-                  <div style="font-size:18px;font-weight:800;color:#111;letter-spacing:-.03em;line-height:1">$20–25k</div>
-                  <div style="font-family:var(--mono);font-size:6.5px;color:#aaa;letter-spacing:.08em">AUD · INC. GST</div>
-                </div>
-              </div>
-
-            </div>
-
-            <!-- Right: decisions required -->
-            <div style="flex-shrink:0;width:260px;padding:1.4rem 1.4rem;background:#0d0d0d;display:flex;flex-direction:column;gap:1rem">
-              <div style="font-family:var(--mono);font-size:8px;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.12em">Decisions Required</div>
-              <div style="font-size:10.5px;color:rgba(255,255,255,.55);line-height:1.6">Once these are confirmed, we come back with a precise quote within 48 hours.</div>
-              <div style="display:flex;flex-direction:column;gap:.7rem;flex:1">
-                <div style="display:flex;gap:.6rem;align-items:flex-start">
-                  <div style="flex-shrink:0;width:18px;height:18px;border-radius:4px;border:1.5px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;margin-top:.05rem"></div>
-                  <div>
-                    <div style="font-size:9.5px;font-weight:700;color:#fff;margin-bottom:.15rem">Hosting preference</div>
-                    <div style="font-size:8px;color:rgba(255,255,255,.4);line-height:1.5">TES-managed, SingSinghAI-managed, or Franel's server?</div>
-                  </div>
-                </div>
-                <div style="display:flex;gap:.6rem;align-items:flex-start">
-                  <div style="flex-shrink:0;width:18px;height:18px;border-radius:4px;border:1.5px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;margin-top:.05rem"></div>
-                  <div>
-                    <div style="font-size:9.5px;font-weight:700;color:#fff;margin-bottom:.15rem">CRM integration</div>
-                    <div style="font-size:8px;color:rgba(255,255,255,.4);line-height:1.5">Configurator inquiries → email only, or push to a CRM?</div>
-                  </div>
-                </div>
-                <div style="display:flex;gap:.6rem;align-items:flex-start">
-                  <div style="flex-shrink:0;width:18px;height:18px;border-radius:4px;border:1.5px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;margin-top:.05rem"></div>
-                  <div>
-                    <div style="font-size:9.5px;font-weight:700;color:#fff;margin-bottom:.15rem">Number of crane models</div>
-                    <div style="font-size:8px;color:rgba(255,255,255,.4);line-height:1.5">Confirming exact SKU count affects configurator scope.</div>
-                  </div>
-                </div>
-                <div style="display:flex;gap:.6rem;align-items:flex-start">
-                  <div style="flex-shrink:0;width:18px;height:18px;border-radius:4px;border:1.5px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;margin-top:.05rem"></div>
-                  <div>
-                    <div style="font-size:9.5px;font-weight:700;color:#fff;margin-bottom:.15rem">Phase 1 start date</div>
-                    <div style="font-size:8px;color:rgba(255,255,255,.4);line-height:1.5">Go-ahead by end of June for Week 4 configurator launch.</div>
-                  </div>
-                </div>
-              </div>
-              <div style="flex-shrink:0;padding:.6rem .75rem;background:rgba(255,255,255,.04);border-radius:8px;border:1px solid rgba(255,255,255,.08)">
-                <div style="font-size:8.5px;color:rgba(255,255,255,.5);line-height:1.55">You can say no at any point. If you do, you keep every finding from our discovery — at no cost.</div>
-              </div>
             </div>
 
           </div><!-- end fc-mockup -->
         </div><!-- end fc-front -->
 
-        <!-- BACK -->
-        <div class="fc-back">
-          <div class="fc-back-content">
-            <div class="fc-back-title">Investment — Why It's Priced This Way</div>
-            <div class="fc-back-items">
-              <div class="fc-back-item">
-                <div class="fc-back-item-title">This is a bundle, not a menu</div>
-                <div class="fc-back-item-desc">The configurator, the site, and the AI are priced together because they're designed together. Buying them separately from different vendors means integration problems, inconsistent design, and no single owner of the outcome.</div>
-              </div>
-              <div class="fc-back-item">
-                <div class="fc-back-item-title">No retainer. No lock-in.</div>
-                <div class="fc-back-item-desc">Full code handover means TES's developer can maintain and extend the site independently. We charge for the build, not for ongoing access. There is no monthly fee.</div>
-              </div>
-              <div class="fc-back-item">
-                <div class="fc-back-item-title">$20–25k vs. the alternative</div>
-                <div class="fc-back-item-desc">A single qualified crane inquiry — one call that converts — is worth $800k+ to TES. The configurator doesn't need to close many leads to pay for itself. It needs to close one.</div>
-              </div>
-              <div class="fc-back-item">
-                <div class="fc-back-item-title">Final number after decisions</div>
-                <div class="fc-back-item-desc">The four decisions on the right of this slide are the only unknowns that affect the final quote. Once confirmed, we respond within 48 hours with a precise number — no range, no estimate.</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <button class="fc-flip-btn" id="fc11-btn" onclick="var fc=document.getElementById('fc11');fc.classList.toggle('flipped');this.querySelector('svg').style.transform=fc.classList.contains('flipped')?'rotate(180deg)':'';" title="Why priced this way">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .4s"><polyline points="9 18 15 12 9 6"/></svg>
-        </button>
 
       </div>
     </div>
@@ -2418,16 +2647,16 @@
 ════════════════════════════════════════════════════ -->
 <div class="slide" id="s12">
   <div class="wrap">
-    <div class="s-label">Total Equipment Sales · Next Step</div>
-    <h1>Here's all we're asking for right now.<br><span style="color:#2563eb">One decision.</span></h1>
-    <div style="width:48px;height:3px;background:#0f1c2e;border-radius:2px;margin:1rem 0 2.5rem"></div>
+    <div class="s-label">Total Equipment Sales · Next Steps</div>
+    <h1>Next steps.<br><span style="color:#2563eb">Simple from here.</span></h1>
+    <div style="width:48px;height:3px;background:#2563eb;border-radius:2px;margin:1rem 0 2.5rem"></div>
 
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:4vw;align-items:start">
 
       <!-- Left: intro + steps + callout -->
       <div>
-        <div style="font-size:clamp(12px,1.2vw,14px);color:#334155;line-height:1.8;margin-bottom:1.5rem">
-          Reply to this proposal or email AJ directly with your go-ahead. That's it. We'll come back within 48 hours with a confirmed scope and set up 30 minutes with AJ and Franel to kick off Week 1.
+        <div style="font-size:clamp(13px,1.3vw,15px);color:#334155;line-height:1.8;margin-bottom:1.8rem">
+          Reply to this proposal with your go-ahead — that's it. We'll come back within 48 hours with a confirmed scope and set up 30 minutes with AJ and Franel to kick off Week 1.
         </div>
 
         <div style="display:flex;flex-direction:column;gap:.7rem;margin-bottom:1.8rem">
@@ -2454,26 +2683,30 @@
         </div>
       </div>
 
-      <!-- Right: CTA box + prepared for/by -->
+      <!-- Right: large card -->
       <div>
-        <div style="padding:2rem 2.2rem;text-align:center;border:1px solid rgba(37,99,235,.25);border-top:2px solid #c8102e;border-radius:14px;background:rgba(37,99,235,.04);margin-bottom:1.2rem">
-          <div style="font-family:var(--mono);font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:#64748b;margin-bottom:.7rem">Reply to this proposal by</div>
-          <div style="font-size:clamp(28px,4vw,46px);font-weight:700;color:#0f1c2e;margin-bottom:.3rem">End of June 2026</div>
-          <div style="font-size:12px;color:#475569;margin-bottom:1.4rem;line-height:1.6">with your go-ahead and we'll book a 30-minute kick-off call for the first week of July</div>
-          <div style="width:100%;height:1px;background:#e2e8f0;margin-bottom:1.2rem"></div>
-          <div style="font-family:var(--mono);font-size:10px;color:#2563eb;margin-bottom:.3rem">sunitasinghkanwal@gmail.com</div>
-          <div style="font-family:var(--mono);font-size:10px;color:#64748b">singsinghai.com.au</div>
+        <div style="padding:2rem 2rem;text-align:center;border:1.5px solid #e0e7ff;border-radius:16px;background:#f0f4ff;margin-bottom:1.5rem;flex-grow:1;display:flex;flex-direction:column;justify-content:center">
+          <div style="font-family:var(--mono);font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:#64748b;margin-bottom:1.2rem">Prepared by</div>
+          <div style="margin-bottom:1.8rem">
+            <div style="font-size:24px;font-weight:700;color:#0f1c2e;margin-bottom:.4rem">SingSingh AI</div>
+            <div style="font-size:11px;color:#64748b;letter-spacing:.05em">OPERATIONS INTELLIGENCE</div>
+          </div>
+          <div style="width:100%;height:1px;background:#d0d9f7;margin-bottom:1.5rem"></div>
+          <div style="font-size:10px;color:#64748b;margin-bottom:1rem">singsinghai.com.au</div>
+          <div style="display:inline-block;padding:.6rem 1rem;background:#fff;border:1px solid #e0e7ff;border-radius:20px;margin:0 auto">
+            <a href="#" style="font-size:10px;color:#2563eb;font-weight:600;text-decoration:none">See our flagship products →</a>
+          </div>
         </div>
 
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem">
-          <div style="padding:.9rem;border:1px solid #e2e8f0;border-radius:8px;text-align:center">
-            <div style="font-family:var(--mono);font-size:8px;color:#64748b;letter-spacing:.14em;text-transform:uppercase;margin-bottom:.3rem">Prepared for</div>
-            <div style="font-size:11px;font-weight:700;color:#0f1c2e">AJ</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+          <div style="padding:1rem;border:1px solid #e2e8f0;border-radius:10px;text-align:center">
+            <div style="font-family:var(--mono);font-size:8px;color:#64748b;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.5rem;font-weight:700">Prepared for</div>
+            <div style="font-size:12px;font-weight:700;color:#0f1c2e">AJ</div>
             <div style="font-size:10px;color:#64748b">Total Equipment Sales</div>
           </div>
-          <div style="padding:.9rem;border:1px solid #e2e8f0;border-radius:8px;text-align:center">
-            <div style="font-family:var(--mono);font-size:8px;color:#64748b;letter-spacing:.14em;text-transform:uppercase;margin-bottom:.3rem">Prepared by</div>
-            <div style="font-size:11px;font-weight:700;color:#0f1c2e">Abhinav Singh</div>
+          <div style="padding:1rem;border:1px solid #e2e8f0;border-radius:10px;text-align:center">
+            <div style="font-family:var(--mono);font-size:8px;color:#64748b;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.5rem;font-weight:700">Prepared by</div>
+            <div style="font-size:12px;font-weight:700;color:#0f1c2e">Abhinav Singh</div>
             <div style="font-size:10px;color:#64748b">SingSingh AI</div>
           </div>
         </div>
@@ -2555,10 +2788,17 @@
     const catToNav = { bq:'Cranes', potain:'Cranes', hoists:'Hoists', batteries:'Batteries', services:'Services' };
     document.querySelectorAll('.cp-nav-link').forEach(n => { if(n.textContent.trim() === catToNav[cat]) n.classList.add('cp-nav-link-active'); });
     // filter cards
-    document.querySelectorAll('#cp-gallery .cp-model').forEach((m, i) => {
+    let visIdx = 0;
+    document.querySelectorAll('#cp-gallery .cp-model').forEach((m) => {
       const show = cat === 'all' || m.dataset.cat === cat;
       m.style.display = show ? 'flex' : 'none';
-      if (show) { m.style.animation = `cardSlideIn ${280 + i * 40}ms cubic-bezier(.22,1,.36,1) both`; }
+      if (show) { m.style.animation = `cardSlideIn ${280 + visIdx++ * 40}ms cubic-bezier(.22,1,.36,1) both`; }
+    });
+    // show/hide section separators
+    document.querySelectorAll('#cp-gallery .cp-section-sep').forEach(sep => {
+      const sec = sep.dataset.section;
+      const show = cat === 'all' || cat === sec;
+      sep.style.display = show ? 'flex' : 'none';
     });
   }
 
@@ -2605,11 +2845,12 @@
       const id = e.target.id;
       if (id === 's6') loadIframe(document.getElementById('cfg-iframe'));
       if (id === 's7') loadIframe(document.getElementById('cfg-snap'));
+      if (id === 's9') loadIframe(document.getElementById('cfg-iframe-s9'));
     });
   }, { threshold: 0.1 });
 
   // Watch each slide independently so only the visible one loads its iframe
-  ['s6', 's7'].forEach(id => {
+  ['s6', 's7', 's9'].forEach(id => {
     const el = document.getElementById(id);
     if (el) obs.observe(el);
   });
