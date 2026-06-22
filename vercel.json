@@ -1,32 +1,62 @@
 {
   "functions": {
-    "api/chat.js": { "maxDuration": 60 }
+    "api/chat.js": {
+      "maxDuration": 60
+    }
   },
   "headers": [
     {
       "source": "/liebherr_compressed.glb",
       "headers": [
-        { "key": "Content-Type", "value": "model/gltf-binary" },
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        {
+          "key": "Content-Type",
+          "value": "model/gltf-binary"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
       ]
     },
     {
       "source": "/:file(.+\\.(?:glb|png|jpg|jpeg|svg|webp|woff2))",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
       ]
     },
     {
       "source": "/(TES_Crane_Configurator|TES_SingSinghAI_Proposal|TES_Scoping_Form)\\.html",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
       ]
     }
   ],
   "rewrites": [
-    { "source": "/png_education-proposal", "destination": "/png_education-proposal.html" },
-    { "source": "/TES_scoping_form", "destination": "/TES_Scoping_Form.html" },
-    { "source": "/TES_SingSinghAI_Proposal", "destination": "/TES_SingSinghAI_Proposal.html" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/TES_Battery_Proposal_Generator",
+      "destination": "/TES_Battery_Proposal_Generator.html"
+    },
+    {
+      "source": "/png_education-proposal",
+      "destination": "/png_education-proposal.html"
+    },
+    {
+      "source": "/TES_scoping_form",
+      "destination": "/TES_Scoping_Form.html"
+    },
+    {
+      "source": "/TES_SingSinghAI_Proposal",
+      "destination": "/TES_SingSinghAI_Proposal.html"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ]
 }
