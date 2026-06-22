@@ -245,12 +245,12 @@
 
     /* Light back — 4-card rationale grid */
     .fc-back--light { background: #fff; padding: 1.6rem 1.8rem; }
-    .bgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; flex: 1; min-height: 0; }
+    .bgrid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.3rem; flex: 1; min-height: 0; align-content: center; }
     .bcard { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
     .bcard-head { background: var(--navy); padding: .7rem 1.1rem; }
     .bcard-head span { font-family: var(--mono); font-size: 11px; font-weight: 700; color: #fff; letter-spacing: .1em; text-transform: uppercase; }
     .bcard-body { background: #fff; flex: 1; display: flex; flex-direction: column; }
-    .brow { display: flex; gap: .9rem; padding: .7rem 1.1rem; align-items: center; border-bottom: 1px solid #f1f5f9; }
+    .brow { display: flex; gap: .9rem; padding: 1.05rem 1.2rem; align-items: center; border-bottom: 1px solid #f1f5f9; }
     .brow:last-child { border-bottom: none; }
     .brow-ic { width: 42px; height: 42px; border-radius: 50%; background: #E8F0FE; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .brow-title { font-size: 13px; font-weight: 700; color: var(--navy); line-height: 1.3; margin-bottom: .12rem; }
@@ -530,6 +530,24 @@
       }
       /* Embedded live configurator: give the stacked canvas+panel real height */
       #cfg-iframe, #cfg-iframe-s9 { min-height: 78vh; }
+    }
+
+    /* ── New content (Gantt, funnel flip-backs, payment) ── */
+    @media (max-width: 768px) {
+      /* Standalone Gantt: scroll sideways instead of crushing 9 columns */
+      .gantt-grid { overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: .4rem; }
+      .gantt-grid > div { min-width: 620px; }
+
+      /* Funnel flip-backs: stack naturally and let the card scroll */
+      .fc-back-content > div[style*="justify-content:space-between"] { justify-content: flex-start !important; gap: 1.1rem; }
+
+      /* Investment payment strip stays in one row but tightens up */
+      .slide-foot span:first-child { max-width: 55%; }
+    }
+
+    @media (max-width: 430px) {
+      /* Funnel step number bubbles + text scale down a touch */
+      .fc-back-content [style*="width:38px;height:38px"] { width: 32px !important; height: 32px !important; }
     }
   </style>
 </head>
@@ -1088,82 +1106,59 @@
         <!-- BACK — Reasoning -->
         <div class="fc-back fc-back--light">
           <div class="fc-back-content">
-            <div class="fc-back-title" style="color:var(--navy)">Homepage — Design Decisions</div>
-            <div class="bgrid">
+            <div class="fc-back-title" style="color:var(--navy)">Homepage · what's on the page, top to bottom</div>
+            <div style="background:#eef3fe;border-left:3px solid var(--blue);border-radius:0 8px 8px 0;padding:.75rem .95rem;margin:-.4rem 0 1.1rem;max-width:780px">
+              <div style="font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--blue);text-transform:uppercase;margin-bottom:.3rem">Purpose of this page</div>
+              <div style="font-size:12.5px;color:var(--charcoal);line-height:1.55">This page has one job: in a few seconds, show the buyer who TES is and what stands out, then point them to the next step, whether that's looking through accessories or configuring the crane they came for. The four sections below do that, one after the other.</div>
+            </div>
 
-              <!-- Guide every visitor -->
-              <div class="bcard">
-                <div class="bcard-head"><span>Guide Every Visitor</span></div>
-                <div class="bcard-body">
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#1A73EB" stroke-width="1.7"/><circle cx="12" cy="12" r="4" stroke="#1A73EB" stroke-width="1.6"/><circle cx="12" cy="12" r="1.3" fill="#1A73EB"/></svg></div>
-                    <div><div class="brow-title">Primary CTA → Configurator</div><div class="brow-desc">Crane buyers start building immediately. No browsing required.</div></div>
-                  </div>
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 5h16l-6 7v6l-4 2v-8L4 5Z" stroke="#1A73EB" stroke-width="1.7" stroke-linejoin="round"/></svg></div>
-                    <div><div class="brow-title">Secondary CTA → Explore Range</div><div class="brow-desc">Hoists, batteries, software and services each get their own path.</div></div>
-                  </div>
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 7h14M5 12h14M5 17h14" stroke="#1A73EB" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-                    <div><div class="brow-title">One job per button</div><div class="brow-desc">No mixed signals, no choice paralysis.</div></div>
-                  </div>
+            <!-- Vertical funnel of the real homepage sections -->
+            <div style="flex:1;min-height:0;position:relative;display:flex;flex-direction:column;justify-content:space-between;padding:.2rem 0">
+
+              <!-- connecting rail -->
+              <div style="position:absolute;left:19px;top:28px;bottom:28px;width:2px;background:#dbe4fb;z-index:0"></div>
+
+              <!-- 1 — Hero -->
+              <div style="display:flex;gap:1.1rem;align-items:flex-start;position:relative;z-index:1">
+                <div style="width:38px;height:38px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;font-weight:700;flex-shrink:0">1</div>
+                <div style="flex:1;padding-top:.1rem">
+                  <div style="font-size:14px;font-weight:800;color:var(--navy);margin-bottom:.15rem">Hero · the first thing they see</div>
+                  <div style="font-size:12.5px;color:var(--charcoal);line-height:1.5">A full-screen crane video, one big line (“Capital Equipment. Built to Perform.”), and one button: <strong>Configure your crane</strong>.</div>
+                  <div style="font-size:11.5px;color:var(--grey);line-height:1.5;margin-top:.25rem"><strong style="color:var(--blue);font-weight:700">The hook</strong> &nbsp;A buyer sees a real crane doing real work and a line that says exactly what TES is: serious lifting gear that performs. They know right away they're in the right place, and the one button takes them into building their own.</div>
+                  <div style="margin-top:.5rem"><span style="font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.07em;color:#2563eb;background:#e3edfd;border-radius:20px;padding:.2rem .6rem;text-transform:uppercase">UX · Hick's Law</span></div>
                 </div>
               </div>
 
-              <!-- Sell every category -->
-              <div class="bcard">
-                <div class="bcard-head"><span>Sell Every Category</span></div>
-                <div class="bcard-body">
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="4" y="5" width="16" height="14" rx="1.5" stroke="#1A73EB" stroke-width="1.7"/><path d="M4 9h16M9 9v10" stroke="#1A73EB" stroke-width="1.5"/></svg></div>
-                    <div><div class="brow-title">Tabs slide their own panel</div><div class="brow-desc">Each category shows highlights, key specs and a direct CTA.</div></div>
-                  </div>
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3Z" stroke="#1A73EB" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5" stroke="#1A73EB" stroke-width="1.5"/></svg></div>
-                    <div><div class="brow-title">Not a static grid</div><div class="brow-desc">It moves, draws attention, sells each line on its own terms.</div></div>
-                  </div>
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M6 4l13 7-5 2-2 5L6 4Z" stroke="#1A73EB" stroke-width="1.7" stroke-linejoin="round"/></svg></div>
-                    <div><div class="brow-title">Every card links deeper</div><div class="brow-desc">Product page, configurator or inquiry. Nothing is a dead end.</div></div>
-                  </div>
+              <!-- 2 — Explore the range -->
+              <div style="display:flex;gap:1.1rem;align-items:flex-start;position:relative;z-index:1">
+                <div style="width:38px;height:38px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;font-weight:700;flex-shrink:0">2</div>
+                <div style="flex:1;padding-top:.1rem">
+                  <div style="font-size:14px;font-weight:800;color:var(--navy);margin-bottom:.15rem">Explore the range · category tabs</div>
+                  <div style="font-size:12.5px;color:var(--charcoal);line-height:1.5">Tabs for <strong>Cranes, Hoists, Batteries, Software and Services</strong>. Click one and it opens cards for that range, each with a Configure or Explore button.</div>
+                  <div style="font-size:11.5px;color:var(--grey);line-height:1.5;margin-top:.25rem"><strong style="color:var(--blue);font-weight:700">Why</strong> &nbsp;People can go straight to what they care about instead of scrolling past everything else.</div>
+                  <div style="margin-top:.5rem"><span style="font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.07em;color:#2563eb;background:#e3edfd;border-radius:20px;padding:.2rem .6rem;text-transform:uppercase">UX · Jakob's Law</span></div>
                 </div>
               </div>
 
-              <!-- Build trust fast -->
-              <div class="bcard">
-                <div class="bcard-head"><span>Build Trust Fast</span></div>
-                <div class="bcard-body">
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9 12a3 3 0 1 0 0-4l-3 3a3 3 0 0 0 0 4l1 1" stroke="#1A73EB" stroke-width="1.6" stroke-linecap="round"/><path d="M15 12a3 3 0 1 0 0 4l3-3a3 3 0 0 0 0-4l-1-1" stroke="#1A73EB" stroke-width="1.6" stroke-linecap="round"/></svg></div>
-                    <div><div class="brow-title">Partner brands sit mid-page</div><div class="brow-desc">BQ, YHX & Techway shown right when buyers are deciding.</div></div>
-                  </div>
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 3h7l4 4v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z" stroke="#1A73EB" stroke-width="1.6"/><path d="M14 3v4h4M9 13h6M9 16h4" stroke="#1A73EB" stroke-width="1.4" stroke-linecap="round"/></svg></div>
-                    <div><div class="brow-title">Real project case studies</div><div class="brow-desc">Real equipment, real durations. Proof before the ask.</div></div>
-                  </div>
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M8 7c-2 0-3 1.5-3 3.5S6 14 8 14c0 2-1 3-3 3.5 4 0 6-2.5 6-7C11 8.5 9.8 7 8 7Z" fill="#1A73EB"/><path d="M17 7c-2 0-3 1.5-3 3.5S15 14 17 14c0 2-1 3-3 3.5 4 0 6-2.5 6-7C20 8.5 18.8 7 17 7Z" fill="#1A73EB"/></svg></div>
-                    <div><div class="brow-title">One specific client quote</div><div class="brow-desc">Beats any marketing claim we could write.</div></div>
-                  </div>
+              <!-- 3 — Proof -->
+              <div style="display:flex;gap:1.1rem;align-items:flex-start;position:relative;z-index:1">
+                <div style="width:38px;height:38px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;font-weight:700;flex-shrink:0">3</div>
+                <div style="flex:1;padding-top:.1rem">
+                  <div style="font-size:14px;font-weight:800;color:var(--navy);margin-bottom:.15rem">Proof · show they can trust TES</div>
+                  <div style="font-size:12.5px;color:var(--charcoal);line-height:1.5">Partner brands (BQ, YHX, Techway), real project stories under <strong>“In the Field”</strong>, and a quote from an actual client, sat in the middle of the page.</div>
+                  <div style="font-size:11.5px;color:var(--grey);line-height:1.5;margin-top:.25rem"><strong style="color:var(--blue);font-weight:700">Makes them stick</strong> &nbsp;This is what keeps them on the page and builds the trust to buy. Nobody drops this kind of money on a name they don't know. Real brands, real jobs and a real customer tell them TES is the real deal, before they even think to ask.</div>
+                  <div style="margin-top:.5rem"><span style="font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.07em;color:#2563eb;background:#e3edfd;border-radius:20px;padding:.2rem .6rem;text-transform:uppercase">UX · Social Proof</span></div>
                 </div>
               </div>
 
-              <!-- SEO that works -->
-              <div class="bcard">
-                <div class="bcard-head"><span>SEO That Works</span></div>
-                <div class="bcard-body">
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#1A73EB" stroke-width="1.7"/><path d="M16 16l4 4" stroke="#1A73EB" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-                    <div><div class="brow-title">Every project page is a target</div><div class="brow-desc">Indexed by location, crane model and industry.</div></div>
-                  </div>
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 20V11M10 20V7M16 20v-6" stroke="#1A73EB" stroke-width="1.8" stroke-linecap="round"/><path d="M3 9l5-4 4 3 6-5" stroke="#1A73EB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                    <div><div class="brow-title">A clear funnel: open → act</div><div class="brow-desc">Every section points the visitor toward a next step.</div></div>
-                  </div>
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9 12a3 3 0 0 1 3-3h3a3 3 0 0 1 0 6h-1" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round"/><path d="M15 12a3 3 0 0 1-3 3H9a3 3 0 0 1 0-6h1" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round"/></svg></div>
-                    <div><div class="brow-title">Testimonials feed the SEO base</div><div class="brow-desc">Credibility signals tie into the site structure.</div></div>
-                  </div>
+              <!-- 4 — The ask -->
+              <div style="display:flex;gap:1.1rem;align-items:flex-start;position:relative;z-index:1">
+                <div style="width:38px;height:38px;border-radius:50%;background:#16A34A;color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;font-weight:700;flex-shrink:0">4</div>
+                <div style="flex:1;padding-top:.1rem">
+                  <div style="font-size:14px;font-weight:800;color:var(--navy);margin-bottom:.15rem">The ask · the jump-off point</div>
+                  <div style="font-size:12.5px;color:var(--charcoal);line-height:1.5">Every section finishes with a clear button: <strong>Configure, Get a Quote, or Contact</strong>.</div>
+                  <div style="font-size:11.5px;color:var(--grey);line-height:1.5;margin-top:.25rem"><strong style="color:var(--blue);font-weight:700">Sends them deeper</strong> &nbsp;The homepage is the top of the pyramid. It gives the short version of everything, just enough to get the picture. Each button is a door into the rest of the site, where they configure a crane, open a full product page or browse accessories and get the real detail.</div>
+                  <div style="margin-top:.5rem"><span style="font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.07em;color:#2563eb;background:#e3edfd;border-radius:20px;padding:.2rem .6rem;text-transform:uppercase">UX · Progressive Disclosure</span></div>
                 </div>
               </div>
 
@@ -1394,78 +1389,60 @@
         <!-- BACK — Reasoning -->
         <div class="fc-back fc-back--light">
           <div class="fc-back-content">
-            <div class="fc-back-title" style="color:var(--navy)">Products & Services — Design Decisions</div>
-            <div class="bgrid">
+            <div class="fc-back-title" style="color:var(--navy)">Offerings · how the page works, left to right</div>
+            <div style="background:#eef3fe;border-left:3px solid var(--blue);border-radius:0 8px 8px 0;padding:.75rem .95rem;margin:-.4rem 0 1.1rem;max-width:780px">
+              <div style="font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--blue);text-transform:uppercase;margin-bottom:.3rem">Purpose of this page</div>
+              <div style="font-size:12.5px;color:var(--charcoal);line-height:1.55">This is the browse-and-pick page. The job is to let a buyer see everything TES sells, narrow down to what they actually need, compare the things that matter, and jump straight into building the one they like, all without leaving the page.</div>
+            </div>
 
-              <!-- Find what you need -->
-              <div class="bcard">
-                <div class="bcard-head"><span>Find What You Need</span></div>
-                <div class="bcard-body">
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#1A73EB" stroke-width="1.7"/><circle cx="12" cy="12" r="4" stroke="#1A73EB" stroke-width="1.6"/><circle cx="12" cy="12" r="1.3" fill="#1A73EB"/></svg></div>
-                    <div><div class="brow-title">Everything in one place</div><div class="brow-desc">Cranes, hoists, batteries, software, services — all on one page.</div></div>
-                  </div>
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 5h16l-6 7v6l-4 2v-8L4 5Z" stroke="#1A73EB" stroke-width="1.7" stroke-linejoin="round"/></svg></div>
-                    <div><div class="brow-title">Left sidebar = filter, not navigation</div><div class="brow-desc">Filters the gallery; keeps you oriented and nothing reloads.</div></div>
-                  </div>
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 7h14M5 12h14M5 17h14" stroke="#1A73EB" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-                    <div><div class="brow-title">Nav bar mirrors the sidebar</div><div class="brow-desc">Top nav matches filters — so you always know where to find what you need.</div></div>
-                  </div>
+            <!-- Vertical funnel of the real offerings-page sections -->
+            <div style="flex:1;min-height:0;position:relative;display:flex;flex-direction:column;justify-content:space-between;padding:.2rem 0">
+
+              <!-- connecting rail -->
+              <div style="position:absolute;left:19px;top:28px;bottom:28px;width:2px;background:#dbe4fb;z-index:0"></div>
+
+              <!-- 1 — Filter -->
+              <div style="display:flex;gap:1.1rem;align-items:flex-start;position:relative;z-index:1">
+                <div style="width:38px;height:38px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;font-weight:700;flex-shrink:0">1</div>
+                <div style="flex:1;padding-top:.1rem">
+                  <div style="font-size:14px;font-weight:800;color:var(--navy);margin-bottom:.15rem">The filter · pick a category</div>
+                  <div style="font-size:12.5px;color:var(--charcoal);line-height:1.5">A list down the left: <strong>Cranes (BQ, Potain), Hoists, Batteries, Software, Services</strong>. Click one and the products filter in place.</div>
+                  <div style="font-size:11.5px;color:var(--grey);line-height:1.5;margin-top:.25rem"><strong style="color:var(--blue);font-weight:700">Keeps them oriented</strong> &nbsp;They get to their gear in one click and the page never reloads, so they never feel lost or shipped off somewhere else.</div>
+                  <div style="margin-top:.5rem"><span style="font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.07em;color:#2563eb;background:#e3edfd;border-radius:20px;padding:.2rem .6rem;text-transform:uppercase">UX · Hick's Law</span></div>
                 </div>
               </div>
 
-              <!-- Decide with confidence -->
-              <div class="bcard">
-                <div class="bcard-head"><span>Decide With Confidence</span></div>
-                <div class="bcard-body">
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="6" y="3" width="6" height="18" rx="1.5" stroke="#1A73EB" stroke-width="1.7" transform="rotate(-45 9 12)"/><path d="M9.5 8.5l1.5 1.5M12 11l1.5 1.5M7 11l1.5 1.5" stroke="#1A73EB" stroke-width="1.4" stroke-linecap="round"/></svg></div>
-                    <div><div class="brow-title">Spec pills, not a table</div><div class="brow-desc">Capacity, jib length and type — the 3 things buyers look for first. No clicking required.</div></div>
-                  </div>
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 3h7l4 4v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z" stroke="#1A73EB" stroke-width="1.6"/><path d="M14 3v4h4M9 13h6M9 16h4" stroke="#1A73EB" stroke-width="1.4" stroke-linecap="round"/></svg></div>
-                    <div><div class="brow-title">Specs on the model page</div><div class="brow-desc">Full spec sheets are for the decision stage. Keep it scannable and focused.</div></div>
-                  </div>
+              <!-- 2 — The gallery -->
+              <div style="display:flex;gap:1.1rem;align-items:flex-start;position:relative;z-index:1">
+                <div style="width:38px;height:38px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;font-weight:700;flex-shrink:0">2</div>
+                <div style="flex:1;padding-top:.1rem">
+                  <div style="font-size:14px;font-weight:800;color:var(--navy);margin-bottom:.15rem">The gallery · every model on show</div>
+                  <div style="font-size:12.5px;color:var(--charcoal);line-height:1.5">Each machine sits in its own card with a <strong>3D render</strong>, grouped by type so like sits with like.</div>
+                  <div style="font-size:11.5px;color:var(--grey);line-height:1.5;margin-top:.25rem"><strong style="color:var(--blue);font-weight:700">Lets the machine sell</strong> &nbsp;A crane buyer wants to see the gear. The render gives each model its moment instead of burying it in a plain list.</div>
+                  <div style="margin-top:.5rem"><span style="font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.07em;color:#2563eb;background:#e3edfd;border-radius:20px;padding:.2rem .6rem;text-transform:uppercase">UX · Picture Superiority Effect</span></div>
                 </div>
               </div>
 
-              <!-- See and compare easily -->
-              <div class="bcard">
-                <div class="bcard-head"><span>See and Compare Easily</span></div>
-                <div class="bcard-body">
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3Z" stroke="#1A73EB" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5" stroke="#1A73EB" stroke-width="1.5"/></svg></div>
-                    <div><div class="brow-title">3D renders need space</div><div class="brow-desc">A vertical list gives each crane room to shine — no clutter.</div></div>
-                  </div>
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="4" y="5" width="16" height="14" rx="1.5" stroke="#1A73EB" stroke-width="1.7"/><path d="M12 5v14" stroke="#1A73EB" stroke-width="1.5"/></svg></div>
-                    <div><div class="brow-title">2-column layout</div><div class="brow-desc">Wide enough to read, compact enough to show 4–6 models without scrolling.</div></div>
-                  </div>
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M6 4l13 7-5 2-2 5L6 4Z" stroke="#1A73EB" stroke-width="1.7" stroke-linejoin="round"/></svg></div>
-                    <div><div class="brow-title">Configure button per card</div><div class="brow-desc">Start building fast — the CTA is always visible and accessible.</div></div>
-                  </div>
+              <!-- 3 — The card -->
+              <div style="display:flex;gap:1.1rem;align-items:flex-start;position:relative;z-index:1">
+                <div style="width:38px;height:38px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;font-weight:700;flex-shrink:0">3</div>
+                <div style="flex:1;padding-top:.1rem">
+                  <div style="font-size:14px;font-weight:800;color:var(--navy);margin-bottom:.15rem">The card · the numbers that matter</div>
+                  <div style="font-size:12.5px;color:var(--charcoal);line-height:1.5">Name, a one-line description, the key specs (<strong>capacity, jib length, type</strong>) and a price, “from $X”.</div>
+                  <div style="font-size:11.5px;color:var(--grey);line-height:1.5;margin-top:.25rem"><strong style="color:var(--blue);font-weight:700">Answers the first questions</strong> &nbsp;Capacity, reach and price are what a buyer checks first. They're right there, so they can compare models without clicking into anything.</div>
+                  <div style="font-size:10.5px;color:#94a3b8;line-height:1.45;margin-top:.4rem;font-style:italic">Note: the prices in this prototype are placeholders. TES sets the real numbers before launch.</div>
+                  <div style="margin-top:.5rem"><span style="font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.07em;color:#2563eb;background:#e3edfd;border-radius:20px;padding:.2rem .6rem;text-transform:uppercase">UX · Information Scent</span></div>
                 </div>
               </div>
 
-              <!-- SEO that works -->
-              <div class="bcard">
-                <div class="bcard-head"><span>SEO That Works</span></div>
-                <div class="bcard-body">
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9 12a3 3 0 0 1 3-3h3a3 3 0 0 1 0 6h-1" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round"/><path d="M15 12a3 3 0 0 1-3 3H9a3 3 0 0 1 0-6h1" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round"/></svg></div>
-                    <div><div class="brow-title">Each card links to its own URL</div><div class="brow-desc">Every crane gets an indexable page. Google can rank it independently.</div></div>
-                  </div>
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#1A73EB" stroke-width="1.7"/><path d="M16 16l4 4" stroke="#1A73EB" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-                    <div><div class="brow-title">Products & Services page is optimized</div><div class="brow-desc">Targets key terms buyers search for (e.g. "tower cranes for sale Australia").</div></div>
-                  </div>
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 20V11M10 20V7M16 20v-6" stroke="#1A73EB" stroke-width="1.8" stroke-linecap="round"/><path d="M3 9l5-4 4 3 6-5" stroke="#1A73EB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                    <div><div class="brow-title">Filter views create context</div><div class="brow-desc">Filters feed remarketing and help TES see which product lines drive interest.</div></div>
-                  </div>
+              <!-- 4 — Configure -->
+              <div style="display:flex;gap:1.1rem;align-items:flex-start;position:relative;z-index:1">
+                <div style="width:38px;height:38px;border-radius:50%;background:#16A34A;color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;font-weight:700;flex-shrink:0">4</div>
+                <div style="flex:1;padding-top:.1rem">
+                  <div style="font-size:14px;font-weight:800;color:var(--navy);margin-bottom:.15rem">Configure · the jump-off point</div>
+                  <div style="font-size:12.5px;color:var(--charcoal);line-height:1.5">Every card has a <strong>Configure</strong> button straight into the 3D configurator.</div>
+                  <div style="font-size:11.5px;color:var(--grey);line-height:1.5;margin-top:.25rem"><strong style="color:var(--blue);font-weight:700">Sends them deeper</strong> &nbsp;No need to read a full spec page first. The moment a model catches their eye, they can start building it.</div>
+                  <div style="margin-top:.5rem"><span style="font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.07em;color:#2563eb;background:#e3edfd;border-radius:20px;padding:.2rem .6rem;text-transform:uppercase">UX · Fitts's Law</span></div>
                 </div>
               </div>
 
@@ -1514,7 +1491,8 @@
               allow="accelerometer; gyroscope"
             ></iframe>
             <!-- AI companion bubble — consistent with Slide 9 proactive tip -->
-            <div style="position:absolute;bottom:1.2rem;right:1.2rem;background:#fff;border-radius:12px;padding:.75rem .9rem;width:210px;box-shadow:0 8px 24px rgba(0,0,0,.18);border:1px solid #ede9fe;pointer-events:none">
+            <div id="cfg-ai-bubble" style="position:absolute;bottom:1.2rem;right:1.2rem;background:#fff;border-radius:12px;padding:.75rem .9rem;width:210px;box-shadow:0 8px 24px rgba(0,0,0,.18);border:1px solid #ede9fe;pointer-events:none">
+              <button onclick="document.getElementById('cfg-ai-bubble').style.display='none'" title="Dismiss" style="position:absolute;top:.35rem;right:.45rem;width:16px;height:16px;border:none;background:#f3f4f6;border-radius:50%;color:#6b7280;font-size:11px;line-height:1;cursor:pointer;pointer-events:auto;display:flex;align-items:center;justify-content:center;padding:0">×</button>
               <div style="display:flex;align-items:center;gap:.45rem;margin-bottom:.45rem">
                 <div style="width:20px;height:20px;border-radius:50%;background:#7c3aed;display:flex;align-items:center;justify-content:center;flex-shrink:0">
                   <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
@@ -1530,84 +1508,74 @@
                 <div style="padding:.25rem .55rem;background:#f5f3ff;border-radius:5px;font-size:7px;color:#7c3aed;font-weight:600;cursor:pointer">Guide me →</div>
               </div>
             </div>
+            <!-- Scroll-down helper for the embedded options panel -->
+            <button onclick="cfgScrollPanel('cfg-iframe')" title="Scroll options" style="position:absolute;bottom:9.2rem;right:1.5rem;width:34px;height:34px;border-radius:50%;background:#111;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.28);z-index:6">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
           </div>
         </div>
 
         <!-- BACK -->
         <div class="fc-back fc-back--light">
           <div class="fc-back-content">
-            <div class="fc-back-title" style="color:var(--navy)">Configurator — Design Decisions</div>
-            <div class="bgrid">
+            <div class="fc-back-title" style="color:var(--navy)">3D Configurator · how a buyer builds their crane</div>
+            <div style="background:#eef3fe;border-left:3px solid var(--blue);border-radius:0 8px 8px 0;padding:.75rem .95rem;margin:-.4rem 0 1.1rem;max-width:780px">
+              <div style="font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--blue);text-transform:uppercase;margin-bottom:.3rem">Purpose of this page</div>
+              <div style="font-size:12.5px;color:var(--charcoal);line-height:1.55">This is where the buyer builds their exact machine. The job is to let them spec a crane and its add-ons, see it in 3D as they go, watch the price move, and send the whole thing to TES as a quote, with no sales call needed.</div>
+            </div>
 
-              <!-- One page, no competitor -->
-              <div class="bcard">
-                <div class="bcard-head"><span>One Page, No Competitor</span></div>
-                <div class="bcard-body">
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 4h10v4a5 5 0 0 1-10 0V4Z" stroke="#1A73EB" stroke-width="1.7" stroke-linejoin="round"/><path d="M7 5H4v2a3 3 0 0 0 3 3M17 5h3v2a3 3 0 0 1-3 3M10 14h4M9 20h6M12 14v6" stroke="#1A73EB" stroke-width="1.6" stroke-linecap="round"/></svg></div>
-                    <div><div class="brow-title">No competitor in AU has this</div><div class="brow-desc">Titan, Morrow, Select Plant — none offer a self-serve configurator. TES owns it.</div></div>
-                  </div>
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3Z" stroke="#1A73EB" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5" stroke="#1A73EB" stroke-width="1.5"/></svg></div>
-                    <div><div class="brow-title">One page, all products</div><div class="brow-desc">Crane, hoist, battery, software configured in sequence. No lost context.</div></div>
-                  </div>
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9 12a3 3 0 0 1 3-3h3a3 3 0 0 1 0 6h-1" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round"/><path d="M15 12a3 3 0 0 1-3 3H9a3 3 0 0 1 0-6h1" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round"/></svg></div>
-                    <div><div class="brow-title">Phase 2 adds product URLs</div><div class="brow-desc">/configure/bq-5013 becomes its own indexable page for SEO.</div></div>
-                  </div>
+            <!-- Vertical funnel of the real configurator sections -->
+            <div style="flex:1;min-height:0;position:relative;display:flex;flex-direction:column;justify-content:space-between;padding:.2rem 0">
+
+              <!-- connecting rail -->
+              <div style="position:absolute;left:19px;top:28px;bottom:28px;width:2px;background:#dbe4fb;z-index:0"></div>
+
+              <!-- 1 — 3D preview -->
+              <div style="display:flex;gap:1.1rem;align-items:flex-start;position:relative;z-index:1">
+                <div style="width:38px;height:38px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;font-weight:700;flex-shrink:0">1</div>
+                <div style="flex:1;padding-top:.1rem">
+                  <div style="font-size:14px;font-weight:800;color:var(--navy);margin-bottom:.15rem">The 3D preview · your crane, live</div>
+                  <div style="font-size:12.5px;color:var(--charcoal);line-height:1.5">A big, rotatable 3D model in the centre. Every option they pick shows up on it straight away.</div>
+                  <div style="font-size:11.5px;color:var(--grey);line-height:1.5;margin-top:.25rem"><strong style="color:var(--blue);font-weight:700">Builds confidence</strong> &nbsp;They see exactly what they're buying as they go. No guessing off a spec sheet, the machine is right there in front of them.</div>
+                  <div style="margin-top:.5rem"><span style="font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.07em;color:#2563eb;background:#e3edfd;border-radius:20px;padding:.2rem .6rem;text-transform:uppercase">UX · Doherty Threshold</span></div>
                 </div>
               </div>
 
-              <!-- Step-by-step build -->
-              <div class="bcard">
-                <div class="bcard-head"><span>Step-by-Step Build</span></div>
-                <div class="bcard-body">
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 7h14M5 12h14M5 17h9" stroke="#1A73EB" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-                    <div><div class="brow-title">Four steps in sequence</div><div class="brow-desc">Crane → hoist → battery → software. Each step reveals options as you go.</div></div>
+              <!-- 2 — Build panel -->
+              <div style="display:flex;gap:1.1rem;align-items:flex-start;position:relative;z-index:1">
+                <div style="width:38px;height:38px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;font-weight:700;flex-shrink:0">2</div>
+                <div style="flex:1;padding-top:.1rem">
+                  <div style="font-size:14px;font-weight:800;color:var(--navy);margin-bottom:.15rem">The build panel · one step at a time</div>
+                  <div style="font-size:12.5px;color:var(--charcoal);line-height:1.5">Down the right: pick the model, then <strong>height, jib, capacity, power, hoist, lights, safety and signage</strong>. Options open up as they go.</div>
+                  <div style="font-size:11.5px;color:var(--grey);line-height:1.5;margin-top:.25rem"><strong style="color:var(--blue);font-weight:700">Never overwhelming</strong> &nbsp;Each step builds on the last instead of dumping every choice at once, so even a big build feels simple.</div>
+                  <div style="display:flex;gap:.55rem;align-items:flex-start;margin-top:.5rem;background:#f8fafc;border:1px solid #e6edf7;border-radius:8px;padding:.5rem .65rem">
+                    <span style="width:16px;height:16px;border-radius:50%;background:var(--blue);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--mono);margin-top:.05rem">i</span>
+                    <div style="font-size:11px;color:var(--grey);line-height:1.45">Every option carries a small <strong style="color:var(--navy)">(i)</strong> icon. Hover it for a one-line, plain-English explainer, so a buyer who isn't sure what a choice means can find out on the spot, without leaving the build.</div>
                   </div>
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3l9 5-9 5-9-5 9-5Z" stroke="#1A73EB" stroke-width="1.6" stroke-linejoin="round"/><path d="M3 13l9 5 9-5" stroke="#1A73EB" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
-                    <div><div class="brow-title">Options collapse when done</div><div class="brow-desc">Completed steps compress — you always see where you are and what's left.</div></div>
-                  </div>
+                  <div style="margin-top:.5rem"><span style="font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.07em;color:#2563eb;background:#e3edfd;border-radius:20px;padding:.2rem .6rem;text-transform:uppercase">UX · Progressive Disclosure</span></div>
                 </div>
               </div>
 
-              <!-- 3D preview centre stage -->
-              <div class="bcard">
-                <div class="bcard-head"><span>3D Preview, Centre Stage</span></div>
-                <div class="bcard-body">
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3Z" stroke="#1A73EB" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5" stroke="#1A73EB" stroke-width="1.5"/></svg></div>
-                    <div><div class="brow-title">Live 3D updates as options change</div><div class="brow-desc">Select a hoist and it appears on the crane. See exactly what you're buying.</div></div>
-                  </div>
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M20 12a8 8 0 1 1-2.3-5.6" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round"/><path d="M20 4v3.5h-3.5" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                    <div><div class="brow-title">Rotate, zoom, inspect</div><div class="brow-desc">Examine the build from any angle before requesting a quote.</div></div>
-                  </div>
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="4" y="14" width="16" height="5" rx="1.5" stroke="#1A73EB" stroke-width="1.6"/><path d="M7 16.5h2M12 16.5h5" stroke="#1A73EB" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-                    <div><div class="brow-title">Spec bar overlaid at the bottom</div><div class="brow-desc">Model, capacity, jib length and hoist always visible.</div></div>
-                  </div>
+              <!-- 3 — AI companion -->
+              <div style="display:flex;gap:1.1rem;align-items:flex-start;position:relative;z-index:1">
+                <div style="width:38px;height:38px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;font-weight:700;flex-shrink:0">3</div>
+                <div style="flex:1;padding-top:.1rem">
+                  <div style="font-size:14px;font-weight:800;color:var(--navy);margin-bottom:.15rem">The AI companion · helps both ways</div>
+                  <div style="font-size:12.5px;color:var(--charcoal);line-height:1.5">It works two ways: it <strong>pops up with tips</strong> as they build without being asked, and it <strong>answers anything they type</strong>. It suggests the right hoist, flags what doesn't fit, and explains the options.</div>
+                  <div style="font-size:11.5px;color:var(--grey);line-height:1.5;margin-top:.25rem"><strong style="color:var(--blue);font-weight:700">Carries the hard part</strong> &nbsp;The buyer doesn't need to know every compatibility rule. The AI holds the complexity so they don't have to.</div>
+                  <div style="margin-top:.5rem"><span style="font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.07em;color:#2563eb;background:#e3edfd;border-radius:20px;padding:.2rem .6rem;text-transform:uppercase">UX · Tesler's Law</span></div>
                 </div>
               </div>
 
-              <!-- Your build + AI -->
-              <div class="bcard">
-                <div class="bcard-head"><span>Your Build + AI</span></div>
-                <div class="bcard-body">
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M21 4L3 11l6 2.5L21 4Z" stroke="#1A73EB" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 13.5V20l3.5-4" stroke="#1A73EB" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
-                    <div><div class="brow-title">Request a quote</div><div class="brow-desc">Sends the full build spec to TES instantly. No back-and-forth email.</div></div>
-                  </div>
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 4v10m0 0l-4-4m4 4l4-4" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 18h14" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round"/></svg></div>
-                    <div><div class="brow-title">Download spec sheet</div><div class="brow-desc">A PDF of the full configuration for the board, engineer or director.</div></div>
-                  </div>
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 4l1.8 4.2L18 10l-4.2 1.8L12 16l-1.8-4.2L6 10l4.2-1.8L12 4Z" stroke="#1A73EB" stroke-width="1.5" stroke-linejoin="round"/><path d="M18 15l.7 1.6L20 17l-1.3.4L18 19l-.7-1.6L16 17l1.3-.4L18 15Z" fill="#1A73EB"/></svg></div>
-                    <div><div class="brow-title">AI companion</div><div class="brow-desc">Suggests the right hoist, flags mismatches — like a TES rep on call.</div></div>
-                  </div>
+              <!-- 4 — Price + quote -->
+              <div style="display:flex;gap:1.1rem;align-items:flex-start;position:relative;z-index:1">
+                <div style="width:38px;height:38px;border-radius:50%;background:#16A34A;color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;font-weight:700;flex-shrink:0">4</div>
+                <div style="flex:1;padding-top:.1rem">
+                  <div style="font-size:14px;font-weight:800;color:var(--navy);margin-bottom:.15rem">Price + quote · lock it in</div>
+                  <div style="font-size:12.5px;color:var(--charcoal);line-height:1.5">A live price range sits in the top bar the whole time. When they're happy, one button, <strong>Request Quote</strong>, sends the full spec to TES.</div>
+                  <div style="font-size:11.5px;color:var(--grey);line-height:1.5;margin-top:.25rem"><strong style="color:var(--blue);font-weight:700">Closes the loop</strong> &nbsp;They always know roughly where the price sits, and the closer they get to a finished build, the easier it is to hit send.</div>
+                  <div style="font-size:10.5px;color:#94a3b8;line-height:1.45;margin-top:.4rem;font-style:italic">Note: the prices in this prototype are placeholders. TES sets the real numbers before launch.</div>
+                  <div style="margin-top:.5rem"><span style="font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.07em;color:#2563eb;background:#e3edfd;border-radius:20px;padding:.2rem .6rem;text-transform:uppercase">UX · Goal-Gradient Effect</span></div>
                 </div>
               </div>
 
@@ -1844,74 +1812,59 @@
         <!-- BACK -->
         <div class="fc-back fc-back--light">
           <div class="fc-back-content">
-            <div class="fc-back-title" style="color:var(--navy)">After the Build — Design Decisions</div>
-            <div class="bgrid">
+            <div class="fc-back-title" style="color:var(--navy)">After the Build · what they can do with it</div>
+            <div style="background:#eef3fe;border-left:3px solid var(--blue);border-radius:0 8px 8px 0;padding:.75rem .95rem;margin:-.4rem 0 1.1rem;max-width:780px">
+              <div style="font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--blue);text-transform:uppercase;margin-bottom:.3rem">Purpose of this page</div>
+              <div style="font-size:12.5px;color:var(--charcoal);line-height:1.55">This is where a buyer lands once their build is done. The job is to confirm exactly what they've built, let them download a spec sheet of it, and give them easy ways to save, share or send it to TES, so a finished build never just disappears.</div>
+            </div>
 
-              <!-- Why this page exists -->
-              <div class="bcard">
-                <div class="bcard-head"><span>Why This Page Exists</span></div>
-                <div class="bcard-body">
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#1A73EB" stroke-width="1.7"/><circle cx="12" cy="12" r="4" stroke="#1A73EB" stroke-width="1.6"/><circle cx="12" cy="12" r="1.3" fill="#1A73EB"/></svg></div>
-                    <div><div class="brow-title">The build is the lead</div><div class="brow-desc">5–10 minutes configuring means they're qualified. Capture that intent now.</div></div>
-                  </div>
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 4v10m0 0l-4-4m4 4l4-4" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 18h14" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round"/></svg></div>
-                    <div><div class="brow-title">Download PDF is the primary exit</div><div class="brow-desc">Tangible, shareable, and keeps TES in the buyer's inbox after they leave.</div></div>
-                  </div>
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M21 4L3 11l6 2.5L21 4Z" stroke="#1A73EB" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 13.5V20l3.5-4" stroke="#1A73EB" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
-                    <div><div class="brow-title">Submit sends the full spec</div><div class="brow-desc">TES gets exactly what was configured. A qualified RFQ, instantly.</div></div>
-                  </div>
+            <!-- Vertical funnel of the real after-the-build sections -->
+            <div style="flex:1;min-height:0;position:relative;display:flex;flex-direction:column;justify-content:space-between;padding:.2rem 0">
+
+              <!-- connecting rail -->
+              <div style="position:absolute;left:19px;top:28px;bottom:28px;width:2px;background:#dbe4fb;z-index:0"></div>
+
+              <!-- 1 — Build summary -->
+              <div style="display:flex;gap:1.1rem;align-items:flex-start;position:relative;z-index:1">
+                <div style="width:38px;height:38px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;font-weight:700;flex-shrink:0">1</div>
+                <div style="flex:1;padding-top:.1rem">
+                  <div style="font-size:14px;font-weight:800;color:var(--navy);margin-bottom:.15rem">Build summary · what they made</div>
+                  <div style="font-size:12.5px;color:var(--charcoal);line-height:1.5">A confirmation that the build is saved (with a build ID), the model and every add-on listed, and the headline stats: hook height, capacity, reach.</div>
+                  <div style="font-size:11.5px;color:var(--grey);line-height:1.5;margin-top:.25rem"><strong style="color:var(--blue);font-weight:700">No doubt left</strong> &nbsp;They see their exact machine confirmed in one place, so there's no second-guessing what got configured.</div>
+                  <div style="margin-top:.5rem"><span style="font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.07em;color:#2563eb;background:#e3edfd;border-radius:20px;padding:.2rem .6rem;text-transform:uppercase">UX · Visibility of System Status</span></div>
                 </div>
               </div>
 
-              <!-- Save & return -->
-              <div class="bcard">
-                <div class="bcard-head"><span>Save &amp; Return</span></div>
-                <div class="bcard-body">
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#1A73EB" stroke-width="1.7"/><path d="M12 8v4l3 2" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                    <div><div class="brow-title">B2B sales cycles are long</div><div class="brow-desc">Buyers take the spec to their board. Save &amp; Return brings them back.</div></div>
-                  </div>
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="9" r="3.5" stroke="#1A73EB" stroke-width="1.7"/><path d="M5 20c0-3.9 3.1-7 7-7s7 3.1 7 7" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round"/></svg></div>
-                    <div><div class="brow-title">Profile creation as a side effect</div><div class="brow-desc">Saving needs an account. TES builds its database with no CRM spend.</div></div>
-                  </div>
+              <!-- 2 — Two levels of detail -->
+              <div style="display:flex;gap:1.1rem;align-items:flex-start;position:relative;z-index:1">
+                <div style="width:38px;height:38px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;font-weight:700;flex-shrink:0">2</div>
+                <div style="flex:1;padding-top:.1rem">
+                  <div style="font-size:14px;font-weight:800;color:var(--navy);margin-bottom:.15rem">Two levels of detail · skim or dig in</div>
+                  <div style="font-size:12.5px;color:var(--charcoal);line-height:1.5">The key numbers sit up top. A <strong>“View Technical Specs”</strong> panel opens the full spec table for anyone who wants every figure.</div>
+                  <div style="font-size:11.5px;color:var(--grey);line-height:1.5;margin-top:.25rem"><strong style="color:var(--blue);font-weight:700">Serves both readers</strong> &nbsp;A director skims the headline stats, their engineer opens the full sheet. One page works for both.</div>
+                  <div style="margin-top:.5rem"><span style="font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.07em;color:#2563eb;background:#e3edfd;border-radius:20px;padding:.2rem .6rem;text-transform:uppercase">UX · Progressive Disclosure</span></div>
                 </div>
               </div>
 
-              <!-- AI companion post-build -->
-              <div class="bcard">
-                <div class="bcard-head"><span>AI Companion, Post-Build</span></div>
-                <div class="bcard-body">
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 4l9 15H3L12 4Z" stroke="#1A73EB" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 10v4M12 16.5v.5" stroke="#1A73EB" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-                    <div><div class="brow-title">Flags mismatches before submission</div><div class="brow-desc">Hoist rating too low for the jib? The AI says so first. Fewer spec errors.</div></div>
-                  </div>
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 4l1.8 4.2L18 10l-4.2 1.8L12 16l-1.8-4.2L6 10l4.2-1.8L12 4Z" stroke="#1A73EB" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
-                    <div><div class="brow-title">Upgrades suggested in context</div><div class="brow-desc">A recommendation after the build, not a popup. Advice, not upselling.</div></div>
-                  </div>
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M6 4l13 7-5 2-2 5L6 4Z" stroke="#1A73EB" stroke-width="1.7" stroke-linejoin="round"/></svg></div>
-                    <div><div class="brow-title">One-click apply</div><div class="brow-desc">Build updates instantly, PDF regenerates. No going back into the configurator.</div></div>
-                  </div>
+              <!-- 3 — Download spec sheet -->
+              <div style="display:flex;gap:1.1rem;align-items:flex-start;position:relative;z-index:1">
+                <div style="width:38px;height:38px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;font-weight:700;flex-shrink:0">3</div>
+                <div style="flex:1;padding-top:.1rem">
+                  <div style="font-size:14px;font-weight:800;color:var(--navy);margin-bottom:.15rem">Download the spec sheet · take it with them</div>
+                  <div style="font-size:12.5px;color:var(--charcoal);line-height:1.5">A branded <strong>PDF of their exact build</strong>, with every modification and option they picked, ready to download.</div>
+                  <div style="font-size:11.5px;color:var(--grey);line-height:1.5;margin-top:.25rem"><strong style="color:var(--blue);font-weight:700">Keeps TES in the room</strong> &nbsp;They take it to their board or engineer, and TES stays in their inbox long after they've left the site.</div>
+                  <div style="margin-top:.5rem"><span style="font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.07em;color:#2563eb;background:#e3edfd;border-radius:20px;padding:.2rem .6rem;text-transform:uppercase">UX · Endowment Effect</span></div>
                 </div>
               </div>
 
-              <!-- Shareable build link -->
-              <div class="bcard">
-                <div class="bcard-head"><span>Shareable Build Link</span></div>
-                <div class="bcard-body">
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9 12a3 3 0 0 1 3-3h3a3 3 0 0 1 0 6h-1" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round"/><path d="M15 12a3 3 0 0 1-3 3H9a3 3 0 0 1 0-6h1" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round"/></svg></div>
-                    <div><div class="brow-title">One short URL, full spec</div><div class="brow-desc">Paste into WhatsApp to the site engineer. No login, full build visible.</div></div>
-                  </div>
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12Z" stroke="#1A73EB" stroke-width="1.7" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke="#1A73EB" stroke-width="1.7"/></svg></div>
-                    <div><div class="brow-title">TES sees every share</div><div class="brow-desc">Each view is tracked. Internal circulation is a strong buying signal.</div></div>
-                  </div>
+              <!-- 4 — Save & share -->
+              <div style="display:flex;gap:1.1rem;align-items:flex-start;position:relative;z-index:1">
+                <div style="width:38px;height:38px;border-radius:50%;background:#16A34A;color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;font-weight:700;flex-shrink:0">4</div>
+                <div style="flex:1;padding-top:.1rem">
+                  <div style="font-size:14px;font-weight:800;color:var(--navy);margin-bottom:.15rem">Save & share · no login needed</div>
+                  <div style="font-size:12.5px;color:var(--charcoal);line-height:1.5">Save the build to come back to later, or share it with <strong>one link, no sign-up</strong>. The link opens the full build for anyone they send it to.</div>
+                  <div style="font-size:11.5px;color:var(--grey);line-height:1.5;margin-top:.25rem"><strong style="color:var(--blue);font-weight:700">Keeps it moving</strong> &nbsp;These deals are slow and involve a few people. Frictionless save and share passes the build between them without a barrier in the way.</div>
+                  <div style="margin-top:.5rem"><span style="font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.07em;color:#2563eb;background:#e3edfd;border-radius:20px;padding:.2rem .6rem;text-transform:uppercase">UX · Zeigarnik Effect</span></div>
                 </div>
               </div>
 
@@ -1935,7 +1888,7 @@
   <div class="wrap">
     <div class="s-label">Resources</div>
     <h1>Knowledge Hub</h1>
-    <p class="s-intro">All the content TES already has — case studies, brochures, video footage, product guides — surfaced in one place. Every page indexed. Every visit educated.</p>
+    <p class="s-intro">One place for everything TES already has: case studies, brochures, videos and product guides. Easy for buyers to learn from, and easy for Google to find.</p>
 
     <div class="fc-wrap">
       <div class="fc" id="fc8">
@@ -2453,66 +2406,59 @@
         <!-- BACK -->
         <div class="fc-back fc-back--light">
           <div class="fc-back-content">
-            <div class="fc-back-title" style="color:var(--navy)">Knowledge Hub — Design Decisions</div>
-            <div class="bgrid">
+            <div class="fc-back-title" style="color:var(--navy)">Knowledge Hub · the site's third section</div>
+            <div style="background:#eef3fe;border-left:3px solid var(--blue);border-radius:0 8px 8px 0;padding:.75rem .95rem;margin:-.4rem 0 1.1rem;max-width:800px">
+              <div style="font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--blue);text-transform:uppercase;margin-bottom:.3rem">Purpose of this page</div>
+              <div style="font-size:12.5px;color:var(--charcoal);line-height:1.55">The site has three parts: the homepage, products & services, and this, the Knowledge Hub. The first two sell. This one teaches. It's TES's reservoir of know-how, what they do, what they sell, projects, brochures, guides and blogs, all in one place. A buyer who isn't ready today can still learn from it and come back when they are.</div>
+            </div>
 
-              <!-- Content already exists -->
-              <div class="bcard">
-                <div class="bcard-head"><span>Content Already Exists</span></div>
-                <div class="bcard-body">
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 3h7l4 4v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z" stroke="#1A73EB" stroke-width="1.6"/><path d="M14 3v4h4M9 14l2 2 4-4" stroke="#1A73EB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                    <div><div class="brow-title">TES already has it all</div><div class="brow-desc">Case studies, video footage, product copy and brand guidelines.</div></div>
-                  </div>
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="5" rx="1.5" stroke="#1A73EB" stroke-width="1.6"/><path d="M5 9v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9M10 13h4" stroke="#1A73EB" stroke-width="1.6" stroke-linecap="round"/></svg></div>
-                    <div><div class="brow-title">No new content creation</div><div class="brow-desc">This page surfaces existing assets in a format that works online.</div></div>
-                  </div>
+            <!-- Vertical funnel of the knowledge-hub idea -->
+            <div style="flex:1;min-height:0;position:relative;display:flex;flex-direction:column;justify-content:space-between;padding:.2rem 0">
+
+              <!-- connecting rail -->
+              <div style="position:absolute;left:19px;top:28px;bottom:28px;width:2px;background:#dbe4fb;z-index:0"></div>
+
+              <!-- 1 — Reservoir -->
+              <div style="display:flex;gap:1.1rem;align-items:flex-start;position:relative;z-index:1">
+                <div style="width:38px;height:38px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;font-weight:700;flex-shrink:0">1</div>
+                <div style="flex:1;padding-top:.1rem">
+                  <div style="font-size:14px;font-weight:800;color:var(--navy);margin-bottom:.15rem">A reservoir of knowledge · all in one place</div>
+                  <div style="font-size:12.5px;color:var(--charcoal);line-height:1.5">Projects, brochures, videos, guides and blogs, every bit of information TES can give, organised under simple tabs.</div>
+                  <div style="font-size:11.5px;color:var(--grey);line-height:1.5;margin-top:.25rem"><strong style="color:var(--blue);font-weight:700">More than a shop</strong> &nbsp;People can come to TES to learn, not only to buy, which starts the relationship long before a sale.</div>
+                  <div style="margin-top:.5rem"><span style="font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.07em;color:#2563eb;background:#e3edfd;border-radius:20px;padding:.2rem .6rem;text-transform:uppercase">UX · Jakob's Law</span></div>
                 </div>
               </div>
 
-              <!-- Found on search -->
-              <div class="bcard">
-                <div class="bcard-head"><span>Found on Search</span></div>
-                <div class="bcard-body">
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#1A73EB" stroke-width="1.7"/><path d="M16 16l4 4" stroke="#1A73EB" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-                    <div><div class="brow-title">Every page is a search landing</div><div class="brow-desc">"Tower crane hire Brisbane" lands on a TES page, not a competitor.</div></div>
-                  </div>
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9 12a3 3 0 0 1 3-3h3a3 3 0 0 1 0 6h-1" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round"/><path d="M15 12a3 3 0 0 1-3 3H9a3 3 0 0 1 0-6h1" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round"/></svg></div>
-                    <div><div class="brow-title">Each asset is an indexed URL</div><div class="brow-desc">Every brochure, project and guide has a job to do.</div></div>
-                  </div>
+              <!-- 2 — Trust now, buy later -->
+              <div style="display:flex;gap:1.1rem;align-items:flex-start;position:relative;z-index:1">
+                <div style="width:38px;height:38px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;font-weight:700;flex-shrink:0">2</div>
+                <div style="flex:1;padding-top:.1rem">
+                  <div style="font-size:14px;font-weight:800;color:var(--navy);margin-bottom:.15rem">Learn now, buy when ready</div>
+                  <div style="font-size:12.5px;color:var(--charcoal);line-height:1.5">Not everyone's buying today. They can lean on TES's material now, and when the job or the budget lands, TES is who they already know to call.</div>
+                  <div style="font-size:11.5px;color:var(--grey);line-height:1.5;margin-top:.25rem"><strong style="color:var(--blue);font-weight:700">Useful first</strong> &nbsp;Being helpful before the sale keeps TES front of mind through a long, slow buying cycle.</div>
+                  <div style="margin-top:.5rem"><span style="font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.07em;color:#2563eb;background:#e3edfd;border-radius:20px;padding:.2rem .6rem;text-transform:uppercase">UX · Reciprocity</span></div>
                 </div>
               </div>
 
-              <!-- Closes offline deals -->
-              <div class="bcard">
-                <div class="bcard-head"><span>Closes Offline Deals</span></div>
-                <div class="bcard-body">
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 4v10m0 0l-4-4m4 4l4-4" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 18h14" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round"/></svg></div>
-                    <div><div class="brow-title">Brochures travel</div><div class="brow-desc">A Director downloads the spec sheet and shares it in a board meeting.</div></div>
-                  </div>
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 20V8l8-4 8 4v12" stroke="#1A73EB" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 20v-5h6v5M9 11h.01M15 11h.01" stroke="#1A73EB" stroke-width="1.6" stroke-linecap="round"/></svg></div>
-                    <div><div class="brow-title">TES is the brand in the room</div><div class="brow-desc">Downloads extend reach beyond the website visit.</div></div>
-                  </div>
+              <!-- 3 — SEO engine -->
+              <div style="display:flex;gap:1.1rem;align-items:flex-start;position:relative;z-index:1">
+                <div style="width:38px;height:38px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;font-weight:700;flex-shrink:0">3</div>
+                <div style="flex:1;padding-top:.1rem">
+                  <div style="font-size:14px;font-weight:800;color:var(--navy);margin-bottom:.15rem">An SEO engine · gets TES found</div>
+                  <div style="font-size:12.5px;color:var(--charcoal);line-height:1.5">Every guide, project and blog is a page full of the words buyers actually search. More good pages means more chances to rank near the top.</div>
+                  <div style="font-size:11.5px;color:var(--grey);line-height:1.5;margin-top:.25rem"><strong style="color:var(--blue);font-weight:700">Shows up first</strong> &nbsp;Search “cranes” or a similar project and TES sits high on the page and gets the click, not a competitor.</div>
+                  <div style="margin-top:.5rem"><span style="font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.07em;color:#2563eb;background:#e3edfd;border-radius:20px;padding:.2rem .6rem;text-transform:uppercase">SEO · Topical Authority</span></div>
                 </div>
               </div>
 
-              <!-- Built to grow -->
-              <div class="bcard">
-                <div class="bcard-head"><span>Built to Grow</span></div>
-                <div class="bcard-body">
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 19l3-1L18 8l-2-2L6 16l-1 3Z" stroke="#1A73EB" stroke-width="1.6" stroke-linejoin="round"/><path d="M14 6l2 2" stroke="#1A73EB" stroke-width="1.6" stroke-linecap="round"/></svg></div>
-                    <div><div class="brow-title">Blog is a nice-to-have</div><div class="brow-desc">No editorial calendar required at launch.</div></div>
-                  </div>
-                  <div class="brow">
-                    <div class="brow-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 20V11M10 20V7M16 20v-6" stroke="#1A73EB" stroke-width="1.8" stroke-linecap="round"/><path d="M3 9l5-4 4 3 6-5" stroke="#1A73EB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                    <div><div class="brow-title">Add content as you go</div><div class="brow-desc">The structure supports future growth without demanding it.</div></div>
-                  </div>
+              <!-- 4 — Soft enquiry form -->
+              <div style="display:flex;gap:1.1rem;align-items:flex-start;position:relative;z-index:1">
+                <div style="width:38px;height:38px;border-radius:50%;background:#16A34A;color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;font-weight:700;flex-shrink:0">4</div>
+                <div style="flex:1;padding-top:.1rem">
+                  <div style="font-size:14px;font-weight:800;color:var(--navy);margin-bottom:.15rem">A direct line · its own enquiry form</div>
+                  <div style="font-size:12.5px;color:var(--charcoal);line-height:1.5">Separate from the product side, the hub has its own short enquiry form. Found something useful? Fill it in and TES reaches out on that exact topic.</div>
+                  <div style="font-size:11.5px;color:var(--grey);line-height:1.5;margin-top:.25rem"><strong style="color:var(--blue);font-weight:700">A softer way in</strong> &nbsp;“Ask us about this” is a much smaller step than “request a quote”, so it catches interest that isn't ready to configure a crane yet.</div>
+                  <div style="margin-top:.5rem"><span style="font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.07em;color:#2563eb;background:#e3edfd;border-radius:20px;padding:.2rem .6rem;text-transform:uppercase">UX · Foot-in-the-Door</span></div>
                 </div>
               </div>
 
@@ -2520,12 +2466,12 @@
           </div>
         </div>
 
-        <!-- Flip button -->
-        <button class="fc-flip-btn" id="fc8-btn" onclick="var fc=document.getElementById('fc8');fc.classList.toggle('flipped');this.querySelector('svg').style.transform=fc.classList.contains('flipped')?'rotate(180deg)':'';" title="Design decisions">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .4s"><polyline points="9 18 15 12 9 6"/></svg>
-        </button>
-
       </div>
+
+      <!-- Flip button -->
+      <button class="fc-flip-btn" id="fc8-btn" onclick="var fc=document.getElementById('fc8');fc.classList.toggle('flipped');this.querySelector('svg').style.transform=fc.classList.contains('flipped')?'rotate(180deg)':'';" title="Design decisions">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .4s"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
     </div>
   </div>
   <div class="slide-foot"><span>SingSingh AI &nbsp;·&nbsp; Total Equipment Sales Proposal</span><span>08</span></div>
@@ -2538,7 +2484,7 @@
   <div class="wrap">
     <div class="s-label">Phase 3 · AI Companion</div>
     <h1>Your configurator doesn't just build.<br><span style="color:#7c3aed">It advises.</span></h1>
-    <p class="s-intro">AJ selected one AI feature. We're building it right — product-specific, configurator-aware, and trained entirely on TES equipment.</p>
+    <p class="s-intro">This came straight out of the scoping form, where one AI feature was chosen. Anyone can configure a car, but a crane is a lot more involved. Whether the person building one is a first-timer or a busy executive, the AI brings TES's expertise to them, so it stays simple and seamless for everyone.</p>
 
     <div class="fc-wrap">
       <div class="fc" id="fc9">
@@ -2625,66 +2571,59 @@
         <!-- BACK -->
         <div class="fc-back fc-back--light">
           <div class="fc-back-content">
-            <div class="fc-back-title" style="color:var(--navy)">AI Companion — Design Rationale</div>
-            <div class="bgrid">
+            <div class="fc-back-title" style="color:var(--navy)">AI Companion · how it helps</div>
+            <div style="background:#f5f3ff;border-left:3px solid #7c3aed;border-radius:0 8px 8px 0;padding:.75rem .95rem;margin:-.4rem 0 1.1rem;max-width:800px">
+              <div style="font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.12em;color:#7c3aed;text-transform:uppercase;margin-bottom:.3rem">Purpose of this page</div>
+              <div style="font-size:12.5px;color:var(--charcoal);line-height:1.55">This came out of the scoping form, where one AI feature was chosen. The idea is simple: a crane isn't a car, and not everyone building one is an expert. The AI brings TES's product knowledge right into the configurator, so a first-timer and a busy executive can both get it right without picking up the phone.</div>
+            </div>
 
-              <!-- Companion, not chatbot -->
-              <div class="bcard">
-                <div class="bcard-head" style="background:#4c1d95"><span>Companion, Not Chatbot</span></div>
-                <div class="bcard-body">
-                  <div class="brow">
-                    <div class="brow-ic" style="background:#f3f0ff"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 4l1.8 4.2L18 10l-4.2 1.8L12 16l-1.8-4.2L6 10l4.2-1.8L12 4Z" stroke="#7c3aed" stroke-width="1.5" stroke-linejoin="round"/><path d="M18 15l.7 1.6L20 17l-1.3.4L18 19l-.7-1.6L16 17l1.3-.4L18 15Z" fill="#7c3aed"/></svg></div>
-                    <div><div class="brow-title">It knows what you've built</div><div class="brow-desc">Advice specific to your current configuration, not a generic FAQ.</div></div>
-                  </div>
-                  <div class="brow">
-                    <div class="brow-ic" style="background:#f3f0ff"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="9" r="3.5" stroke="#7c3aed" stroke-width="1.7"/><path d="M5 20c0-3.9 3.1-7 7-7s7 3.1 7 7" stroke="#7c3aed" stroke-width="1.7" stroke-linecap="round"/></svg></div>
-                    <div><div class="brow-title">Built for Directors</div><div class="brow-desc">Buyers spending $800k–$1.8M need a guide, not a FAQ bot.</div></div>
-                  </div>
+            <!-- Vertical funnel of the AI companion -->
+            <div style="flex:1;min-height:0;position:relative;display:flex;flex-direction:column;justify-content:space-between;padding:.2rem 0">
+
+              <!-- connecting rail -->
+              <div style="position:absolute;left:19px;top:28px;bottom:28px;width:2px;background:#e4d9fb;z-index:0"></div>
+
+              <!-- 1 — Knows the build -->
+              <div style="display:flex;gap:1.1rem;align-items:flex-start;position:relative;z-index:1">
+                <div style="width:38px;height:38px;border-radius:50%;background:#4c1d95;color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;font-weight:700;flex-shrink:0">1</div>
+                <div style="flex:1;padding-top:.1rem">
+                  <div style="font-size:14px;font-weight:800;color:var(--navy);margin-bottom:.15rem">Knows the build · sees what's on screen</div>
+                  <div style="font-size:12.5px;color:var(--charcoal);line-height:1.5">It can see the exact model, hoist and options the buyer has picked, and talks about <strong>their</strong> build, not generic answers.</div>
+                  <div style="font-size:11.5px;color:var(--grey);line-height:1.5;margin-top:.25rem"><strong style="color:#7c3aed;font-weight:700">Like a rep beside them</strong> &nbsp;The advice fits the machine in front of them, so they're never guessing about their own setup.</div>
+                  <div style="margin-top:.5rem"><span style="font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.07em;color:#7c3aed;background:#efe9fd;border-radius:20px;padding:.2rem .6rem;text-transform:uppercase">UX · Tesler's Law</span></div>
                 </div>
               </div>
 
-              <!-- Both modes, one goal -->
-              <div class="bcard">
-                <div class="bcard-head" style="background:#4c1d95"><span>Both Modes, One Goal</span></div>
-                <div class="bcard-body">
-                  <div class="brow">
-                    <div class="brow-ic" style="background:#f3f0ff"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3a6 6 0 0 0-3 11v2h6v-2a6 6 0 0 0-3-11Z" stroke="#7c3aed" stroke-width="1.6" stroke-linejoin="round"/><path d="M10 20h4" stroke="#7c3aed" stroke-width="1.6" stroke-linecap="round"/></svg></div>
-                    <div><div class="brow-title">Proactive tips</div><div class="brow-desc">Surfaces contextual tips without being asked. Reduces mid-build drop-off.</div></div>
-                  </div>
-                  <div class="brow">
-                    <div class="brow-ic" style="background:#f3f0ff"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 5h16v11H8l-4 3V5Z" stroke="#7c3aed" stroke-width="1.6" stroke-linejoin="round"/><path d="M8 9h8M8 12h5" stroke="#7c3aed" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-                    <div><div class="brow-title">Reactive answers</div><div class="brow-desc">Handles deeper questions that would otherwise need a call to AJ.</div></div>
-                  </div>
+              <!-- 2 — Helps two ways -->
+              <div style="display:flex;gap:1.1rem;align-items:flex-start;position:relative;z-index:1">
+                <div style="width:38px;height:38px;border-radius:50%;background:#7c3aed;color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;font-weight:700;flex-shrink:0">2</div>
+                <div style="flex:1;padding-top:.1rem">
+                  <div style="font-size:14px;font-weight:800;color:var(--navy);margin-bottom:.15rem">Helps two ways · before and after they ask</div>
+                  <div style="font-size:12.5px;color:var(--charcoal);line-height:1.5">It <strong>pops up with tips</strong> as they build, and it <strong>answers anything they type</strong>, suggesting the right hoist or flagging what doesn't fit.</div>
+                  <div style="font-size:11.5px;color:var(--grey);line-height:1.5;margin-top:.25rem"><strong style="color:#7c3aed;font-weight:700">Catches them early</strong> &nbsp;The nudges stop people getting stuck and quietly walking away mid-build.</div>
+                  <div style="margin-top:.5rem"><span style="font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.07em;color:#7c3aed;background:#efe9fd;border-radius:20px;padding:.2rem .6rem;text-transform:uppercase">UX · Doherty Threshold</span></div>
                 </div>
               </div>
 
-              <!-- Narrow by design -->
-              <div class="bcard">
-                <div class="bcard-head" style="background:#4c1d95"><span>Narrow by Design</span></div>
-                <div class="bcard-body">
-                  <div class="brow">
-                    <div class="brow-ic" style="background:#f3f0ff"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3Z" stroke="#7c3aed" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
-                    <div><div class="brow-title">Pricing & compliance out of scope</div><div class="brow-desc">Pricing is undecided; compliance needs a qualified human.</div></div>
-                  </div>
-                  <div class="brow">
-                    <div class="brow-ic" style="background:#f3f0ff"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#7c3aed" stroke-width="1.7"/><path d="M8.5 12l2.2 2.2L15.5 9.5" stroke="#7c3aed" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                    <div><div class="brow-title">Stays accurate</div><div class="brow-desc">A narrow scope keeps it reliable and avoids a liability problem.</div></div>
-                  </div>
+              <!-- 3 — TES only -->
+              <div style="display:flex;gap:1.1rem;align-items:flex-start;position:relative;z-index:1">
+                <div style="width:38px;height:38px;border-radius:50%;background:#4c1d95;color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;font-weight:700;flex-shrink:0">3</div>
+                <div style="flex:1;padding-top:.1rem">
+                  <div style="font-size:14px;font-weight:800;color:var(--navy);margin-bottom:.15rem">Trained only on TES gear · never guessing</div>
+                  <div style="font-size:12.5px;color:var(--charcoal);line-height:1.5">It only knows TES products and how they fit together. It stays clear of pricing and compliance, which need a real person.</div>
+                  <div style="font-size:11.5px;color:var(--grey);line-height:1.5;margin-top:.25rem"><strong style="color:#7c3aed;font-weight:700">Accurate and safe</strong> &nbsp;A narrow scope means it won't make things up or land TES in a liability it shouldn't.</div>
+                  <div style="margin-top:.5rem"><span style="font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.07em;color:#7c3aed;background:#efe9fd;border-radius:20px;padding:.2rem .6rem;text-transform:uppercase">UX · Error Prevention</span></div>
                 </div>
               </div>
 
-              <!-- Our recommendation -->
-              <div class="bcard">
-                <div class="bcard-head" style="background:#4c1d95"><span>Our Recommendation</span></div>
-                <div class="bcard-body">
-                  <div class="brow">
-                    <div class="brow-ic" style="background:#f3f0ff"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#7c3aed" stroke-width="1.7"/><circle cx="12" cy="12" r="4" stroke="#7c3aed" stroke-width="1.6"/><circle cx="12" cy="12" r="1.3" fill="#7c3aed"/></svg></div>
-                    <div><div class="brow-title">Add smart crane matching</div><div class="brow-desc">"A crane for a 35-storey job in Brisbane" should get an instant suggestion.</div></div>
-                  </div>
-                  <div class="brow">
-                    <div class="brow-ic" style="background:#f3f0ff"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3l9 5-9 5-9-5 9-5Z" stroke="#7c3aed" stroke-width="1.6" stroke-linejoin="round"/><path d="M3 13l9 5 9-5" stroke="#7c3aed" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
-                    <div><div class="brow-title">One extra training layer</div><div class="brow-desc">The most natural Phase 3 extension. We recommend including it.</div></div>
-                  </div>
+              <!-- 4 — Works for everyone -->
+              <div style="display:flex;gap:1.1rem;align-items:flex-start;position:relative;z-index:1">
+                <div style="width:38px;height:38px;border-radius:50%;background:#16A34A;color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;font-weight:700;flex-shrink:0">4</div>
+                <div style="flex:1;padding-top:.1rem">
+                  <div style="font-size:14px;font-weight:800;color:var(--navy);margin-bottom:.15rem">Works for everyone · novice to executive</div>
+                  <div style="font-size:12.5px;color:var(--charcoal);line-height:1.5">A first-timer gets walked through it; a senior exec gets quick, straight answers. The AI meets each person where they are.</div>
+                  <div style="font-size:11.5px;color:var(--grey);line-height:1.5;margin-top:.25rem"><strong style="color:#7c3aed;font-weight:700">Seamless for all</strong> &nbsp;Nobody needs to be a crane expert to build the right one, and that makes the whole thing feel easy.</div>
+                  <div style="margin-top:.5rem"><span style="font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.07em;color:#7c3aed;background:#efe9fd;border-radius:20px;padding:.2rem .6rem;text-transform:uppercase">UX · Inclusive Design</span></div>
                 </div>
               </div>
 
@@ -2692,11 +2631,11 @@
           </div>
         </div>
 
-        <button class="fc-flip-btn" id="fc9-btn" onclick="var fc=document.getElementById('fc9');fc.classList.toggle('flipped');this.querySelector('svg').style.transform=fc.classList.contains('flipped')?'rotate(180deg)':'';" title="Design rationale">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .4s"><polyline points="9 18 15 12 9 6"/></svg>
-        </button>
-
       </div>
+
+      <button class="fc-flip-btn" id="fc9-btn" onclick="var fc=document.getElementById('fc9');fc.classList.toggle('flipped');this.querySelector('svg').style.transform=fc.classList.contains('flipped')?'rotate(180deg)':'';" title="Design rationale">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .4s"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
     </div>
   </div>
   <div class="slide-foot"><span>SingSingh AI &nbsp;·&nbsp; Total Equipment Sales Proposal</span><span>09</span></div>
@@ -2709,19 +2648,9 @@
   <div class="wrap">
     <div class="s-label">Delivery</div>
     <h1>Timeline</h1>
-    <p class="s-intro">Three phases. Eight weeks. Phases overlap — you're not waiting for one to finish before the next begins.</p>
+    <p class="s-intro">The work is scoped across eight to nine weeks. The 3D crane models are built in CAD up front, in Weeks 1 to 4, while the website goes up. So the configurator phase isn't spent modelling from scratch, it just integrates models that are already done.</p>
 
-    <div class="fc-wrap">
-      <div class="fc" id="fc10">
-
-        <!-- FRONT -->
-        <div class="fc-front">
-          <div class="fc-browser">
-            <div class="fc-dots"><span></span><span></span><span></span></div>
-            <div class="fc-url">Project Timeline — TES Website &amp; Configurator</div>
-          </div>
-
-          <div class="fc-mockup" style="padding:1.4rem 1.6rem;background:#ffffff;overflow:hidden;display:flex;flex-direction:column;gap:1.4rem">
+    <div style="border:1px solid var(--border);border-radius:16px;padding:1.8rem 2rem;background:#fff;display:flex;flex-direction:column;gap:1.4rem">
 
             <!-- Phase legend -->
             <div style="display:flex;gap:1.4rem;align-items:center;flex-shrink:0">
@@ -2730,11 +2659,25 @@
               <div style="display:flex;align-items:center;gap:.4rem"><div style="width:10px;height:10px;border-radius:2px;background:#a78bfa"></div><span style="font-family:var(--mono);font-size:8px;color:#475569;text-transform:uppercase;letter-spacing:.1em">Phase 3 — AI Companion</span></div>
             </div>
 
-            <!-- Gantt grid — 8 weeks, phases overlapping -->
-            <div style="flex:1;min-height:0;display:flex;flex-direction:column;gap:0">
+            <!-- Gantt grid — 9 weeks, phases overlapping -->
+            <div class="gantt-grid" style="flex:1;min-height:0;display:flex;flex-direction:column;gap:0;position:relative;z-index:0">
+
+              <!-- Dashed week column separators (behind the bars) -->
+              <div style="position:absolute;inset:0;display:grid;grid-template-columns:140px repeat(9,1fr);pointer-events:none;z-index:-1">
+                <div></div>
+                <div style="border-left:1px dashed #e6e9f1"></div>
+                <div style="border-left:1px dashed #e6e9f1"></div>
+                <div style="border-left:1px dashed #e6e9f1"></div>
+                <div style="border-left:1px dashed #e6e9f1"></div>
+                <div style="border-left:1px dashed #e6e9f1"></div>
+                <div style="border-left:1px dashed #e6e9f1"></div>
+                <div style="border-left:1px dashed #e6e9f1"></div>
+                <div style="border-left:1px dashed #e6e9f1"></div>
+                <div style="border-left:1px dashed #e6e9f1;border-right:1px dashed #e6e9f1"></div>
+              </div>
 
               <!-- Week headers -->
-              <div style="display:grid;grid-template-columns:140px repeat(8,1fr);margin-bottom:.35rem">
+              <div style="display:grid;grid-template-columns:140px repeat(9,1fr);margin-bottom:.35rem">
                 <div></div>
                 <div style="font-family:var(--mono);font-size:6px;color:#94a3b8;text-align:center;letter-spacing:.06em">W1</div>
                 <div style="font-family:var(--mono);font-size:6px;color:#94a3b8;text-align:center;letter-spacing:.06em">W2</div>
@@ -2744,155 +2687,191 @@
                 <div style="font-family:var(--mono);font-size:6px;color:#94a3b8;text-align:center;letter-spacing:.06em">W6</div>
                 <div style="font-family:var(--mono);font-size:6px;color:#94a3b8;text-align:center;letter-spacing:.06em">W7</div>
                 <div style="font-family:var(--mono);font-size:6px;color:#94a3b8;text-align:center;letter-spacing:.06em">W8</div>
+                <div style="font-family:var(--mono);font-size:6px;color:#94a3b8;text-align:center;letter-spacing:.06em">W9</div>
               </div>
 
               <!-- ── PHASE 1: Website Setup (W1–W4) ── -->
-              <div style="display:grid;grid-template-columns:140px repeat(8,1fr);align-items:center;margin-bottom:.18rem">
+              <div style="display:grid;grid-template-columns:140px repeat(9,1fr);align-items:center;margin-bottom:.18rem">
                 <div style="font-family:var(--mono);font-size:7px;font-weight:700;color:#3b82f6;text-transform:uppercase;letter-spacing:.1em;padding-right:.5rem">Phase 1</div>
                 <div style="grid-column:2/6;height:3px;background:rgba(59,130,246,.15);border-radius:2px"><div style="height:100%;background:#3b82f6;border-radius:2px"></div></div>
               </div>
-              <div style="display:grid;grid-template-columns:140px repeat(8,1fr);align-items:center;padding:.22rem 0;border-top:1px solid #e2e8f0">
+              <div style="display:grid;grid-template-columns:140px repeat(9,1fr);align-items:center;padding:.22rem 0;border-top:1px solid #e2e8f0">
                 <div style="font-size:8.5px;font-weight:700;color:#1e293b;padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Discovery &amp; Design</div>
                 <div class="gb1" style="grid-column:2/4"></div>
               </div>
-              <div style="display:grid;grid-template-columns:140px repeat(8,1fr);align-items:center;padding:.22rem 0;border-top:1px solid #e2e8f0">
+              <div style="display:grid;grid-template-columns:140px repeat(9,1fr);align-items:center;padding:.22rem 0;border-top:1px solid #e2e8f0">
                 <div style="font-size:8.5px;font-weight:700;color:#1e293b;padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Homepage &amp; Core Pages</div>
                 <div class="gb1" style="grid-column:3/5"></div>
               </div>
-              <div style="display:grid;grid-template-columns:140px repeat(8,1fr);align-items:center;padding:.22rem 0;border-top:1px solid #e2e8f0">
+              <div style="display:grid;grid-template-columns:140px repeat(9,1fr);align-items:center;padding:.22rem 0;border-top:1px solid #e2e8f0">
                 <div style="font-size:8.5px;font-weight:700;color:#1e293b;padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Product Pages (20–30)</div>
                 <div class="gb1" style="grid-column:4/6"></div>
               </div>
-              <div style="display:grid;grid-template-columns:140px repeat(8,1fr);align-items:center;padding:.22rem 0;border-top:1px solid #e2e8f0;margin-bottom:.35rem">
+              <div style="display:grid;grid-template-columns:140px repeat(9,1fr);align-items:center;padding:.22rem 0;border-top:1px solid #e2e8f0;margin-bottom:.35rem">
                 <div style="font-size:8.5px;font-weight:700;color:#1e293b;padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">SEO Setup &amp; QA</div>
                 <div class="gb1 dim" style="grid-column:5/6"></div>
               </div>
               <!-- Milestone W4 -->
-              <div style="display:grid;grid-template-columns:140px repeat(8,1fr);margin-bottom:.55rem">
+              <div style="display:grid;grid-template-columns:140px repeat(9,1fr);margin-bottom:.55rem">
                 <div></div>
                 <div class="gantt-ms" style="grid-column:5/7;font-family:var(--mono);font-size:6px;color:#3b82f6;letter-spacing:.05em">▲ Site live</div>
               </div>
 
-              <!-- ── PHASE 2: Configurator (W3–W7, overlapping P1) ── -->
-              <div style="display:grid;grid-template-columns:140px repeat(8,1fr);align-items:center;margin-bottom:.18rem">
+              <!-- ── PHASE 2: Configurator (W1–W7, overlapping P1) ── -->
+              <div style="display:grid;grid-template-columns:140px repeat(9,1fr);align-items:center;margin-bottom:.18rem">
                 <div style="font-family:var(--mono);font-size:7px;font-weight:700;color:#10b981;text-transform:uppercase;letter-spacing:.1em;padding-right:.5rem">Phase 2</div>
-                <div style="grid-column:4/9;height:3px;background:rgba(16,185,129,.15);border-radius:2px"><div style="height:100%;background:#10b981;border-radius:2px"></div></div>
+                <div style="grid-column:2/9;height:3px;background:rgba(16,185,129,.15);border-radius:2px"><div style="height:100%;background:#10b981;border-radius:2px"></div></div>
               </div>
-              <div style="display:grid;grid-template-columns:140px repeat(8,1fr);align-items:center;padding:.22rem 0;border-top:1px solid #e2e8f0">
+              <div style="display:grid;grid-template-columns:140px repeat(9,1fr);align-items:center;padding:.22rem 0;border-top:1px solid #e2e8f0">
+                <div style="font-size:8.5px;font-weight:700;color:#1e293b;padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">3D Models · CAD (Blender)</div>
+                <div class="gb2" style="grid-column:2/6"></div>
+              </div>
+              <div style="display:grid;grid-template-columns:140px repeat(9,1fr);align-items:center;padding:.22rem 0;border-top:1px solid #e2e8f0">
                 <div style="font-size:8.5px;font-weight:700;color:#1e293b;padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Configurator UX</div>
                 <div class="gb2" style="grid-column:4/6"></div>
               </div>
-              <div style="display:grid;grid-template-columns:140px repeat(8,1fr);align-items:center;padding:.22rem 0;border-top:1px solid #e2e8f0">
-                <div style="font-size:8.5px;font-weight:700;color:#1e293b;padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">3D Build &amp; Logic</div>
+              <div style="display:grid;grid-template-columns:140px repeat(9,1fr);align-items:center;padding:.22rem 0;border-top:1px solid #e2e8f0">
+                <div style="font-size:8.5px;font-weight:700;color:#1e293b;padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">3D Integration &amp; Logic</div>
                 <div class="gb2" style="grid-column:5/8"></div>
               </div>
-              <div style="display:grid;grid-template-columns:140px repeat(8,1fr);align-items:center;padding:.22rem 0;border-top:1px solid #e2e8f0">
+              <div style="display:grid;grid-template-columns:140px repeat(9,1fr);align-items:center;padding:.22rem 0;border-top:1px solid #e2e8f0">
                 <div style="font-size:8.5px;font-weight:700;color:#1e293b;padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Lead Capture &amp; PDF</div>
                 <div class="gb2 dim" style="grid-column:6/8"></div>
               </div>
-              <div style="display:grid;grid-template-columns:140px repeat(8,1fr);align-items:center;padding:.22rem 0;border-top:1px solid #e2e8f0;margin-bottom:.35rem">
+              <div style="display:grid;grid-template-columns:140px repeat(9,1fr);align-items:center;padding:.22rem 0;border-top:1px solid #e2e8f0;margin-bottom:.35rem">
                 <div style="font-size:8.5px;font-weight:700;color:#1e293b;padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Testing &amp; Staging</div>
                 <div class="gb2 dim" style="grid-column:7/9"></div>
               </div>
               <!-- Milestone W7 -->
-              <div style="display:grid;grid-template-columns:140px repeat(8,1fr);margin-bottom:.55rem">
+              <div style="display:grid;grid-template-columns:140px repeat(9,1fr);margin-bottom:.55rem">
                 <div></div>
                 <div class="gantt-ms" style="grid-column:8/9;font-family:var(--mono);font-size:6px;color:#10b981;letter-spacing:.05em">▲ Configurator live</div>
               </div>
 
-              <!-- ── PHASE 3: AI Companion (W6–W8) — FLAGSHIP ── -->
-              <div style="border:1.5px solid #a78bfa;border-radius:10px;padding:.6rem .7rem .5rem;background:linear-gradient(135deg,#faf5ff 0%,#ede9fe 100%);margin-top:.2rem;box-shadow:0 0 18px rgba(167,139,250,.18)">
-                <div style="display:grid;grid-template-columns:140px repeat(8,1fr);align-items:center;margin-bottom:.35rem">
-                  <div style="display:flex;align-items:center;gap:.4rem">
-                    <span style="font-family:var(--mono);font-size:7px;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:.1em">Phase 3</span>
-                    <span style="background:#7c3aed;color:#fff;font-family:var(--mono);font-size:6px;font-weight:700;letter-spacing:.08em;padding:.1rem .35rem;border-radius:20px;text-transform:uppercase">★ Flagship</span>
-                  </div>
-                  <div style="grid-column:7/9;height:3px;background:rgba(167,139,250,.25);border-radius:2px"><div style="height:100%;background:#a78bfa;border-radius:2px"></div></div>
-                </div>
-                <div style="display:grid;grid-template-columns:140px repeat(8,1fr);align-items:center;padding:.2rem 0;border-top:1px solid rgba(167,139,250,.2)">
-                  <div style="font-size:8.5px;font-weight:700;color:#4c1d95;padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Crane Selection AI</div>
-                  <div class="gb3" style="grid-column:7/8"></div>
-                </div>
-                <div style="display:grid;grid-template-columns:140px repeat(8,1fr);align-items:center;padding:.2rem 0;border-top:1px solid rgba(167,139,250,.2)">
-                  <div style="font-size:8.5px;font-weight:700;color:#4c1d95;padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Lead Qualification</div>
-                  <div class="gb3" style="grid-column:7/8"></div>
-                </div>
-                <div style="display:grid;grid-template-columns:140px repeat(8,1fr);align-items:center;padding:.2rem 0;border-top:1px solid rgba(167,139,250,.2)">
-                  <div style="font-size:8.5px;font-weight:700;color:#4c1d95;padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Live Spec Comparison</div>
-                  <div class="gb3" style="grid-column:7/9"></div>
-                </div>
-                <div style="display:grid;grid-template-columns:140px repeat(8,1fr);align-items:center;padding:.2rem 0;border-top:1px solid rgba(167,139,250,.2)">
-                  <div style="font-size:8.5px;font-weight:700;color:#4c1d95;padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">CRM Handoff to AJ</div>
-                  <div class="gb3" style="grid-column:7/9"></div>
-                </div>
-                <div style="display:grid;grid-template-columns:140px repeat(8,1fr);align-items:center;padding:.2rem 0;border-top:1px solid rgba(167,139,250,.2)">
-                  <div style="font-size:8.5px;font-weight:700;color:#4c1d95;padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Training &amp; Handover</div>
-                  <div class="gb3" style="grid-column:8/9"></div>
-                </div>
-                <div style="display:grid;grid-template-columns:140px repeat(8,1fr);align-items:center;padding:.2rem 0;border-top:1px solid rgba(167,139,250,.2)">
-                  <div style="font-size:8.5px;font-weight:700;color:#4c1d95;padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Full Code Transfer</div>
-                  <div class="gb3" style="grid-column:8/9"></div>
-                </div>
+              <!-- ── PHASE 3: AI Companion (W8–W9) ── -->
+              <div style="display:grid;grid-template-columns:140px repeat(9,1fr);align-items:center;margin-bottom:.18rem;margin-top:.2rem">
+                <div style="font-family:var(--mono);font-size:7px;font-weight:700;color:#a78bfa;text-transform:uppercase;letter-spacing:.1em;padding-right:.5rem">Phase 3</div>
+                <div style="grid-column:8/11;height:3px;background:rgba(167,139,250,.15);border-radius:2px"><div style="height:100%;background:#a78bfa;border-radius:2px"></div></div>
+              </div>
+              <div style="display:grid;grid-template-columns:140px repeat(9,1fr);align-items:center;padding:.22rem 0;border-top:1px solid #e2e8f0">
+                <div style="font-size:8.5px;font-weight:700;color:#1e293b;padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Crane Selection AI</div>
+                <div class="gb3" style="grid-column:8/11"></div>
+              </div>
+              <div style="display:grid;grid-template-columns:140px repeat(9,1fr);align-items:center;padding:.22rem 0;border-top:1px solid #e2e8f0">
+                <div style="font-size:8.5px;font-weight:700;color:#1e293b;padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Model Comparison</div>
+                <div class="gb3" style="grid-column:9/11"></div>
+              </div>
+              <div style="display:grid;grid-template-columns:140px repeat(9,1fr);align-items:center;padding:.22rem 0;border-top:1px solid #e2e8f0">
+                <div style="font-size:8.5px;font-weight:700;color:#1e293b;padding-right:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Full Code Transfer</div>
+                <div class="gb3" style="grid-column:10/11"></div>
               </div>
 
             </div><!-- end gantt grid -->
 
             <!-- Bottom note -->
             <div style="flex-shrink:0;border-top:1px solid #e2e8f0;padding-top:.9rem;display:flex;align-items:center;justify-content:space-between">
-              <div style="font-size:9px;color:#64748b;line-height:1.5">Site live at <strong style="color:#0f172a">Week 4.</strong> Configurator on top at <strong style="color:#0f172a">Week 7.</strong> AI companion &amp; full handover at <strong style="color:#0f172a">Week 8.</strong></div>
-              <div style="font-family:var(--mono);font-size:7.5px;color:#94a3b8;letter-spacing:.08em">8 WEEKS · 2 MONTHS</div>
+              <div style="font-size:9px;color:#64748b;line-height:1.5">3D models built in CAD across <strong style="color:#0f172a">Weeks 1–4.</strong> Site live at <strong style="color:#0f172a">Week 4.</strong> Configurator at <strong style="color:#0f172a">Week 7.</strong> AI &amp; full handover at <strong style="color:#0f172a">Week 9.</strong></div>
+              <div style="font-family:var(--mono);font-size:7.5px;color:#94a3b8;letter-spacing:.08em">8–9 WEEKS</div>
             </div>
 
-          </div><!-- end fc-mockup -->
-        </div><!-- end fc-front -->
-
-        <!-- BACK -->
-        <div class="fc-back">
-          <div class="fc-back-content">
-            <div class="fc-back-title">Timeline — Why This Order</div>
-            <div class="fc-back-items">
-              <div class="fc-back-item">
-                <div class="fc-back-item-title">Website first — the configurator needs a home</div>
-                <div class="fc-back-item-desc">The 3D configurator lives inside the TES website. Before we can build it, the design system, URL structure, product page templates, and hosting environment need to exist. Phase 1 is the foundation everything else runs on.</div>
-              </div>
-              <div class="fc-back-item">
-                <div class="fc-back-item-title">Configurator second — now it has context</div>
-                <div class="fc-back-item-desc">By Week 7 the site is live and indexed. The configurator builds on top of the existing product pages and design language — consistent, not bolted on. Buyers who land on a product page can go straight into the configurator without a jarring transition.</div>
-              </div>
-              <div class="fc-back-item">
-                <div class="fc-back-item-title">Phase 3 is the AI — and it's the whole point</div>
-                <div class="fc-back-item-desc">The AI companion qualifies every buyer before they call — which crane for which job, at which site. It runs live spec comparisons, routes hot leads straight to AJ, and replaces three to five hours of early-stage sales calls per week. The site and configurator are the foundation. The AI is the payoff.</div>
-              </div>
-              <div class="fc-back-item">
-                <div class="fc-back-item-title">Not a RAG pipeline — Claude with guardrails</div>
-                <div class="fc-back-item-desc">This is not a search engine over thousands of documents. It's Claude (Anthropic's AI) wired to TES's product specs, pricing, and a structured qualification flow. BQ's full crane catalogue fits comfortably in a single context window — no vector database, no embedding pipeline, no infrastructure to maintain. When specs change, you update a file. That's why Phase 3 is two weeks, not three months.</div>
-              </div>
-              <div class="fc-back-item">
-                <div class="fc-back-item-title">8 weeks total. Phases overlap.</div>
-                <div class="fc-back-item-desc">Phase 2 starts while Phase 1 is still in QA. Phase 3 AI build starts while the configurator is in testing. You're not waiting for one thing to finish before the next begins — the team runs in parallel so the full handover is at Week 8.</div>
-              </div>
+            <!-- Phase 3 scope note -->
+            <div style="flex-shrink:0;background:#f5f3ff;border-left:3px solid #a78bfa;border-radius:0 8px 8px 0;padding:.7rem .9rem;margin-top:.2rem">
+              <div style="font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.1em;color:#7c3aed;text-transform:uppercase;margin-bottom:.3rem">Phase 3 scope · AI Companion</div>
+              <div style="font-size:10px;color:#475569;line-height:1.6">The AI stays focused: it guides buyers through the cranes, gathers their requirements when they describe a project, and suggests the right setup. The build is a <strong style="color:#1e293b">RAG pipeline</strong> over Falcon Cranes' own material (case studies and crane data), wired to the <strong style="color:#1e293b">Claude API</strong>, or <strong style="color:#1e293b">AWS Bedrock</strong> if the model needs to be hosted in Australia. A standalone, custom-trained model would be overkill and the wrong fit for a website feature at this scope.</div>
+              <div style="font-size:10px;color:#475569;line-height:1.6;margin-top:.5rem;padding-top:.5rem;border-top:1px dashed #ddd6fe"><strong style="color:#7c3aed">Running cost:</strong> as mentioned, each AI interaction uses API credits, up to about <strong style="color:#1e293b">$0.50 USD per transaction</strong>, billed to TES's own account. It's an ongoing operating cost, separate from the build price.</div>
             </div>
-          </div>
-        </div>
 
-        <button class="fc-flip-btn" id="fc10-btn" onclick="var fc=document.getElementById('fc10');fc.classList.toggle('flipped');this.querySelector('svg').style.transform=fc.classList.contains('flipped')?'rotate(180deg)':'';" title="Why these phases">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .4s"><polyline points="9 18 15 12 9 6"/></svg>
-        </button>
-
-      </div>
-    </div>
+    </div><!-- end timeline card -->
   </div>
   <div class="slide-foot"><span>SingSingh AI &nbsp;·&nbsp; Total Equipment Sales Proposal</span><span>10</span></div>
 </div>
 
 <!-- ═══════════════════════════════════════════════════
-     SLIDE 11 — INVESTMENT
+     SLIDE 11 — SECURITY & RISK
+════════════════════════════════════════════════════ -->
+<div class="slide" id="s11sec">
+  <div class="wrap">
+    <div class="s-label">Trust</div>
+    <h1>Security &amp; Risk</h1>
+    <p class="s-intro">What keeps TES protected, and how we handle the things that could go wrong.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:3vw;align-items:start;margin-top:1.4rem">
+
+      <!-- LEFT: Security -->
+      <div>
+        <div style="font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.12em;color:var(--blue);text-transform:uppercase;margin-bottom:1.2rem">How the build protects TES</div>
+        <div style="display:flex;flex-direction:column;gap:1.05rem">
+
+          <div style="display:flex;gap:1rem;align-items:flex-start">
+            <div style="width:40px;height:40px;border-radius:50%;background:#E8F0FE;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="9" rx="2" stroke="#1A73EB" stroke-width="1.7"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#1A73EB" stroke-width="1.7"/><circle cx="12" cy="15.5" r="1.3" fill="#1A73EB"/></svg></div>
+            <div><div style="font-size:13.5px;font-weight:800;color:var(--navy);margin-bottom:.12rem">Data &amp; leads</div><div style="font-size:12px;color:var(--grey);line-height:1.5">Form and configurator data (name, company, email, phone) is stored securely over HTTPS, and never sold or shared.</div></div>
+          </div>
+
+          <div style="display:flex;gap:1rem;align-items:flex-start">
+            <div style="width:40px;height:40px;border-radius:50%;background:#E8F0FE;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3Z" stroke="#1A73EB" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div><div style="font-size:13.5px;font-weight:800;color:var(--navy);margin-bottom:.12rem">AI guardrails</div><div style="font-size:12px;color:var(--grey);line-height:1.5">The AI runs on a narrow scope, trained only on TES and crane data. It gives no pricing or compliance advice, so it can't say anything that creates liability.</div></div>
+          </div>
+
+          <div style="display:flex;gap:1rem;align-items:flex-start">
+            <div style="width:40px;height:40px;border-radius:50%;background:#E8F0FE;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="8" cy="8" r="4" stroke="#1A73EB" stroke-width="1.7"/><path d="M11 11l8 8M16 16l2-2M14 18l2-2" stroke="#1A73EB" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div><div style="font-size:13.5px;font-weight:800;color:var(--navy);margin-bottom:.12rem">Code &amp; keys</div><div style="font-size:12px;color:var(--grey);line-height:1.5">Full code handover with no vendor lock-in. The Claude or AWS Bedrock API key sits on TES's own account.</div></div>
+          </div>
+
+          <div style="display:flex;gap:1rem;align-items:flex-start">
+            <div style="width:40px;height:40px;border-radius:50%;background:#E8F0FE;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="6" rx="1.5" stroke="#1A73EB" stroke-width="1.7"/><rect x="4" y="14" width="16" height="6" rx="1.5" stroke="#1A73EB" stroke-width="1.7"/><circle cx="8" cy="7" r="1" fill="#1A73EB"/><circle cx="8" cy="17" r="1" fill="#1A73EB"/></svg></div>
+            <div><div style="font-size:13.5px;font-weight:800;color:var(--navy);margin-bottom:.12rem">Hosting &amp; servers</div><div style="font-size:12px;color:var(--grey);line-height:1.5">We're happy to take your IT team's lead on hosting and servers, and build the site around the setup they prefer.</div></div>
+          </div>
+
+          <div style="display:flex;gap:1rem;align-items:flex-start">
+            <div style="width:40px;height:40px;border-radius:50%;background:#E8F0FE;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M7 3h7l4 4v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z" stroke="#1A73EB" stroke-width="1.6"/><path d="M14 3v4h4M9 14l2 2 4-4" stroke="#1A73EB" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div><div style="font-size:13.5px;font-weight:800;color:var(--navy);margin-bottom:.12rem">Privacy</div><div style="font-size:12px;color:var(--grey);line-height:1.5">Only the minimum data is collected, and it's handled in line with the Australian Privacy Act.</div></div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- RIGHT: Risk -->
+      <div>
+        <div style="font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.12em;color:var(--blue);text-transform:uppercase;margin-bottom:1.2rem">Risks &amp; how we handle them</div>
+        <div style="display:flex;flex-direction:column;gap:.85rem">
+
+          <div style="border:1px solid var(--border);border-radius:10px;padding:.8rem 1rem">
+            <div style="font-size:12.5px;font-weight:700;color:var(--navy);margin-bottom:.25rem">AI gives a wrong answer</div>
+            <div style="font-size:11.5px;color:var(--grey);line-height:1.5"><span style="color:#16a34a;font-weight:800">✓</span> Narrow scope, trained only on TES data, with every figure marked “indicative only”.</div>
+          </div>
+
+          <div style="border:1px solid var(--border);border-radius:10px;padding:.8rem 1rem">
+            <div style="font-size:12.5px;font-weight:700;color:var(--navy);margin-bottom:.25rem">API cost runs up</div>
+            <div style="font-size:11.5px;color:var(--grey);line-height:1.5"><span style="color:#16a34a;font-weight:800">✓</span> Capped around $0.50 per transaction on TES's account, with usage limits you control.</div>
+          </div>
+
+          <div style="border:1px solid var(--border);border-radius:10px;padding:.8rem 1rem">
+            <div style="font-size:12.5px;font-weight:700;color:var(--navy);margin-bottom:.25rem">Shared build links get out</div>
+            <div style="font-size:11.5px;color:var(--grey);line-height:1.5"><span style="color:#16a34a;font-weight:800">✓</span> Builds are saved in TES's own database, and links use unguessable tokens, so nothing sensitive is ever public.</div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Ongoing costs note -->
+    <div style="margin-top:1.5rem;background:#fff9e6;border-left:3px solid #eab308;border-radius:0 8px 8px 0;padding:.85rem 1.05rem;max-width:920px">
+      <div style="font-family:var(--mono);font-size:8.5px;font-weight:700;letter-spacing:.1em;color:#a16207;text-transform:uppercase;margin-bottom:.35rem">Ongoing costs · on TES's account</div>
+      <div style="font-size:11.5px;color:#475569;line-height:1.6">Saving and sharing builds needs a small database. If TES doesn't already have one we can use, indicative hosting is roughly <strong style="color:#1e293b">$20 to $50 USD a month</strong>, depending on the provider and traffic. Saved build links are kept for <strong style="color:#1e293b">12 months</strong> by default and then expire, and that window is yours to set. This sits alongside the AI usage cost (~$0.50 per transaction) and is separate from the build price.</div>
+    </div>
+  </div>
+  <div class="slide-foot"><span>SingSingh AI &nbsp;·&nbsp; Total Equipment Sales Proposal</span><span>11</span></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 12 — INVESTMENT
 ════════════════════════════════════════════════════ -->
 <div class="slide" id="s11">
   <div class="wrap">
     <div class="s-label">Commercial</div>
     <h1>Investment</h1>
-    <p class="s-intro">One bundle. No ongoing retainer. Full code handover. Built once, owned forever.</p>
+    <p class="s-intro">The full cost, broken down by phase and by service.</p>
 
     <div class="fc-wrap">
       <div class="fc" id="fc11">
@@ -3076,9 +3055,28 @@
                 <div style="font-family:var(--mono);font-size:8px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.5rem">Total Investment</div>
                 <div style="display:flex;align-items:baseline;justify-content:center;gap:.3rem">
                   <div style="font-size:28px;font-weight:800;color:#0f1c2e">$24,000</div>
-                  <div style="font-family:var(--mono);font-size:9px;color:#64748b">AUD · INC. GST</div>
+                  <div style="font-family:var(--mono);font-size:9px;color:#64748b">AUD · + GST</div>
                 </div>
-                <div style="font-size:8px;color:#64748b;margin-top:.6rem;line-height:1.5">8 weeks · 3 phases · full code handover</div>
+                <div style="font-size:8px;color:#64748b;margin-top:.6rem;line-height:1.5">$26,400 incl. 10% GST · 8 weeks · 3 phases · full code handover</div>
+              </div>
+
+              <!-- Payment schedule -->
+              <div style="grid-column:1/-1;margin-top:.5rem;padding:.7rem .9rem;border:1px dashed #cbd5e1;border-radius:10px;flex-shrink:0">
+                <div style="font-family:var(--mono);font-size:7.5px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.5rem">Payment · one third at the start of each phase · + GST</div>
+                <div style="display:flex;justify-content:space-between;gap:.6rem">
+                  <div style="flex:1;text-align:center">
+                    <div style="font-size:13px;font-weight:800;color:#1d4ed8">$8,800</div>
+                    <div style="font-size:7.5px;color:#64748b;margin-top:.1rem">Phase 1 · Week 1</div>
+                  </div>
+                  <div style="flex:1;text-align:center;border-left:1px solid #e5e7eb">
+                    <div style="font-size:13px;font-weight:800;color:#065f46">$8,800</div>
+                    <div style="font-size:7.5px;color:#64748b;margin-top:.1rem">Phase 2 · Week 5</div>
+                  </div>
+                  <div style="flex:1;text-align:center;border-left:1px solid #e5e7eb">
+                    <div style="font-size:13px;font-weight:800;color:#4c1d95">$8,800</div>
+                    <div style="font-size:7.5px;color:#64748b;margin-top:.1rem">Phase 3 · Week 7</div>
+                  </div>
+                </div>
               </div>
 
             </div>
@@ -3090,11 +3088,11 @@
       </div>
     </div>
   </div>
-  <div class="slide-foot"><span>SingSingh AI &nbsp;·&nbsp; Total Equipment Sales Proposal</span><span>11</span></div>
+  <div class="slide-foot"><span>SingSingh AI &nbsp;·&nbsp; Total Equipment Sales Proposal</span><span>12</span></div>
 </div>
 
 <!-- ═══════════════════════════════════════════════════
-     SLIDE 12 — NEXT STEPS
+     SLIDE 13 — NEXT STEPS
 ════════════════════════════════════════════════════ -->
 <div class="slide" id="s12">
   <div class="wrap">
@@ -3104,68 +3102,59 @@
 
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:4vw;align-items:start">
 
-      <!-- Left: intro + steps + callout -->
+      <!-- Left: next steps -->
       <div>
         <div style="font-size:clamp(13px,1.3vw,15px);color:#334155;line-height:1.8;margin-bottom:1.8rem">
-          Reply to this proposal with your go-ahead — that's it. We'll come back within 48 hours with a confirmed scope and set up 30 minutes with AJ and Franel to kick off Week 1.
+          If this direction works for TES, here's how we get moving.
         </div>
 
-        <div style="display:flex;flex-direction:column;gap:.7rem;margin-bottom:1.8rem">
-          <div style="display:flex;align-items:center;gap:.8rem;font-size:12px;color:#334155">
-            <div style="width:26px;height:26px;border-radius:50%;background:#3b82f6;display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--mono);font-size:9px;font-weight:700;flex-shrink:0">1</div>
-            <span><strong>Say yes</strong> — reply to this proposal or call AJ directly &nbsp;·&nbsp; <span style="font-family:var(--mono);font-size:9px;color:#3b82f6;font-weight:700">BY END OF JUNE</span></span>
+        <div style="display:flex;flex-direction:column;gap:1rem;margin-bottom:1.8rem">
+          <div style="display:flex;align-items:flex-start;gap:.8rem;font-size:12px;color:#334155">
+            <div style="width:26px;height:26px;border-radius:50%;background:#3b82f6;display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--mono);font-size:9px;font-weight:700;flex-shrink:0;margin-top:.1rem">1</div>
+            <span style="line-height:1.6"><strong>Happy to jump on a call</strong> to give a quick walkthrough, answer any concerns, and get the TES team's read on how the structure looks.</span>
           </div>
-          <div style="display:flex;align-items:center;gap:.8rem;font-size:12px;color:#334155">
-            <div style="width:26px;height:26px;border-radius:50%;background:#10b981;display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--mono);font-size:9px;font-weight:700;flex-shrink:0">2</div>
-            <span><strong>Kick-off call</strong> — 30 mins with AJ &amp; Franel, confirm the 4 decisions &nbsp;·&nbsp; <span style="font-family:var(--mono);font-size:9px;color:#10b981;font-weight:700">WITHIN 48 HOURS</span></span>
+          <div style="display:flex;align-items:flex-start;gap:.8rem;font-size:12px;color:#334155">
+            <div style="width:26px;height:26px;border-radius:50%;background:#10b981;display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--mono);font-size:9px;font-weight:700;flex-shrink:0;margin-top:.1rem">2</div>
+            <span style="line-height:1.6"><strong>Confirm the scope</strong> and lock in a start date.</span>
           </div>
-          <div style="display:flex;align-items:center;gap:.8rem;font-size:12px;color:#334155">
-            <div style="width:26px;height:26px;border-radius:50%;background:#a78bfa;display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--mono);font-size:9px;font-weight:700;flex-shrink:0">3</div>
-            <span><strong>Phase 1 begins</strong> — discovery starts, website design underway &nbsp;·&nbsp; <span style="font-family:var(--mono);font-size:9px;color:#a78bfa;font-weight:700">WEEK 1 START</span></span>
-          </div>
-          <div style="display:flex;align-items:center;gap:.8rem;font-size:12px;color:#334155">
-            <div style="width:26px;height:26px;border-radius:50%;background:#0f1c2e;display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--mono);font-size:9px;font-weight:700;flex-shrink:0">4</div>
-            <span><strong>Site live at Week 6</strong>, configurator at Week 12, AI companion at Week 16 &nbsp;·&nbsp; <span style="font-family:var(--mono);font-size:9px;color:#64748b;font-weight:700">DONE</span></span>
+          <div style="display:flex;align-items:flex-start;gap:.8rem;font-size:12px;color:#334155">
+            <div style="width:26px;height:26px;border-radius:50%;background:#a78bfa;display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--mono);font-size:9px;font-weight:700;flex-shrink:0;margin-top:.1rem">3</div>
+            <span style="line-height:1.6"><strong>Phase 1 kicks off</strong>, and we go from there.</span>
           </div>
         </div>
 
         <div style="padding:.85rem 1rem;background:#fef9c3;border-left:3px solid #eab308;border-radius:0 8px 8px 0;font-size:11.5px;color:#334155;line-height:1.7">
-          <strong style="color:#0f1c2e">And remember:</strong> You can walk away after any phase if it doesn't deliver what we said. No cost. You keep everything we build. The only thing saying yes commits you to is a conversation.
+          <strong style="color:#0f1c2e">Payment is staged:</strong> one third at the start of each phase (Weeks 1, 5 and 7). Full breakdown on the Investment page.
         </div>
       </div>
 
       <!-- Right: large card -->
       <div>
         <div style="padding:2rem 2rem;text-align:center;border:1.5px solid #e0e7ff;border-radius:16px;background:#f0f4ff;margin-bottom:1.5rem;flex-grow:1;display:flex;flex-direction:column;justify-content:center">
-          <div style="font-family:var(--mono);font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:#64748b;margin-bottom:1.2rem">Prepared by</div>
-          <div style="margin-bottom:1.8rem">
-            <div style="font-size:24px;font-weight:700;color:#0f1c2e;margin-bottom:.4rem">SingSingh AI</div>
-            <div style="font-size:11px;color:#64748b;letter-spacing:.05em">OPERATIONS INTELLIGENCE</div>
+          <div style="font-family:var(--mono);font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:#64748b;margin-bottom:1.4rem">Prepared by</div>
+          <div style="margin-bottom:1.8rem;display:flex;flex-direction:column;align-items:center">
+            <img src="logosingsinghai.png" alt="SingSingh AI" style="height:64px;width:auto;margin-bottom:.7rem"/>
+            <div style="font-size:12px;color:#64748b;letter-spacing:.03em">Smarter AI, Stronger Businesses</div>
           </div>
-          <div style="width:100%;height:1px;background:#d0d9f7;margin-bottom:1.5rem"></div>
-          <div style="font-size:10px;color:#64748b;margin-bottom:1rem">singsinghai.com.au</div>
-          <div style="display:inline-block;padding:.6rem 1rem;background:#fff;border:1px solid #e0e7ff;border-radius:20px;margin:0 auto">
-            <a href="#" style="font-size:10px;color:#2563eb;font-weight:600;text-decoration:none">See our flagship products →</a>
-          </div>
+          <div style="width:100%;height:1px;background:#d0d9f7;margin-bottom:1.4rem"></div>
+          <div style="font-size:10px;color:#64748b">singsinghai.com.au</div>
         </div>
 
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
           <div style="padding:1rem;border:1px solid #e2e8f0;border-radius:10px;text-align:center">
             <div style="font-family:var(--mono);font-size:8px;color:#64748b;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.5rem;font-weight:700">Prepared for</div>
-            <div style="font-size:12px;font-weight:700;color:#0f1c2e">AJ</div>
-            <div style="font-size:10px;color:#64748b">Total Equipment Sales</div>
+            <div style="font-size:12px;font-weight:700;color:#0f1c2e">Total Equipment Sales</div>
           </div>
           <div style="padding:1rem;border:1px solid #e2e8f0;border-radius:10px;text-align:center">
             <div style="font-family:var(--mono);font-size:8px;color:#64748b;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.5rem;font-weight:700">Prepared by</div>
-            <div style="font-size:12px;font-weight:700;color:#0f1c2e">Abhinav Singh</div>
-            <div style="font-size:10px;color:#64748b">SingSingh AI</div>
+            <div style="font-size:12px;font-weight:700;color:#0f1c2e">SingSingh AI</div>
           </div>
         </div>
       </div>
 
     </div>
   </div>
-  <div class="slide-foot"><span>SingSingh AI &nbsp;·&nbsp; Total Equipment Sales Proposal</span><span>12</span></div>
+  <div class="slide-foot"><span>SingSingh AI &nbsp;·&nbsp; Total Equipment Sales Proposal</span><span>13</span></div>
 </div>
 
 <script>
@@ -3289,6 +3278,23 @@
     if (el && el.dataset.src && !el.src.includes('TES_Crane')) {
       el.src = el.dataset.src;
     }
+  }
+  // Scroll the embedded configurator's options panel down (embed-version scroll helper)
+  function cfgScrollPanel(iframeId) {
+    var f = document.getElementById(iframeId);
+    if (!f) return;
+    try {
+      var doc = f.contentDocument || (f.contentWindow && f.contentWindow.document);
+      var panel = doc && doc.querySelector('.panel-sections');
+      if (panel) {
+        var atBottom = panel.scrollTop + panel.clientHeight >= panel.scrollHeight - 4;
+        var target = atBottom ? 0 : panel.scrollTop + 260;
+        panel.scrollTo({ top: target, behavior: 'smooth' });
+        return;
+      }
+    } catch (e) {}
+    // Fallback: nudge the whole iframe document
+    try { f.contentWindow.scrollBy({ top: 260, behavior: 'smooth' }); } catch (e) {}
   }
   const obs = new IntersectionObserver((entries) => {
     entries.forEach(e => {

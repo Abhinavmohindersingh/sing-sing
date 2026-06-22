@@ -113,9 +113,11 @@
     .panel-search-input::placeholder { color: #9ca3af; }
     .panel-search-input:focus { border-color: #d1d5db; background-color: #fff; }
 
-    .panel-sections { flex: 1; overflow-y: auto; }
-    .panel-sections::-webkit-scrollbar { width: 3px; }
-    .panel-sections::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 2px; }
+    .panel-sections { flex: 1; overflow-y: scroll; -webkit-overflow-scrolling: touch; scrollbar-width: thin; scrollbar-color: #1A73EB #dbe4fb; }
+    .panel-sections::-webkit-scrollbar { width: 13px; }
+    .panel-sections::-webkit-scrollbar-track { background: #e8eef9; border-radius: 7px; }
+    .panel-sections::-webkit-scrollbar-thumb { background: #1A73EB; border-radius: 7px; border: 3px solid #e8eef9; }
+    .panel-sections::-webkit-scrollbar-thumb:hover { background: #0d5fd1; }
 
     /* Section */
     .cfg-section { border-bottom: 1px solid #f3f4f6; }
