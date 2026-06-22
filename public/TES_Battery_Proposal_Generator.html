@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>SingSingh AI × Falcon Cranes — Battery ROI &amp; Proposal</title>
+  <title>SingSingh AI × TES · Battery ROI &amp; Proposal</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -51,6 +51,35 @@
     .s-label { font-family:var(--mono); font-size:9.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--blue); margin-bottom:.6rem; }
     .s-intro  { font-size:clamp(13px,1.3vw,15px); color:var(--grey); max-width:600px; line-height:1.8; margin:.8rem 0 2.5rem; }
     .s-note   { font-size:12px; color:var(--grey); background:var(--lblue); border-left:3px solid var(--blue); padding:.6rem 1rem; border-radius:0 8px 8px 0; max-width:700px; }
+
+    /* Current vs Scoped split */
+    .cvs-wrap { display:grid; grid-template-columns:1fr 1fr; gap:2rem; max-width:1040px; margin-top:2rem; }
+    .cvs-col  { border-radius:16px; overflow:hidden; border:1px solid var(--border); }
+    .cvs-head { padding:1.1rem 1.4rem; display:flex; align-items:center; gap:.8rem; }
+    .cvs-head-label { font-size:11px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+    .cvs-head-sub   { font-size:11px; opacity:.7; margin-top:.1rem; }
+    .cvs-head-icon  { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .cvs-rows { display:flex; flex-direction:column; padding:.4rem 0; }
+    .cvs-row  { display:flex; align-items:flex-start; gap:.8rem; padding:.65rem 1.4rem; border-bottom:1px solid var(--border); font-size:12.5px; line-height:1.45; }
+    .cvs-row:last-child { border-bottom:none; }
+    .cvs-bullet { width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:.1rem; font-size:9px; font-weight:800; }
+
+    /* current col */
+    .cvs-current .cvs-head { background:#fef2f2; border-bottom:1px solid #fecaca; }
+    .cvs-current .cvs-head-label { color:#991b1b; }
+    .cvs-current .cvs-head-icon  { background:#fee2e2; }
+    .cvs-current .cvs-bullet     { background:#fee2e2; color:#dc2626; }
+    .cvs-current .cvs-row        { color:var(--charcoal); }
+
+    /* scoped col */
+    .cvs-scoped .cvs-head { background:#eff6ff; border-bottom:1px solid #bfdbfe; }
+    .cvs-scoped .cvs-head-label { color:#1e40af; }
+    .cvs-scoped .cvs-head-icon  { background:#dbeafe; }
+    .cvs-scoped .cvs-bullet     { background:#dbeafe; color:#1A73EB; }
+    .cvs-scoped .cvs-row        { color:var(--charcoal); }
+    .cvs-scoped .cvs-row strong { color:var(--navy); }
+
+    @media(max-width:760px) { .cvs-wrap { grid-template-columns:1fr; } }
 
     /* Scope cards */
     .scope-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.4rem; max-width:1000px; }
@@ -117,7 +146,7 @@
 <body>
 <div id="bar"></div>
 
-<!-- ═══ SLIDE 1 — COVER ═══ -->
+<!-- ═══ SLIDE 1 · COVER ═══ -->
 <div class="slide" id="s1" style="background:#fff">
   <div class="wrap" style="display:flex;flex-direction:column;align-items:center;gap:3.5rem;justify-content:center">
 
@@ -129,209 +158,302 @@
 
     <div style="display:flex;flex-direction:column;align-items:center;gap:1.2rem">
       <div class="s1-name">Battery ROI &amp; Proposal</div>
-      <div class="s1-tag">Specs, ROI, pricing and terms — sent as a document, not a website.</div>
+      <div class="s1-tag">Specs, ROI, pricing and terms · sent as a document, not a website.</div>
     </div>
 
     <div style="display:flex;flex-direction:column;align-items:center;gap:1.4rem">
-      <div class="s1-sub">A set of professional HTML documents attached to every battery quote. The client receives specs, a live ROI calculator, diesel savings comparison, hire and sale pricing, and full terms — all in one send.</div>
+      <div class="s1-sub">A set of professional HTML documents attached to every battery quote. The client receives specs, a live ROI calculator, diesel savings comparison, hire and sale pricing, and full terms · all in one send.</div>
       <div style="display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap;justify-content:center">
         <span style="display:inline-block;padding:.35rem .9rem;border-radius:100px;border:1px solid var(--border);background:#f8fafc;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;color:var(--grey);text-transform:uppercase">Prepared by SingSingh AI</span>
       </div>
     </div>
 
   </div>
-  <div class="slide-foot"><span>SingSingh AI &nbsp;·&nbsp; Falcon Cranes — Battery ROI &amp; Proposal</span><span>01</span></div>
+  <div class="slide-foot"><span>SingSingh AI &nbsp;·&nbsp; TES · Battery ROI &amp; Proposal</span><span>01</span></div>
 </div>
 
-<!-- ═══ SLIDE 2 — SCOPE OF WORKS ═══ -->
+<!-- ═══ SLIDE 2 · SCOPE OF WORKS ═══ -->
 <div class="slide" id="s2">
   <div class="wrap">
 
-    <div class="s-label">Scope of Works</div>
-    <h1>What We're Building</h1>
-    <p class="s-intro">A set of professional HTML documents attached to every battery quote — the client gets specs, ROI comparison, pricing and terms in one send. Not a live website. Documents that travel with the quote.</p>
+    <div class="s-label">The Problem</div>
+    <h1>Current vs. What We Build</h1>
+    <p class="s-intro">Every battery quote today is assembled manually across three tools. Here's what that looks like · and what replaces it.</p>
 
-    <div class="scope-grid">
+    <div class="cvs-wrap">
 
-      <!-- Phase 1 -->
-      <div class="scope-card" style="border-top:3px solid #1A73EB">
-        <div class="scope-card-head">
-          <div class="scope-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1A73EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="9" y1="9" x2="9.01" y2="9"/></svg>
+      <!-- LEFT · Current -->
+      <div class="cvs-col cvs-current">
+        <div class="cvs-head">
+          <div class="cvs-head-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
           </div>
           <div>
-            <div class="scope-num">PHASE 01 — Foundation</div>
-            <div class="scope-title">Information Consolidation</div>
+            <div class="cvs-head-label">How It Works Today</div>
+            <div class="cvs-head-sub">Manual · slow · looks basic</div>
           </div>
         </div>
-        <div class="scope-rows">
-          <div class="scope-row">Gather all scattered spec sheets, price lists and product data across PA125, PA250, PA375, PE500</div>
-          <div class="scope-row">Build one <strong>clean, structured data source</strong> — specs, hire price, sale price, per SKU</div>
-          <div class="scope-row">Align with Falcon Cranes compliance team — branding, marketing assets, business rules</div>
-          <div class="scope-row">This is the real time cost — once the data is clean, everything else is fast</div>
+        <div class="cvs-rows">
+          <div class="cvs-row">
+            <div class="cvs-bullet">1</div>
+            <span>Open Xero → build cover page → save as PDF</span>
+          </div>
+          <div class="cvs-row">
+            <div class="cvs-bullet">2</div>
+            <span>Open Bluebeam → manually stitch T&amp;C document onto the PDF</span>
+          </div>
+          <div class="cvs-row">
+            <div class="cvs-bullet">3</div>
+            <span>Send combined PDF · looks like it was done in Word</span>
+          </div>
+          <div class="cvs-row">
+            <div class="cvs-bullet">!</div>
+            <span>Client asks for sale price instead of hire → redo the entire process from scratch</span>
+          </div>
+          <div class="cvs-row">
+            <div class="cvs-bullet">!</div>
+            <span>Savings vs diesel explained manually over the phone · nothing shown in the document</span>
+          </div>
+          <div class="cvs-row">
+            <div class="cvs-bullet">!</div>
+            <span>Competitors already have polished proposals · AMPD, Ladybug, Powershift</span>
+          </div>
         </div>
-        <span class="scope-tag">Data source: Potain PA/PE spec sheets + Alex's pricing</span>
       </div>
 
-      <!-- Phase 2 -->
-      <div class="scope-card" style="border-top:3px solid #16A34A">
-        <div class="scope-card-head">
-          <div class="scope-icon" style="background:#dcfce7">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      <!-- RIGHT · Scoped -->
+      <div class="cvs-col cvs-scoped">
+        <div class="cvs-head">
+          <div class="cvs-head-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1A73EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
           </div>
           <div>
-            <div class="scope-num">PHASE 02 — Build</div>
-            <div class="scope-title">ROI Calculator + Comparison</div>
+            <div class="cvs-head-label">What We Build</div>
+            <div class="cvs-head-sub">One send · professional · self-contained</div>
           </div>
         </div>
-        <div class="scope-rows">
-          <div class="scope-row">Battery selector — PA125 / PA250 / PA375 / PE500 — full specs load on click</div>
-          <div class="scope-row"><strong>Hire price + sale price</strong> side by side, discount field, transport exclusion</div>
-          <div class="scope-row">Diesel vs Potain battery cost comparison — calculates monthly savings automatically</div>
-          <div class="scope-row">Payback period — shows when the battery pays for itself vs generator rental</div>
+        <div class="cvs-rows">
+          <div class="cvs-row">
+            <div class="cvs-bullet">→</div>
+            <span>Click a battery · <strong>PA125 / PA250 / PA375 / PE500</strong> · full specs load automatically</span>
+          </div>
+          <div class="cvs-row">
+            <div class="cvs-bullet">→</div>
+            <span><strong>Hire price + sale price</strong> side by side · no second quote, no second document</span>
+          </div>
+          <div class="cvs-row">
+            <div class="cvs-bullet">→</div>
+            <span>Diesel vs battery savings <strong>calculated automatically</strong> · shown visually in the document</span>
+          </div>
+          <div class="cvs-row">
+            <div class="cvs-bullet">→</div>
+            <span>Discount field · apply 10% on the spot to close the deal, no rebuild needed</span>
+          </div>
+          <div class="cvs-row">
+            <div class="cvs-bullet">→</div>
+            <span>T&amp;C key points inline + one click to full terms · no PDF overload</span>
+          </div>
+          <div class="cvs-row">
+            <div class="cvs-bullet">→</div>
+            <span>Delivered as <strong>HTML pages with clean URLs</strong> · attach to every Xero quote, done</span>
+          </div>
         </div>
-        <span class="scope-tag">Calculator already built by Alex — we redesign + integrate</span>
       </div>
 
-      <!-- Phase 3 -->
-      <div class="scope-card" style="border-top:3px solid #0EA5E9">
-        <div class="scope-card-head">
-          <div class="scope-icon" style="background:#e0f2fe">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0EA5E9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-          </div>
-          <div>
-            <div class="scope-num">PHASE 03 — Output</div>
-            <div class="scope-title">Document Package + T&amp;Cs</div>
-          </div>
-        </div>
-        <div class="scope-rows">
-          <div class="scope-row">Professional print-ready layout — Falcon Cranes branding, not a Word doc</div>
-          <div class="scope-row">Client header: name, site, date — editable per quote</div>
-          <div class="scope-row">T&amp;C key points visible inline — full terms accessible via URL (Dropbox / website)</div>
-          <div class="scope-row">Redesigned Falcon Cranes Battery Hire &amp; Sale Terms as a standalone document</div>
-        </div>
-        <span class="scope-tag">Falcon Cranes branding · print-to-PDF · attach and send</span>
-      </div>
-
-      <!-- Phase 4 -->
-      <div class="scope-card" style="border-top:3px solid #7C3AED">
-        <div class="scope-card-head">
-          <div class="scope-icon" style="background:#ede9fe">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M13 6h3a2 2 0 0 1 2 2v7"/><line x1="6" y1="9" x2="6" y2="21"/></svg>
-          </div>
-          <div>
-            <div class="scope-num">PHASE 04 — Connect</div>
-            <div class="scope-title">URL Links + Website Integration</div>
-          </div>
-        </div>
-        <div class="scope-rows">
-          <div class="scope-row">All HTML pages linked via clean URLs — ROI calculator, specs, battery comparison</div>
-          <div class="scope-row">Client clicks a link in the document → lands on the live page to interact with results</div>
-          <div class="scope-row">Pages hosted on Falcon Cranes website or SingSinghAI as an interim</div>
-          <div class="scope-row">Future-proof: as the website grows, the URLs stay the same</div>
-        </div>
-        <span class="scope-tag">HTML pages → hosted → linked from every document sent</span>
-      </div>
-
-    </div>
-
-    <div class="s-note" style="margin-top:1.6rem">
-      <strong>Note:</strong> The ROI calculator has already been built by Alex. The core scope here is consolidation of the scattered data, redesigning it to Falcon Cranes standard, and packaging it as professional documents that travel with every quote.
     </div>
 
   </div>
-  <div class="slide-foot"><span>SingSingh AI &nbsp;·&nbsp; Falcon Cranes — Battery ROI &amp; Proposal</span><span>02</span></div>
+  <div class="slide-foot"><span>SingSingh AI &nbsp;·&nbsp; TES · Battery ROI &amp; Proposal</span><span>02</span></div>
 </div>
 
-<!-- ═══ SLIDE 3 — TIMELINE ═══ -->
+<!-- ═══ SLIDE 3 · TIMELINE ═══ -->
 <div class="slide" id="s3">
   <div class="wrap">
 
     <div class="s-label">Timeline</div>
-    <h1>2 Weeks to Done</h1>
-    <p class="s-intro">Fast delivery — because your competitors already have this and you need to move faster than a year.</p>
+    <h1>What's In Hand. What We Still Need.</h1>
+    <p class="s-intro">Most of the foundation is already provided. Two things still needed from TES · once those are in, we build and ship in one week.</p>
 
-    <div class="tl-wrap">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.6rem;max-width:1040px;margin-top:1.8rem">
 
-      <!-- Week 1 -->
-      <div class="tl-week">
-        <div style="padding-top:.2rem">
-          <div style="display:flex;flex-direction:column;align-items:center">
-            <div class="tl-dot"></div>
-            <div class="tl-bar"></div>
+      <!-- WEEK 1 · DONE -->
+      <div style="border:1px solid #d1fae5;border-radius:16px;overflow:hidden;opacity:.75">
+        <div style="background:#ecfdf5;border-bottom:1px solid #a7f3d0;padding:1rem 1.4rem;display:flex;align-items:center;gap:.8rem">
+          <div style="background:#a7f3d0;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#065f46">Already Provided</div>
+            <div style="font-size:11px;color:#059669;margin-top:.1rem">In hand · foundation done</div>
           </div>
         </div>
-        <div>
-          <div style="display:flex;align-items:baseline;gap:.7rem;margin-bottom:.7rem">
-            <div class="tl-label">Week 1</div>
-            <div class="tl-date">Days 1–5 · from data handover</div>
+        <div style="display:flex;flex-direction:column">
+          <div style="display:flex;align-items:flex-start;gap:.8rem;padding:.8rem 1.4rem;border-bottom:1px solid #d1fae5">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:.2rem"><polyline points="20 6 9 17 4 12"/></svg>
+            <div style="font-size:12.5px;color:var(--charcoal)">Spec sheets in hand · Potain PA/PE series, all 4 battery models (PA125, PA250, PA375, PE500)</div>
           </div>
-          <div class="tl-card">
-            <div class="tl-card-title">Information consolidation + branding alignment</div>
-            <div class="tl-items">
-              <div class="tl-item">Gather all spec sheets, price lists, product data for PA125–PE500</div>
-              <div class="tl-item">Build clean data source — specs, hire price, sale price per SKU</div>
-              <div class="tl-item">Align with Falcon Cranes compliance team — branding, assets, business rules</div>
-              <div class="tl-item">Redesign existing ROI calculator to Falcon Cranes standard</div>
-            </div>
-            <div class="tl-dep">→ Delivered for Chris + Alex to review end of Week 1</div>
+          <div style="display:flex;align-items:flex-start;gap:.8rem;padding:.8rem 1.4rem;border-bottom:1px solid #d1fae5">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:.2rem"><polyline points="20 6 9 17 4 12"/></svg>
+            <div style="font-size:12.5px;color:var(--charcoal)">ROI calculator already built · battery selector, diesel comparison, payback period working</div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:.8rem;padding:.8rem 1.4rem;border-bottom:1px solid #d1fae5">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:.2rem"><polyline points="20 6 9 17 4 12"/></svg>
+            <div style="font-size:12.5px;color:var(--charcoal)">Competitor proposals reviewed · Ladybug, AMPD, Powershift design benchmarked</div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:.8rem;padding:.8rem 1.4rem">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:.2rem"><polyline points="20 6 9 17 4 12"/></svg>
+            <div style="font-size:12.5px;color:var(--charcoal)">TES Battery Hire &amp; Sale Terms in hand · ready to redesign</div>
           </div>
         </div>
       </div>
 
-      <!-- Week 2 -->
-      <div class="tl-week">
-        <div style="padding-top:.2rem">
-          <div style="display:flex;flex-direction:column;align-items:center">
-            <div class="tl-dot" style="background:#16A34A;box-shadow:0 0 0 2px #16A34A"></div>
-            <div class="tl-bar" style="background:transparent"></div>
+      <!-- WEEK 2 · REMAINING -->
+      <div style="border:1px solid #bfdbfe;border-radius:16px;overflow:hidden;box-shadow:0 0 0 3px #e8f0fe">
+        <div style="background:#eff6ff;border-bottom:1px solid #bfdbfe;padding:1rem 1.4rem;display:flex;align-items:center;gap:.8rem">
+          <div style="background:#dbeafe;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1A73EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#1e40af">Week 1 · Needed from TES</div>
+            <div style="font-size:11px;color:#3b82f6;margin-top:.1rem">Send these to kick off Week 1</div>
           </div>
         </div>
-        <div>
-          <div style="display:flex;align-items:baseline;gap:.7rem;margin-bottom:.7rem">
-            <div class="tl-label" style="color:#16A34A">Week 2</div>
-            <div class="tl-date">Days 6–10 · final delivery</div>
-          </div>
-          <div class="tl-card" style="border-color:#bbf7d0;background:#f0fdf4">
-            <div class="tl-card-title" style="color:#166534">Document package + URL linking + handover</div>
-            <div class="tl-items">
-              <div class="tl-item">ROI calculator + battery comparison — live, accessible via URL</div>
-              <div class="tl-item">Professional print-to-PDF proposal document — Falcon Cranes branded</div>
-              <div class="tl-item">T&C key points inline + full terms URL in document</div>
-              <div class="tl-item">Redesigned Falcon Cranes Battery Hire &amp; Sale Terms</div>
-              <div class="tl-item">All pages hosted + linked — QA + handover to Chris and Alex</div>
+        <div style="display:flex;flex-direction:column">
+          <div style="display:flex;align-items:flex-start;gap:.8rem;padding:.8rem 1.4rem;border-bottom:1px solid #dbeafe">
+            <div style="width:22px;height:22px;border-radius:50%;background:#fde68a;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.1rem">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#92400e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
             </div>
-            <div class="tl-dep" style="border-color:#bbf7d0">→ Full package delivered + walkthrough with Chris and Alex</div>
+            <div style="font-size:12.5px;color:var(--charcoal)"><strong>Hire + sale price per battery model</strong> · PA125, PA250, PA375, PE500. TES sets these, we wire them in.</div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:.8rem;padding:.8rem 1.4rem;border-bottom:1px solid #dbeafe">
+            <div style="width:22px;height:22px;border-radius:50%;background:#fde68a;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.1rem">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#92400e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <div style="font-size:12.5px;color:var(--charcoal)"><strong>TES logo pack + brand assets</strong> · logos, colours, fonts. Supplied by TES marketing.</div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:.8rem;padding:.8rem 1.4rem">
+            <div style="width:22px;height:22px;border-radius:50%;background:#fde68a;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.1rem">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#92400e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <div style="font-size:12.5px;color:var(--charcoal)"><strong>T&amp;C link URL</strong> · where the full terms are hosted (Dropbox, SharePoint, or website). TES to provide.</div>
           </div>
         </div>
       </div>
 
     </div>
 
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;max-width:860px;margin-top:1.6rem">
-      <div style="background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:1rem 1.1rem">
-        <div style="font-family:var(--mono);font-size:9px;color:var(--blue);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.4rem">Dependency</div>
-        <div style="font-size:12.5px;font-weight:600;color:var(--navy)">Spec sheets + pricing from Alex</div>
-        <div style="font-size:11.5px;color:var(--grey);margin-top:.2rem">Back from China next week — unlocks all battery data</div>
+
+  </div>
+  <div class="slide-foot"><span>SingSingh AI &nbsp;·&nbsp; TES · Battery ROI &amp; Proposal</span><span>03</span></div>
+</div>
+
+<!-- ═══ SLIDE 4 · PREVIEW ═══ -->
+<div class="slide" id="s4">
+  <div class="wrap">
+
+    <div class="s-label">What Gets Delivered</div>
+    <h1>Here's What It Looks Like</h1>
+    <p class="s-intro">One HTML page. Sent with every Xero quote. Client clicks · everything is there.</p>
+
+    <!-- Browser chrome mockup -->
+    <div style="max-width:960px;margin-top:1.6rem;border-radius:14px;overflow:hidden;box-shadow:0 4px 32px rgba(8,29,58,.12);border:1px solid var(--border)">
+
+      <!-- Browser bar -->
+      <div style="background:#f1f5f9;border-bottom:1px solid var(--border);padding:.6rem 1rem;display:flex;align-items:center;gap:.7rem">
+        <div style="display:flex;gap:.4rem">
+          <div style="width:10px;height:10px;border-radius:50%;background:#fca5a5"></div>
+          <div style="width:10px;height:10px;border-radius:50%;background:#fde68a"></div>
+          <div style="width:10px;height:10px;border-radius:50%;background:#a7f3d0"></div>
+        </div>
+        <div style="flex:1;background:#fff;border:1px solid var(--border);border-radius:6px;padding:.25rem .8rem;font-family:var(--mono);font-size:9px;color:var(--grey)">singsinghai.com.au/tes-battery-roi</div>
       </div>
-      <div style="background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:1rem 1.1rem">
-        <div style="font-family:var(--mono);font-size:9px;color:var(--blue);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.4rem">From Falcon Cranes</div>
-        <div style="font-size:12.5px;font-weight:600;color:var(--navy)">Pricing per SKU</div>
-        <div style="font-size:11.5px;color:var(--grey);margin-top:.2rem">Chris sets hire + sale price per SKU — we wire them into the calculator</div>
-      </div>
-      <div style="background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:1rem 1.1rem">
-        <div style="font-family:var(--mono);font-size:9px;color:var(--blue);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.4rem">From Falcon Cranes</div>
-        <div style="font-size:12.5px;font-weight:600;color:var(--navy)">Logos + brand assets</div>
-        <div style="font-size:11.5px;color:var(--grey);margin-top:.2rem">AJ supplies all Falcon Cranes brand assets</div>
+
+      <!-- Page content mockup -->
+      <div style="background:#fff;padding:1.8rem 2rem">
+
+        <!-- Top bar -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.6rem;padding-bottom:1rem;border-bottom:1px solid var(--border)">
+          <div style="display:flex;align-items:center;gap:1rem">
+            <img src="logotes.png" style="height:32px;width:auto;mix-blend-mode:multiply"/>
+            <div style="width:1px;height:28px;background:var(--border)"></div>
+            <div style="font-size:11px;font-weight:700;color:var(--navy)">Battery ROI &amp; Proposal</div>
+          </div>
+          <div style="font-family:var(--mono);font-size:9px;color:var(--grey)">Prepared for: <strong style="color:var(--navy)">Client Name · Site · Date</strong></div>
+        </div>
+
+        <!-- Battery selector -->
+        <div style="margin-bottom:1.4rem">
+          <div style="font-family:var(--mono);font-size:9px;color:var(--blue);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.6rem">Select Battery</div>
+          <div style="display:flex;gap:.6rem;flex-wrap:wrap">
+            <div style="padding:.45rem 1rem;border-radius:8px;background:var(--navy);color:#fff;font-size:11px;font-weight:700;cursor:pointer">PA 125</div>
+            <div style="padding:.45rem 1rem;border-radius:8px;border:1px solid var(--border);color:var(--grey);font-size:11px;font-weight:600;cursor:pointer">PA 250</div>
+            <div style="padding:.45rem 1rem;border-radius:8px;border:1px solid var(--border);color:var(--grey);font-size:11px;font-weight:600;cursor:pointer">PA 375</div>
+            <div style="padding:.45rem 1rem;border-radius:8px;border:1px solid var(--border);color:var(--grey);font-size:11px;font-weight:600;cursor:pointer">PE 500</div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem">
+
+          <!-- Left: specs + pricing -->
+          <div style="display:flex;flex-direction:column;gap:.8rem">
+            <div style="background:#f8fafc;border-radius:10px;padding:1rem 1.2rem">
+              <div style="font-family:var(--mono);font-size:9px;color:var(--blue);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.7rem">Battery Specs · PA 125</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:.4rem">
+                <div style="font-size:11px;color:var(--grey)">Capacity</div><div style="font-size:11px;font-weight:700;color:var(--navy);text-align:right">125 kWh</div>
+                <div style="font-size:11px;color:var(--grey)">Continuous</div><div style="font-size:11px;font-weight:700;color:var(--navy);text-align:right">125 A</div>
+                <div style="font-size:11px;color:var(--grey)">Peak</div><div style="font-size:11px;font-weight:700;color:var(--navy);text-align:right">250 A</div>
+                <div style="font-size:11px;color:var(--grey)">Weight</div><div style="font-size:11px;font-weight:700;color:var(--navy);text-align:right">1,850 kg</div>
+              </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem">
+              <div style="border:1.5px solid var(--blue);border-radius:10px;padding:.8rem 1rem;text-align:center">
+                <div style="font-family:var(--mono);font-size:8px;color:var(--blue);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem">Hire / week</div>
+                <div style="font-size:18px;font-weight:800;color:var(--navy)">$X,XXX</div>
+              </div>
+              <div style="border:1px solid var(--border);border-radius:10px;padding:.8rem 1rem;text-align:center">
+                <div style="font-family:var(--mono);font-size:8px;color:var(--grey);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem">Sale price</div>
+                <div style="font-size:18px;font-weight:800;color:var(--navy)">$XX,XXX</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: savings comparison -->
+          <div style="background:#f8fafc;border-radius:10px;padding:1rem 1.2rem">
+            <div style="font-family:var(--mono);font-size:9px;color:var(--blue);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.9rem">Diesel vs Battery · Monthly Cost</div>
+            <div style="display:flex;flex-direction:column;gap:.6rem">
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:.25rem"><span style="color:var(--grey)">Diesel generator</span><span style="font-weight:700;color:#dc2626">$6,200</span></div>
+                <div style="background:#fee2e2;border-radius:4px;height:14px;width:100%"><div style="background:#dc2626;height:100%;border-radius:4px;width:100%"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:.25rem"><span style="color:var(--grey)">PA 125 battery</span><span style="font-weight:700;color:#16A34A">$3,500</span></div>
+                <div style="background:#dcfce7;border-radius:4px;height:14px;width:100%"><div style="background:#16A34A;height:100%;border-radius:4px;width:56%"></div></div>
+              </div>
+              <div style="margin-top:.4rem;padding:.6rem .8rem;background:#ecfdf5;border-radius:8px;display:flex;justify-content:space-between;align-items:center">
+                <span style="font-size:11px;color:#166534;font-weight:600">Monthly saving</span>
+                <span style="font-size:15px;font-weight:800;color:#16A34A">$2,700</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- T&C strip -->
+        <div style="margin-top:1rem;padding:.6rem 1rem;background:#f8fafc;border-radius:8px;display:flex;align-items:center;justify-content:space-between">
+          <div style="font-size:11px;color:var(--grey)">Transport: 80km included · beyond 80km POA · subject to TES Battery Hire &amp; Sale Terms</div>
+          <div style="font-size:10px;font-weight:700;color:var(--blue);white-space:nowrap;margin-left:1rem;text-decoration:underline;cursor:pointer">View full T&amp;Cs →</div>
+        </div>
+
       </div>
     </div>
 
   </div>
-  <div class="slide-foot"><span>SingSingh AI &nbsp;·&nbsp; Falcon Cranes — Battery ROI &amp; Proposal</span><span>03</span></div>
+  <div class="slide-foot"><span>SingSingh AI &nbsp;·&nbsp; TES · Battery ROI &amp; Proposal</span><span>04</span></div>
 </div>
 
-<!-- ═══ SLIDE 4 — INVESTMENT ═══ -->
-<div class="slide" id="s4">
+<!-- ═══ SLIDE 5 · INVESTMENT ═══ -->
+<div class="slide" id="s5">
   <div class="wrap">
 
     <div class="s-label">Investment</div>
@@ -343,116 +465,54 @@
       <!-- Phase 1 -->
       <div class="inv-phase">
         <div class="inv-phase-head" style="background:#1A73EB">
-          <div class="inv-phase-name">Phase 1 — Battery Selector + Spec Auto-load</div>
-          <div class="inv-phase-price">$900</div>
+          <div class="inv-phase-name">Phase 1 · Redesign &amp; Calculator</div>
+          <div class="inv-phase-price">$1,200</div>
         </div>
         <div class="inv-rows">
           <div class="inv-row">
             <div>
-              <div class="inv-row-name">PA125 / PA250 / PA375 / PE500 selector</div>
-              <div class="inv-row-desc">Click to select — all Potain specs auto-load from data sheet</div>
+              <div class="inv-row-name">ROI calculator redesigned to TES standard</div>
+              <div class="inv-row-desc">Existing calculator reskinned · TES branding, layout, fonts throughout</div>
+            </div>
+            <div class="inv-row-price">$500</div>
+          </div>
+          <div class="inv-row">
+            <div>
+              <div class="inv-row-name">Hire + sale price side by side, discount field</div>
+              <div class="inv-row-desc">Both prices visible in one document · % off toggle to close deals on the spot</div>
             </div>
             <div class="inv-row-price">$400</div>
           </div>
           <div class="inv-row">
             <div>
-              <div class="inv-row-name">Client header + Falcon Cranes branding</div>
-              <div class="inv-row-desc">Client name, site, date fields — co-branded throughout</div>
+              <div class="inv-row-name">Client header fields</div>
+              <div class="inv-row-desc">Client name, project site, date · editable per quote</div>
             </div>
             <div class="inv-row-price">$300</div>
-          </div>
-          <div class="inv-row">
-            <div>
-              <div class="inv-row-name">Potain spec data wiring</div>
-              <div class="inv-row-desc">kWh, continuous amps, peak amps, weight, dimensions per SKU</div>
-            </div>
-            <div class="inv-row-price">$200</div>
           </div>
         </div>
       </div>
 
       <!-- Phase 2 -->
       <div class="inv-phase">
-        <div class="inv-phase-head" style="background:#0369a1">
-          <div class="inv-phase-name">Phase 2 — Pricing Module + Discount Toggle</div>
-          <div class="inv-phase-price">$700</div>
-        </div>
-        <div class="inv-rows">
-          <div class="inv-row">
-            <div>
-              <div class="inv-row-name">Hire price + sale price per SKU</div>
-              <div class="inv-row-desc">Both shown side by side — no second quote document needed</div>
-            </div>
-            <div class="inv-row-price">$350</div>
-          </div>
-          <div class="inv-row">
-            <div>
-              <div class="inv-row-name">Discount field + transport exclusion</div>
-              <div class="inv-row-desc">% off toggle + 80km included / POA auto-displayed</div>
-            </div>
-            <div class="inv-row-price">$350</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Phase 3 -->
-      <div class="inv-phase">
         <div class="inv-phase-head" style="background:#15803d">
-          <div class="inv-phase-name">Phase 3 — Savings Calculator vs Diesel</div>
-          <div class="inv-phase-price">$1,100</div>
-        </div>
-        <div class="inv-rows">
-          <div class="inv-row">
-            <div>
-              <div class="inv-row-name">Site load input + duration</div>
-              <div class="inv-row-desc">Client enters amps, daily hours, weeks on site</div>
-            </div>
-            <div class="inv-row-price">$400</div>
-          </div>
-          <div class="inv-row">
-            <div>
-              <div class="inv-row-name">Diesel vs battery cost engine</div>
-              <div class="inv-row-desc">Auto-calculates generator hire + fuel vs Falcon Cranes battery cost</div>
-            </div>
-            <div class="inv-row-price">$450</div>
-          </div>
-          <div class="inv-row">
-            <div>
-              <div class="inv-row-name">Visual output — savings bar + CO₂ reduction</div>
-              <div class="inv-row-desc">Gross cost / fuel saving / net cost — the key selling point</div>
-            </div>
-            <div class="inv-row-price">$250</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Phase 4 -->
-      <div class="inv-phase">
-        <div class="inv-phase-head" style="background:#6d28d9">
-          <div class="inv-phase-name">Phase 4 — Proposal Output + T&amp;Cs</div>
+          <div class="inv-phase-name">Phase 2 · T&amp;Cs, Hosting &amp; Handover</div>
           <div class="inv-phase-price">$800</div>
         </div>
         <div class="inv-rows">
           <div class="inv-row">
             <div>
-              <div class="inv-row-name">Print-to-PDF professional layout</div>
-              <div class="inv-row-desc">Client-ready in one click — matches Ladybug / AMPD quality</div>
+              <div class="inv-row-name">Redesigned TES Battery Hire &amp; Sale Terms</div>
+              <div class="inv-row-desc">Professional branded document · standalone + inline summary with URL to full terms</div>
             </div>
             <div class="inv-row-price">$400</div>
           </div>
           <div class="inv-row">
             <div>
-              <div class="inv-row-name">T&amp;C summary inline + hyperlink to full terms</div>
-              <div class="inv-row-desc">Key points visible, full document linked (Dropbox / SharePoint / website)</div>
+              <div class="inv-row-name">Hosting + clean URLs + print-to-PDF QA</div>
+              <div class="inv-row-desc">All pages live on clean URLs · attach to every Xero quote, done</div>
             </div>
-            <div class="inv-row-price">$250</div>
-          </div>
-          <div class="inv-row">
-            <div>
-              <div class="inv-row-name">Redesigned Falcon Cranes Battery Hire &amp; Sale Terms doc</div>
-              <div class="inv-row-desc">Branded, professional — standalone PDF for separate requests</div>
-            </div>
-            <div class="inv-row-price">$150</div>
+            <div class="inv-row-price">$400</div>
           </div>
         </div>
       </div>
@@ -462,35 +522,24 @@
     <!-- Total -->
     <div class="inv-total">
       <div>
-        <div class="inv-total-label">Total — 4 phases · 2 weeks</div>
-        <div class="inv-total-sub">Anchor price. Final confirmed within 48 hrs of data handover from Alex.</div>
+        <div class="inv-total-label">Total · 2 phases · 1 week to deliver</div>
+        <div class="inv-total-sub">Fixed price. Foundation work already done · scope is clean and contained.</div>
       </div>
       <div>
-        <div class="inv-total-price">$3,500</div>
+        <div class="inv-total-price">$2,000</div>
         <div class="inv-total-gst">AUD · INC. GST</div>
       </div>
     </div>
 
-    <!-- Exclusions -->
-    <div class="excl-box">
-      <div class="excl-title">Not included in this quote</div>
-      <div class="excl-rows">
-        <span class="excl-tag">Potain spec data (provided by Alex)</span>
-        <span class="excl-tag">Battery pricing per SKU (set by Chris)</span>
-        <span class="excl-tag">Logos &amp; brand assets (supplied by AJ)</span>
-        <span class="excl-tag">T&C link URL (Dropbox / SharePoint / website)</span>
-        <span class="excl-tag">Site consumption calculator — Phase 5, priced separately on request</span>
-      </div>
-    </div>
 
   </div>
-  <div class="slide-foot"><span>SingSingh AI &nbsp;·&nbsp; Falcon Cranes — Battery ROI &amp; Proposal</span><span>04</span></div>
+  <div class="slide-foot"><span>SingSingh AI &nbsp;·&nbsp; TES · Battery ROI &amp; Proposal</span><span>05</span></div>
 </div>
 
-<!-- ═══ SLIDE 5 — NEXT STEPS ═══ -->
-<div class="slide" id="s5">
+<!-- ═══ SLIDE 6 · NEXT STEPS ═══ -->
+<div class="slide" id="s6">
   <div class="wrap">
-    <div class="s-label">Falcon Cranes Battery ROI &amp; Proposal · Next Steps</div>
+    <div class="s-label">TES Battery ROI &amp; Proposal · Next Steps</div>
     <h1>Next steps.<br><span style="color:#2563eb">Simple from here.</span></h1>
     <div style="width:48px;height:3px;background:#2563eb;border-radius:2px;margin:1rem 0 2.5rem"></div>
 
@@ -499,27 +548,28 @@
       <!-- Left: numbered steps -->
       <div>
         <div style="font-size:clamp(13px,1.3vw,15px);color:#334155;line-height:1.8;margin-bottom:1.8rem">
-          If this direction works, here's how we get moving.
+          Foundation is already done. Two things needed to kick off · then we build and ship in one week.
         </div>
 
         <div style="display:flex;flex-direction:column;gap:1rem;margin-bottom:1.8rem">
           <div style="display:flex;align-items:flex-start;gap:.8rem;font-size:12px;color:#334155">
             <div style="width:26px;height:26px;border-radius:50%;background:#3b82f6;display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--mono);font-size:9px;font-weight:700;flex-shrink:0;margin-top:.1rem">1</div>
-            <span style="line-height:1.6"><strong>Confirm this proposal</strong> — reply with any questions or scope changes. We lock in the start date and send a simple one-page agreement.</span>
+            <span style="line-height:1.6"><strong>Confirm this proposal</strong> · reply with any questions or changes. We lock the start date and send a simple one-page agreement.</span>
           </div>
           <div style="display:flex;align-items:flex-start;gap:.8rem;font-size:12px;color:#334155">
             <div style="width:26px;height:26px;border-radius:50%;background:#10b981;display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--mono);font-size:9px;font-weight:700;flex-shrink:0;margin-top:.1rem">2</div>
-            <span style="line-height:1.6"><strong>Share the Potain spec sheet + battery pricing</strong> — once Alex is back from China. That's all we need to start Week 1.</span>
+            <span style="line-height:1.6"><strong>Send us two things:</strong> hire + sale price per battery model, and the TES logo + brand pack. That's all we need to start.</span>
           </div>
           <div style="display:flex;align-items:flex-start;gap:.8rem;font-size:12px;color:#334155">
             <div style="width:26px;height:26px;border-radius:50%;background:#a78bfa;display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--mono);font-size:9px;font-weight:700;flex-shrink:0;margin-top:.1rem">3</div>
-            <span style="line-height:1.6"><strong>Week 1 prototype review</strong> — battery selector + pricing module delivered. We incorporate feedback and finish the calculator + proposal output in Week 2.</span>
+            <span style="line-height:1.6"><strong>Mid-week check-in</strong> · redesigned calculator shared for review. Feedback incorporated, T&Cs and hosting finalised by end of week.</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:.8rem;font-size:12px;color:#334155">
+            <div style="width:26px;height:26px;border-radius:50%;background:#0f1c2e;display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--mono);font-size:9px;font-weight:700;flex-shrink:0;margin-top:.1rem">4</div>
+            <span style="line-height:1.6"><strong>Full package delivered</strong> · clean URLs ready to attach to the next Xero quote that goes out.</span>
           </div>
         </div>
 
-        <div style="padding:.85rem 1rem;background:#fef9c3;border-left:3px solid #eab308;border-radius:0 8px 8px 0;font-size:11.5px;color:#334155;line-height:1.7">
-          <strong style="color:#0f1c2e">Payment is staged:</strong> 50% on confirmation, 50% on final delivery. No surprises.
-        </div>
       </div>
 
       <!-- Right: SingSinghAI card -->
@@ -537,7 +587,7 @@
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
           <div style="padding:1rem;border:1px solid #e2e8f0;border-radius:10px;text-align:center">
             <div style="font-family:var(--mono);font-size:8px;color:#64748b;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.5rem;font-weight:700">Prepared for</div>
-            <div style="font-size:12px;font-weight:700;color:#0f1c2e">Falcon Cranes</div>
+            <div style="font-size:12px;font-weight:700;color:#0f1c2e">Total Equipment Sales</div>
           </div>
           <div style="padding:1rem;border:1px solid #e2e8f0;border-radius:10px;text-align:center">
             <div style="font-family:var(--mono);font-size:8px;color:#64748b;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.5rem;font-weight:700">Prepared by</div>
@@ -548,7 +598,7 @@
 
     </div>
   </div>
-  <div class="slide-foot"><span>SingSingh AI &nbsp;·&nbsp; Falcon Cranes — Battery ROI &amp; Proposal</span><span>05</span></div>
+  <div class="slide-foot"><span>SingSingh AI &nbsp;·&nbsp; TES · Battery ROI &amp; Proposal</span><span>06</span></div>
 </div>
 
 <script>
