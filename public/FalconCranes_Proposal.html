@@ -887,29 +887,39 @@
     <h1>What it looks like.</h1>
     <p class="s-intro">Chris types one message. AI reads the brief, finds the closest past job on file, and returns a full crane recommendation with reasoning — in under a minute.</p>
 
-    <div style="display:flex;gap:2rem;align-items:flex-start;margin-top:1.4rem">
-
-      <!-- LEFT: key points -->
-      <div style="flex:0 0 200px;border-right:1px solid var(--border);padding-right:2rem">
-        <div style="display:flex;flex-direction:column;gap:1.1rem">
-          <div style="border-left:3px solid #1A73EB;padding-left:.9rem">
-            <div style="font-size:11px;font-weight:700;color:var(--navy);margin-bottom:.2rem">Conversational</div>
-            <div style="font-size:10px;color:var(--grey);line-height:1.5">No forms, no spreadsheets. Chris types like he's texting a colleague.</div>
-          </div>
-          <div style="border-left:3px solid #1A73EB;padding-left:.9rem">
-            <div style="font-size:11px;font-weight:700;color:var(--navy);margin-bottom:.2rem">Cited to real files</div>
-            <div style="font-size:10px;color:var(--grey);line-height:1.5">Every recommendation references the actual past proposal it matched to.</div>
-          </div>
-          <div style="border-left:3px solid #1A73EB;padding-left:.9rem">
-            <div style="font-size:11px;font-weight:700;color:var(--navy);margin-bottom:.2rem">Human in the loop</div>
-            <div style="font-size:10px;color:var(--grey);line-height:1.5">Chris approves or refines in the same thread. AI never acts without confirmation.</div>
-          </div>
-          <div style="border-left:3px solid #22C55E;padding-left:.9rem">
-            <div style="font-size:11px;font-weight:700;color:var(--navy);margin-bottom:.2rem">Raymond gets briefed</div>
-            <div style="font-size:10px;color:var(--grey);line-height:1.5">Right crane before drawings start. Fewer rounds — not zero, but far fewer.</div>
-          </div>
+    <!-- Feature pills row -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-top:1.6rem;margin-bottom:1.2rem">
+      <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:12px;padding:.85rem 1rem">
+        <div style="width:28px;height:28px;border-radius:8px;background:#1A73EB;display:flex;align-items:center;justify-content:center;margin-bottom:.55rem">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         </div>
+        <div style="font-size:11px;font-weight:700;color:var(--navy);margin-bottom:.2rem">Conversational</div>
+        <div style="font-size:10px;color:#3B5EA6;line-height:1.5">No forms. Chris types like he's texting a colleague.</div>
       </div>
+      <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:12px;padding:.85rem 1rem">
+        <div style="width:28px;height:28px;border-radius:8px;background:#1A73EB;display:flex;align-items:center;justify-content:center;margin-bottom:.55rem">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <div style="font-size:11px;font-weight:700;color:var(--navy);margin-bottom:.2rem">Cited to real files</div>
+        <div style="font-size:10px;color:#3B5EA6;line-height:1.5">Every answer references the exact past proposal it matched.</div>
+      </div>
+      <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:12px;padding:.85rem 1rem">
+        <div style="width:28px;height:28px;border-radius:8px;background:#1A73EB;display:flex;align-items:center;justify-content:center;margin-bottom:.55rem">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div style="font-size:11px;font-weight:700;color:var(--navy);margin-bottom:.2rem">Human in the loop</div>
+        <div style="font-size:10px;color:#3B5EA6;line-height:1.5">Chris approves before anything leaves. AI never acts alone.</div>
+      </div>
+      <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:12px;padding:.85rem 1rem">
+        <div style="width:28px;height:28px;border-radius:8px;background:#16A34A;display:flex;align-items:center;justify-content:center;margin-bottom:.55rem">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div style="font-size:11px;font-weight:700;color:#14532D;margin-bottom:.2rem">Raymond gets briefed</div>
+        <div style="font-size:10px;color:#166534;line-height:1.5">Right crane before drawings start. Fewer back-and-forths.</div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:2rem;align-items:flex-start">
 
       <!-- RIGHT: chat prototype -->
       <div style="flex:1">
