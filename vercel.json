@@ -28,7 +28,7 @@
       ]
     },
     {
-      "source": "/(TES_Crane_Configurator|TES_SingSinghAI_Proposal|TES_Scoping_Form)\\.html",
+      "source": "/(TES_Crane_Configurator|TES_SingSinghAI_Proposal|TES_Scoping_Form|FalconCranes_Proposal)\\.html",
       "headers": [
         {
           "key": "Cache-Control",
@@ -53,6 +53,10 @@
     {
       "source": "/TES_SingSinghAI_Proposal",
       "destination": "/TES_SingSinghAI_Proposal.html"
+    },
+    {
+      "source": "/falcon-cranes-proposal",
+      "destination": "/FalconCranes_Proposal.html"
     },
     {
       "source": "/(.*)",
