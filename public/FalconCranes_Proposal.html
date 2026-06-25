@@ -134,8 +134,6 @@
       /* ── SLIDE 2: benefits strip 5-col → 2-col ── */
       #s2 [style*="grid-template-columns:1fr 1fr 1fr 1fr 1fr"] { grid-template-columns:1fr 1fr !important; }
 
-      /* ── DEMO WIDGETS ── */
-      [id$="-widget"] { height:auto !important; min-height:260px !important; max-height:72vw !important; }
 
       /* ── ROI STAT BOXES: 4-in-a-row → 2×2 ── */
       #s-roi [style*="display:flex;gap:.8rem"]       { flex-wrap:wrap !important; }
@@ -160,8 +158,57 @@
       #s-gantt [style*="display:flex;gap:.8rem"]    { flex-direction:column !important; }
       #s-gantt [style*="grid-template-columns"]      { grid-template-columns:1fr !important; }
 
-      /* ── PROCESS FLOWS: let arrows wrap ── */
-      [style*="display:flex;gap:.45rem;align-items:flex-start"] { flex-wrap:wrap !important; }
+      /* ── PROCESS FLOWS: horizontal scroll (never wrap — nodes break when wrapped) ── */
+      [style*="gap:.45rem;align-items:flex-start"] {
+        overflow-x:auto !important;
+        -webkit-overflow-scrolling:touch !important;
+        flex-wrap:nowrap !important;
+        padding-bottom:.75rem !important;
+        gap:.25rem !important;
+      }
+      /* Each step node: fixed min-width so icons + text stay readable */
+      [style*="gap:.45rem;align-items:flex-start"] > [style*="flex:1;min-width:0"] {
+        flex:0 0 78px !important;
+        min-width:78px !important;
+        max-width:78px !important;
+        font-size:9px !important;
+      }
+      /* Step circles: shrink slightly */
+      [style*="gap:.45rem;align-items:flex-start"] > [style*="flex:1;min-width:0"] > div[style*="width:54px;height:54px"] {
+        width:44px !important;
+        height:44px !important;
+      }
+      /* Snake invisible spacer */
+      [style*="gap:.45rem;align-items:flex-start"] > [style*="visibility:hidden"] {
+        flex:0 0 78px !important;
+        min-width:78px !important;
+      }
+      /* Arrow separators stay fixed */
+      [style*="gap:.45rem;align-items:flex-start"] > [style*="flex-shrink:0;display:flex;align-items:flex-start"] {
+        flex-shrink:0 !important;
+      }
+
+      /* ── DEMO SLIDES: stack left panel above widget ── */
+      [style*="gap:2rem;align-items:flex-start"],
+      [style*="gap:2.4rem;align-items:flex-start"] {
+        flex-direction:column !important;
+        gap:.75rem !important;
+      }
+      /* Left description panel: full width, no right border */
+      [style*="flex:0 0 210px"] {
+        flex:0 0 auto !important;
+        width:100% !important;
+        border-right:none !important;
+        border-bottom:1px solid var(--border) !important;
+        padding-right:0 !important;
+        padding-bottom:.75rem !important;
+      }
+      /* Widget: fill width, auto height */
+      [id$="-widget"] {
+        height:auto !important;
+        min-height:320px !important;
+        max-height:none !important;
+      }
 
       /* ── AMBER API NOTE ── */
       [style*="background:#FFFBEB"] { flex-wrap:wrap !important; }
