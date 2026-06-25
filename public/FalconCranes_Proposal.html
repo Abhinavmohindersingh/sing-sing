@@ -91,7 +91,7 @@
     @media (max-width:768px) {
 
       /* ── BASE ── */
-      body         { overflow-x:hidden; }
+      html         { overflow-x:hidden; }
       .wrap        { padding:0 4vw 3rem; max-width:100%; }
       h1           { font-size:clamp(22px,6vw,32px) !important; letter-spacing:-.015em !important; }
       .s-intro     { font-size:12.5px !important; margin-bottom:1rem !important; max-width:100% !important; line-height:1.75 !important; }
@@ -169,8 +169,8 @@
       /* ── SNAKE FLOW ── */
       .snake-outer { overflow-x:auto !important; -webkit-overflow-scrolling:touch; padding-bottom:.5rem; }
 
-      /* ── TOUCH TARGETS ── */
-      button, input[type="number"], input[type="text"] { min-height:36px; }
+      /* ── TOUCH TARGETS (buttons only — inputs stay natural height) ── */
+      button { min-height:44px; }
 
       /* ── OVERFLOW GUARD ── */
       .wrap > * { max-width:100%; word-break:break-word; }
@@ -2984,8 +2984,8 @@
     </div>
 
     <!-- ROI table -->
-    <div style="margin-top:1.4rem;border:1px solid #E2E8F0;border-radius:12px;overflow:hidden;overflow-x:auto;-webkit-overflow-scrolling:touch">
-      <div style="min-width:480px">
+    <div style="margin-top:1.4rem;border:1px solid #E2E8F0;border-radius:12px;overflow:hidden">
+      <div>
 
       <!-- Sub-headers: HRS/WK group + $/HR group -->
       <div style="display:grid;grid-template-columns:2fr .65fr .65fr .65fr .9fr;gap:.4rem;align-items:center;padding:.3rem .9rem .1rem;background:#F8FAFC;border-bottom:1px solid #F1F5F9">
