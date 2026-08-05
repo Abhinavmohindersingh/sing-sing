@@ -25,42 +25,6 @@ const liquidbuttonVariants = cva(
   }
 );
 
-function GlassFilter() {
-  return (
-    <svg className="hidden">
-      <defs>
-        <filter
-          id="container-glass"
-          x="0%"
-          y="0%"
-          width="100%"
-          height="100%"
-          colorInterpolationFilters="sRGB"
-        >
-          <feTurbulence
-            type="fractalNoise"
-            baseFrequency="0.05 0.05"
-            numOctaves="1"
-            seed="1"
-            result="turbulence"
-          />
-          <feGaussianBlur in="turbulence" stdDeviation="2" result="blurredNoise" />
-          <feDisplacementMap
-            in="SourceGraphic"
-            in2="blurredNoise"
-            scale="70"
-            xChannelSelector="R"
-            yChannelSelector="B"
-            result="displaced"
-          />
-          <feGaussianBlur in="displaced" stdDeviation="4" result="finalBlur" />
-          <feComposite in="finalBlur" in2="finalBlur" operator="over" />
-        </filter>
-      </defs>
-    </svg>
-  );
-}
-
 export function LiquidButton({
   className,
   variant,
@@ -83,19 +47,11 @@ export function LiquidButton({
       <div
         className="absolute top-0 left-0 z-0 h-full w-full rounded-full transition-all"
         style={{
-          boxShadow:
-            "0 0 6px rgba(0,0,0,0.03),0 2px 6px rgba(0,0,0,0.08),inset 3px 3px 0.5px -3px rgba(255,255,255,0.15),inset -3px -3px 0.5px -3px rgba(255,255,255,0.12),inset 1px 1px 1px -0.5px rgba(255,255,255,0.25),inset -1px -1px 1px -0.5px rgba(255,255,255,0.2),inset 0 0 6px 6px rgba(255,255,255,0.08),inset 0 0 2px 2px rgba(255,255,255,0.04),0 0 12px rgba(0,245,255,0.15)",
-          background:
-            "linear-gradient(135deg, rgba(0,245,255,0.28) 0%, rgba(124,58,237,0.22) 50%, rgba(0,255,136,0.18) 100%)",
-          border: "1px solid rgba(0,245,255,0.4)",
+          boxShadow: "0 8px 20px rgba(47,94,236,0.25)",
+          background: "linear-gradient(135deg, #2f5eec 0%, #7c5cfc 100%)",
         }}
       />
-      <div
-        className="absolute top-0 left-0 isolate -z-10 h-full w-full overflow-hidden rounded-full"
-        style={{ backdropFilter: 'url("#container-glass")' }}
-      />
       <div className="pointer-events-none z-10 relative flex items-center gap-2">{children}</div>
-      <GlassFilter />
     </Comp>
   );
 }

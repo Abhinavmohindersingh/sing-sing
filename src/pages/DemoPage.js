@@ -14,7 +14,6 @@ const DEMOS = [
       "AI-powered tax processing — upload documents, extract data with 99.9% accuracy, and generate audit-ready reports in seconds.",
     src: "/demo.mp4",
     poster: "/demo-thumbnail.png",
-    accent: "#a78bfa",
     stats: [
       { value: "3 min", label: "Full walkthrough" },
       { value: "90%", label: "Less manual filing" },
@@ -29,7 +28,6 @@ const DEMOS = [
       "AI-driven marketing automation — generate campaigns, track performance, and optimise outreach in real time.",
     src: "/marketing.mp4",
     poster: null,
-    accent: "#00f5ff",
     stats: [
       { value: "10x", label: "Faster campaigns" },
       { value: "24/7", label: "Automated outreach" },
@@ -37,6 +35,8 @@ const DEMOS = [
     ],
   },
 ];
+
+const ACCENT = "#2f5eec";
 
 /* ── Video player card ── */
 const VideoCard = ({ demo, isActive, onClick }) => {
@@ -98,42 +98,32 @@ const VideoCard = ({ demo, isActive, onClick }) => {
   return (
     <div
       onClick={!isActive ? onClick : undefined}
-      className="rounded-2xl overflow-hidden w-full"
+      className="rounded-2xl overflow-hidden w-full bg-white"
       style={{
-        border: `1px solid ${demo.accent}${isActive ? "66" : "22"}`,
+        border: "1px solid rgba(15,23,42,0.08)",
         boxShadow: isActive
-          ? `0 0 80px ${demo.accent}22, 0 0 160px ${demo.accent}0a, 0 30px 80px rgba(0,0,0,0.7)`
-          : "0 8px 40px rgba(0,0,0,0.5)",
+          ? "0 20px 60px rgba(15,23,42,0.15)"
+          : "0 8px 24px rgba(15,23,42,0.08)",
         cursor: isActive ? "default" : "pointer",
       }}
     >
       {/* Browser chrome */}
       <div
-        className="flex items-center gap-2 px-4 py-3"
-        style={{ background: "rgba(8,10,22,0.97)", borderBottom: "1px solid rgba(255,255,255,0.07)" }}
+        className="flex items-center gap-2 px-4 py-3 bg-mist-100"
+        style={{ borderBottom: "1px solid rgba(15,23,42,0.06)" }}
       >
         <div className="flex gap-1.5">
           <div className="w-3 h-3 rounded-full" style={{ background: "#ff5f57" }} />
           <div className="w-3 h-3 rounded-full" style={{ background: "#febc2e" }} />
           <div className="w-3 h-3 rounded-full" style={{ background: "#28c840" }} />
         </div>
-        <div
-          className="flex-1 mx-4 rounded-md px-3 py-1 text-xs font-mono text-center truncate"
-          style={{
-            background: "rgba(255,255,255,0.04)",
-            border: "1px solid rgba(255,255,255,0.07)",
-            color: "rgba(148,163,184,0.7)",
-          }}
-        >
+        <div className="flex-1 mx-4 rounded-md px-3 py-1 text-xs text-center truncate bg-white border border-slate-200 text-slate-400">
           SingSinghAI · {demo.title}
-        </div>
-        <div className="font-mono text-xs" style={{ color: `${demo.accent}${isActive ? "aa" : "44"}` }}>
-          ● LIVE
         </div>
       </div>
 
       {/* Video */}
-      <div className="relative bg-black" style={{ aspectRatio: "2000/1400" }}>
+      <div className="relative bg-slate-100" style={{ aspectRatio: "2000/1400" }}>
         <video
           ref={videoRef}
           src={demo.src}
@@ -147,18 +137,8 @@ const VideoCard = ({ demo, isActive, onClick }) => {
         />
 
         {!isActive && (
-          <div
-            className="absolute inset-0 flex items-center justify-center"
-            style={{ background: "rgba(4,5,13,0.55)" }}
-          >
-            <div
-              className="px-4 py-2 rounded-full text-xs font-mono"
-              style={{
-                background: `${demo.accent}22`,
-                border: `1px solid ${demo.accent}55`,
-                color: demo.accent,
-              }}
-            >
+          <div className="absolute inset-0 flex items-center justify-center" style={{ background: "rgba(21,22,26,0.35)" }}>
+            <div className="px-4 py-2 rounded-full text-xs font-medium bg-white text-ink">
               Click to view
             </div>
           </div>
@@ -167,18 +147,14 @@ const VideoCard = ({ demo, isActive, onClick }) => {
         {isActive && !playing && (
           <motion.div
             className="absolute inset-0 flex items-center justify-center cursor-pointer"
-            style={{ background: hasStarted ? "rgba(4,5,13,0.45)" : "transparent" }}
+            style={{ background: hasStarted ? "rgba(21,22,26,0.25)" : "transparent" }}
             onClick={togglePlay}
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}
           >
             <motion.div
               whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.95 }}
               className="w-20 h-20 rounded-full flex items-center justify-center"
-              style={{
-                background: `linear-gradient(135deg, rgba(124,58,237,0.85), ${demo.accent}aa)`,
-                border: `2px solid ${demo.accent}66`,
-                boxShadow: `0 0 50px ${demo.accent}44, 0 0 100px rgba(124,58,237,0.2)`,
-              }}
+              style={{ background: ACCENT, boxShadow: "0 8px 24px rgba(47,94,236,0.35)" }}
             >
               <Play size={32} fill="white" style={{ color: "white", marginLeft: 4 }} />
             </motion.div>
@@ -187,32 +163,24 @@ const VideoCard = ({ demo, isActive, onClick }) => {
       </div>
 
       {isActive && (
-        <div
-          className="flex items-center gap-3 px-4 py-3"
-          style={{ background: "rgba(6,8,18,0.97)", borderTop: "1px solid rgba(255,255,255,0.06)" }}
-        >
+        <div className="flex items-center gap-3 px-4 py-3 bg-white" style={{ borderTop: "1px solid rgba(15,23,42,0.06)" }}>
           <button onClick={togglePlay}
             className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
-            style={{ background: "rgba(124,58,237,0.15)", border: "1px solid rgba(124,58,237,0.3)", color: "#a78bfa" }}
+            style={{ background: "#eef4ff", color: ACCENT }}
           >
             {playing ? <Pause size={15} /> : <Play size={15} style={{ marginLeft: 1 }} />}
           </button>
-          <div className="flex-1 h-1.5 rounded-full cursor-pointer"
-            style={{ background: "rgba(255,255,255,0.08)" }} onClick={handleSeek}
-          >
-            <div className="h-full rounded-full"
-              style={{ width: `${progress}%`, background: `linear-gradient(90deg, #7c3aed, ${demo.accent})`, transition: "width 0.1s linear" }}
-            />
+          <div className="flex-1 h-1.5 rounded-full cursor-pointer bg-slate-200" onClick={handleSeek}>
+            <div className="h-full rounded-full" style={{ width: `${progress}%`, background: ACCENT, transition: "width 0.1s linear" }} />
           </div>
           <button onClick={toggleMute}
-            className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
-            style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: muted ? "#475569" : "#94a3b8" }}
+            className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 bg-mist-100"
+            style={{ color: muted ? "#94a3b8" : "#64748b" }}
           >
             {muted ? <VolumeX size={15} /> : <Volume2 size={15} />}
           </button>
           <button onClick={openFullscreen}
-            className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
-            style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: "#94a3b8" }}
+            className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 bg-mist-100 text-slate-500"
           >
             <Maximize2 size={15} />
           </button>
@@ -273,32 +241,20 @@ const DemoPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: "#04050d", color: "#e2e8f0", overflowX: "hidden" }}>
+    <div className="min-h-screen flex flex-col bg-white text-ink" style={{ overflowX: "hidden" }}>
       <Navbar lang={lang} setLang={setLang} onOpenContact={() => setIsContactOpen(true)} scrolled={scrolled} />
 
-      <main className="flex-1 flex flex-col items-center px-4 py-12 pt-24">
+      <main className="flex-1 flex flex-col items-center px-4 py-12 pt-32">
 
         {/* Header */}
         <motion.div
           className="text-center mb-10"
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }}
         >
-          <div
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-mono mb-4"
-            style={{ background: "rgba(124,58,237,0.1)", border: "1px solid rgba(124,58,237,0.3)", color: "#a78bfa" }}
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse" />
-            PRODUCT DEMOS
-          </div>
-
           <AnimatePresence mode="wait">
             <motion.h1
               key={demo.id + "-title"}
-              className="text-4xl md:text-5xl font-display font-bold mb-3"
-              style={{
-                background: `linear-gradient(135deg, #a78bfa 0%, ${demo.accent} 100%)`,
-                WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
-              }}
+              className="text-4xl md:text-5xl font-display font-bold mb-3 text-ink"
               initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.28 }}
             >
@@ -309,7 +265,7 @@ const DemoPage = () => {
           <AnimatePresence mode="wait">
             <motion.p
               key={demo.id + "-desc"}
-              className="text-slate-400 max-w-xl mx-auto text-sm leading-relaxed"
+              className="text-slate-500 max-w-xl mx-auto text-sm leading-relaxed"
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               transition={{ duration: 0.28 }}
             >
@@ -329,14 +285,14 @@ const DemoPage = () => {
             <div className="relative">
               <VideoCard demo={demo} isActive onClick={() => {}} />
               <button onClick={prev}
-                className="absolute top-3 left-3 w-9 h-9 rounded-full flex items-center justify-center"
-                style={{ background: "rgba(4,5,13,0.7)", border: "1px solid rgba(255,255,255,0.15)", color: "#94a3b8", zIndex: 20 }}
+                className="absolute top-3 left-3 w-9 h-9 rounded-full flex items-center justify-center bg-white text-slate-500"
+                style={{ border: "1px solid rgba(15,23,42,0.1)", zIndex: 20 }}
               >
                 <ChevronLeft size={16} />
               </button>
               <button onClick={next}
-                className="absolute top-3 right-3 w-9 h-9 rounded-full flex items-center justify-center"
-                style={{ background: "rgba(4,5,13,0.7)", border: "1px solid rgba(255,255,255,0.15)", color: "#94a3b8", zIndex: 20 }}
+                className="absolute top-3 right-3 w-9 h-9 rounded-full flex items-center justify-center bg-white text-slate-500"
+                style={{ border: "1px solid rgba(15,23,42,0.1)", zIndex: 20 }}
               >
                 <ChevronRight size={16} />
               </button>
@@ -368,14 +324,14 @@ const DemoPage = () => {
                 </div>
               </div>
               <button onClick={prev}
-                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-14 w-11 h-11 rounded-full flex items-center justify-center transition-all"
-                style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#94a3b8", zIndex: 20 }}
+                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-14 w-11 h-11 rounded-full flex items-center justify-center transition-all bg-white text-slate-500"
+                style={{ border: "1px solid rgba(15,23,42,0.1)", zIndex: 20 }}
               >
                 <ChevronLeft size={20} />
               </button>
               <button onClick={next}
-                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-14 w-11 h-11 rounded-full flex items-center justify-center transition-all"
-                style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#94a3b8", zIndex: 20 }}
+                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-14 w-11 h-11 rounded-full flex items-center justify-center transition-all bg-white text-slate-500"
+                style={{ border: "1px solid rgba(15,23,42,0.1)", zIndex: 20 }}
               >
                 <ChevronRight size={20} />
               </button>
@@ -389,7 +345,7 @@ const DemoPage = () => {
             <button key={i} onClick={() => setActiveIndex(i)}
               style={{
                 width: activeIndex === i ? 22 : 6, height: 6, borderRadius: 3,
-                background: activeIndex === i ? d.accent : "rgba(255,255,255,0.15)",
+                background: activeIndex === i ? ACCENT : "rgba(15,23,42,0.15)",
                 transition: "all 0.3s ease", border: "none", cursor: "pointer", padding: 0,
               }}
             />
@@ -406,10 +362,10 @@ const DemoPage = () => {
           >
             {demo.stats.map((stat, i) => (
               <div key={i} className="flex items-center gap-3">
-                <div className="text-lg font-bold font-mono" style={{ color: demo.accent }}>{stat.value}</div>
+                <div className="text-lg font-bold text-ink">{stat.value}</div>
                 <div className="text-sm text-slate-500">{stat.label}</div>
                 {i < demo.stats.length - 1 && (
-                  <div className="hidden sm:block w-px h-4" style={{ background: "rgba(255,255,255,0.1)" }} />
+                  <div className="hidden sm:block w-px h-4 bg-slate-200" />
                 )}
               </div>
             ))}

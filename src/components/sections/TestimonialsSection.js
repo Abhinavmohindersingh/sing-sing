@@ -1,6 +1,5 @@
 import React from "react";
 import { motion } from "framer-motion";
-import SectionTag from "../ui/SectionTag";
 import { TestimonialCard } from "../ui/testimonial-card";
 
 const TestimonialsSection = ({ t }) => {
@@ -18,14 +17,10 @@ const TestimonialsSection = ({ t }) => {
   }));
 
   return (
-    <section
-      className="relative py-24 md:py-32 px-0 overflow-hidden"
-      style={{ background: "linear-gradient(180deg, #04050d 0%, #060810 50%, #04050d 100%)" }}
-    >
-      <div className="absolute inset-0 hud-grid opacity-20" />
+    <section className="relative py-24 md:py-32 px-0 overflow-hidden bg-mist-100">
       <div
         className="radial-blob w-[500px] h-[500px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-        style={{ background: "rgba(0,245,255,0.03)" }}
+        style={{ background: "rgba(47,94,236,0.04)" }}
       />
 
       <div className="max-w-7xl mx-auto relative z-10 px-4">
@@ -36,21 +31,10 @@ const TestimonialsSection = ({ t }) => {
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <div className="flex justify-center mb-6">
-            <SectionTag zone="ZONE 05.5" label="CLIENT SIGNALS" color="cyan" />
-          </div>
-          <h2
-            className="text-4xl md:text-5xl lg:text-6xl font-display font-bold leading-tight mb-4"
-            style={{
-              background: "linear-gradient(135deg, #00f5ff, #a78bfa)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-            }}
-          >
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold leading-tight mb-4 text-ink">
             {t("testimonialsTitle")}
           </h2>
-          <p className="text-lg text-slate-400 max-w-2xl mx-auto">
+          <p className="text-lg text-slate-500 max-w-2xl mx-auto">
             {t("testimonialsSubtitle")}
           </p>
         </motion.div>
@@ -77,11 +61,11 @@ const TestimonialsSection = ({ t }) => {
         {/* Gradient fade edges */}
         <div
           className="pointer-events-none absolute inset-y-0 left-0 hidden w-1/4 sm:block"
-          style={{ background: "linear-gradient(to right, #04050d, transparent)" }}
+          style={{ background: "linear-gradient(to right, #f6f8fc, transparent)" }}
         />
         <div
           className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/4 sm:block"
-          style={{ background: "linear-gradient(to left, #04050d, transparent)" }}
+          style={{ background: "linear-gradient(to left, #f6f8fc, transparent)" }}
         />
       </div>
     </section>

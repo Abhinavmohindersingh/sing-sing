@@ -31,10 +31,11 @@ const Navbar = ({ lang, setLang, onOpenContact, scrolled }) => {
       <header
         className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
         style={{
-          background: scrolled ? "rgba(4,5,13,0.92)" : "rgba(4,5,13,0.4)",
-          backdropFilter: "blur(16px)",
-          WebkitBackdropFilter: "blur(16px)",
-          borderBottom: scrolled ? "1px solid rgba(0,245,255,0.12)" : "1px solid transparent",
+          background: scrolled ? "rgba(255,255,255,0.7)" : "rgba(255,255,255,0.35)",
+          backdropFilter: "blur(20px) saturate(1.6)",
+          WebkitBackdropFilter: "blur(20px) saturate(1.6)",
+          borderBottom: scrolled ? "1px solid rgba(255,255,255,0.6)" : "1px solid transparent",
+          boxShadow: scrolled ? "0 1px 2px rgba(15,23,42,0.04), 0 8px 32px rgba(15,23,42,0.06)" : "none",
         }}
       >
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
@@ -47,7 +48,7 @@ const Navbar = ({ lang, setLang, onOpenContact, scrolled }) => {
               <div
                 className="font-display font-bold text-lg leading-none"
                 style={{
-                  background: "linear-gradient(135deg, #00f5ff, #7c3aed)",
+                  background: "linear-gradient(135deg, #2f5eec, #7c5cfc)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
@@ -55,7 +56,7 @@ const Navbar = ({ lang, setLang, onOpenContact, scrolled }) => {
               >
                 {t("brandName")}
               </div>
-              <div className="font-mono text-xs" style={{ color: "rgba(0,245,255,0.5)" }}>
+              <div className="font-mono text-xs" style={{ color: "rgba(47,94,236,0.6)" }}>
                 {t("tagline")}
               </div>
             </div>
@@ -66,9 +67,9 @@ const Navbar = ({ lang, setLang, onOpenContact, scrolled }) => {
               <button
                 key={link.id}
                 onClick={() => scrollToSection(link.id)}
-                className="px-4 py-2 rounded-lg text-sm text-slate-400 hover:text-white transition-colors font-medium"
+                className="px-4 py-2 rounded-lg text-sm text-slate-600 hover:text-ink transition-colors font-medium"
                 style={{ transition: "all 0.2s" }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "#00f5ff")}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "#2f5eec")}
                 onMouseLeave={(e) => (e.currentTarget.style.color = "")}
               >
                 {link.label}
@@ -78,17 +79,15 @@ const Navbar = ({ lang, setLang, onOpenContact, scrolled }) => {
               onClick={() => navigate("/demo")}
               className="px-4 py-2 rounded-lg text-sm font-medium transition-all"
               style={{
-                background: "rgba(124,58,237,0.1)",
-                border: "1px solid rgba(124,58,237,0.3)",
-                color: "#a78bfa",
+                background: "#f2eefe",
+                border: "1px solid rgba(124,92,252,0.3)",
+                color: "#6d4ff5",
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = "rgba(124,58,237,0.2)";
-                e.currentTarget.style.color = "#c4b5fd";
+                e.currentTarget.style.background = "#e9e2fd";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = "rgba(124,58,237,0.1)";
-                e.currentTarget.style.color = "#a78bfa";
+                e.currentTarget.style.background = "#f2eefe";
               }}
             >
               Demo
@@ -96,9 +95,11 @@ const Navbar = ({ lang, setLang, onOpenContact, scrolled }) => {
           </nav>
 
           <div className="hidden md:flex items-center gap-3">
+            {/* Language toggle disabled — Chinese translations aren't polished enough to ship yet
             <NeonButton variant="ghost" color="cyan" size="sm" onClick={() => setLang(lang === "en" ? "zh" : "en")}>
               {lang === "en" ? "中文" : "English"}
             </NeonButton>
+            */}
             <NeonButton variant="outline" color="cyan" size="sm" onClick={onOpenContact}>
               {t("navContact")}
             </NeonButton>
@@ -106,7 +107,7 @@ const Navbar = ({ lang, setLang, onOpenContact, scrolled }) => {
 
           <button
             className="md:hidden p-2 rounded-lg"
-            style={{ color: "#94a3b8" }}
+            style={{ color: "#64748b" }}
             onClick={() => setMobileOpen(!mobileOpen)}
           >
             {mobileOpen ? <X size={22} /> : <Menu size={22} />}
@@ -120,7 +121,7 @@ const Navbar = ({ lang, setLang, onOpenContact, scrolled }) => {
             <motion.div
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               className="fixed inset-0 z-40"
-              style={{ background: "rgba(0,0,0,0.6)" }}
+              style={{ background: "rgba(15,23,42,0.35)" }}
               onClick={() => setMobileOpen(false)}
             />
             <motion.div
@@ -128,13 +129,13 @@ const Navbar = ({ lang, setLang, onOpenContact, scrolled }) => {
               transition={{ type: "tween", duration: 0.28 }}
               className="fixed right-0 top-0 bottom-0 z-50 w-72 flex flex-col"
               style={{
-                background: "rgba(6,8,15,0.98)",
-                borderLeft: "1px solid rgba(0,245,255,0.15)",
+                background: "#ffffff",
+                borderLeft: "1px solid rgba(15,23,42,0.08)",
                 backdropFilter: "blur(20px)",
               }}
             >
-              <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-                <span className="font-mono text-xs" style={{ color: "#00f5ff" }}>NAVIGATION</span>
+              <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: "1px solid rgba(15,23,42,0.06)" }}>
+                <span className="font-mono text-xs" style={{ color: "#2f5eec" }}>NAVIGATION</span>
                 <button onClick={() => setMobileOpen(false)} style={{ color: "#475569" }}>
                   <X size={18} />
                 </button>
@@ -144,8 +145,8 @@ const Navbar = ({ lang, setLang, onOpenContact, scrolled }) => {
                   <button
                     key={link.id}
                     onClick={() => scrollToSection(link.id)}
-                    className="w-full text-left px-4 py-3 rounded-lg text-slate-300 hover:text-white text-sm font-medium transition-colors"
-                    style={{ background: "rgba(255,255,255,0.03)" }}
+                    className="w-full text-left px-4 py-3 rounded-lg text-slate-600 hover:text-ink text-sm font-medium transition-colors"
+                    style={{ background: "#f6f8fc" }}
                   >
                     {link.label}
                   </button>
@@ -153,19 +154,20 @@ const Navbar = ({ lang, setLang, onOpenContact, scrolled }) => {
                 <button
                   onClick={() => { navigate("/demo"); setMobileOpen(false); }}
                   className="w-full text-left px-4 py-3 rounded-lg text-sm font-medium"
-                  style={{ background: "rgba(124,58,237,0.08)", color: "#a78bfa", border: "1px solid rgba(124,58,237,0.25)" }}
+                  style={{ background: "#f2eefe", color: "#6d4ff5", border: "1px solid rgba(124,92,252,0.25)" }}
                 >
                   Demo
                 </button>
                 <button
                   onClick={() => { onOpenContact(); setMobileOpen(false); }}
                   className="w-full text-left px-4 py-3 rounded-lg text-sm font-medium"
-                  style={{ background: "rgba(0,245,255,0.06)", color: "#00f5ff", border: "1px solid rgba(0,245,255,0.2)" }}
+                  style={{ background: "#eef4ff", color: "#2f5eec", border: "1px solid rgba(47,94,236,0.2)" }}
                 >
                   {t("navContact")}
                 </button>
               </div>
-              <div className="p-5" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+              {/* Language toggle disabled — Chinese translations aren't polished enough to ship yet
+              <div className="p-5" style={{ borderTop: "1px solid rgba(15,23,42,0.06)" }}>
                 <NeonButton
                   variant="ghost"
                   color="cyan"
@@ -176,6 +178,7 @@ const Navbar = ({ lang, setLang, onOpenContact, scrolled }) => {
                   {lang === "en" ? "切换到中文" : "Switch to English"}
                 </NeonButton>
               </div>
+              */}
             </motion.div>
           </>
         )}

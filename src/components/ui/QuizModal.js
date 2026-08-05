@@ -6,10 +6,10 @@ import { analyzeGaps } from "../../data/solutions";
 import NeonButton from "./NeonButton";
 
 const severityConfig = {
-  CRITICAL: { border: "rgba(255,107,53,0.4)", text: "#ff6b35", bg: "rgba(255,107,53,0.08)", icon: "🔴", label: "CRITICAL" },
-  HIGH:     { border: "rgba(245,158,11,0.4)",  text: "#f59e0b", bg: "rgba(245,158,11,0.08)",  icon: "🟡", label: "HIGH" },
-  MEDIUM:   { border: "rgba(234,179,8,0.4)",   text: "#eab308", bg: "rgba(234,179,8,0.08)",   icon: "🟡", label: "MEDIUM" },
-  LOW:      { border: "rgba(0,255,136,0.3)",    text: "#00ff88", bg: "rgba(0,255,136,0.06)",   icon: "🟢", label: "LOW" },
+  CRITICAL: { border: "rgba(220,38,38,0.3)",  text: "#dc2626", bg: "#fef2f2", icon: "🔴", label: "CRITICAL" },
+  HIGH:     { border: "rgba(217,119,6,0.3)",  text: "#b45309", bg: "#fef3e2", icon: "🟡", label: "HIGH" },
+  MEDIUM:   { border: "rgba(202,138,4,0.3)",  text: "#a16207", bg: "#fefce8", icon: "🟡", label: "MEDIUM" },
+  LOW:      { border: "rgba(14,165,112,0.3)", text: "#0ea570", bg: "#eafaf3", icon: "🟢", label: "LOW" },
 };
 
 const QuizModal = ({ isOpen, onClose, lang, t }) => {
@@ -84,14 +84,14 @@ const QuizModal = ({ isOpen, onClose, lang, t }) => {
   if (!isOpen) return null;
 
   const inputClass = `
-    w-full px-4 py-3 rounded-lg font-mono text-sm text-white placeholder-slate-600
+    w-full px-4 py-3 rounded-lg font-mono text-sm text-ink placeholder-slate-400
     focus:outline-none transition-all duration-200
   `;
   const inputStyle = {
-    background: "rgba(255,255,255,0.04)",
-    border: "1px solid rgba(255,255,255,0.1)",
+    background: "#f8f9fd",
+    border: "1px solid rgba(15,23,42,0.1)",
   };
-  const inputFocusStyle = { borderColor: "rgba(0,245,255,0.5)", boxShadow: "0 0 0 2px rgba(0,245,255,0.1)" };
+  const inputFocusStyle = { borderColor: "rgba(47,94,236,0.5)", boxShadow: "0 0 0 2px rgba(47,94,236,0.12)" };
 
   return (
     <AnimatePresence>
@@ -101,7 +101,7 @@ const QuizModal = ({ isOpen, onClose, lang, t }) => {
           <motion.div
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             className="fixed inset-0 z-50"
-            style={{ background: "rgba(0,0,0,0.85)", backdropFilter: "blur(8px)" }}
+            style={{ background: "rgba(15,23,42,0.5)", backdropFilter: "blur(8px)" }}
             onClick={resetQuiz}
           />
 
@@ -115,9 +115,9 @@ const QuizModal = ({ isOpen, onClose, lang, t }) => {
             <div
               className="w-full max-w-4xl max-h-[90vh] overflow-y-auto pointer-events-auto rounded-2xl relative"
               style={{
-                background: "linear-gradient(180deg, #0a0d1a 0%, #06080f 100%)",
-                border: "1px solid rgba(0,245,255,0.2)",
-                boxShadow: "0 0 60px rgba(0,245,255,0.08)",
+                background: "#ffffff",
+                border: "1px solid rgba(15,23,42,0.08)",
+                boxShadow: "0 20px 60px rgba(15,23,42,0.2)",
               }}
               onClick={(e) => e.stopPropagation()}
             >
@@ -125,25 +125,25 @@ const QuizModal = ({ isOpen, onClose, lang, t }) => {
               <div
                 className="sticky top-0 z-10 flex items-center justify-between px-6 py-4"
                 style={{
-                  background: "rgba(6,8,15,0.95)",
+                  background: "rgba(255,255,255,0.95)",
                   backdropFilter: "blur(12px)",
-                  borderBottom: "1px solid rgba(0,245,255,0.1)",
+                  borderBottom: "1px solid rgba(15,23,42,0.08)",
                 }}
               >
                 <div className="flex items-center gap-3">
                   <span
-                    className="font-mono text-xs font-bold"
-                    style={{ color: "#00f5ff", letterSpacing: "0.2em" }}
+                    className="font-mono text-xs font-bold text-slate-400"
+                    style={{ letterSpacing: "0.2em" }}
                   >
-                    // {t("quizTitle").toUpperCase()}
+                    {t("quizTitle").toUpperCase()}
                   </span>
                 </div>
                 <button
                   onClick={resetQuiz}
                   className="w-8 h-8 rounded-full flex items-center justify-center transition-colors"
-                  style={{ color: "#475569" }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = "#00f5ff")}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = "#475569")}
+                  style={{ color: "#94a3b8" }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "#2f5eec")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "#94a3b8")}
                 >
                   <X size={18} />
                 </button>
@@ -153,10 +153,10 @@ const QuizModal = ({ isOpen, onClose, lang, t }) => {
               {showContactForm && !showResults ? (
                 <form onSubmit={handleSubmit} className="p-6 md:p-8 space-y-6">
                   <div className="text-center mb-8">
-                    <h2 className="text-2xl md:text-3xl font-display font-bold text-white mb-2">
+                    <h2 className="text-2xl md:text-3xl font-display font-bold text-ink mb-2">
                       {t("quizCustomRoadmap")}
                     </h2>
-                    <p className="text-slate-400">{t("quizEnterDetails")}</p>
+                    <p className="text-slate-500">{t("quizEnterDetails")}</p>
                   </div>
                   <div className="grid md:grid-cols-2 gap-4">
                     {[
@@ -214,31 +214,31 @@ const QuizModal = ({ isOpen, onClose, lang, t }) => {
                       >
                         {gapAnalysis.totalHoursWasted} hrs/wk
                       </div>
-                      <div className="text-white/80 font-mono text-sm">
+                      <div className="text-ink/70 font-mono text-sm">
                         {severityConfig[gapAnalysis.overallSeverity].icon} {t("quizTimeWasted")}
                       </div>
                     </motion.div>
-                    <h3 className="text-2xl md:text-3xl font-display font-bold text-white mb-3">
+                    <h3 className="text-2xl md:text-3xl font-display font-bold text-ink mb-3">
                       {t("quizCustomRoadmap")}
                     </h3>
-                    <p className="text-slate-400 max-w-2xl mx-auto">{t("quizResultsTitle")}</p>
+                    <p className="text-slate-500 max-w-2xl mx-auto">{t("quizResultsTitle")}</p>
                   </div>
 
                   {/* Metrics grid */}
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {[
-                      { icon: Clock, color: "#00f5ff", value: gapAnalysis.totalHoursWasted, label: t("quizHoursWasted") },
-                      { icon: DollarSign, color: "#00ff88", value: `$${((gapAnalysis.totalHoursWasted * 52 * 50 - gapAnalysis.totalMonthlyCost * 12) / 1000).toFixed(0)}K`, label: t("quizAnnualSavings") },
-                      { icon: TrendingUp, color: "#a78bfa", value: `${(((gapAnalysis.totalHoursWasted * 52 * 50 - gapAnalysis.totalMonthlyCost * 12) / (gapAnalysis.totalMonthlyCost * 12)) * 100).toFixed(0)}%`, label: t("quizROI") },
-                      { icon: Calendar, color: "#f59e0b", value: `${((gapAnalysis.totalMonthlyCost * 12) / ((gapAnalysis.totalHoursWasted * 52 * 50 - gapAnalysis.totalMonthlyCost * 12) / 12)).toFixed(1)}mo`, label: t("quizPayback") },
+                      { icon: Clock, color: "#2f5eec", value: gapAnalysis.totalHoursWasted, label: t("quizHoursWasted") },
+                      { icon: DollarSign, color: "#0ea570", value: `$${((gapAnalysis.totalHoursWasted * 52 * 50 - gapAnalysis.totalMonthlyCost * 12) / 1000).toFixed(0)}K`, label: t("quizAnnualSavings") },
+                      { icon: TrendingUp, color: "#7c5cfc", value: `${(((gapAnalysis.totalHoursWasted * 52 * 50 - gapAnalysis.totalMonthlyCost * 12) / (gapAnalysis.totalMonthlyCost * 12)) * 100).toFixed(0)}%`, label: t("quizROI") },
+                      { icon: Calendar, color: "#d97706", value: `${((gapAnalysis.totalMonthlyCost * 12) / ((gapAnalysis.totalHoursWasted * 52 * 50 - gapAnalysis.totalMonthlyCost * 12) / 12)).toFixed(1)}mo`, label: t("quizPayback") },
                     ].map((metric, i) => (
                       <div
                         key={i}
                         className="glass-card p-4 text-center"
-                        style={{ border: `1px solid ${metric.color}20` }}
+                        style={{ border: `1px solid ${metric.color}30` }}
                       >
                         <metric.icon size={22} style={{ color: metric.color, margin: "0 auto 8px" }} />
-                        <div className="text-2xl font-display font-bold text-white">{metric.value}</div>
+                        <div className="text-2xl font-display font-bold text-ink">{metric.value}</div>
                         <div className="text-xs text-slate-500 mt-1">{metric.label}</div>
                       </div>
                     ))}
@@ -246,8 +246,8 @@ const QuizModal = ({ isOpen, onClose, lang, t }) => {
 
                   {/* Top fixes */}
                   <div>
-                    <h4 className="text-xl font-display font-bold text-white flex items-center gap-2 mb-5">
-                      <AlertTriangle size={20} style={{ color: "#f59e0b" }} />
+                    <h4 className="text-xl font-display font-bold text-ink flex items-center gap-2 mb-5">
+                      <AlertTriangle size={20} style={{ color: "#d97706" }} />
                       {t("quizTopFixes")}
                     </h4>
                     <div className="space-y-5">
@@ -267,41 +267,41 @@ const QuizModal = ({ isOpen, onClose, lang, t }) => {
                               <span className="font-mono text-sm font-bold" style={{ color: cfg.text }}>
                                 {cfg.icon} {t("quizPriority", {}, { number: i + 1, severity: cfg.label })}
                               </span>
-                              <span className="text-xs px-3 py-1 rounded-full font-mono" style={{ background: "rgba(255,255,255,0.06)", color: "#94a3b8" }}>
+                              <span className="text-xs px-3 py-1 rounded-full font-mono bg-white text-slate-500">
                                 {gap.solution.implementation}
                               </span>
                             </div>
-                            <h5 className="text-lg font-display font-bold text-white mb-1">{gap.solution.name}</h5>
-                            <p className="text-slate-400 text-sm mb-4">{gap.solution.solves}</p>
+                            <h5 className="text-lg font-display font-bold text-ink mb-1">{gap.solution.name}</h5>
+                            <p className="text-slate-500 text-sm mb-4">{gap.solution.solves}</p>
 
                             <div className="grid md:grid-cols-2 gap-3 mb-4">
-                              <div className="rounded-lg p-3" style={{ background: "rgba(255,107,53,0.08)", border: "1px solid rgba(255,107,53,0.2)" }}>
-                                <div className="flex items-center gap-1.5 text-xs text-orange-400 font-semibold mb-1">
+                              <div className="rounded-lg p-3 bg-white" style={{ border: "1px solid rgba(217,119,6,0.2)" }}>
+                                <div className="flex items-center gap-1.5 text-xs text-orange-600 font-semibold mb-1">
                                   <TrendingDown size={12} /> {t("quizCurrentState")}
                                 </div>
-                                <div className="text-2xl font-bold text-white">{gap.hoursWasted} hrs</div>
+                                <div className="text-2xl font-bold text-ink">{gap.hoursWasted} hrs</div>
                                 <div className="text-xs text-slate-500">{t("quizWastedPerWeek")}</div>
                               </div>
-                              <div className="rounded-lg p-3" style={{ background: "rgba(0,255,136,0.06)", border: "1px solid rgba(0,255,136,0.2)" }}>
-                                <div className="flex items-center gap-1.5 text-xs text-green-400 font-semibold mb-1">
+                              <div className="rounded-lg p-3 bg-white" style={{ border: "1px solid rgba(14,165,112,0.2)" }}>
+                                <div className="flex items-center gap-1.5 text-xs text-emerald-600 font-semibold mb-1">
                                   <TrendingUp size={12} /> {t("quizWithAI")}
                                 </div>
-                                <div className="text-2xl font-bold text-white">{gap.solution.timeSaved}</div>
+                                <div className="text-2xl font-bold text-ink">{gap.solution.timeSaved}</div>
                                 <div className="text-xs text-slate-500">{t("quizAutomated")}</div>
                               </div>
                             </div>
 
-                            <div className="grid grid-cols-3 gap-3 pt-3" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+                            <div className="grid grid-cols-3 gap-3 pt-3 border-t border-slate-200">
                               <div className="text-center">
-                                <div className="text-lg font-bold" style={{ color: "#00ff88" }}>${(annualSavings / 1000).toFixed(0)}K</div>
+                                <div className="text-lg font-bold" style={{ color: "#0ea570" }}>${(annualSavings / 1000).toFixed(0)}K</div>
                                 <div className="text-xs text-slate-500">{t("quizAnnualSavingsLabel")}</div>
                               </div>
                               <div className="text-center">
-                                <div className="text-lg font-bold" style={{ color: "#00f5ff" }}>${gap.solution.cost}/mo</div>
+                                <div className="text-lg font-bold" style={{ color: "#2f5eec" }}>${gap.solution.cost}/mo</div>
                                 <div className="text-xs text-slate-500">{t("quizAICost")}</div>
                               </div>
                               <div className="text-center">
-                                <div className="text-lg font-bold" style={{ color: "#a78bfa" }}>{((annualSavings / (gap.solution.cost * 12)) * 100).toFixed(0)}%</div>
+                                <div className="text-lg font-bold" style={{ color: "#7c5cfc" }}>{((annualSavings / (gap.solution.cost * 12)) * 100).toFixed(0)}%</div>
                                 <div className="text-xs text-slate-500">{t("quizROILabel")}</div>
                               </div>
                             </div>
@@ -315,12 +315,12 @@ const QuizModal = ({ isOpen, onClose, lang, t }) => {
                   <div
                     className="rounded-2xl p-8 text-center"
                     style={{
-                      background: "linear-gradient(135deg, rgba(0,245,255,0.06), rgba(124,58,237,0.06))",
-                      border: "1px solid rgba(0,245,255,0.15)",
+                      background: "linear-gradient(135deg, #eef4ff, #f2eefe)",
+                      border: "1px solid rgba(47,94,236,0.15)",
                     }}
                   >
-                    <h4 className="text-2xl font-display font-bold text-white mb-3">{t("quizTransformBusiness")}</h4>
-                    <p className="text-slate-400 mb-6 max-w-xl mx-auto">{t("quizScheduleCall")}</p>
+                    <h4 className="text-2xl font-display font-bold text-ink mb-3">{t("quizTransformBusiness")}</h4>
+                    <p className="text-slate-500 mb-6 max-w-xl mx-auto">{t("quizScheduleCall")}</p>
                     <NeonButton variant="outline" color="cyan" size="md" onClick={resetQuiz}>
                       {lang === "zh" ? "重新评估" : "Retake Assessment"}
                     </NeonButton>
@@ -339,21 +339,20 @@ const QuizModal = ({ isOpen, onClose, lang, t }) => {
                       <span>{t("quizQuestion", {}, { current: currentQuestion + 1, total: questions.length })}</span>
                       <span>{Math.round(progress)}% {lang === "zh" ? "完成" : "Complete"}</span>
                     </div>
-                    <div className="w-full h-1.5 rounded-full" style={{ background: "rgba(255,255,255,0.06)" }}>
+                    <div className="w-full h-1.5 rounded-full" style={{ background: "rgba(15,23,42,0.08)" }}>
                       <motion.div
                         className="h-full rounded-full"
                         initial={{ width: 0 }}
                         animate={{ width: `${progress}%` }}
                         style={{
-                          background: "linear-gradient(90deg, #00f5ff, #7c3aed, #00ff88)",
-                          boxShadow: "0 0 8px rgba(0,245,255,0.4)",
+                          background: "linear-gradient(90deg, #2f5eec, #7c5cfc, #0ea570)",
                         }}
                       />
                     </div>
                   </div>
 
                   {/* Question */}
-                  <h2 className="text-xl md:text-2xl font-display font-bold text-white leading-snug">
+                  <h2 className="text-xl md:text-2xl font-display font-bold text-ink leading-snug">
                     {currentQ.question}
                   </h2>
 
@@ -368,20 +367,20 @@ const QuizModal = ({ isOpen, onClose, lang, t }) => {
                           whileHover={isSelected ? {} : { x: 4 }}
                           className="w-full p-4 rounded-xl text-left flex items-center gap-4 transition-all duration-200"
                           style={{
-                            background: isSelected ? "rgba(0,245,255,0.1)" : "rgba(255,255,255,0.03)",
-                            border: `1px solid ${isSelected ? "rgba(0,245,255,0.5)" : "rgba(255,255,255,0.08)"}`,
+                            background: isSelected ? "#eef4ff" : "#f8f9fd",
+                            border: `1px solid ${isSelected ? "rgba(47,94,236,0.5)" : "rgba(15,23,42,0.08)"}`,
                           }}
                         >
                           <div
                             className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
                             style={{
-                              border: `2px solid ${isSelected ? "#00f5ff" : "rgba(255,255,255,0.2)"}`,
-                              background: isSelected ? "#00f5ff" : "transparent",
+                              border: `2px solid ${isSelected ? "#2f5eec" : "rgba(15,23,42,0.2)"}`,
+                              background: isSelected ? "#2f5eec" : "transparent",
                             }}
                           >
-                            {isSelected && <CheckCircle size={12} color="#000" />}
+                            {isSelected && <CheckCircle size={12} color="#fff" />}
                           </div>
-                          <span className="text-sm" style={{ color: isSelected ? "#ffffff" : "#94a3b8" }}>
+                          <span className="text-sm" style={{ color: isSelected ? "#0f1729" : "#64748b" }}>
                             {option.text}
                           </span>
                         </motion.button>

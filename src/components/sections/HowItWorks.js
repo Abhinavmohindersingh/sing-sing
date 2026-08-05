@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Play, Zap, TrendingUp, Sparkles, CheckCircle } from "lucide-react";
-import SectionTag from "../ui/SectionTag";
 import { SECTION_IDS } from "../../data/translations";
 
 const icons = [Play, Zap, TrendingUp, Sparkles];
-const stepColors = ["#00f5ff", "#a78bfa", "#00ff88", "#f59e0b"];
+const stepColors = ["#2f5eec", "#2f5eec", "#2f5eec", "#2f5eec"];
 
 const HowItWorks = ({ t }) => {
   const phases = t("phases");
@@ -35,11 +34,8 @@ const HowItWorks = ({ t }) => {
     <section
       id={SECTION_IDS.howItWorks}
       ref={sectionRef}
-      className="relative py-24 md:py-32 px-4 overflow-hidden"
-      style={{ background: "linear-gradient(180deg, #04050d 0%, #050a12 50%, #04050d 100%)" }}
+      className="relative py-24 md:py-32 px-4 overflow-hidden bg-mist-100"
     >
-      <div className="absolute inset-0 hud-grid opacity-50" />
-
       <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
           className="text-center mb-20"
@@ -48,27 +44,16 @@ const HowItWorks = ({ t }) => {
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <div className="flex justify-center mb-6">
-            <SectionTag zone="ZONE 03" label="MISSION TIMELINE" color="cyan" />
-          </div>
-          <h2
-            className="text-4xl md:text-6xl font-display font-bold mb-6"
-            style={{
-              background: "linear-gradient(135deg, #00ff88, #06b6d4)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-            }}
-          >
+          <h2 className="text-4xl md:text-6xl font-display font-bold mb-6 text-ink">
             {t("howItWorksTitle")}
           </h2>
-          <p className="text-lg md:text-xl text-slate-400">{t("howItWorksSubtitle")}</p>
+          <p className="text-lg md:text-xl text-slate-500">{t("howItWorksSubtitle")}</p>
         </motion.div>
 
         {/* Desktop: horizontal timeline */}
         <div className="hidden lg:block relative">
           <div className="absolute top-16 left-[12.5%] right-[12.5%] h-px">
-            <div className="absolute inset-0" style={{ background: "rgba(0,245,255,0.08)" }} />
+            <div className="absolute inset-0" style={{ background: "rgba(15,23,42,0.08)" }} />
             <motion.div
               className="absolute inset-0 origin-left"
               initial={{ scaleX: 0 }}
@@ -76,8 +61,7 @@ const HowItWorks = ({ t }) => {
               transition={{ duration: 2, ease: "easeOut", delay: 0.3 }}
               viewport={{ once: true }}
               style={{
-                background: "linear-gradient(90deg, #00f5ff, #7c3aed, #00ff88, #f59e0b)",
-                boxShadow: "0 0 8px rgba(0,245,255,0.3)",
+                background: "#2f5eec",
               }}
             />
           </div>
@@ -92,38 +76,21 @@ const HowItWorks = ({ t }) => {
                 <div key={i} className="flex flex-col items-center">
                   <motion.div
                     className="relative w-14 h-14 rounded-full flex items-center justify-center mb-8 z-10"
-                    animate={
-                      isActive
-                        ? {
-                            boxShadow: [`0 0 0px ${color}00`, `0 0 25px ${color}80`, `0 0 12px ${color}40`],
-                            scale: [1, 1.15, 1],
-                          }
-                        : {}
-                    }
+                    animate={isActive ? { scale: [1, 1.12, 1] } : {}}
                     transition={{ duration: 0.6 }}
                     style={{
-                      background: isActive
-                        ? `linear-gradient(135deg, ${color}30, ${color}10)`
-                        : "rgba(255,255,255,0.04)",
-                      border: `2px solid ${isActive ? color : "rgba(255,255,255,0.1)"}`,
+                      background: isActive ? `${color}18` : "#f1f3fa",
+                      border: `2px solid ${isActive ? color : "rgba(15,23,42,0.1)"}`,
                       transition: "all 0.5s ease",
                     }}
                   >
-                    <Icon size={22} style={{ color: isActive ? color : "#475569" }} />
+                    <Icon size={22} style={{ color: isActive ? color : "#94a3b8" }} />
                     <span
                       className="absolute -top-6 font-mono text-xs font-bold"
-                      style={{ color: isActive ? color : "#475569" }}
+                      style={{ color: isActive ? color : "#94a3b8" }}
                     >
                       {String(i + 1).padStart(2, "0")}
                     </span>
-                    {isActive && (
-                      <motion.div
-                        className="absolute w-full h-full rounded-full"
-                        animate={{ scale: [1, 1.5, 1], opacity: [0.4, 0, 0.4] }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                        style={{ border: `1px solid ${color}40` }}
-                      />
-                    )}
                   </motion.div>
 
                   <motion.div
@@ -132,31 +99,25 @@ const HowItWorks = ({ t }) => {
                     transition={{ duration: 0.6, delay: 0.1 }}
                     className="glass-card p-5 w-full text-center relative overflow-hidden"
                     style={{
-                      border: `1px solid ${isActive ? color + "30" : "rgba(255,255,255,0.06)"}`,
+                      border: `1px solid ${isActive ? color + "40" : "var(--card-border)"}`,
                       transition: "border-color 0.5s ease",
                     }}
                   >
-                    <div className="font-mono text-xs font-bold mb-3" style={{ color: isActive ? color : "#475569" }}>
+                    <div className="font-mono text-xs font-bold mb-3" style={{ color: isActive ? color : "#94a3b8" }}>
                       {phase.duration?.toUpperCase()}
                     </div>
-                    <h3 className="text-lg font-display font-bold text-white mb-3 leading-tight">
+                    <h3 className="text-lg font-display font-bold text-ink mb-3 leading-tight">
                       {phase.step}
                     </h3>
-                    <p className="text-sm text-slate-400 mb-4 leading-relaxed">{phase.description}</p>
+                    <p className="text-sm text-slate-500 mb-4 leading-relaxed">{phase.description}</p>
                     <ul className="space-y-2">
                       {phase.details.map((detail, j) => (
-                        <li key={j} className="flex items-center gap-2 text-xs text-slate-400">
-                          <CheckCircle size={12} style={{ color: isActive ? color : "#475569", flexShrink: 0 }} />
+                        <li key={j} className="flex items-center gap-2 text-xs text-slate-500">
+                          <CheckCircle size={12} style={{ color: isActive ? color : "#94a3b8", flexShrink: 0 }} />
                           {detail}
                         </li>
                       ))}
                     </ul>
-                    {isActive && (
-                      <div
-                        className="absolute bottom-0 left-0 right-0 h-px"
-                        style={{ background: `linear-gradient(90deg, transparent, ${color}80, transparent)` }}
-                      />
-                    )}
                   </motion.div>
                 </div>
               );
@@ -166,7 +127,7 @@ const HowItWorks = ({ t }) => {
 
         {/* Mobile: vertical stack */}
         <div className="lg:hidden relative">
-          <div className="absolute left-8 top-0 bottom-0 w-px" style={{ background: "rgba(0,245,255,0.1)" }}>
+          <div className="absolute left-8 top-0 bottom-0 w-px" style={{ background: "rgba(15,23,42,0.08)" }}>
             <motion.div
               className="absolute left-0 top-0 w-full origin-top"
               initial={{ scaleY: 0 }}
@@ -175,7 +136,7 @@ const HowItWorks = ({ t }) => {
               viewport={{ once: true }}
               style={{
                 height: "100%",
-                background: "linear-gradient(180deg, #00f5ff, #7c3aed, #00ff88, #f59e0b)",
+                background: "#2f5eec",
               }}
             />
           </div>
@@ -191,21 +152,20 @@ const HowItWorks = ({ t }) => {
                   transition={{ delay: i * 0.1, duration: 0.5 }}
                   viewport={{ once: true }}
                   className="glass-card p-6 relative overflow-hidden ml-8"
-                  style={{ borderLeft: `3px solid ${color}60` }}
+                  style={{ borderLeft: `3px solid ${color}` }}
                 >
                   <div
                     className="absolute -left-[2.35rem] top-6 w-4 h-4 rounded-full z-10"
                     style={{
-                      background: `linear-gradient(135deg, ${color}80, ${color}30)`,
-                      border: `2px solid ${color}`,
-                      boxShadow: `0 0 10px ${color}60`,
+                      background: color,
+                      border: "2px solid #faf8f5",
                     }}
                   />
                   <div className="flex items-start gap-4">
                     <div
                       className="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center"
                       style={{
-                        background: `linear-gradient(135deg, ${color}20, ${color}08)`,
+                        background: `${color}18`,
                         border: `1px solid ${color}40`,
                       }}
                     >
@@ -215,11 +175,11 @@ const HowItWorks = ({ t }) => {
                       <div className="flex items-center gap-2 mb-2">
                         <span className="font-mono text-xs font-bold" style={{ color }}>{phase.duration}</span>
                       </div>
-                      <h3 className="text-lg font-display font-bold text-white mb-2">{phase.step}</h3>
-                      <p className="text-sm text-slate-400 mb-3 leading-relaxed">{phase.description}</p>
+                      <h3 className="text-lg font-display font-bold text-ink mb-2">{phase.step}</h3>
+                      <p className="text-sm text-slate-500 mb-3 leading-relaxed">{phase.description}</p>
                       <ul className="space-y-1.5">
                         {phase.details.map((detail, j) => (
-                          <li key={j} className="flex items-center gap-2 text-xs text-slate-400">
+                          <li key={j} className="flex items-center gap-2 text-xs text-slate-500">
                             <CheckCircle size={12} style={{ color, flexShrink: 0 }} />
                             {detail}
                           </li>

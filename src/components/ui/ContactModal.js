@@ -34,9 +34,9 @@ const ContactModal = ({ isOpen, onClose, lang, t }) => {
 
   if (!isOpen) return null;
 
-  const inputClass = "w-full px-4 py-3 rounded-lg text-sm text-white placeholder-slate-600 focus:outline-none transition-all duration-200";
-  const inputStyle = { background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)" };
-  const inputFocusStyle = { borderColor: "rgba(0,245,255,0.5)", boxShadow: "0 0 0 2px rgba(0,245,255,0.1)" };
+  const inputClass = "w-full px-4 py-3 rounded-lg text-sm text-ink placeholder-slate-400 focus:outline-none transition-all duration-200";
+  const inputStyle = { background: "#f8f9fd", border: "1px solid rgba(15,23,42,0.1)" };
+  const inputFocusStyle = { borderColor: "rgba(47,94,236,0.5)", boxShadow: "0 0 0 2px rgba(47,94,236,0.12)" };
 
   return (
     <AnimatePresence>
@@ -45,7 +45,7 @@ const ContactModal = ({ isOpen, onClose, lang, t }) => {
           <motion.div
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             className="fixed inset-0 z-50"
-            style={{ background: "rgba(0,0,0,0.85)", backdropFilter: "blur(8px)" }}
+            style={{ background: "rgba(15,23,42,0.5)", backdropFilter: "blur(8px)" }}
             onClick={onClose}
           />
           <motion.div
@@ -57,26 +57,26 @@ const ContactModal = ({ isOpen, onClose, lang, t }) => {
             <div
               className="w-full max-w-xl max-h-[90vh] overflow-y-auto pointer-events-auto rounded-2xl relative"
               style={{
-                background: "linear-gradient(180deg, #0a0d1a 0%, #06080f 100%)",
-                border: "1px solid rgba(0,245,255,0.2)",
-                boxShadow: "0 0 60px rgba(0,245,255,0.08)",
+                background: "#ffffff",
+                border: "1px solid rgba(15,23,42,0.08)",
+                boxShadow: "0 20px 60px rgba(15,23,42,0.2)",
               }}
               onClick={(e) => e.stopPropagation()}
             >
               {/* Header */}
               <div
                 className="flex items-center justify-between px-6 py-4"
-                style={{ borderBottom: "1px solid rgba(0,245,255,0.1)" }}
+                style={{ borderBottom: "1px solid rgba(15,23,42,0.08)" }}
               >
-                <span className="font-mono text-xs font-bold" style={{ color: "#00f5ff", letterSpacing: "0.2em" }}>
-                  // MISSION CONTROL
+                <span className="font-mono text-xs font-bold text-slate-400" style={{ letterSpacing: "0.2em" }}>
+                  GET IN TOUCH
                 </span>
                 <button
                   onClick={onClose}
                   className="w-8 h-8 rounded-full flex items-center justify-center"
-                  style={{ color: "#475569" }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = "#00f5ff")}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = "#475569")}
+                  style={{ color: "#94a3b8" }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "#2f5eec")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "#94a3b8")}
                 >
                   <X size={18} />
                 </button>
@@ -88,15 +88,14 @@ const ContactModal = ({ isOpen, onClose, lang, t }) => {
                   <div
                     className="w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-4"
                     style={{
-                      background: "rgba(0,245,255,0.1)",
-                      border: "1px solid rgba(0,245,255,0.3)",
-                      boxShadow: "0 0 20px rgba(0,245,255,0.15)",
+                      background: "#eef4ff",
+                      border: "1px solid rgba(47,94,236,0.25)",
                     }}
                   >
-                    <Mail size={24} style={{ color: "#00f5ff" }} />
+                    <Mail size={24} style={{ color: "#2f5eec" }} />
                   </div>
-                  <h2 className="text-2xl font-display font-bold text-white mb-2">{t("contactTitle")}</h2>
-                  <p className="text-slate-400 text-sm">{t("contactDescription")}</p>
+                  <h2 className="text-2xl font-display font-bold text-ink mb-2">{t("contactTitle")}</h2>
+                  <p className="text-slate-500 text-sm">{t("contactDescription")}</p>
                 </div>
 
                 {/* Status messages */}
@@ -105,20 +104,20 @@ const ContactModal = ({ isOpen, onClose, lang, t }) => {
                     <motion.div
                       initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
                       className="flex items-center gap-3 p-4 rounded-lg"
-                      style={{ background: "rgba(0,255,136,0.08)", border: "1px solid rgba(0,255,136,0.3)" }}
+                      style={{ background: "#eafaf3", border: "1px solid rgba(14,165,112,0.3)" }}
                     >
-                      <CheckCircle size={18} style={{ color: "#00ff88" }} />
-                      <p className="text-sm" style={{ color: "#00ff88" }}>{t("contactSuccess")}</p>
+                      <CheckCircle size={18} style={{ color: "#0ea570" }} />
+                      <p className="text-sm" style={{ color: "#0ea570" }}>{t("contactSuccess")}</p>
                     </motion.div>
                   )}
                   {status === "error" && (
                     <motion.div
                       initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
                       className="flex items-center gap-3 p-4 rounded-lg"
-                      style={{ background: "rgba(255,107,53,0.08)", border: "1px solid rgba(255,107,53,0.3)" }}
+                      style={{ background: "#fef3e2", border: "1px solid rgba(217,119,6,0.3)" }}
                     >
-                      <X size={18} style={{ color: "#ff6b35" }} />
-                      <p className="text-sm" style={{ color: "#ff6b35" }}>{t("contactError")}</p>
+                      <X size={18} style={{ color: "#b45309" }} />
+                      <p className="text-sm" style={{ color: "#b45309" }}>{t("contactError")}</p>
                     </motion.div>
                   )}
                 </AnimatePresence>

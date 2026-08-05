@@ -34,16 +34,20 @@ module.exports = {
           400: "#2dd4bf", 500: "#14b8a6", 600: "#0d9488", 700: "#0f766e",
           800: "#115e59", 900: "#134e4a",
         },
-        // Neon palette for futuristic design
-        neon: {
-          cyan: "#00f5ff",
-          blue: "#0066ff",
-          purple: "#8b5cf6",
-          green: "#00ff88",
-          orange: "#ff6b35",
-          pink: "#ff2d78",
+        // Warm-neutral palette — restrained, one sparing accent, editorial confidence
+        ink: {
+          DEFAULT: "#15161a",
+          soft: "#44444b",
         },
-        primary: { 500: "#06b6d4", 600: "#0891b2" },
+        mist: {
+          50: "#fdfcfb", 100: "#faf8f5", 200: "#f2efe9", 300: "#e8e4dc",
+        },
+        accent: {
+          blue: "#2f5eec",
+          purple: "#7c5cfc",
+          green: "#0ea570",
+        },
+        primary: { 500: "#2f5eec", 600: "#2249c9" },
       },
       fontFamily: {
         sans: ["Space Grotesk", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"],
@@ -121,17 +125,11 @@ module.exports = {
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-        "hero-gradient": "linear-gradient(135deg, #0f766e 0%, #1e40af 25%, #059669 50%, #1d4ed8 75%, #10b981 100%)",
-        "neon-gradient": "linear-gradient(135deg, #00f5ff 0%, #7c3aed 50%, #00ff88 100%)",
-        "hud-grid": "linear-gradient(rgba(0,245,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,245,255,0.03) 1px, transparent 1px)",
+        "mist-gradient": "radial-gradient(120% 100% at 20% -10%, #f2efe9 0%, #faf8f5 45%, #fdfcfb 100%)",
       },
       boxShadow: {
-        gradient: "0 10px 25px -5px rgba(16, 185, 129, 0.2)",
-        "gradient-lg": "0 25px 50px -12px rgba(59, 130, 246, 0.25)",
-        "neon-cyan": "0 0 20px rgba(0, 245, 255, 0.4), 0 0 40px rgba(0, 245, 255, 0.1)",
-        "neon-purple": "0 0 20px rgba(124, 58, 237, 0.4), 0 0 40px rgba(124, 58, 237, 0.1)",
-        "neon-green": "0 0 20px rgba(0, 255, 136, 0.4), 0 0 40px rgba(0, 255, 136, 0.1)",
-        "neon-orange": "0 0 20px rgba(255, 107, 53, 0.4), 0 0 40px rgba(255, 107, 53, 0.1)",
+        card: "0 1px 2px rgba(15,23,42,0.04), 0 8px 24px rgba(15,23,42,0.06)",
+        "card-lg": "0 4px 12px rgba(15,23,42,0.05), 0 16px 40px rgba(15,23,42,0.08)",
       },
     },
   },

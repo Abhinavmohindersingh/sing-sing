@@ -31,14 +31,14 @@ const LenisProvider = ({ children }) => {
       ref={lenisRef}
       root
       options={{
-        lerp: 1,
-        duration: 0,
+        lerp: 0.1,
+        duration: 1.1,
         orientation: "vertical",
         gestureOrientation: "vertical",
-        smoothWheel: false,
+        smoothWheel: true,
         wheelMultiplier: 1,
         touchMultiplier: 2,
-        easing: (t) => t,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         autoRaf: false,
       }}
     >

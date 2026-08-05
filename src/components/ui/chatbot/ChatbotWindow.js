@@ -17,14 +17,14 @@ import AuditCard from "./cards/AuditCard";
 const TypingIndicator = () => (
   <div className="flex items-end gap-2">
     <div className="w-7 h-7 rounded-full flex-shrink-0 flex items-center justify-center"
-      style={{ background: "linear-gradient(135deg, #00f5ff, #7c3aed)" }}>
+      style={{ background: "linear-gradient(135deg, #2f5eec, #7c5cfc)" }}>
       <Bot size={14} color="white" />
     </div>
     <div className="px-4 py-3 rounded-2xl rounded-bl-sm flex items-center gap-1.5"
-      style={{ background: "rgba(0,245,255,0.05)", border: "1px solid rgba(0,245,255,0.12)" }}>
+      style={{ background: "#f8f9fd", border: "1px solid rgba(15,23,42,0.08)" }}>
       {[0, 1, 2].map((i) => (
         <motion.span key={i} className="w-1.5 h-1.5 rounded-full block"
-          style={{ background: "#00f5ff" }}
+          style={{ background: "#2f5eec" }}
           animate={{ y: [0, -5, 0], opacity: [0.4, 1, 0.4] }}
           transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.15, ease: "easeInOut" }}
         />
@@ -37,12 +37,12 @@ const TypingIndicator = () => (
 const ToolThinkingBubble = ({ toolName }) => (
   <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}
     className="flex items-center gap-2 px-3 py-2 rounded-xl w-fit"
-    style={{ background: "rgba(0,245,255,0.04)", border: "1px solid rgba(0,245,255,0.1)" }}>
+    style={{ background: "#eef4ff", border: "1px solid rgba(47,94,236,0.15)" }}>
     <motion.div className="w-1.5 h-1.5 rounded-full"
-      style={{ background: "#00f5ff" }}
+      style={{ background: "#2f5eec" }}
       animate={{ opacity: [0.3, 1, 0.3] }}
       transition={{ duration: 1.2, repeat: Infinity }} />
-    <span className="text-[11px] font-mono" style={{ color: "rgba(0,245,255,0.6)" }}>
+    <span className="text-[11px] font-mono" style={{ color: "#2f5eec" }}>
       {TOOL_LABELS[toolName] || "Thinking..."}
     </span>
   </motion.div>
@@ -52,14 +52,14 @@ const ToolThinkingBubble = ({ toolName }) => (
 const StreamingBubble = ({ text }) => (
   <div className="flex items-end gap-2">
     <div className="w-7 h-7 rounded-full flex-shrink-0 flex items-center justify-center"
-      style={{ background: "linear-gradient(135deg, #00f5ff, #7c3aed)" }}>
+      style={{ background: "linear-gradient(135deg, #2f5eec, #7c5cfc)" }}>
       <Bot size={14} color="white" />
     </div>
     <div className="max-w-[80%] px-4 py-3 rounded-2xl rounded-bl-sm text-sm leading-relaxed"
-      style={{ background: "rgba(0,245,255,0.05)", border: "1px solid rgba(0,245,255,0.1)", color: "#e2e8f0" }}>
+      style={{ background: "#f8f9fd", border: "1px solid rgba(15,23,42,0.08)", color: "#0f1729" }}>
       {text}
       <motion.span className="inline-block w-0.5 h-3.5 ml-0.5 align-middle rounded-sm"
-        style={{ background: "#00f5ff" }}
+        style={{ background: "#2f5eec" }}
         animate={{ opacity: [1, 0] }}
         transition={{ duration: 0.6, repeat: Infinity }} />
     </div>
@@ -80,14 +80,14 @@ const Message = ({ msg }) => {
       className={`flex items-end gap-2 ${isBot ? "flex-row" : "flex-row-reverse"}`}>
       <div className="w-7 h-7 rounded-full flex-shrink-0 flex items-center justify-center"
         style={isBot
-          ? { background: "linear-gradient(135deg, #00f5ff, #7c3aed)" }
-          : { background: "rgba(0,245,255,0.08)", border: "1px solid rgba(0,245,255,0.25)" }}>
-        {isBot ? <Bot size={14} color="white" /> : <User size={14} color="#00f5ff" />}
+          ? { background: "linear-gradient(135deg, #2f5eec, #7c5cfc)" }
+          : { background: "#eef4ff", border: "1px solid rgba(47,94,236,0.25)" }}>
+        {isBot ? <Bot size={14} color="white" /> : <User size={14} color="#2f5eec" />}
       </div>
       <div className="max-w-[80%] px-4 py-3 text-sm leading-relaxed rounded-2xl"
         style={isBot
-          ? { background: "rgba(0,245,255,0.05)", border: "1px solid rgba(0,245,255,0.1)", color: "#e2e8f0", borderBottomLeftRadius: 4 }
-          : { background: "linear-gradient(135deg, rgba(0,245,255,0.14), rgba(124,58,237,0.14))", border: "1px solid rgba(0,245,255,0.22)", color: "white", borderBottomRightRadius: 4 }}>
+          ? { background: "#f8f9fd", border: "1px solid rgba(15,23,42,0.08)", color: "#0f1729", borderBottomLeftRadius: 4 }
+          : { background: "linear-gradient(135deg, #2f5eec, #7c5cfc)", border: "1px solid rgba(47,94,236,0.3)", color: "white", borderBottomRightRadius: 4 }}>
         {msg.text}
       </div>
     </motion.div>
@@ -222,28 +222,28 @@ const ChatbotWindow = ({ onClose, lang = "en" }) => {
 
       {/* ── Header ── */}
       <div className="flex items-center gap-3 px-4 py-3.5 flex-shrink-0"
-        style={{ borderBottom: "1px solid rgba(0,245,255,0.1)", background: "rgba(0,0,0,0.25)" }}>
+        style={{ borderBottom: "1px solid rgba(15,23,42,0.08)", background: "#ffffff" }}>
         <div className="relative">
           <div className="w-10 h-10 rounded-full flex items-center justify-center"
-            style={{ background: "linear-gradient(135deg, #00f5ff, #7c3aed)", boxShadow: "0 0 18px rgba(0,245,255,0.4)" }}>
+            style={{ background: "linear-gradient(135deg, #2f5eec, #7c5cfc)" }}>
             <Bot size={20} color="white" />
           </div>
-          <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-green-400"
-            style={{ border: "2px solid #07091a" }} />
+          <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500"
+            style={{ border: "2px solid #ffffff" }} />
         </div>
         <div className="flex-1 min-w-0">
-          <div className="text-white font-semibold text-sm leading-tight">{BOT_NAME} · AI Advisor</div>
-          <div className="text-xs flex items-center gap-1.5 mt-0.5" style={{ color: "#00ff88" }}>
-            <motion.span className="w-1.5 h-1.5 rounded-full bg-green-400 inline-block"
+          <div className="text-ink font-semibold text-sm leading-tight">{BOT_NAME} · AI Advisor</div>
+          <div className="text-xs flex items-center gap-1.5 mt-0.5" style={{ color: "#0ea570" }}>
+            <motion.span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block"
               animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 2, repeat: Infinity }} />
             Online now
           </div>
         </div>
         <button onClick={onClose}
           className="w-8 h-8 rounded-lg flex items-center justify-center transition-colors"
-          style={{ color: "#475569" }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = "#00f5ff")}
-          onMouseLeave={(e) => (e.currentTarget.style.color = "#475569")}
+          style={{ color: "#94a3b8" }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = "#2f5eec")}
+          onMouseLeave={(e) => (e.currentTarget.style.color = "#94a3b8")}
           aria-label="Minimise chat">
           <Minimize2 size={16} />
         </button>
@@ -265,11 +265,11 @@ const ChatbotWindow = ({ onClose, lang = "en" }) => {
         {/* Error state */}
         {error && (
           <div className="flex items-center gap-2 px-3 py-2 rounded-xl"
-            style={{ background: "rgba(255,107,53,0.08)", border: "1px solid rgba(255,107,53,0.2)" }}>
-            <AlertCircle size={14} style={{ color: "#ff6b35", flexShrink: 0 }} />
-            <span className="text-xs text-slate-400 flex-1">{error}</span>
+            style={{ background: "#fef3e2", border: "1px solid rgba(217,119,6,0.25)" }}>
+            <AlertCircle size={14} style={{ color: "#b45309", flexShrink: 0 }} />
+            <span className="text-xs text-slate-500 flex-1">{error}</span>
             <button onClick={() => { setError(null); sendMessage(input || "retry"); }}
-              className="flex items-center gap-1 text-[10px] font-mono" style={{ color: "#ff6b35" }}>
+              className="flex items-center gap-1 text-[10px] font-mono" style={{ color: "#b45309" }}>
               <RefreshCw size={10} /> Retry
             </button>
           </div>
@@ -287,9 +287,9 @@ const ChatbotWindow = ({ onClose, lang = "en" }) => {
               <motion.button key={qr} onClick={() => sendMessage(qr)}
                 whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
                 className="text-[11px] px-3 py-1.5 rounded-full font-mono transition-colors"
-                style={{ border: "1px solid rgba(0,245,255,0.3)", color: "#00f5ff", background: "rgba(0,245,255,0.05)" }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(0,245,255,0.12)")}
-                onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(0,245,255,0.05)")}>
+                style={{ border: "1px solid rgba(47,94,236,0.3)", color: "#2f5eec", background: "#eef4ff" }}
+                onMouseEnter={(e) => (e.currentTarget.style.background = "#e0eaff")}
+                onMouseLeave={(e) => (e.currentTarget.style.background = "#eef4ff")}>
                 {qr}
               </motion.button>
             ))}
@@ -299,25 +299,24 @@ const ChatbotWindow = ({ onClose, lang = "en" }) => {
 
       {/* ── Input ── */}
       <div className="px-4 pb-4 pt-2 flex-shrink-0"
-        style={{ borderTop: "1px solid rgba(0,245,255,0.08)" }}>
+        style={{ borderTop: "1px solid rgba(15,23,42,0.06)" }}>
         <form onSubmit={(e) => { e.preventDefault(); sendMessage(); }}
           className="flex items-center gap-2 rounded-xl px-4 py-2.5"
-          style={{ background: "rgba(0,245,255,0.04)", border: "1px solid rgba(0,245,255,0.1)" }}>
+          style={{ background: "#f8f9fd", border: "1px solid rgba(15,23,42,0.08)" }}>
           <input ref={inputRef} value={input} onChange={(e) => setInput(e.target.value)}
             placeholder={isStreaming ? "Aria is thinking..." : "Type a message or paste your website URL..."}
             disabled={isStreaming}
-            className="flex-1 bg-transparent text-sm text-white placeholder-slate-600 outline-none" />
+            className="flex-1 bg-transparent text-sm text-ink placeholder-slate-400 outline-none" />
           <motion.button type="submit" disabled={!input.trim() || isStreaming}
             whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}
             className="w-8 h-8 rounded-lg flex items-center justify-center disabled:opacity-30 flex-shrink-0"
-            style={{ background: "linear-gradient(135deg, #00f5ff, #7c3aed)" }}
+            style={{ background: "linear-gradient(135deg, #2f5eec, #7c5cfc)" }}
             aria-label="Send message">
             <Send size={14} color="white" />
           </motion.button>
         </form>
-        <p className="text-center text-[10px] mt-2 font-mono tracking-widest"
-          style={{ color: "rgba(0,245,255,0.4)" }}>
-          POWERED BY <span style={{ color: "#00f5ff", fontWeight: 700 }}>SingSinghAI</span> · SECURE CHANNEL
+        <p className="text-center text-[10px] mt-2 font-mono tracking-widest text-slate-400">
+          POWERED BY <span style={{ color: "#2f5eec", fontWeight: 700 }}>SingSinghAI</span>
         </p>
       </div>
     </div>

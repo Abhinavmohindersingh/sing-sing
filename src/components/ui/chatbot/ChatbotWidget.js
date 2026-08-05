@@ -20,10 +20,9 @@ const ChatbotWidget = ({ lang = "en" }) => {
             className="overflow-hidden rounded-2xl w-[calc(100vw-2rem)] sm:w-[380px]"
             style={{
               height: "min(85vh, 560px)",
-              background: "linear-gradient(180deg, #07091a 0%, #04050d 100%)",
-              border: "1px solid rgba(0,245,255,0.15)",
-              boxShadow:
-                "0 0 0 1px rgba(0,245,255,0.05), 0 0 60px rgba(0,245,255,0.08), 0 25px 60px rgba(0,0,0,0.7)",
+              background: "#ffffff",
+              border: "1px solid rgba(15,23,42,0.08)",
+              boxShadow: "0 20px 60px rgba(15,23,42,0.25)",
             }}
           >
             <ChatbotWindow onClose={() => setIsOpen(false)} lang={lang} />

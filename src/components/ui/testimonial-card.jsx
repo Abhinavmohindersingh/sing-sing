@@ -16,9 +16,11 @@ export function TestimonialCard({ author, text, href, className }) {
         className
       )}
       style={{
-        background: "rgba(8,8,15,0.9)",
-        border: "1px solid rgba(255,255,255,0.07)",
-        backdropFilter: "blur(12px)",
+        background: "rgba(255,255,255,0.65)",
+        backdropFilter: "blur(20px) saturate(1.4)",
+        WebkitBackdropFilter: "blur(20px) saturate(1.4)",
+        border: "1px solid rgba(255,255,255,0.7)",
+        boxShadow: "0 1px 2px rgba(15,23,42,0.04), 0 8px 24px rgba(15,23,42,0.08)",
       }}
     >
       <div className="flex items-center gap-3">
@@ -27,24 +29,24 @@ export function TestimonialCard({ author, text, href, className }) {
           <AvatarFallback
             className="font-bold text-sm"
             style={{
-              background: "rgba(0,245,255,0.15)",
-              border: "1px solid rgba(0,245,255,0.3)",
-              color: "#00f5ff",
+              background: "#eef4ff",
+              border: "1px solid rgba(47,94,236,0.25)",
+              color: "#2f5eec",
             }}
           >
             {author.name.charAt(0)}
           </AvatarFallback>
         </Avatar>
         <div className="flex flex-col items-start">
-          <h3 className="text-sm font-semibold leading-none text-white">
+          <h3 className="text-sm font-semibold leading-none text-ink">
             {author.name}
           </h3>
-          <p className="text-xs mt-1" style={{ color: "rgba(0,245,255,0.7)" }}>
+          <p className="text-xs mt-1" style={{ color: "#2f5eec" }}>
             {author.handle}
           </p>
         </div>
       </div>
-      <p className="mt-4 text-sm leading-relaxed" style={{ color: "#94a3b8" }}>
+      <p className="mt-4 text-sm leading-relaxed text-slate-500">
         {text}
       </p>
     </Card>
