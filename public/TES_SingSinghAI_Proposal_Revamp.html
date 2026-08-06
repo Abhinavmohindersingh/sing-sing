@@ -800,7 +800,7 @@
       <div style="display:flex;gap:.5rem;flex-wrap:wrap;padding-bottom:.6rem"><span style="font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:#dcfce7;color:#166534;padding:.25rem .6rem">Built</span></div>
     </div>
 
-    <p class="s-intro" style="max-width:1000px;margin-bottom:1.6rem">A template for now, taking its look from Falcon Cranes. It shows how the first build will look, not the finished site.</p>
+    <p class="s-intro" style="max-width:1000px;margin-bottom:1.6rem">A template for now, using placeholder styling to show the structure. It shows how the first build will look, not the finished site.</p>
 
     <div class="pv" data-page="index">
       <div class="pv-frame">
@@ -1343,9 +1343,11 @@
   // init first panel
   (function() {
     const panels = document.querySelectorAll('#mock-cat-panels .mock-cat-panel');
+    if (!panels.length) return;
     panels[0].classList.add('active');
     animateCards(panels[0], 'cardSlideIn', null, 100);
-    document.querySelectorAll('#mock-cats .mock-cat')[0].classList.add('active');
+    const firstCat = document.querySelectorAll('#mock-cats .mock-cat')[0];
+    if (firstCat) firstCat.classList.add('active');
   })();
 </script>
 
