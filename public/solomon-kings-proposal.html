@@ -6,6 +6,16 @@
     <meta name="theme-color" content="#f2c230" />
     <title>Kingi × Solomon Kings FC · Proposal</title>
     <link rel="icon" type="image/png" href="/solomon-kings/crest.png" />
+    <meta name="description" content="A learning app for every child in the Solomon Islands, made with Solomon Kings Football Club. Proposal by Sing Singh AI." />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Sing Singh AI" />
+    <meta property="og:title" content="Kingi × Solomon Kings FC · Proposal" />
+    <meta property="og:description" content="A learning app for every child in the Solomon Islands. Proposal by Sing Singh AI." />
+    <meta property="og:url" content="https://www.singsinghai.com.au/solomon-kings-proposal" />
+    <meta property="og:image" content="https://www.singsinghai.com.au/solomon-kings/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,600;0,8..60,700;1,8..60,400&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet" />
     <style>
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -145,6 +155,14 @@
       .vslide .hr { top: 64px; }
       .vslide .vid { left: 76px; top: 78px; width: 1128px; height: 634px; }
       .vpg { position: absolute; right: 64px; top: 30px; font-size: 11px; font-weight: 700; }
+      /* portrait phone: the video slide stops being a scaled landscape page and becomes a plain column, video edge to edge at 16:9 */
+      .pt .vslide { height: auto; }
+      .pt .vslide .canvas { position: static; width: auto; height: auto; transform: none; padding: 18px 0 12px; }
+      .pt .vslide .title, .pt .vslide .foot { position: static; }
+      .pt .vslide .title { white-space: normal; width: auto; font-size: 21px; line-height: 1.25; padding: 0 16px 14px; }
+      .pt .vslide .hr { display: none; }
+      .pt .vslide .vid { position: static; width: 100%; height: auto; aspect-ratio: 16 / 9; box-shadow: none; }
+      .pt .vslide .foot { display: flex; padding: 10px 16px 0; font-size: 11px; }
       .vcap { position: absolute; left: 896px; top: 184px; width: 320px; font-size: 15px; line-height: 1.6; color: var(--grey); border-top: 2px solid var(--ink); padding-top: 14px; }
       .vcap b { display: block; font-family: var(--serif); font-size: 26px; color: var(--ink); font-weight: 600; margin-bottom: 8px; }
 
@@ -158,6 +176,10 @@
       .cv-meta { font-family: var(--mono); font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--grey); }
       .cv-right { position: absolute; right: 0; top: 0; width: 470px; height: 720px; background: #0b0b0c url(/solomon-kings/stage.jpg) center / cover; overflow: hidden; }
       .cv-right::before { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 48%, rgba(242,194,48,.22), transparent 62%), linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.45)); }
+      /* the mascot stands on the stage, on a soft gold glow */
+      .cv-kingi { position: absolute; left: 0; right: 0; bottom: 24px; height: 610px; display: flex; align-items: flex-end; justify-content: center; }
+      .cv-kingi::before { content: ""; position: absolute; left: 50%; bottom: 40px; width: 440px; height: 440px; transform: translateX(-50%); border-radius: 50%; background: radial-gradient(circle, rgba(242,194,48,.62) 0%, rgba(242,194,48,.28) 46%, rgba(242,194,48,0) 70%); }
+      .cv-kingi img { position: relative; height: 560px; width: auto; max-width: 440px; object-fit: contain; filter: drop-shadow(0 22px 28px rgba(0,0,0,.55)); }
       .cv-phone { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 290px; padding: 0; background: transparent; border-radius: 36px; box-shadow: 0 0 0 1.5px rgba(255,255,255,.34), 0 34px 80px rgba(0,0,0,.6); overflow: hidden; }
       .cv-phone img { display: block; width: 100%; aspect-ratio: 390 / 844; object-fit: cover; }
 
@@ -433,6 +455,9 @@
 
       /* platform: the app on a phone in the middle, two deliverables either side, facing it */
       .plat { position: absolute; left: 64px; top: 150px; width: 1152px; height: 484px; display: grid; grid-template-columns: 1fr 250px 1fr; gap: 30px; align-items: center; }
+      .plat.k { grid-template-columns: 1fr 390px 1fr; gap: 24px; }
+      .pphone.k::before { width: 380px; height: 380px; }
+      .pphone.k img { height: auto; width: 386px; border-radius: 0; box-shadow: none; filter: drop-shadow(0 16px 20px rgba(0,0,0,.28)); }
       .pcol { display: flex; flex-direction: column; gap: 22px; }
       .pphone { position: relative; height: 100%; display: flex; align-items: center; justify-content: center; }
       .pphone::before { content: ""; position: absolute; width: 360px; height: 360px; border-radius: 50%; background: var(--gold-l); }
@@ -798,7 +823,7 @@
           <div class="cv-meta">Proposal document &nbsp;·&nbsp; September 2026</div>
         </div>
         <div class="cv-right">
-          <div class="cv-phone"><img src="/solomon-kings/img/welcome.jpg" alt="Kingi welcome screen" /></div>
+          <div class="cv-kingi"><img src="/solomon-kings/kingi-hero.webp" alt="Kingi, the Solomon Kings FC mascot" /></div>
         </div>
       </div>
     </section>
@@ -814,7 +839,7 @@
     <section class="slide" id="s3">
       <div class="canvas">
         <div class="tag">The application</div><h2 class="title">The key features of Kingi</h2>
-        <div class="plat"><div class="pcol"><div class="pcard"><span class="icirc"><svg class="ic"><use href="#i-shirt"/></svg></span><div><b>Learning through football</b><p>Children learn inside the game they love, with Solomon Kings.</p></div></div><div class="pcard"><span class="icirc"><svg class="ic"><use href="#i-sparkles"/></svg></span><div><b>Lessons made for each child</b><p>The AI changes each lesson to suit the child.</p></div></div></div><div class="pphone"><img src="/solomon-kings/img/welcome.jpg" alt="Kingi home screen" /></div><div class="pcol r"><div class="pcard"><span class="icirc"><svg class="ic"><use href="#i-message"/></svg></span><div><b>Kingi, the AI companion</b><p>A friendly helper children can talk to, in Pijin.</p></div></div><div class="pcard"><span class="icirc"><svg class="ic"><use href="#i-trending"/></svg></span><div><b>Tracks progress, picks what’s next</b><p>Every answer is noted, and the next lesson is chosen to fit.</p></div></div></div></div>
+        <div class="plat k"><div class="pcol"><div class="pcard"><span class="icirc"><svg class="ic"><use href="#i-shirt"/></svg></span><div><b>Learning through football</b><p>Children learn inside the game they love, with Solomon Kings.</p></div></div><div class="pcard"><span class="icirc"><svg class="ic"><use href="#i-sparkles"/></svg></span><div><b>Lessons made for each child</b><p>The AI changes each lesson to suit the child.</p></div></div></div><div class="pphone k"><img src="/solomon-kings/kingi-hero.webp" alt="Kingi, the Solomon Kings FC mascot" /></div><div class="pcol r"><div class="pcard"><span class="icirc"><svg class="ic"><use href="#i-message"/></svg></span><div><b>Kingi, the AI companion</b><p>A friendly helper children can talk to, in Pijin.</p></div></div><div class="pcard"><span class="icirc"><svg class="ic"><use href="#i-trending"/></svg></span><div><b>Tracks progress, picks what’s next</b><p>Every answer is noted, and the next lesson is chosen to fit.</p></div></div></div></div>
         <div class="foot"><span class="src"></span><span class="brand">Sing Singh AI × Solomon Kings FC</span><span class="pg">3</span></div>
       </div>
     </section>
