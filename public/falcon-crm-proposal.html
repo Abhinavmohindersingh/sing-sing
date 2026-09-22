@@ -1,0 +1,2303 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>The Falcon CRM · SingSingh AI × Falcon Group</title>
+  <meta name="description" content="A CRM built around the life of a job, from the first enquiry through to finance and operations. Proposal by SingSingh AI for Falcon Group, September 2026."/>
+  <meta name="author" content="SingSingh AI"/>
+  <meta name="robots" content="noindex, nofollow"/>
+  <meta name="theme-color" content="#081D3A"/>
+  <link rel="icon" type="image/png" sizes="32x32" href="/falcon-crm/img/favicon-32.png"/>
+  <link rel="icon" type="image/png" sizes="192x192" href="/falcon-crm/img/icon-192.png"/>
+  <link rel="apple-touch-icon" href="/falcon-crm/img/apple-touch-icon.png"/>
+  <meta property="og:url" content="https://www.singsinghai.com.au/falcon-crm-proposal"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:site_name" content="SingSingh AI"/>
+  <meta property="og:title" content="The Falcon CRM · SingSingh AI × Falcon Group"/>
+  <meta property="og:description" content="Built around the life of a job, from the first enquiry through to finance and operations."/>
+  <meta property="og:image" content="https://www.singsinghai.com.au/falcon-crm/img/og.png"/>
+  <meta property="og:image:width" content="1200"/>
+  <meta property="og:image:height" content="630"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:      #081D3A;
+      --blue:      #1A73EB;
+      --lblue:     #E8F0FE;
+      --charcoal:  #334155;
+      --grey:      #64748B;
+      --lgrey:     #CBD5E1;
+      --border:    #E2E8F0;
+      --success:   #16A34A;
+      --critical:  #EF4444;
+      --font: "Inter", sans-serif;
+      --mono: "IBM Plex Mono", monospace;
+    }
+
+    html, body { background: #fff; color: var(--charcoal); font-family: var(--font); -webkit-font-smoothing: antialiased; font-size: 13px; line-height: 1.6; }
+
+    #bar { position: fixed; top: 0; left: 0; height: 3px; z-index: 999; background: var(--blue); transition: width .1s; }
+
+    .slide { position: relative; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 6vh 0; border-bottom: 1px solid var(--border); }
+    .slide::after { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--blue); }
+    .wrap { max-width: 1040px; margin: 0 auto; padding: 0 6vw 4rem; width: 100%; }
+
+    .label { display: flex; align-items: center; gap: .6rem; margin-bottom: 1.1rem; }
+    .label-line { width: 24px; height: 2px; background: var(--blue); flex-shrink: 0; }
+    .label-text { font-family: var(--mono); font-size: 9px; letter-spacing: .2em; text-transform: uppercase; color: var(--blue); }
+
+    h2 { font-size: clamp(26px,3.8vw,42px); font-weight: 700; color: var(--navy); line-height: 1.14; letter-spacing: -.025em; }
+    .rule { width: 36px; height: 3px; background: var(--blue); border-radius: 2px; margin: 1.2rem 0 2.6rem; }
+
+    .card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; }
+    .card-icon { width: 38px; height: 38px; border-radius: 9px; background: var(--lblue); display: flex; align-items: center; justify-content: center; margin-bottom: 1.1rem; }
+    .card-t { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: .4rem; line-height: 1.3; }
+    .card-p { font-size: 12px; color: var(--grey); line-height: 1.6; }
+
+    .big { font-size: clamp(30px,4vw,44px); font-weight: 800; color: var(--navy); line-height: 1; letter-spacing: -.02em; }
+    .kicker { font-family: var(--mono); font-size: 8.5px; color: var(--blue); letter-spacing: .14em; text-transform: uppercase; }
+
+    .tag { display: inline-flex; align-items: center; padding: .22rem .7rem; border-radius: 100px; font-size: 9.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; font-family: var(--mono); }
+    .tag-blue { background: var(--lblue); color: var(--blue); }
+    .tag-green { background: #f0fdf4; color: var(--success); }
+    .tag-red { background: #fef2f2; color: var(--critical); }
+    .tag-grey { background: #f1f5f9; color: var(--grey); }
+
+    .cbar { background: var(--lblue); border-radius: 10px; padding: .95rem 1.3rem; display: flex; align-items: center; gap: .9rem; margin-top: 2rem; }
+    .cbar p { font-size: 13px; font-weight: 600; color: var(--navy); }
+
+    .badge { width: 30px; height: 30px; border-radius: 50%; background: var(--blue); color: #fff; font-weight: 700; font-size: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: var(--mono); }
+
+    .slide-foot { position: absolute; bottom: 0; left: 0; right: 0; padding: .55rem 6vw; display: flex; justify-content: space-between; border-top: 1px solid var(--border); }
+    .slide-foot span { font-family: var(--mono); font-size: 9px; color: var(--lgrey); letter-spacing: .08em; text-transform: uppercase; }
+
+    /* Cover */
+    #s1 { text-align: center; }
+    .s1-logos { display: flex; align-items: center; justify-content: center; gap: 3.8rem; margin-bottom: 5rem; }
+    .s1-logos .falcon { height: clamp(50px,5.9vw,74px); width: auto; mix-blend-mode: multiply; }
+    .s1-logos .ssa { height: clamp(84px,9.9vw,124px); width: auto; }
+    .s1-logos .div { width: 1px; height: 86px; background: rgba(0,0,0,.14); }
+    .s1-name { font-size: clamp(38px,5.6vw,64px); font-weight: 800; color: var(--navy); line-height: 1; letter-spacing: -.03em; }
+    .s1-tag { font-size: clamp(16px,1.9vw,21px); font-weight: 500; color: var(--blue); line-height: 1.45; margin: 1.3rem 0 2.4rem; }
+    .s1-built { font-size: clamp(13px,1.4vw,15px); color: var(--grey); line-height: 1.75; max-width: 540px; margin: 0 auto 2.6rem; }
+    .s1-loc { font-family: var(--mono); font-size: 9.5px; color: var(--grey); letter-spacing: .16em; }
+
+    /* Screenshot */
+    .shot { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; box-shadow: 0 1px 3px rgba(8,29,58,.06); }
+    .shot-bar { display: flex; align-items: center; gap: .45rem; padding: .4rem .75rem; background: #f8fafc; border-bottom: 1px solid var(--border); }
+    .shot-bar i { width: 7px; height: 7px; border-radius: 50%; background: var(--lgrey); }
+    .shot-bar .path { font-family: var(--mono); font-size: 8.5px; color: var(--grey); margin-left: .3rem; }
+    .shot img { width: 100%; display: block; }
+    /* zoomed detail: the image is scaled up inside a fixed viewport and offset so
+       one region fills it. Same outer height as a full shot beside it. */
+    /* same outer height as the full shot beside it, so the pair sits level.
+       The zoom comes from dropping the sidebar and margins, not from magnifying. */
+    .zoomport { position: relative; overflow: hidden; aspect-ratio: 16 / 10; }
+    .zoomport img { position: absolute; max-width: none; width: 122%; left: -20.3%; top: -12.2%; }
+    .zoomport.zt { aspect-ratio: 1440 / 665; }
+    .zoomport.zt img { width: 100%; left: 0; top: 0; }
+    .cap { font-size: 11px; color: var(--grey); margin-top: .6rem; }
+    .cap b { color: var(--navy); font-weight: 700; }
+
+    table.g { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+    table.g th { font-family: var(--mono); font-size: 8.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--blue); text-align: left; font-weight: 600; padding: .6rem .8rem; border-bottom: 1px solid var(--border); }
+    table.g td { padding: .7rem .8rem; border-bottom: 1px solid var(--border); color: var(--charcoal); }
+    table.g td.n { text-align: right; font-family: var(--mono); white-space: nowrap; }
+    table.g tr.tot td { background: var(--lblue); font-weight: 700; color: var(--navy); border-bottom: none; }
+
+    /* Plain line under a heading, tying a screenshot back to the promise on slide 2 */
+    .say { font-size: 14px; color: var(--charcoal); line-height: 1.6; max-width: 800px;
+           margin: -1.2rem 0 1.9rem; display: flex; gap: .75rem; align-items: baseline; flex-wrap: wrap; }
+    .say .tag { flex-shrink: 0; }
+
+    /* Investment slide */
+    .invsub { font-size: 15px; color: var(--grey); margin-top: .5rem; }
+    .sec-h { display: flex; align-items: center; gap: .9rem; font-size: 15px; font-weight: 700; color: var(--navy); margin: 0 0 .9rem; }
+    .sec-h::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+    .icard { display: flex; gap: 1rem; align-items: flex-start; background: #f6f8fb; border-radius: 12px; padding: 1rem 1.1rem; margin-bottom: .7rem; }
+    .icirc { width: 46px; height: 46px; border-radius: 50%; background: #e6edfa; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .icirc svg { width: 21px; height: 21px; }
+    .icard-t { font-size: 14.5px; font-weight: 700; color: var(--navy); }
+    .icard-p { font-size: 12.5px; color: var(--grey); line-height: 1.55; margin-top: .15rem; }
+    .icard-n { margin-left: auto; font-family: var(--mono); font-size: 14px; font-weight: 600; color: var(--navy); white-space: nowrap; padding-left: .8rem; }
+    .totbox { background: #e8effc; border-radius: 14px; padding: 1.6rem 1.4rem; text-align: center; margin-bottom: 1.6rem; }
+    .totbox-k { font-size: 13.5px; color: var(--charcoal); }
+    .totbox-n { font-size: 46px; font-weight: 800; color: var(--navy); line-height: 1.05; letter-spacing: -.02em; }
+    .totbox-n span { font-size: 17px; font-weight: 500; color: var(--charcoal); letter-spacing: 0; }
+    .pay { display: flex; position: relative; margin-top: 1.2rem; }
+    .pay::before { content: ""; position: absolute; top: 13px; left: 25%; right: 25%; height: 2px; background: #b9cdf2; }
+    .pay > div { flex: 1; text-align: center; position: relative; }
+    .paydot { width: 26px; height: 26px; border-radius: 50%; background: var(--blue); color: #fff; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin: 0 auto .6rem; position: relative; }
+    .pay-l { font-size: 12.5px; color: var(--charcoal); }
+    .pay-n { font-size: 17px; font-weight: 800; color: var(--navy); margin-top: .1rem; }
+    table.cost { width: 100%; border-collapse: collapse; font-size: 14px; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+    table.cost td { padding: .8rem 1rem; border-bottom: 1px solid var(--border); color: var(--charcoal); }
+    table.cost td.n { text-align: right; font-weight: 600; color: var(--navy); }
+    table.cost tr.tot td { background: #e8effc; font-weight: 700; color: var(--navy); border-bottom: none; border-left: 3px solid var(--blue); }
+    table.cost tr.tot td.n { border-left: none; }
+
+    .note { display: flex; gap: .55rem; font-size: 12.5px; color: var(--grey); line-height: 1.65; margin-bottom: .75rem; }
+    .note .ast { color: var(--blue); font-weight: 700; flex-shrink: 0; line-height: 1.5; }
+    .note b { color: var(--navy); font-weight: 700; }
+    .vgrid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1.5rem; }
+    .vblock { aspect-ratio: 1; border: 1px solid var(--border); border-radius: 14px;
+              display: flex; flex-direction: column; align-items: center; justify-content: center;
+              gap: 1.4rem; text-align: center; padding: 1.4rem; }
+    .vblock .icirc { width: 62px; height: 62px; }
+    .vblock .icirc svg { width: 28px; height: 28px; }
+    .vblock-t { font-size: 16.5px; font-weight: 700; color: var(--navy); line-height: 1.3; }
+
+    /* Before and after infographic */
+    .ba { display: grid; grid-template-columns: 1fr 56px 1fr; align-items: center; gap: 0; }
+    .ba-col { border: 1px solid var(--border); border-radius: 12px; padding: 1.6rem; background: #fbfcfe; }
+    .ba-col-after { border-color: #bfdbfe; background: #fff; }
+    .ba-list { display: flex; flex-direction: column; gap: 1rem; margin-top: 1.3rem; }
+    .ba-item { display: flex; align-items: center; gap: .85rem; font-size: 14px; font-weight: 600; color: var(--grey); line-height: 1.35; }
+    .ba-col-after .ba-item { color: var(--navy); }
+    .ba-ico { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .ba-ico svg { width: 19px; height: 19px; }
+    .ba-ico-grey { background: #f1f5f9; }
+    .ba-ico-blue { background: var(--lblue); }
+    .ba-arrow { display: flex; align-items: center; justify-content: center; }
+    .ba-arrow svg { width: 26px; height: 26px; }
+
+    .mono { font-family: var(--mono); }
+    .g3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.4rem; }
+    .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2.6rem; align-items: start; }
+    .rows { display: flex; flex-direction: column; gap: .75rem; }
+    .row { display: flex; gap: .9rem; align-items: center; font-size: 13.5px; color: var(--navy); font-weight: 600; }
+    .row svg { flex-shrink: 0; }
+
+    @media print {
+      /* A4 landscape, edge to edge. Everything below is pinned in mm or px:
+         vh and vw do not resolve against the paper box and break pagination. */
+      @page { size: 297mm 210mm; margin: 0; }
+
+      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+      html, body { width: 297mm; background: #fff !important; font-size: 12px; }
+      #bar { display: none !important; }
+
+      /* top aligned in print, so the heading sits at the same height on every
+         page. Centring leaves each slide floating in its own dead space. */
+      .slide {
+        width: 297mm; height: 210mm; min-height: 0;
+        padding: 17mm 0 12mm;
+        display: flex; flex-direction: column; justify-content: flex-start;
+        overflow: hidden; border-bottom: none;
+        page-break-after: always; break-after: page;
+        page-break-inside: avoid; break-inside: avoid;
+      }
+      #s1 { justify-content: flex-start; padding-top: 26mm; }
+      .slide:last-of-type { page-break-after: auto; break-after: auto; }
+
+      .wrap { max-width: none; width: 100%; padding: 0 16mm; }
+      .slide-foot { padding: 0 16mm 5mm; border-top: none; }
+
+      /* Type pinned, so nothing rescales against the window. Scaled up from the
+         screen sizes: with this few words per slide, small type on a landscape
+         page reads as an empty slide rather than a deliberate one. */
+      h2 { font-size: 34px; }
+      .rule { margin: 5mm 0 11mm; }
+      .label { margin-bottom: 4mm; }
+      .label-text { font-size: 10px; }
+      .cbar { margin-top: 11mm; padding: 5mm 6mm; }
+      .cbar p { font-size: 15px; }
+
+      .row { font-size: 16px; }
+      .rows { gap: 5mm; }
+      .card { padding: 7mm; }
+      .card-t { font-size: 16px; }
+      .card-p { font-size: 13px; }
+      .card-icon { width: 42px; height: 42px; margin-bottom: 5mm; }
+      .kicker { font-size: 9.5px; }
+      .tag { font-size: 10.5px; }
+      table.g { font-size: 14px; }
+      table.g th { font-size: 9.5px; }
+      table.g td { padding: 3mm; }
+      table.g.tight td { padding: 2.1mm 3mm; }
+      table.g.tight th { padding: 2mm 3mm; }
+      .badge { width: 34px; height: 34px; font-size: 14px; }
+
+      /* Cover */
+      .s1-logos { gap: 22mm; margin-bottom: 30mm; }
+      .s1-logos .falcon { height: 19mm; }
+      .s1-logos .ssa { height: 32mm; }
+      .s1-logos .div { height: 24mm; }
+      .s1-name { font-size: 52px; }
+      .s1-tag { font-size: 19px; margin: 6mm 0 10mm; }
+      .s1-built { margin-bottom: 10mm; }
+
+      /* Fill the page. Heading block sits at the top, the content band stretches
+         into whatever is left, and the closing bar is pinned to the bottom edge.
+         Without this every short slide leaves its lower half empty. */
+      .slide:not(#s1) .wrap { height: 100%; display: flex; flex-direction: column; }
+      /* the content band takes the leftover height and centres itself in it,
+         rather than stretching the cards and leaving their contents floating */
+      .slide:not(#s1) .wrap > div:not(.label):not(.rule):not(.cbar) { flex: 1 1 auto; align-content: center; }
+      .wrap > .cbar { flex: 0 0 auto; margin-top: auto; }
+
+      .card { break-inside: avoid; padding: 9mm; }
+
+      /* Icons scaled to the bigger page */
+      .card-icon { width: 56px; height: 56px; border-radius: 13px; margin-bottom: 6mm; }
+      .card-icon svg { width: 27px; height: 27px; }
+      .row svg { width: 24px; height: 24px; }
+      .cbar svg { width: 22px; height: 22px; }
+      .badge { width: 36px; height: 36px; font-size: 15px; }
+
+      /* Screenshots must never outgrow the page */
+      .shot { box-shadow: none; break-inside: avoid; }
+      .say { margin: -6mm 0 7mm; font-size: 16px; }
+      .shot img { max-height: 84mm; object-fit: cover; object-position: top center; }
+      /* the zoom is cropped by its viewport, so the global cap must not squash it */
+      .zoomport { max-height: 84mm; }
+      .zoomport.zt { max-height: none; }
+      .zoomport img { max-height: none; object-fit: fill; }
+      .cap { margin-top: 2.5mm; }
+
+      .big { font-size: 42px; }
+
+      /* before/after panels scale with the page */
+      .ba-col { padding: 9mm; }
+      .ba-list { gap: 6mm; margin-top: 7mm; }
+      .ba-item { font-size: 16px; }
+      .ba-ico { width: 46px; height: 46px; border-radius: 12px; }
+      .ba-ico svg { width: 23px; height: 23px; }
+      .ba-arrow svg { width: 30px; height: 30px; }
+    }
+    /* screen only: without this the phone layout fires while printing and
+       every multi-column slide collapses into one tall column */
+    @media screen and (max-width: 860px) {
+      .g3, .g2 { grid-template-columns: 1fr; }
+      .s1-logos { gap: 1.4rem; flex-wrap: wrap; }
+      .s1-logos .div { display: none; }
+    }
+  </style>
+  <style>
+    /* ── Added for the CRM deck. Everything above is the Quoting Tool deck's
+       stylesheet, unchanged, so both decks read as one family. ── */
+    :root { --warning: #D97706; --wbg: #FFFBEB; --purple: #7C3AED; --pbg: #F3E8FF; --orange: #EA580C; --obg: #FFF1E6; --teal: #0F766E; --tbg: #E6F4F1; }
+
+    /* Icons come from the sprite at the top of <body>: <svg class="ic"><use href="#i-mail"/></svg> */
+    .ic { width: 20px; height: 20px; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .row .ic, .cbar .ic, .card-icon .ic, .icirc .ic { color: var(--blue); }
+    .cbar .ic { width: 18px; height: 18px; }
+
+    /* Anything still to be filled in before this goes out. Search for "tbd". */
+    .tbd { background: #FEF3C7; color: #92400E; border-radius: 4px; padding: 0 .35em; font-family: var(--mono); font-weight: 600; }
+    .totbox-n .tbd { font-size: 32px; letter-spacing: 0; color: #92400E; font-weight: 700; }
+
+    .tag-amber { background: var(--wbg); color: var(--warning); }
+    /* The priced line-item menu. One row per thing we build: the technical
+       name, a plain line under it, and its own price on the right. The dashed
+       rule is there so a reader can literally strike a line out and take that
+       number off the total. */
+    .li { display: flex; align-items: flex-start; gap: .6rem; padding: .45rem 0; border-bottom: 1px dashed var(--border); }
+    .li:last-child { border-bottom: none; }
+    .li-t { font-size: 10.5px; color: var(--grey); line-height: 1.4; }
+    .li-t b { display: block; color: var(--navy); font-weight: 700; font-size: 11.5px; line-height: 1.35; margin-bottom: .1rem; }
+    .li-n { margin-left: auto; font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--navy); white-space: nowrap; padding-top: .05rem; }
+    .li-n.amber { color: var(--warning); }
+    /* One stage per slide: a header band, then the lines in two columns. */
+    .rate-wrap { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+    table.rate { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 12.5px; }
+    table.rate th { font-family: var(--mono); font-size: 8.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--blue); text-align: left; font-weight: 600; background: #f6f8fb; padding: .5rem .85rem; border-bottom: 1px solid var(--border); }
+    table.rate th.n, table.rate td.n { text-align: right; }
+    table.rate td { padding: .42rem .85rem; border-bottom: 1px solid var(--border); color: var(--charcoal); }
+    table.rate td + td, table.rate th + th { border-left: 1px solid var(--border); }
+    table.rate tr:last-child td { border-bottom: none; }
+    table.rate td b { color: var(--navy); font-weight: 700; }
+    table.rate td.n { font-family: var(--mono); font-weight: 600; color: var(--navy); white-space: nowrap; }
+    table.rate tr.grp td { background: var(--lblue); font-weight: 700; color: var(--navy); border-left: none; }
+    table.rate tr.grp td.n { color: var(--blue); }
+    table.rate.feat td:first-child { width: 30%; }
+    table.rate.feat td:nth-child(2) { color: var(--grey); line-height: 1.45; }
+    table.rate.feat td.n { width: 13%; }
+    table.rate tr.tbq td { background: var(--wbg); }
+    table.rate tr.tbq td.n { color: var(--warning); font-family: var(--font); }
+    @media print {
+      table.rate { font-size: 13.5px; }
+      table.rate th { font-size: 10px; padding: 2mm 3mm; }
+      table.rate td { padding: 1.4mm 3mm; }
+      table.rate.dense { font-size: 11.5px; }
+      table.rate.dense th { font-size: 9px; padding: 1.3mm 3mm; }
+      table.rate.dense td { padding: .72mm 3mm; }
+    }
+    .sp-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem; border-bottom: 2px solid var(--border); padding-bottom: .75rem; margin-bottom: 1rem; }
+    .sp-k { font-family: var(--mono); font-size: 9px; letter-spacing: .16em; text-transform: uppercase; color: var(--blue); line-height: 1.7; }
+    .sp-n { font-size: 34px; font-weight: 800; color: var(--navy); letter-spacing: -.02em; white-space: nowrap; }
+    .sp-n span { font-size: 14px; font-weight: 500; color: var(--grey); margin-left: .4rem; letter-spacing: 0; }
+    .sp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 3rem; align-items: start; }
+    .sp-g { display: flex; align-items: baseline; gap: .6rem; font-size: 12px; font-weight: 700; color: var(--navy); padding-bottom: .4rem; margin-bottom: .2rem; border-bottom: 1.5px solid var(--lblue); }
+    .sp-g em { margin-left: auto; font-style: normal; font-family: var(--mono); color: var(--blue); }
+    .sp-grid .li-t { font-size: 11.5px; }
+    .sp-grid .li-t b { font-size: 12.5px; }
+    .sp-grid .li-n { font-size: 12px; }
+    @media print {
+      .sp-k { font-size: 10px; }
+      .sp-n { font-size: 40px; }
+      .sp-n span { font-size: 16px; }
+      .sp-g { font-size: 14px; }
+      .sp-grid .li { padding: 1.9mm 0; }
+      .sp-grid .li-t { font-size: 13px; }
+      .sp-grid .li-t b { font-size: 14px; }
+      .sp-grid .li-n { font-size: 13.5px; }
+      .sp-grid[style*="repeat(3"] .li { padding: 1.4mm 0; }
+      .sp-grid[style*="repeat(3"] .li-t { font-size: 11.5px; }
+      .sp-grid[style*="repeat(3"] .li-t b { font-size: 12.5px; }
+      .sp-grid[style*="repeat(3"] .li-n { font-size: 12px; }
+      .sp-grid[style*="repeat(3"] .sp-g { font-size: 12.5px; }
+    }
+    /* Forty-one priced lines have to sit on two landscape pages, so the menu
+       boards run tighter than the rest of the deck. */
+    .board.items .bcol { padding: 1.2rem 1.1rem; gap: .9rem; }
+    .board.items .grp-k { margin-bottom: .25rem; }
+    @media print {
+      .board.items .bcol { padding: 5mm 4.5mm; gap: 4mm; }
+      .board.items .bcol-h { font-size: 15px; padding-bottom: .5rem; }
+      .board.items .grp-k { font-size: 9px; margin-bottom: 1mm; }
+      .board.items .li { padding: 1mm 0; }
+      .board.items .li-t { font-size: 11px; line-height: 1.32; }
+      .board.items .li-t b { font-size: 11.5px; margin-bottom: 0; }
+      .board.items .li-n { font-size: 11.5px; }
+      .board.items .colid { padding: 2.6mm; font-size: 13px; }
+    }
+
+    /* Investment: the monthly table carries four rows now, so it runs at a
+       tighter rhythm to keep the slide on one page. */
+    /* A fully ruled table: outer box from the wrapper, rules on every side. */
+    /* Four statements that have to be read, not skimmed: one card each. */
+    .facts { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem 1.4rem; margin-top: 1.5rem; }
+    .fact { display: flex; gap: .85rem; align-items: center; background: #f6f8fb; border-radius: 10px; padding: .9rem 1rem; }
+    .fact-i { width: 32px; height: 32px; border-radius: 9px; background: var(--lblue); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .fact-i .ic { width: 17px; height: 17px; color: var(--blue); }
+    .fact p { font-size: 13px; font-weight: 600; color: var(--navy); line-height: 1.45; }
+    @media print {
+      .facts { gap: 3mm 6mm; margin-top: 2.5mm; }
+      .fact { padding: 2.8mm 4mm; border-radius: 3mm; }
+      .fact p { font-size: 15px; }
+      .fact-i { width: 38px; height: 38px; }
+      .fact-i .ic { width: 20px; height: 20px; }
+    }
+    table.g.boxed th { background: #f6f8fb; }
+    table.g.boxed th + th, table.g.boxed td + td { border-left: 1px solid var(--border); }
+    table.g.boxed tr:last-child td { border-bottom: none; }
+    table.cost.tight td { padding: .5rem .85rem; font-size: 13px; line-height: 1.45; }
+    table.cost.tight td.n { white-space: nowrap; }
+    .row.muted { color: var(--grey); font-weight: 500; }
+    .row.muted .ic { color: var(--lgrey); }
+    .row.bad, .row.bad .ic { color: var(--critical); }
+
+    /* Mock-up screens. Nothing is built yet, so these are drawn in HTML inside
+       the same frame the Quoting Tool deck used for its screenshots. */
+    .mock { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: #fff; box-shadow: 0 1px 3px rgba(8,29,58,.06); }
+    .mock-body { padding: 1rem 1.1rem 1.1rem; }
+    .mock-h { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: .9rem; }
+    .mock-title { font-size: 14px; font-weight: 700; color: var(--navy); line-height: 1.3; }
+    .mock-sub { font-size: 11px; color: var(--grey); }
+    .mock-foot { display: flex; gap: 1.1rem; align-items: center; margin-top: .85rem; padding-top: .75rem; border-top: 1px solid var(--border); font-size: 11.5px; color: var(--grey); }
+    .mock-foot b { color: var(--navy); }
+    .mock-foot b.red { color: var(--critical); }
+    .tabs { display: flex; gap: .2rem; border-bottom: 1px solid var(--border); margin-bottom: .4rem; }
+    .tabs span { font-family: var(--mono); font-size: 10px; letter-spacing: .08em; padding: .35rem .8rem; color: var(--grey); border-bottom: 2px solid transparent; margin-bottom: -1px; }
+    .tabs span.on { color: var(--blue); border-bottom-color: var(--blue); font-weight: 600; }
+    table.g.mini { font-size: 11.5px; }
+    table.g.mini th, table.g.mini td { padding: .45rem .6rem; }
+    table.g th.n { text-align: right; }
+    table.g .tag { font-size: 8.5px; padding: .15rem .55rem; white-space: nowrap; }
+    .chk { display: flex; gap: 1.3rem; flex-wrap: wrap; margin-top: .85rem; padding-top: .75rem; border-top: 1px solid var(--border); }
+    .chk span { display: flex; align-items: center; gap: .4rem; font-size: 11.5px; font-weight: 600; color: var(--success); }
+    .chk .ic { width: 15px; height: 15px; }
+
+    /* 02 Vision: laid out like the whiteboard from the 17 Sep call. Blue-ringed
+       chips are the ones circled on the board. */
+    .board { display: grid; grid-template-columns: repeat(5, 1fr); border: 1px solid var(--border); border-radius: 14px; background: #fff; min-height: 66vh; }
+    .bcol { position: relative; padding: 1.7rem 1.4rem 1.6rem; display: flex; flex-direction: column; gap: 1.5rem; }
+    .bcol + .bcol { border-left: 1px solid var(--border); }
+    .bcol-h { display: flex; align-items: center; gap: .6rem; padding-bottom: .75rem; border-bottom: 2px solid var(--blue); font-size: 15px; font-weight: 800; color: var(--navy); letter-spacing: -.01em; line-height: 1.2; }
+    .bcol-h .badge { width: 24px; height: 24px; font-size: 11px; }
+    .bcol-h .ic { margin-left: auto; width: 19px; height: 19px; }
+    .bcol-arrow { position: absolute; left: -12px; top: 1.2rem; width: 24px; height: 24px; border-radius: 50%; background: #fff; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--blue); z-index: 1; }
+    .bcol-arrow .ic { width: 13px; height: 13px; }
+    .grp-k { font-family: var(--mono); font-size: 8.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--grey); margin-bottom: .45rem; }
+    .chips { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem; }
+    .chips span { font-size: 11.5px; font-weight: 600; color: var(--navy); background: #f1f5f9; border-radius: 6px; padding: .28rem .55rem; white-space: nowrap; }
+    .chips span.hi { background: var(--lblue); color: var(--blue); box-shadow: inset 0 0 0 1.5px var(--blue); }
+    .chips span.hi-green { background: #f0fdf4; color: var(--success); box-shadow: inset 0 0 0 1.5px var(--success); }
+    .chips span.hi-teal { background: var(--tbg); color: var(--teal); box-shadow: inset 0 0 0 1.5px var(--teal); }
+    .chips span.hi-purple { background: var(--pbg); color: var(--purple); box-shadow: inset 0 0 0 1.5px var(--purple); }
+    .chips span.muted { background: none; color: var(--grey); font-weight: 500; box-shadow: inset 0 0 0 1px var(--lgrey); }
+    .chips .ic { width: 12px; height: 12px; color: var(--lgrey); }
+    /* a revision flow stays on one line so an arrow never ends a row */
+    .chips.flow { flex-wrap: nowrap; gap: .15rem; }
+    .chips.flow span { padding: .28rem .3rem; font-size: 10.5px; }
+    .chips.flow .ic { width: 10px; height: 10px; }
+    .bl { list-style: none; display: flex; flex-direction: column; gap: .3rem; }
+    .bl li { display: flex; gap: .5rem; align-items: center; font-size: 12px; color: var(--charcoal); }
+    .bl li::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--blue); flex-shrink: 0; }
+    /* The ground rule for each column, integrated where it belongs rather
+       than pulled out into its own band. Sits above the ID chip and is
+       pushed to the foot of the column by its own auto top-margin. */
+    .colrule { margin-top: auto; display: flex; gap: .55rem; align-items: flex-start; font-size: 11.5px; color: var(--charcoal); line-height: 1.5; padding: .8rem .85rem; border-radius: 10px; }
+    .colrule .ic { width: 15px; height: 15px; flex-shrink: 0; margin-top: .1rem; }
+    .colrule b { display: block; color: var(--navy); font-weight: 700; margin-bottom: .1rem; }
+
+    /* Colour-coded ID chip pinned to the foot of each column: same job,
+       four colours, one per stage it's currently sitting in. */
+    .colid { display: flex; align-items: center; justify-content: center; gap: .5rem; color: #fff; font-family: var(--mono); font-weight: 600; font-size: 12px; letter-spacing: .03em; border-radius: 8px; padding: .6rem; }
+    .colid .ic { width: 14px; height: 14px; }
+
+    /* 03 Enquiry: a plain dashboard screen — sources filter on the left,
+       the enquiry list on the right — built entirely from the chrome
+       already defined for the deck (.mock / .fa). */
+    .api { font-family: var(--mono); font-size: 8.5px; font-weight: 600; letter-spacing: .1em; color: var(--blue); background: var(--lblue); border: 1px solid #bfdbfe; border-radius: 4px; padding: .05rem .35rem; }
+    .idbread { margin-top: .9rem; padding-top: .8rem; border-top: 1px dashed var(--lgrey); display: flex; align-items: center; gap: .9rem; flex-wrap: wrap; }
+    .idbread-k { font-size: 12px; color: var(--grey); }
+    .idbread b { font-family: var(--mono); font-size: 12.5px; font-weight: 700; color: var(--navy); }
+    .idbread .ic { width: 13px; height: 13px; color: var(--lgrey); }
+
+    /* ── The Falcon app, as it will actually look ────────────────────────────
+       Chrome and colours are taken from the live Project2 quoting tool
+       (Project2_QuotingTool/static/tokens.css + app.css): navy sidebar with
+       the white logo, white header bar, grey page, white cards with hairline
+       borders, small-caps table headers, soft status pills. Everything is in
+       em off .fa's font-size, so one number scales the whole screen. */
+    .fa { --fa-blue: #0033A0; --fa-side: #061A45; --fa-deep: #0A2266; --fa-ink: #131313; --fa-ink2: #45535C; --fa-muted: #7A8596; --fa-line: #E4E7EC; --fa-line2: #EFF1F5; --fa-page: #FFFFFF; --fa-soft: #E7EDFA; --fa-warn: #A8420F; --fa-good: #0A6C4A;
+          font-family: 'Roboto', 'Segoe UI', system-ui, sans-serif; font-size: 10px; line-height: 1.4; color: var(--fa-ink);
+          display: grid; grid-template-columns: 15em 1fr; background: var(--fa-page); }
+    .fa-side { background: var(--fa-side); color: #fff; display: flex; flex-direction: column; }
+    .fa-brand { padding: 1.3em 1.5em 1.2em; border-bottom: 1px solid rgba(255,255,255,.1); }
+    .fa-brand img { height: 1.25em; width: auto; display: block; filter: brightness(0) invert(1); }
+    .fa-nav { padding: 1em .85em .4em; }
+    .fa-navitem { display: flex; align-items: center; gap: .85em; padding: .75em .9em; margin-bottom: .15em; border-radius: .5em; font-size: 1.05em; font-weight: 500; color: rgba(255,255,255,.8); white-space: nowrap; }
+    .fa-navitem .ic { width: 1.3em; height: 1.3em; }
+    .fa-navitem.on { background: var(--fa-blue); color: #fff; }
+    .fa-sidefoot { padding: 1.1em 1.4em 1.3em; border-top: 1px solid rgba(255,255,255,.1); }
+    .fa-so { display: flex; align-items: center; gap: .8em; margin-bottom: .8em; font-size: 1.05em; font-weight: 500; color: rgba(255,255,255,.85); }
+    .fa-so .ic { width: 1.3em; height: 1.3em; }
+    .fa-sidefoot small { display: block; font-size: .8em; line-height: 1.5; color: rgba(255,255,255,.45); }
+    .fa-main { min-width: 0; display: flex; flex-direction: column; }
+    .fa-btn { font-size: .95em; font-weight: 700; padding: .6em 1.2em; border-radius: .6em; background: var(--fa-blue); color: #fff; }
+    .fa-page { padding: 1.5em 1.7em 1.7em; display: flex; flex-direction: column; gap: 1.2em; }
+    .fa-pagehead { display: flex; align-items: flex-start; justify-content: space-between; gap: 1em; }
+    .fa-pagehead h4 { font-size: 1.6em; font-weight: 700; letter-spacing: -.02em; margin-bottom: .25em; }
+    .fa-pagehead p { color: var(--fa-ink2); line-height: 1.5; }
+    .fa-acts { display: flex; align-items: center; gap: .9em; flex-shrink: 0; }
+    .fa-card { background: #fff; border: 1px solid var(--fa-line); border-radius: 1em; padding: 1.2em 1.4em 0; overflow: hidden; }
+    .fa-cardhead { display: flex; align-items: center; gap: .9em; margin-bottom: 1em; }
+    .fa-cardhead h5 { font-size: 1.2em; font-weight: 700; letter-spacing: -.008em; }
+    .fa-cardhead .dim { margin-left: auto; color: var(--fa-muted); }
+    .fa-tabs { display: flex; gap: .5em; }
+    /* Channels: filter by where it came from, not by tab. */
+    .fa-srcs { position: relative; display: flex; align-items: center; gap: .6em; }
+    .src-note { position: absolute; z-index: 4; top: calc(100% + .6em); right: 0; width: 22em; background: #fff; border: 1px solid var(--fa-line); border-radius: .6em; padding: .85em .95em; box-shadow: 0 .6em 1.4em rgba(6,26,69,.16); }
+    .fa-pipe .fa-bellw { position: relative; }
+    .bell-note { position: absolute; z-index: 6; bottom: calc(100% + .9em); right: -1.2em; width: 21em; background: #fff; border: 1px solid var(--fa-line); border-radius: .6em; padding: .85em .95em; box-shadow: 0 .6em 1.4em rgba(6,26,69,.18); text-align: left; font-weight: 400; }
+    .bell-note::before { content: ""; position: absolute; bottom: -.4em; right: 2.4em; width: .8em; height: .8em; background: #fff; border-right: 1px solid var(--fa-line); border-bottom: 1px solid var(--fa-line); transform: rotate(45deg); }
+    /* the three action callouts sit in a row under their buttons */
+    .fa-actnotes { display: flex; align-items: flex-start; gap: .8em; margin-top: .7em; }
+    .fa-actnotes .act-note { margin-top: 0; flex: 0 1 20em; max-width: none; }
+    .fa-actnotes .act-note::before { left: 2.6em; }
+    .act-note.bad h6 .ic { color: var(--fa-warn); }
+    .src-note::before { content: ""; position: absolute; top: -.4em; right: 3.2em; width: .8em; height: .8em; background: #fff; border-left: 1px solid var(--fa-line); border-top: 1px solid var(--fa-line); transform: rotate(45deg); }
+    .fa-src { position: relative; display: flex; flex-direction: column; gap: .05em; min-width: 8.2em; padding: .55em .85em .6em; border: 1px solid var(--fa-line); border-radius: .55em; background: #fff; color: var(--fa-ink2); font-size: .95em; font-weight: 600; cursor: pointer; box-shadow: 0 .12em .3em rgba(6,26,69,.07); }
+    .fa-src b { font-size: 1.45em; font-weight: 700; color: var(--fa-ink); line-height: 1.15; }
+    .fa-src i { font-style: normal; font-size: .88em; font-weight: 500; color: var(--fa-muted); }
+    .fa-src.on { border-color: var(--fa-blue); background: var(--fa-soft); color: var(--fa-blue); box-shadow: 0 0 0 2px rgba(0,51,160,.14), 0 .25em .6em rgba(6,26,69,.12); }
+    .fa-src.on b, .fa-src.on i { color: var(--fa-blue); }
+    .fa-tab { font-weight: 600; padding: .45em 1.2em; border-radius: .7em; border: 1px solid var(--fa-line); color: var(--fa-ink2); }
+    .fa-tab.on { background: var(--fa-soft); border-color: transparent; color: var(--fa-blue); font-weight: 700; }
+    table.fa-t, table.fa-kv { width: calc(100% + 2.8em); margin: 0 -1.4em; border-collapse: collapse; font-size: 1.05em; }
+    .fa-t th { font-size: .9em; color: var(--fa-ink2); background: #fff; text-align: left; font-weight: 600; padding: .8em 1.4em; border-top: 1px solid var(--fa-line2); border-bottom: 1px solid var(--fa-line2); white-space: nowrap; }
+    .fa-t td, .fa-kv td { padding: .95em 1.4em; border-bottom: 1px solid var(--fa-line2); }
+    .fa-t tr:last-child td, .fa-kv tr:last-child td { border-bottom: 0; }
+    .fa-t tr.on td { background: var(--fa-soft); }
+    .fa-t tr.tot td { background: #F4F7FC; border-top: 1px solid var(--fa-line); border-bottom: none; color: var(--fa-ink); }
+    .fa-t tr.on td:first-child { box-shadow: inset .28em 0 0 var(--fa-blue); }
+    .fa-kv td { border-top: 1px solid var(--fa-line2); border-bottom: 0; }
+    .fa-kv td:first-child { color: var(--fa-muted); width: 40%; }
+    .fa-kv td:last-child { font-weight: 600; }
+    .fa-t th.n, .fa-t td.n { text-align: right; font-variant-numeric: tabular-nums; }
+    .fa-t td.id { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .9em; font-weight: 600; color: var(--fa-blue); white-space: nowrap; }
+    .fa-t td.dim { color: var(--fa-muted); }
+    .fa-api { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .75em; font-weight: 700; letter-spacing: .08em; color: var(--fa-blue); background: var(--fa-soft); border-radius: .4em; padding: .1em .45em; margin-left: .5em; }
+    .fa-pill { font-weight: 600; white-space: nowrap; }
+    .fa-pill.warm { color: #A8420F; }
+    .fa-pill.blue { color: #0033A0; }
+    .fa-pill.green { color: #0A6C4A; }
+    .fa-pill.grey { color: #6E7A92; }
+    .fa-checks { display: flex; gap: 1.8em; margin: 0 -1.4em; padding: .95em 1.4em; border-top: 1px solid var(--fa-line2); }
+    .fa-checks span { display: flex; align-items: center; gap: .5em; font-weight: 600; color: var(--fa-good); }
+    .fa-checks .ic { width: 1.3em; height: 1.3em; }
+    .fa-split { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2em; align-items: start; }
+
+
+    /* ── group rail: search, and the enquiries nobody has numbered yet ── */
+    .fa-find { display: flex; align-items: center; gap: .7em; margin: .1em .85em .5em; padding: .65em .9em; border-radius: .5em; background: rgba(255,255,255,.1); color: rgba(255,255,255,.6); }
+    .fa-find .ic { width: 1.2em; height: 1.2em; }
+    .fa-in .top { display: flex; justify-content: space-between; align-items: baseline; }
+    .fa-in .nm { font-weight: 600; color: #fff; }
+    .fa-in .tm { font-size: .85em; color: rgba(255,255,255,.5); }
+    .fa-in .sb { color: rgba(255,255,255,.75); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .fa-in .w { font-size: .85em; }
+    .fa-more { padding: .5em .9em; font-size: .9em; color: rgba(255,255,255,.55); }
+
+    /* ── enquiry sub-tabs, review, recycle bin ── */
+    .fa-tab em { margin-left: .5em; font-style: normal; font-size: .85em; font-weight: 700; color: var(--fa-muted); }
+    .fa-tab.on em { color: var(--fa-blue); }
+    .fa-tri { display: grid; grid-template-columns: 16em 1fr; gap: 1.2em; align-items: start; }
+    .fa-tl { background: #fff; border: 1px solid var(--fa-line); border-radius: .5em; overflow: hidden; }
+    .fa-ti { padding: .85em 1.1em; border-bottom: 1px solid var(--fa-line2); }
+    .fa-ti:last-child { border-bottom: 0; }
+    .fa-ti.on { background: var(--fa-soft); box-shadow: inset .25em 0 0 var(--fa-blue); }
+    .fa-ti .top { display: flex; align-items: center; gap: .5em; }
+    .fa-ti .top b { flex: 1; font-weight: 700; }
+    .fa-ti .top .tm { color: var(--fa-muted); font-size: .9em; }
+    .fa-ti .ch .ic { width: 1.15em; height: 1.15em; color: var(--fa-muted); }
+    .fa-ol { display: inline-flex; align-items: center; gap: .35em; color: var(--fa-blue); font-weight: 600; }
+    .fa-ol .ic { width: 1.1em; height: 1.1em; }
+    .fa-sh { display: flex; align-items: baseline; justify-content: space-between; gap: .6em; margin-bottom: .6em; font-weight: 700; color: var(--fa-ink); }
+    .fa-sh small { color: var(--fa-muted); font-weight: 400; font-size: .95em; }
+    .fa-fld { display: grid; grid-template-columns: 5.5em 1fr; gap: .5em .9em; align-items: center; }
+    .fa-fld .k { color: var(--fa-muted); }
+    .fa-fld .v { border: 1px solid var(--fa-line); border-radius: .4em; padding: .4em .7em; background: #fff; font-weight: 600; }
+    /* Company picker shown open: this is how a job moves to another entity. */
+    .fa-ent-pick { border: 1px solid var(--fa-blue); border-radius: .4em; background: #fff; overflow: hidden; box-shadow: 0 .4em 1em rgba(6,26,69,.14); }
+    .fa-ent-pick .hd { display: flex; align-items: center; justify-content: space-between; padding: .4em .7em; font-weight: 700; color: var(--fa-blue); border-bottom: 1px solid var(--fa-line2); }
+    .fa-ent-pick .op { display: flex; align-items: center; gap: .55em; padding: .34em .7em; color: var(--fa-ink2); }
+    .fa-ent-pick .op b { display: inline-flex; align-items: center; justify-content: center; min-width: 2.9em; padding: .05em .4em; border-radius: .3em; background: #F1F4F9; font-size: .85em; letter-spacing: .04em; color: var(--fa-ink2); }
+    .fa-ent-pick .op.on { background: var(--fa-soft); color: var(--fa-blue); font-weight: 700; }
+    .fa-ent-pick .op.on b { background: var(--fa-blue); color: #fff; }
+    .fa-btn2 .ic { width: 1.1em; height: 1.1em; vertical-align: -.2em; margin-right: .4em; }
+    .fa-ti .s { color: var(--fa-ink2); margin: .1em 0 .3em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .fa-ti .m { display: flex; justify-content: space-between; gap: .5em; color: var(--fa-muted); font-size: .9em; }
+    .fa-hint { font-weight: 600; }
+    .fa-hint.good { color: var(--fa-good); }
+    .fa-hint.warn { color: var(--fa-warn); }
+    .fa-dt { background: #fff; border: 1px solid var(--fa-line); border-radius: .5em; padding: 1.2em 1.4em 1.1em; }
+    .fa-dth { display: flex; justify-content: space-between; align-items: flex-start; gap: 1em; margin-bottom: 1em; }
+    .fa-dth h5 { font-size: 1.25em; font-weight: 700; }
+    .fa-dth p { color: var(--fa-ink2); margin-top: .2em; }
+    .fa-cols { display: grid; grid-template-columns: 1.1fr 1fr; gap: 1.4em; }
+    .fa-msg { border: 1px solid var(--fa-line2); border-radius: .5em; padding: 1em 1.1em; background: #FBFBFC; line-height: 1.55; }
+    .fa-msg .h { color: var(--fa-muted); margin-bottom: .5em; font-size: .9em; }
+    .fa-att { display: flex; gap: .5em; flex-wrap: wrap; margin-top: .8em; }
+    .fa-att span { display: inline-flex; align-items: center; gap: .4em; padding: .3em .7em; border: 1px solid var(--fa-line); border-radius: .5em; background: #fff; }
+    .fa-att .ic { width: 1.1em; height: 1.1em; color: var(--fa-muted); }
+    .fa-ai { display: flex; align-items: center; gap: .5em; margin-bottom: .6em; color: var(--fa-blue); font-weight: 700; }
+    .fa-ai .ic { width: 1.2em; height: 1.2em; }
+    .fa-found { display: grid; grid-template-columns: 6.5em 1fr; gap: .45em 1em; }
+    .fa-found .k { color: var(--fa-muted); }
+    .fa-found .v { font-weight: 600; }
+    .fa-verdict { margin-top: .9em; padding: .65em .9em; border-radius: .5em; background: #E2F3EB; color: #0A6C4A; }
+    .fa-actions { display: flex; align-items: center; gap: .7em; flex-wrap: wrap; margin-top: 1.1em; padding-top: 1em; border-top: 1px solid var(--fa-line2); }
+    .fa-actions .sp { flex: 1; }
+    .fa-btn2 { display: inline-block; padding: .55em 1.2em; border-radius: .5em; border: 1px solid var(--fa-line); background: #fff; color: var(--fa-ink); font-weight: 600; white-space: nowrap; }
+    .fa-btn2.danger { color: var(--fa-warn); border-color: #F0D2C4; }
+    .fa-fine { margin-top: .8em; color: var(--fa-muted); }
+    .fa-t td.act { text-align: right; }
+    .fa-hint.blue { color: var(--fa-blue); }
+    /* The quoting tool's own dashboard (Project2 dashboard.html): a hero with the call to
+       action, the pipeline counts, then the quotes with their status. */
+    .fa-hero2 { display: grid; grid-template-columns: 1fr 24em; background: #fff; border: 1px solid var(--fa-line); border-radius: .7em; overflow: hidden; }
+    .fa-hero2.wide { grid-template-columns: 1fr 34em; }
+    .fa-hero2 .cp { display: flex; flex-direction: column; justify-content: center; gap: .55em; padding: 1.3em 1.6em; }
+    .fa-hero2 h4 { font-size: 1.7em; font-weight: 700; letter-spacing: -.02em; }
+    .fa-hero2 p { color: var(--fa-ink2); line-height: 1.5; }
+    .fa-hero2 .btns { display: flex; align-items: center; flex-wrap: wrap; gap: .8em; margin-top: .35em; }
+    .fa-hero2 .cta { padding: .7em 1.5em; border-radius: .5em; background: var(--fa-blue); color: #fff; font-weight: 700; }
+    .fa-hero2 .cta2 { padding: .65em 1.4em; border-radius: .5em; border: 1.5px solid var(--fa-blue); background: #fff; color: var(--fa-blue); font-weight: 700; }
+    .fa-hero2 .ph2 { min-height: 8.5em; background: var(--fa-side) center / cover no-repeat; }
+    .fa-p { display: inline-block; padding: .25em .8em; border-radius: 2em; font-size: .75em; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; white-space: nowrap; }
+    .fa-p.draft { background: #FDF1EA; color: #A8420F; }
+    .fa-p.issued { background: #E7EDFA; color: #0033A0; }
+    .fa-p.accepted { background: #E2F3EB; color: #0A6C4A; }
+    .fa-p.superseded { background: #EEF0F3; color: #6E7A92; }
+    .fa-hero2 .cta2 .ic { width: 1.1em; height: 1.1em; vertical-align: -.2em; margin-right: .4em; }
+    table.fa-kv.k3 td:nth-child(1) { width: 27%; color: var(--fa-muted); font-weight: 400; }
+    table.fa-kv.k3 td:nth-child(2) { font-weight: 600; color: var(--fa-ink); }
+    table.fa-kv.k3 td:nth-child(3) { width: 1%; text-align: right; white-space: nowrap; font-weight: 400; }
+    .fa-cardhead .hdr { margin-left: auto; display: flex; align-items: center; gap: .9em; }
+    .fa-st { width: 1.5em; height: 1.5em; vertical-align: middle; }
+    .fa-st.done { color: var(--fa-good); }
+    .fa-st.wait { color: var(--fa-warn); }
+    .fa-st.lock { color: #9AA4B8; }
+    .fa-stp td.stp { width: 1%; padding-right: 0; }
+    .fa-stp td.who { color: var(--fa-ink2); white-space: nowrap; }
+    .fa-stp td.stat { text-align: right; white-space: nowrap; }
+    .fa-stp tr.lk td { color: var(--fa-muted); }
+    .fa-stp b { font-weight: 700; }
+    .fa-gate { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .75em; font-weight: 700; letter-spacing: .08em; color: var(--fa-warn); background: #FDF1EA; border-radius: .4em; padding: .1em .5em; margin-left: .6em; }
+    .fa-s2 { display: grid; grid-template-columns: 1fr 19em; gap: 1.2em; align-items: start; }
+    .fa-mini { display: flex; flex-direction: column; gap: .8em; }
+    .fa-mini .fa-card { padding-bottom: .9em; }
+    .fa-mini h5 { font-size: 1.1em; font-weight: 700; margin-bottom: .7em; }
+    .fa-wo { padding: .55em 0; border-top: 1px solid var(--fa-line2); }
+    .fa-wo:first-of-type { border-top: 0; padding-top: 0; }
+    .fa-wo b { display: block; font-weight: 700; }
+    .fa-wo span { color: var(--fa-muted); }
+    .fa-wo.warn b { color: var(--fa-warn); }
+    .fa-hi { display: grid; grid-template-columns: 6.4em 1fr; gap: .6em; padding: .4em 0; border-top: 1px solid var(--fa-line2); color: var(--fa-ink2); }
+    .fa-hi:first-of-type { border-top: 0; padding-top: 0; }
+    .fa-hi i { font-style: normal; color: var(--fa-muted); }
+    .fa-seg { display: inline-flex; border: 1px solid var(--fa-line); border-radius: .5em; overflow: hidden; }
+    .fa-seg span { padding: .15em 1.1em; font-weight: 600; color: var(--fa-muted); background: #fff; }
+    .fa-seg span + span { border-left: 1px solid var(--fa-line); }
+    .fa-seg span.on { background: var(--fa-blue); color: #fff; }
+    .fa-seg.need { border-color: #E9B99F; }
+    .fa-t td.src { color: var(--fa-muted); }
+    .fa-t td.src b { color: var(--fa-warn); font-weight: 600; }
+    .fa-t td.rt, .fa-t th.rt { text-align: right; }
+    .fa-go { display: flex; align-items: center; gap: .8em; padding: .55em 0; border-top: 1px solid var(--fa-line2); }
+    .fa-go:first-of-type { border-top: 0; padding-top: 0; }
+    .fa-go .ic { width: 1.3em; height: 1.3em; color: var(--fa-blue); }
+    .fa-go b { display: block; font-weight: 700; }
+    .fa-go span { color: var(--fa-muted); }
+    .fa-mt { display: flex; justify-content: space-between; align-items: center; gap: .8em; padding: .7em 0; border-top: 1px solid var(--fa-line2); }
+    .fa-mt:first-of-type { border-top: 0; padding-top: 0; }
+    .fa-mt b { display: block; font-weight: 700; }
+    .fa-mt span { color: var(--fa-muted); }
+    .fa-mt.late b { color: var(--fa-warn); }
+    .fa-mt .fa-btn { padding: .4em 1em; font-size: .95em; white-space: nowrap; }
+    .fnl { display: flex; flex-direction: column; gap: .5rem; }
+    .fnl-row { display: grid; grid-template-columns: 13rem 1fr 10.5rem; align-items: center; gap: 1.3rem; }
+    .fnl-wrap { display: flex; justify-content: center; min-width: 0; }
+    .fnl-s { font-size: 12.5px; color: var(--charcoal); text-align: right; }
+    .fnl-bar { display: flex; align-items: center; justify-content: center; gap: 1.1rem; padding: .8rem 1.3rem; border-radius: 9px; color: var(--navy); white-space: nowrap; }
+    .fnl-bar .n { font-family: var(--mono); font-size: 21px; font-weight: 700; }
+    .fnl-bar .t { font-size: 15px; font-weight: 700; }
+    .fnl-id { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--blue); }
+    .fnl-id small { display: block; font-family: var(--sans, inherit); font-size: 11.5px; font-weight: 500; color: var(--grey); letter-spacing: 0; margin-top: .15rem; }
+    @media screen and (max-width: 860px) {
+      .fnl-row { grid-template-columns: 1fr; gap: .35rem; text-align: center; }
+      .fnl-s, .fnl-id { text-align: center; }
+      .fnl-bar { width: 100% !important; }
+      .fnl { gap: 1.1rem; }
+    }
+    .fnl-id.none { color: var(--lgrey); }
+    .fnl-k { display: flex; justify-content: flex-end; }
+    .fa-grph { display: flex; align-items: baseline; gap: .8em; font-size: 1.15em; font-weight: 700; color: var(--fa-ink); }
+    .fa-grph span { font-size: .85em; font-weight: 400; color: var(--fa-muted); }
+    .fa-prevs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.1em; }
+    .fa-prev { background: #fff; border: 1px solid var(--fa-line); border-radius: .5em; padding: .9em 1.1em; }
+    .fa-prev .cd { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .95em; font-weight: 700; color: var(--fa-muted); }
+    .fa-prev .tt { font-size: 1.1em; font-weight: 700; margin: .2em 0 .15em; }
+    .fa-prev .st { color: var(--fa-muted); }
+    .fa-t td.own b { font-weight: 700; }
+    .fa-t td.own i { font-style: normal; color: var(--fa-muted); }
+    .fa-t td.dt { white-space: nowrap; color: var(--fa-muted); }
+    .fa-cov { font-weight: 600; }
+    .fa-cov.ok { color: var(--fa-good); }
+    .fa-cov.up { color: var(--fa-warn); }
+    .fa-cov small { display: block; font-weight: 400; color: var(--fa-muted); }
+    .fa-blk { background: #fff; border: 1px solid var(--fa-line); border-radius: .6em; padding: 1.05em 1.25em; }
+    .fa-blk h6 { display: flex; align-items: center; gap: .5em; font-size: 1.25em; font-weight: 700; }
+    .fa-blk .io { display: grid; grid-template-columns: 3.4em 1fr; gap: .6em; margin-top: .5em; color: var(--fa-ink2); line-height: 1.45; }
+    .fa-blk .io i { font-style: normal; font-size: .85em; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--fa-muted); padding-top: .15em; }
+    .fa-blk .io.back span { color: var(--fa-ink); font-weight: 600; }
+    .fa-blk .st { margin-top: .6em; display: flex; align-items: center; gap: .4em; color: var(--fa-good); font-weight: 600; }
+    .fa-blk .st .ic { width: 1.1em; height: 1.1em; }
+    .fa-grp { display: flex; flex-direction: column; gap: .9em; }
+    .fa-big { padding: 1.5em 1.6em; background: var(--fa-soft); border-radius: .7em; }
+    .fa-big h3 { font-size: 2.5em; font-weight: 700; letter-spacing: -.025em; color: var(--fa-deep); line-height: 1.1; }
+    .fa-big p { margin-top: .45em; font-size: 1.2em; color: var(--fa-ink2); line-height: 1.45; }
+    .fa-bb { background: #fff; border: 1px solid var(--fa-line); border-radius: .5em; overflow: hidden; }
+    .fa-bbr { display: grid; grid-template-columns: 1.9em 1fr auto; gap: 1em; padding: .95em 1.3em; border-top: 1px solid var(--fa-line2); align-items: start; }
+    .fa-bbr:first-child { border-top: 0; }
+    .fa-bbr > .ic { width: 1.5em; height: 1.5em; color: var(--fa-ink2); margin-top: .1em; }
+    .fa-bbr h6 { font-size: 1.2em; font-weight: 700; letter-spacing: -.005em; }
+    .fa-bbr .vis { display: flex; align-items: center; gap: .4em; margin-top: .2em; color: var(--fa-ink2); }
+    .fa-bbr .vis .ic { width: 1.1em; height: 1.1em; }
+    .fa-bbr .ds { margin-top: .35em; color: var(--fa-ink2); line-height: 1.45; }
+    .fa-bbr .dots { color: var(--fa-muted); font-weight: 700; letter-spacing: .12em; }
+    .fa-dotc { display: inline-block; width: 1.3em; height: 1.3em; border-radius: 50%; vertical-align: middle; }
+    .fa-dotc.g { background: #2E9E6B; }
+    .fa-dotc.o { background: #E8833A; }
+    .fa-dotc.y { background: #F2CB3D; }
+    .fa-key { display: flex; gap: 1.4em; color: var(--fa-muted); font-weight: 400; }
+    .fa-key span { display: inline-flex; align-items: center; gap: .5em; white-space: nowrap; }
+    .fa-key .fa-dotc { width: 1em; height: 1em; }
+    .fa-reg th.c, .fa-reg td.c { text-align: center; }
+    .fa-reg td small { margin-top: .15em; }
+    .fa-bar { display: inline-block; width: 4.5em; height: .5em; border-radius: 1em; background: #EEF0F3; overflow: hidden; vertical-align: middle; margin-right: .7em; }
+    .fa-bar i { display: block; height: 100%; background: var(--fa-blue); }
+    table.fa-kv.k2 td:nth-child(1) { width: 24%; color: var(--fa-muted); font-weight: 400; }
+    table.fa-kv.k2 td:nth-child(2) { font-weight: 600; color: var(--fa-ink); }
+    .fa-cfoot { margin: 0 -1.4em; padding: .8em 1.4em .9em; border-top: 1px solid var(--fa-line2); color: var(--fa-muted); }
+    .fa-mail { display: flex; flex-direction: column; gap: .5em; padding-bottom: 1.2em; }
+    .fa-mail .r { display: grid; grid-template-columns: 4.5em 1fr; gap: .6em; }
+    .fa-mail .k { color: var(--fa-muted); }
+    .fa-mail .m { margin: .3em 0 .1em; line-height: 1.5; }
+    .fa-mail .fa-obtn { align-self: flex-start; margin-top: .3em; }
+    .fa-stp { display: flex; align-items: center; gap: .8em; padding: .75em 0; border-top: 1px solid var(--fa-line2); }
+    .fa-stp .d { flex-shrink: 0; width: 1.5em; height: 1.5em; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1.5px solid var(--fa-line); color: transparent; }
+    .fa-stp .d .ic { width: .95em; height: .95em; }
+    .fa-stp.done .d { background: #E2F3EB; border-color: #E2F3EB; color: #0A6C4A; }
+    .fa-stp.now .d { border-color: var(--fa-blue); background: var(--fa-soft); }
+    .fa-stp b { display: block; font-weight: 600; }
+    .fa-stp small { color: var(--fa-muted); font-size: 1em; }
+    .fa-stp.later b { color: var(--fa-muted); font-weight: 500; }
+    .fa-t .ref { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .9em; font-weight: 600; color: var(--fa-blue); white-space: nowrap; }
+    .fa-t td.ref { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .9em; font-weight: 600; color: var(--fa-blue); white-space: nowrap; }
+    .fa-t td .fa-ol { margin-left: .6em; }
+    .fa-t td small { display: block; margin-top: .25em; color: var(--fa-muted); font-size: .92em; }
+    .fa-t td small .fa-ol { margin-left: .5em; }
+
+    /* ── 09 tools inside, 13 weekly email ── */
+    .tools2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.6rem; }
+    .tools2 .shot img { display: block; width: 100%; height: auto; }
+    .tcap { display: flex; align-items: baseline; gap: .6rem; margin-top: .7rem; font-size: 13px; color: var(--charcoal); }
+    .tcap b { color: var(--navy); }
+    .steps3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; margin-top: 1.3rem; }
+    .step3 { display: flex; gap: .9rem; align-items: flex-start; }
+    .step3 b { display: block; font-size: 14px; color: var(--navy); margin-bottom: .15rem; }
+    .step3 span { font-size: 12.5px; color: var(--grey); line-height: 1.5; }
+    .em { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: #fff; box-shadow: 0 1px 3px rgba(8,29,58,.06); font-family: 'Roboto','Segoe UI',system-ui,sans-serif; }
+    .em-h { padding: .9rem 1.2rem; background: #F8FAFC; border-bottom: 1px solid var(--border); font-size: 12px; color: var(--grey); line-height: 1.75; }
+    .em-h b { color: var(--navy); }
+    .em-b { padding: 1.2rem 1.5rem 1.4rem; font-size: 13px; color: var(--charcoal); }
+    .em-b h4 { font-size: 17px; font-weight: 700; color: var(--navy); margin-bottom: .3rem; }
+    .em-sec { margin-top: 1rem; }
+    .em-sec h6 { font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--grey); font-weight: 700; margin-bottom: .35rem; display: flex; justify-content: space-between; }
+    .em-sec h6 span { color: var(--navy); }
+    .em-row { display: flex; justify-content: space-between; gap: 1rem; padding: .4rem 0; border-top: 1px solid var(--border); }
+    .em-row i { font-style: normal; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: #0033A0; font-weight: 600; margin-right: .6rem; }
+    .em-row em { font-style: normal; color: var(--grey); }
+    .em-row em.warn { color: #A8420F; font-weight: 600; }
+    .em-btn { display: inline-block; margin-top: 1.1rem; padding: .6rem 1.4rem; border-radius: 7px; background: #0033A0; color: #fff; font-weight: 700; }
+
+    /* one plain line of captions under a screen */
+    .notes { display: flex; flex-wrap: wrap; gap: .5rem 1.8rem; margin-top: 1rem; font-size: 12px; font-weight: 600; color: var(--navy); }
+    .notes span { display: flex; align-items: center; gap: .5rem; }
+    .notes .ic { width: 16px; height: 16px; color: var(--blue); }
+    .notes span.muted { color: var(--grey); font-weight: 500; }
+    .notes span.muted .ic { color: var(--lgrey); }
+
+
+    /* 07 Group home: one tile per company, then the mixed enquiry list */
+    .fa-switch { font-size: .95em; font-weight: 600; color: var(--fa-ink2); border: 1px solid var(--fa-line); border-radius: .6em; padding: .4em .9em; }
+    /* Photo-topped entity cards and the Due rail, after the UQ Blackboard course list:
+       flat white cards with a photo, a small grey code, a bold name, a plain status
+       word, a rule, then a link and a star. */
+    .fa-body { display: grid; grid-template-columns: 1fr 17em; gap: 1.6em; align-items: start; }
+    .fa-sec { font-size: 1.3em; font-weight: 700; letter-spacing: -.01em; margin-bottom: .8em; }
+    .fa-ents { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.1em; }
+    .fa-ent { display: flex; flex-direction: column; background: #fff; border: 1px solid var(--fa-line); border-radius: .5em; overflow: hidden; }
+    .fa-ent .ph { position: relative; height: 8.5em; background: var(--fa-side) center / cover no-repeat; }
+    .fa-note { position: absolute; top: .6em; right: .6em; display: flex; align-items: center; gap: .35em; padding: .25em .7em; border-radius: 2em; background: #fff; color: var(--fa-blue); font-weight: 700; box-shadow: 0 1px 3px rgba(0,0,0,.3); }
+    .fa-note .ic { width: 1em; height: 1em; }
+    .fa-obtn { display: inline-block; padding: .5em 1.6em; border-radius: .5em; background: var(--fa-blue); color: #fff; font-weight: 700; }
+    .fa-navitem em { margin-left: auto; font-style: normal; font-size: .8em; font-weight: 700; color: #fff; background: #2F5FD0; border-radius: 2em; min-width: 1.9em; padding: .15em .55em; text-align: center; }
+    .fa-bell { position: relative; display: flex; color: var(--fa-ink2); }
+    .fa-bell .ic { width: 1.7em; height: 1.7em; }
+    .fa-bell em { position: absolute; top: -.5em; right: -.7em; font-style: normal; font-size: .8em; font-weight: 700; color: #fff; background: #2F5FD0; border-radius: 2em; min-width: 1.9em; padding: .15em .5em; text-align: center; }
+    .fa-ent .bd { padding: .9em 1.1em .8em; }
+    .fa-ent .cd { font-size: .85em; color: var(--fa-muted); letter-spacing: .03em; }
+    .fa-ent .tt { font-size: 1.15em; font-weight: 700; line-height: 1.3; margin: .25em 0 .2em; }
+    .fa-ent .st { color: var(--fa-ink2); }
+    .fa-page > .fa-tabs { margin-top: -.2em; }
+
+    /* Company level: after a click on "Falcon Cranes" the sidebar gives way to two
+       dark bars (where you are, then the tabs), an optional photo banner, and a
+       light grey pane of white cards: the UQ Blackboard course page. */
+    .fa.fa-co { display: block; }
+    .fa-top { display: flex; align-items: center; gap: 1.1em; padding: 0 1.6em; height: 3.4em; background: var(--fa-side); color: #fff; border-bottom: 1px solid rgba(255,255,255,.12); }
+    .fa-home { display: flex; align-items: center; justify-content: center; width: 2.2em; height: 2.2em; border-radius: .5em; background: rgba(255,255,255,.12); }
+    .fa-home .ic { width: 1.3em; height: 1.3em; }
+    .fa-crumb { display: flex; align-items: center; gap: .5em; font-size: 1.05em; }
+    .fa-crumb .ic { width: 1em; height: 1em; }
+    .fa-vr { width: 1px; height: 1.8em; background: rgba(255,255,255,.25); }
+    .fa-ttl { font-size: 1.05em; }
+    .fa-ttl b { font-weight: 700; }
+    .fa-grow { flex: 1; }
+    .fa-set { display: flex; align-items: center; gap: .5em; opacity: .9; }
+    .fa-set .ic { width: 1.2em; height: 1.2em; }
+    .fa-open { font-size: .75em; font-weight: 700; letter-spacing: .06em; color: var(--fa-blue); background: #fff; border-radius: 2em; padding: .25em .8em; }
+    .fa-tabsbar { display: flex; align-items: stretch; gap: .3em; padding: 0 1.2em; height: 3em; background: var(--fa-side); color: rgba(255,255,255,.75); }
+    .fa-tb { position: relative; display: flex; align-items: center; gap: .6em; padding: 0 .9em; font-size: 1.05em; white-space: nowrap; }
+    .fa-tb em { font-style: normal; font-size: .8em; font-weight: 700; color: #fff; background: #2F5FD0; border-radius: 2em; min-width: 1.9em; padding: .15em .5em; text-align: center; }
+    .fa-tb.on { color: #fff; font-weight: 600; }
+    .fa-tb.on::after { content: ""; position: absolute; left: .5em; right: .5em; bottom: 0; height: .25em; border-radius: .2em .2em 0 0; background: #6EA0FF; }
+    /* The pipeline explainer: the tab bar stays sharp and evenly spaced, the
+       screen behind it goes soft, and a callout hangs under each step. */
+    .fa-tabsbar.pipe { display: grid; grid-template-columns: repeat(6,1fr); gap: 0; padding: 0 1em; height: 3.2em; }
+    .fa-tabsbar.pipe .fa-tb { justify-content: center; padding: 0; }
+    .fa-tabsbar.pipe .fa-tb::after { left: 1.6em; right: 1.6em; }
+    .pipe-stage { position: relative; }
+    .pipe-back { filter: blur(4px); opacity: .4; }
+    .pipe-notes { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(6,1fr); gap: .8em; padding: 1.1em 1em; align-items: start; }
+    .pipe-note { position: relative; background: #fff; border: 1px solid var(--fa-line); border-radius: .6em; padding: .85em .9em; box-shadow: 0 .5em 1.2em rgba(6,26,69,.13); }
+    .pipe-note::before { content: ""; position: absolute; top: -.4em; left: 50%; margin-left: -.4em; width: .8em; height: .8em; background: #fff; border-left: 1px solid var(--fa-line); border-top: 1px solid var(--fa-line); transform: rotate(45deg); }
+    .pipe-note h6 { display: flex; align-items: center; gap: .45em; font-size: 1.22em; font-weight: 800; color: var(--fa-ink); margin-bottom: .4em; }
+    .pipe-note p { font-size: 1.06em; line-height: 1.5; color: var(--fa-ink2); }
+    /* Same callout device as the pipeline slide, pointing up at one button. */
+    .act-note { position: relative; margin-top: 1em; max-width: 30em; background: #fff; border: 1px solid var(--fa-line); border-radius: .6em; padding: .85em .95em; box-shadow: 0 .5em 1.2em rgba(6,26,69,.13); }
+    .act-note::before { content: ""; position: absolute; top: -.4em; left: 3.6em; width: .8em; height: .8em; background: #fff; border-left: 1px solid var(--fa-line); border-top: 1px solid var(--fa-line); transform: rotate(45deg); }
+    .act-note h6, .src-note h6, .bell-note h6 { display: flex; align-items: center; gap: .45em; font-size: 1.12em; font-weight: 800; color: var(--fa-ink); margin-bottom: .35em; }
+    .act-note h6 .ic, .src-note h6 .ic, .bell-note h6 .ic { width: 1.15em; height: 1.15em; color: var(--fa-blue); }
+    .act-note p, .src-note p, .bell-note p { font-size: 1.02em; line-height: 1.5; color: var(--fa-ink2); }
+    .act-note p b, .src-note p b { color: var(--fa-ink); font-weight: 700; }
+    @media print { .act-note h6, .src-note h6, .bell-note h6 { font-size: 15px; } .act-note p, .src-note p, .bell-note p { font-size: 13px; } .act-note, .src-note, .bell-note { padding: 2.6mm 3mm; } }
+    .act-note.flat::before { display: none; }
+    .sign-stage { position: relative; }
+    .sign-back { filter: blur(3.5px); opacity: .38; max-height: 30em; overflow: hidden; }
+    .sign-modal { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+    .sign-card { width: 46em; background: #fff; border: 1px solid var(--fa-line); border-radius: .8em; box-shadow: 0 1.4em 3em rgba(6,26,69,.28); overflow: hidden; }
+    .sign-card .hd { display: flex; align-items: center; gap: .6em; padding: .9em 1.2em; background: var(--fa-soft); color: var(--fa-blue); font-weight: 800; font-size: 1.15em; border-bottom: 1px solid var(--fa-line); }
+    .sign-card .bd { padding: 1em 1.2em 1.1em; }
+    .sign-card .ln { display: flex; gap: .7em; align-items: flex-start; padding: .5em 0; border-bottom: 1px dashed var(--fa-line); }
+    .sign-card .ln:last-child { border-bottom: none; }
+    .sign-card .ln b { color: var(--fa-ink); }
+    .sign-card .ln span { color: var(--fa-ink2); }
+    .sign-card .ln .ic { width: 1.2em; height: 1.2em; color: var(--fa-blue); flex-shrink: 0; margin-top: .15em; }
+    .pipe-tree { list-style: none; margin-top: .6em; margin-left: .15em; padding-left: .6em; border-left: 1px solid var(--fa-line); }
+    .pipe-tree li { position: relative; padding-left: .75em; font-size: .95em; font-weight: 600; color: var(--fa-ink); line-height: 1.55; }
+    .pipe-tree li::before { content: ""; position: absolute; left: 0; top: .78em; width: .5em; height: 1px; background: var(--fa-line); }
+    .pipe-sn { display: inline-flex; align-items: center; justify-content: center; width: 1.7em; height: 1.7em; border-radius: 50%; font-size: .78em; font-weight: 800; flex-shrink: 0; }
+    .fa-banner { position: relative; height: 10em; display: flex; flex-direction: column; justify-content: flex-end; padding: 1.3em 1.7em; color: #fff; background: var(--fa-side) center / cover no-repeat; }
+    .fa-banner::before { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0) 30%, rgba(0,0,0,.8)); }
+    .fa-banner > * { position: relative; }
+    .fa-banner h4 { font-size: 2.1em; font-weight: 400; letter-spacing: -.01em; line-height: 1.15; }
+    .fa-banner span { font-weight: 600; }
+    .fa-pane { background: #F7F7F7; padding: 1.5em 1.7em 1.8em; display: flex; flex-direction: column; gap: 1.2em; }
+    /* group level: the left rail is the live inbox, as Alex described it on the call */
+    .fa-inbox { flex: 1; padding: .4em .85em 1em; }
+    .fa-inh { display: flex; align-items: center; justify-content: space-between; padding: .5em .9em; font-size: .8em; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.5); }
+    .fa-inh em { font-style: normal; font-size: 1em; font-weight: 700; letter-spacing: 0; color: #fff; background: #2F5FD0; border-radius: 2em; min-width: 1.9em; padding: .1em .5em; text-align: center; }
+    .fa-in { display: flex; flex-direction: column; gap: .1em; padding: .55em .9em; border-radius: .5em; }
+    .fa-in:first-of-type { background: rgba(255,255,255,.08); }
+    .fa-in .id { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .95em; font-weight: 600; color: #fff; }
+    .fa-in .w { font-size: .85em; color: rgba(255,255,255,.55); }
+
+    /* company level: the four stages are one line, and a job moves along it */
+    .fa-vr2 { align-self: center; width: 1px; height: 1.6em; margin: 0 .6em; background: rgba(255,255,255,.25); }
+    .fa-sn { display: inline-flex; align-items: center; justify-content: center; width: 1.6em; height: 1.6em; border-radius: 50%; border: 1px solid rgba(255,255,255,.5); font-size: .8em; font-weight: 700; }
+    .fa-tb.on .fa-sn { background: #fff; border-color: #fff; color: var(--fa-side); }
+    .fa-tarr { align-self: center; width: 1.1em; height: 1.1em; color: rgba(255,255,255,.4); }
+    .fa-bellw { position: relative; display: flex; margin-right: .3em; }
+    .fa-bellw .ic { width: 1.5em; height: 1.5em; }
+    .fa-bellw em { position: absolute; top: -.6em; right: -.8em; font-style: normal; font-size: .75em; font-weight: 700; background: #2F5FD0; border-radius: 2em; min-width: 1.9em; padding: .15em .5em; text-align: center; }
+    .fa-trk { display: inline-flex; gap: .2em; vertical-align: middle; margin-right: .8em; }
+    .fa-trk i { display: block; width: 1.5em; height: .45em; border-radius: .2em; background: #E4E7EC; }
+    .fa-trk i.on { background: var(--fa-blue); }
+    .fa-t td.wait { color: var(--fa-ink2); }
+    .fa-t td.warn { color: var(--fa-warn); font-weight: 600; }
+    /* The card the reader is about to see opened on the next slide: lifted,
+       ringed, and with a pointer resting on its button. */
+    .fa-spot .fa-ent:not(.hot), .fa-spot .fa-rail, .fa-spot .fa-side, .fa-spot .fa-sec { opacity: .42; }
+    .fa-ent.hot { border-color: var(--fa-blue); box-shadow: 0 0 0 2px rgba(0,51,160,.18), 0 .7em 1.6em rgba(6,26,69,.16); transform: translateY(-.25em); position: relative; z-index: 2; }
+    .fa-ent.hot .fa-obtn { background: var(--fa-deep); }
+    .fa-ent.hot .ph::after { content: ""; position: absolute; inset: 0; background: rgba(0,51,160,.10); }
+    .fa-cursor { position: absolute; z-index: 5; width: 1.55em; height: 1.55em; pointer-events: none; filter: drop-shadow(0 .12em .2em rgba(6,26,69,.35)); }
+    .fa-ent .ft { position: relative; margin-top: auto; display: flex; align-items: center; justify-content: space-between; padding: .75em 1.1em .8em; border-top: 1px solid var(--fa-line2); }
+    .fa-ent .ft span { color: var(--fa-blue); text-decoration: underline; }
+    .fa-ent .ft .ic { width: 1.3em; height: 1.3em; color: var(--fa-ink2); fill: none; stroke: currentColor; stroke-width: 1.6; }
+    .fa-rail { border-left: 1px solid var(--fa-line); padding-left: 1.4em; display: flex; flex-direction: column; gap: .9em; }
+    .fa-railh { display: flex; align-items: center; justify-content: space-between; font-size: 1.15em; font-weight: 700; }
+    .fa-railh .ic { width: 1.2em; height: 1.2em; color: var(--fa-ink2); }
+    .fa-empty { background: #F4F6F8; border-radius: .4em; padding: 1.3em 1em; text-align: center; color: var(--fa-ink2); }
+    .fa-dueit { display: flex; flex-direction: column; gap: .15em; padding: .65em 0; border-bottom: 1px solid var(--fa-line2); }
+    .fa-dueit:last-child { border-bottom: 0; }
+    .fa-dueit .id { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .9em; font-weight: 600; color: var(--fa-blue); }
+    .fa-dueit .w { color: var(--fa-ink2); }
+    .fa-dueit .w.warn { color: var(--fa-warn); font-weight: 600; }
+    .fa-chip { display: inline-block; font-size: .85em; font-weight: 700; letter-spacing: .05em; padding: .2em .7em; border-radius: .5em; background: #EEF2F9; color: var(--fa-ink2); }
+
+
+    /* 09 Timeline */
+    .tl { display: flex; flex-direction: column; gap: .75rem; }
+    .tl-row, .tl-axis { display: grid; grid-template-columns: 190px 1fr; gap: 1rem; align-items: center; }
+    .tl-l { display: flex; align-items: center; gap: .7rem; font-size: 14px; font-weight: 700; color: var(--navy); }
+    .tl-track { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; background: #f8fafc; border-radius: 8px; padding: 5px; }
+    .tl-bar { display: flex; height: 34px; border-radius: 6px; overflow: hidden; }
+    .tl-bar .b { flex: 7; background: var(--blue); color: #fff; font-size: 11px; font-weight: 600; display: flex; align-items: center; gap: .35rem; padding: 0 .6rem; white-space: nowrap; }
+    .tl-bar.only { display: flex; align-items: center; padding: 0 .6rem; font-size: 11px; font-weight: 600; white-space: nowrap; }
+    .tl-bar.only.bld { background: var(--blue); color: #fff; }
+    .tl-bar.only.tst { background: var(--lblue); color: var(--blue); }
+    @media print { .tl-bar.only { font-size: 12.5px; padding: 0 3mm; } }
+    .tl-bar .t { flex: 3; background: var(--lblue); color: var(--blue); font-size: 11px; font-weight: 600; display: flex; align-items: center; justify-content: center; }
+    .tl-axis > div { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--grey); padding: 0 5px; }
+    .tl-note { display: flex; gap: .7rem; align-items: center; margin-top: 1.6rem; font-size: 13px; color: var(--charcoal); }
+    .tl-note .ic { color: var(--blue); }
+
+    @media print {
+      .mock { box-shadow: none; break-inside: avoid; }
+      .mock:has(.fa-pipe) { overflow: visible; }
+      .fa-card, .fa-ent { break-inside: avoid; }
+      .fa-ents, .fa-prevs { grid-template-columns: repeat(4, 1fr); }
+      .fa-prev { break-inside: avoid; }
+      .fa-ent .ph { height: 7em; }
+      .fa-banner { height: 6.5em; }
+      .pipe-notes { padding: 4mm 3.5mm; gap: 3mm; }
+      .pipe-note { padding: 3.4mm 3.6mm; border-radius: 2.4mm; }
+      .pipe-note h6 { font-size: 17px; margin-bottom: 1.8mm; }
+      .pipe-note p { font-size: 14.5px; line-height: 1.45; }
+      .pipe-sn { width: 6.2mm; height: 6.2mm; font-size: 13px; }
+      .pipe-tree li { font-size: 14px; }
+      .fa-ti, .fa-hero2 { break-inside: avoid; }
+      .fa-hero2 .cp { padding: 1em 1.4em; }
+      .fa-hero2 .ph2 { min-height: 7em; }
+      .fa-top { height: 3.1em; }
+      .fa-tabsbar { height: 2.7em; }
+      .fa-verdict { margin-top: .7em; }
+      .fa-brand { padding: 1em 1.4em .9em; }
+      .fa-ti { padding: .5em 1em; }
+      .fa-dt { padding: 1em 1.3em .9em; }
+      .fa-in { padding: .4em .9em; }
+      .fa-inbox { padding-bottom: .5em; }
+      .tools2 { gap: 5mm; }
+      .tcap { font-size: 13px; margin-top: 2.5mm; }
+      .steps3 { margin-top: 5mm; gap: 6mm; }
+      .step3 b { font-size: 15px; } .step3 span { font-size: 13px; }
+      .em-h { font-size: 12.5px; padding: 3mm 5mm; } .em-b { font-size: 13.5px; padding: 4.5mm 6mm 5mm; } .em-b h4 { font-size: 18px; }
+      .em-sec { margin-top: 3.2mm; } .em-row { padding: 1.3mm 0; }
+      .fa-pane { padding: 1.1em 1.5em 1.3em; gap: 1em; }
+      .rule { margin: 4mm 0 7mm; }
+      .cbar { padding: 4mm 6mm; }
+      /* a screen keeps its natural height: the generic "fill the page" rule
+         below would otherwise squash it (clipping the bottom) or stretch it */
+      .slide:not(#s1) .wrap > .mock, .slide:not(#s1) .wrap > .notes, .slide:not(#s1) .wrap > .idbread, .slide:not(#s1) .wrap > .slide:not(#s1) .wrap > .tools2, .slide:not(#s1) .wrap > .steps3, .slide:not(#s1) .wrap > .em, .slide:not(#s1) .wrap > .g2 { flex: 0 0 auto !important; }
+      .slide:not(#s1) .wrap > .mock { margin-top: auto; }
+      .fa { font-size: 9.5px; }
+      .fa.fa-pipe { font-size: 14.6px; }
+      .fa.fa-ch { font-size: 8.3px; }
+      .fa.fa-ch2 { font-size: 7.6px; }
+      .fa.fa-ct { font-size: 7.0px; }
+      .fa-page { padding: 1.2em 1.5em 1.4em; gap: 1em; }
+      .fa-t td, .fa-kv td { padding: .8em 1.4em; }
+      .mock-title { font-size: 16px; }
+      .mock-sub, .mock-foot, .chk span { font-size: 12.5px; }
+      table.g.mini { font-size: 13px; }
+      table.g.mini th, table.g.mini td { padding: 2.2mm 2.8mm; }
+      table.g.mini th { font-size: 9.5px; }
+      table.g .tag { font-size: 9.5px; }
+      .tabs span { font-size: 11px; }
+
+      .bcol-h { font-size: 14.5px; }
+      .bcol-h .ic { width: 20px; height: 20px; }
+      .grp-k { font-size: 9px; margin-bottom: 1.5mm; }
+      .chips span { font-size: 11px; }
+      .chips.flow span { font-size: 10px; }
+      .bl li { font-size: 11.5px; }
+      .board { min-height: 0; }
+      .bcol { padding: 4mm 3.6mm 4mm; gap: 3mm; }
+      .colid { font-size: 11.5px; padding: 2mm; }
+      .colrule { font-size: 10.5px; padding: 2mm 2.4mm; }
+      .idrail { margin-top: 9mm; }
+      .idrail span { font-size: 14px; }
+      .idrail b { font-size: 12.5px; }
+
+      .idbread { margin-top: 2.5mm; padding-top: 2.5mm; }
+      .idbread-k { font-size: 13px; }
+      .idbread b { font-size: 14px; }
+
+      .notes { font-size: 13.5px; margin-top: 4mm; }
+
+
+      .tl { gap: 4mm; }
+      .tl-row, .tl-axis { grid-template-columns: 52mm 1fr; }
+      .tl-l { font-size: 16px; }
+      .tl-bar { height: 11mm; }
+      .tl-bar .b, .tl-bar .t { font-size: 12.5px; }
+      .tl-axis > div { font-size: 10.5px; }
+      .tl-note { font-size: 15px; margin-top: 9mm; }
+    }
+    @media screen and (max-width: 860px) {
+      /* the inline column splits on some slides would otherwise beat the phone layout */
+      .g2 { grid-template-columns: 1fr !important; }
+      .board { grid-template-columns: 1fr; }
+      .bcol + .bcol { border-left: none; border-top: 1px solid var(--border); }
+      .bcol.handoff { border-radius: 0 0 14px 14px; }
+      .bcol-arrow { display: none; }
+      .fa { grid-template-columns: 1fr; }
+      .fa-body { grid-template-columns: 1fr; }
+      .fa-ents, .fa-prevs { grid-template-columns: 1fr 1fr; }
+      .fa-rail { border-left: 0; padding-left: 0; }
+      .fa-tabsbar { overflow-x: auto; }
+      .fa-banner h4 { font-size: 1.6em; }
+      .fa-tri, .fa-cols, .fa-s2 { grid-template-columns: 1fr; }
+      .fa-hero2 { grid-template-columns: 1fr; }
+      .tools2, .steps3 { grid-template-columns: 1fr; }
+      .fa-set { display: none; }
+      .fa-nav, .fa-sidefoot { display: none; }
+      .fa-split { grid-template-columns: 1fr; }
+      .fa-card { overflow-x: auto; }
+      .tl-row, .tl-axis { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div id="bar"></div>
+
+<!-- Icon sprite. Use: <svg class="ic"><use href="#i-mail"/></svg> -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></symbol>
+  <symbol id="i-clipboard" viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></symbol>
+  <symbol id="i-inbox" viewBox="0 0 24 24"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></symbol>
+  <symbol id="i-forward" viewBox="0 0 24 24"><polyline points="15 14 20 9 15 4"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></symbol>
+  <symbol id="i-split" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+  <symbol id="i-check-circle" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></symbol>
+  <symbol id="i-warn" viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></symbol>
+  <symbol id="i-minus" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+  <symbol id="i-user-check" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></symbol>
+  <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol>
+  <symbol id="i-tool" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></symbol>
+  <symbol id="i-cart" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></symbol>
+  <symbol id="i-file-check" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="m9 15 2 2 4-4"/></symbol>
+  <symbol id="i-history" viewBox="0 0 24 24"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+  <symbol id="i-truck" viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></symbol>
+  <symbol id="i-dollar" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></symbol>
+  <symbol id="i-key" viewBox="0 0 24 24"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></symbol>
+  <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></symbol>
+  <symbol id="i-chevron-up" viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></symbol>
+  <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></symbol>
+  <symbol id="i-chevron-down" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></symbol>
+  <symbol id="i-chevron-right" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></symbol>
+  <symbol id="i-mail-open" viewBox="0 0 24 24"><path d="M21.2 8.4c.5.38.8.97.8 1.6v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10a2 2 0 0 1 .8-1.6l8-6a2 2 0 0 1 2.4 0l8 6Z"/><path d="m22 10-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 10"/></symbol>
+  <symbol id="i-paperclip" viewBox="0 0 24 24"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></symbol>
+  <symbol id="i-rotate" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></symbol>
+</svg>
+
+<!-- Slides are numbered in the comment and the footer. To add one, copy the
+     shape below, put it where it belongs and renumber the footers after it.
+
+<div class="slide" id="sN">
+  <div class="wrap">
+    <h2>Heading</h2>
+    <div class="rule"></div>
+    <div> ...content... </div>
+  </div>
+  <div class="slide-foot"><span>SingSingh AI</span><span>0N</span></div>
+</div>
+
+     Mock-up figures, client names and IDs (E-FC-0015 etc.) are examples.
+     Yellow .tbd marks are still to be filled in. -->
+
+<!-- 01 COVER -->
+<div class="slide" id="s1">
+  <div class="wrap">
+    <div class="s1-logos">
+      <img class="falcon" src="/falcon-crm/img/logo-falcon-group.png" alt="Falcon Group"/>
+      <div class="div"></div>
+      <img class="ssa" src="/falcon-crm/img/logo-singsinghai-512.png" alt="SingSingh AI"/>
+    </div>
+
+    <div class="s1-name">The Falcon CRM</div>
+    <div class="s1-tag">Built around the life of a job,<br>from the first enquiry through to finance and operations.</div>
+
+    <div class="s1-built">The Falcon quoting tool and the TES battery proposal tool are already built. They are integrated into this, not replaced by it.</div>
+
+    <div class="s1-loc">Proposal Document &nbsp;·&nbsp; September 2026</div>
+  </div>
+  <div class="slide-foot"><span>SingSingh AI &nbsp;·&nbsp; Falcon Group</span><span>01</span></div>
+</div>
+
+<!-- 02 THE VISION -->
+<div class="slide" id="s2">
+  <div class="wrap">
+    <h2>The entire system at a glance</h2>
+    <div class="rule"></div>
+    <p class="say">Everything coming in is checked first. Each job then gets one ID that stays with it the whole way.</p>
+
+    <div>
+      <div class="board">
+        <div class="bcol">
+          <div class="bcol-h" style="border-bottom-width:1.5px;border-bottom-color:var(--tbg)"><div class="badge" style="background:var(--tbg);color:var(--teal)">1</div>Channels<svg class="ic" style="color:var(--teal)"><use href="#i-inbox"/></svg></div>
+          <div><div class="grp-k">Comes in by</div>
+            <div class="chips"><span>Email</span><span>Website</span><span>EstimateOne</span><span>Manual entry</span></div></div>
+          <div><div class="grp-k">Checked by a person</div>
+            <ul class="bl"><li>Open it in Outlook</li><li>Set the company it belongs to</li><li>Accept it, move it to another entity, or recycle bin</li></ul></div>
+          <div><div class="grp-k">One inbox per company</div>
+            <div class="chips"><span>FC</span><span>TES</span><span>FF</span><span>ENG</span></div></div>
+          <div class="colrule" style="background:var(--tbg)"><svg class="ic" style="color:var(--teal)"><use href="#i-rotate"/></svg><span><b>Nothing is lost</b>Not relevant? Recycle bin for 30 days. No ID is used.</span></div>
+          <div class="colid" style="background:var(--tbg);color:var(--teal)"><svg class="ic"><use href="#i-file"/></svg>No ID allocated at this point</div>
+        </div>
+
+        <div class="bcol">
+          <div class="bcol-arrow" style="color:var(--blue)"><svg class="ic"><use href="#i-arrow"/></svg></div>
+          <div class="bcol-h" style="border-bottom-width:1.5px;border-bottom-color:var(--lblue)"><div class="badge" style="background:var(--lblue);color:var(--blue)">2</div>Enquiry<svg class="ic" style="color:var(--blue)"><use href="#i-file"/></svg></div>
+          <div><div class="grp-k">Logged in the CRM</div>
+            <ul class="bl"><li>Its unique ID, issued once accepted</li><li>Reminders and email triggers</li><li>Daily midday report by email</li></ul></div>
+          <div><div class="grp-k">Every enquiry holds</div>
+            <ul class="bl"><li>Client, contact and project name</li><li>Requirements and duration</li><li>Due date</li></ul>
+            <div style="font-size:10.5px;color:var(--grey);margin-top:.45rem;line-height:1.45">Copied from the inbound email, or entered by hand.</div></div>
+          <div class="colrule" style="background:var(--lblue)"><svg class="ic" style="color:var(--blue)"><use href="#i-flag"/></svg><span><b>Nothing gets stuck</b>Not every enquiry becomes a tender. It can exit here as &ldquo;not proceeding,&rdquo; keeping its number.</span></div>
+          <div class="colid" style="background:var(--lblue);color:var(--blue)"><svg class="ic"><use href="#i-file"/></svg>E-FC-0015</div>
+        </div>
+
+        <div class="bcol">
+          <div class="bcol-arrow" style="color:var(--success)"><svg class="ic"><use href="#i-arrow"/></svg></div>
+          <div class="bcol-h" style="border-bottom-width:1.5px;border-bottom-color:#d3f4de"><div class="badge" style="background:#f0fdf4;color:var(--success)">3</div>Tender<svg class="ic" style="color:var(--success)"><use href="#i-file"/></svg></div>
+          <div><div class="grp-k">Integrated tools</div>
+            <div class="chips"><span class="hi-green">FC quoting tool</span><span class="hi-green">Battery calculator</span></div></div>
+          <div><div class="grp-k">Both already built</div>
+            <ul class="bl"><li>Priced in the tool you use now</li><li>The finished quote comes back to the job</li><li>Manager sign-off before it goes out</li></ul></div>
+          <div><div class="grp-k">Links to</div>
+            <div class="chips"><span>Sales</span><span class="muted">Drafting (separate)</span></div></div>
+          <div class="colrule" style="background:#f0fdf4"><svg class="ic" style="color:var(--success)"><use href="#i-lock"/></svg><span><b>Price is the baseline</b>Once it moves to Contract the accepted price is set. A change to price, scope or duration needs an approved revision.</span></div>
+          <div class="colid" style="background:#f0fdf4;color:var(--success)"><svg class="ic"><use href="#i-file"/></svg>T-FC-0015</div>
+        </div>
+
+        <div class="bcol">
+          <div class="bcol-arrow" style="color:var(--purple)"><svg class="ic"><use href="#i-arrow"/></svg></div>
+          <div class="bcol-h" style="border-bottom-width:1.5px;border-bottom-color:var(--pbg)"><div class="badge" style="background:var(--pbg);color:var(--purple)">4</div>Contract<svg class="ic" style="color:var(--purple)"><use href="#i-file-check"/></svg></div>
+          <div><div class="grp-k">Terms, not price</div>
+            <div class="chips flow"><span>Rev 2</span><svg class="ic"><use href="#i-arrow"/></svg><span>Rev 5</span><svg class="ic"><use href="#i-arrow"/></svg><span class="hi-purple">Contract</span></div></div>
+          <div><div class="grp-k">Tools</div>
+            <div class="chips"><span class="hi-purple">Rates and terms check</span><span class="hi-purple">Terms editor</span><span>Annature</span></div></div>
+          <div><div class="grp-k">Checks, flags and warnings</div>
+            <ul class="bl"><li>Our standard terms</li><li>Rates match the quote</li><li>Payment terms, LDs</li><li>What to push back on</li></ul>
+            <div style="font-size:10.5px;color:var(--grey);margin-top:.45rem;line-height:1.45">A new tool, built on the quoting tool&rsquo;s foundation. FC and TES kept apart.</div></div>
+          <div class="colrule" style="background:var(--pbg)"><svg class="ic" style="color:var(--purple)"><use href="#i-history"/></svg><span><b>Every revision kept</b>Quotes and contracts are stored against the job &mdash; no more Rev 9 in a folder.</span></div>
+          <div class="colid" style="background:var(--pbg);color:var(--purple)"><svg class="ic"><use href="#i-file"/></svg>C-FC-0015</div>
+        </div>
+
+        <div class="bcol">
+          <div class="bcol-arrow" style="color:var(--orange)"><svg class="ic"><use href="#i-arrow"/></svg></div>
+          <div class="bcol-h" style="border-bottom-width:1.5px;border-bottom-color:var(--obg)"><div class="badge" style="background:var(--obg);color:var(--orange)">5</div>Ops / Finance<svg class="ic" style="color:var(--orange)"><use href="#i-truck"/></svg></div>
+          <div><div class="grp-k">Handed over</div>
+            <ul class="bl"><li>Terms</li><li>Payment dates</li><li>Scope of work</li><li>Rates schedule</li></ul></div>
+          <div><div class="grp-k">Connected first</div>
+            <div class="chips"><span>Employment Hero</span><span>Mitti</span></div></div>
+          <div><div class="grp-k">After that</div>
+            <div class="chips"><span class="muted">Xero</span><span class="muted">Whatever else we find</span></div>
+            <div style="font-size:10.5px;color:var(--grey);margin-top:.45rem;line-height:1.45">Quoted once Contract is done and we have been through Ops / Finance with you.</div></div>
+          <div class="colrule" style="background:var(--obg)"><svg class="ic" style="color:var(--orange)"><use href="#i-layers"/></svg><span><b>One job, one history</b>The same ID, and everything behind it, carries all the way through.</span></div>
+          <div class="colid" style="background:var(--obg);color:var(--orange)"><svg class="ic"><use href="#i-file"/></svg>F-FC-0015</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="slide-foot"><span>SingSingh AI</span><span>02</span></div>
+</div>
+
+<!-- 03 SIGN IN AND ROLES -->
+<div class="slide" id="s3">
+  <div class="wrap">
+    <h2>Role-based access and security</h2>
+    <div class="rule"></div>
+    <p class="say"><span>Your Microsoft account is the login. What you can see and what you can change is set by your role, company by company.</span></p>
+
+    <div class="g2" style="grid-template-columns:1fr 1fr;gap:2.4rem;align-items:stretch">
+      <div class="mock" style="display:flex;flex-direction:column">
+        <div class="shot-bar"><i></i><i></i><i></i><span class="path">/sign-in</span></div>
+        <div style="background:#f6f8fb;padding:2.2rem 1.5rem;display:flex;align-items:center;justify-content:center;height:100%">
+          <div style="background:#fff;border:1px solid var(--border);border-radius:14px;padding:2.2rem 1.8rem;width:100%;max-width:340px;text-align:center;box-shadow:0 1px 3px rgba(8,29,58,.06)">
+            <img src="/falcon-crm/img/logo-falcon-group.png" alt="Falcon Group" style="height:36px;width:auto;margin-bottom:1.3rem"/>
+            <div style="font-size:19px;font-weight:800;color:var(--navy);letter-spacing:-.015em">Falcon Group</div>
+            <div style="font-size:13px;color:var(--grey);margin:.35rem 0 1.4rem">Sign in with your Falcon account</div>
+            <div style="display:flex;align-items:center;justify-content:center;gap:.55rem;background:var(--navy);color:#fff;border-radius:9px;padding:.8rem;font-size:14px;font-weight:600"><svg class="ic" style="width:17px;height:17px"><use href="#i-lock"/></svg>Sign in with Microsoft</div>
+            <div style="font-size:11.5px;color:var(--lgrey);margin-top:1.05rem">Single sign-on. No new password.</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="sec-h">Who can see and do what <span class="tag tag-amber">Indicative</span></div>
+        <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden">
+        <table class="g tight boxed">
+          <tr><th>Role</th><th>Sees</th><th>Can do</th></tr>
+          <tr><td><b>Administrator</b></td><td>All companies</td><td>Users, roles and settings</td></tr>
+          <tr><td><b>Manager</b></td><td>Their companies</td><td>Approves tenders, contracts</td></tr>
+          <tr><td><b>Estimator</b></td><td>Enquiries, tenders</td><td>Quotes, cannot approve</td></tr>
+          <tr><td><b>Contracts</b></td><td>Contracts, terms</td><td>Edits terms, not price</td></tr>
+          <tr><td><b>Ops / Finance</b></td><td>Won jobs only</td><td>Hand-off, invoices, crew</td></tr>
+          <tr><td><b>Read only</b></td><td>Only what is shared</td><td>Look, and nothing else</td></tr>
+        </table>
+        </div>
+        <div style="font-size:11.5px;color:var(--grey);margin-top:.7rem;line-height:1.5">This is yours to set: who the people are, and what each role can do.</div>
+      </div>
+    </div>
+
+    <div class="facts">
+      <div class="fact"><div class="fact-i"><svg class="ic"><use href="#i-split"/></svg></div><p>The same person can have different access in each company</p></div>
+      <div class="fact"><div class="fact-i"><svg class="ic"><use href="#i-history"/></svg></div><p>Every change is recorded: who did it, and when</p></div>
+      <div class="fact"><div class="fact-i"><svg class="ic"><use href="#i-lock"/></svg></div><p>Your Microsoft security settings apply here as well</p></div>
+      <div class="fact"><div class="fact-i"><svg class="ic"><use href="#i-logout"/></svg></div><p>Turn off a Microsoft account and they lose the CRM straight away</p></div>
+    </div>
+  </div>
+  <div class="slide-foot"><span>SingSingh AI</span><span>03</span></div>
+</div>
+
+<!-- 04 ONE LOGIN -->
+<div class="slide" id="s4">
+  <div class="wrap">
+    <h2>Home screen, showing all the entities</h2>
+    <div class="rule"></div>
+    <p class="say"><span>Every company, with what is waiting on it. Coming in on the left, due on the right.</span></p>
+
+    <div class="mock">
+      <div class="shot-bar"><i></i><i></i><i></i><span class="path">/falcon-group</span></div>
+      <div class="fa fa-spot">
+        <div class="fa-side">
+          <div class="fa-brand"><img src="/falcon-crm/img/logo-falcon-group.png" alt="Falcon Group"/></div>
+          <div class="fa-nav"><span class="fa-navitem on"><svg class="ic"><use href="#i-home"/></svg>Home</span><span class="fa-navitem"><svg class="ic"><use href="#i-clipboard"/></svg>Job register</span></div>
+          <div class="fa-find"><svg class="ic"><use href="#i-search"/></svg>Find a job</div>
+          <div class="fa-inbox">
+            <div class="fa-inh">Coming in<em>8</em></div>
+            <div class="fa-in"><div class="top"><span class="nm">Client H</span><span class="tm">9:40</span></div><span class="sb">Tower crane hire, Brisbane CBD</span><span class="w">FC &middot; Email</span></div>
+            <div class="fa-in"><div class="top"><span class="nm">Client R</span><span class="tm">9:12</span></div><span class="sb">Potain PA250 battery enquiry</span><span class="w">TES &middot; Email</span></div>
+            <div class="fa-in"><div class="top"><span class="nm">Client J</span><span class="tm">9:05</span></div><span class="sb">Tender invite: Riverside tower</span><span class="w">FC &middot; EstimateOne</span></div>
+            <div class="fa-more">+ 5 more</div>
+          </div>
+          <div class="fa-sidefoot"><div class="fa-so"><svg class="ic"><use href="#i-logout"/></svg>Sign out</div><small>Privacy &middot; Terms &middot; Accessibility</small></div>
+        </div>
+        <div class="fa-main">
+          <div class="fa-page">
+            <div class="fa-pagehead"><div><h4>Falcon Group</h4><p>Choose a company. Each one is kept separate.</p></div><div class="fa-acts"><span class="fa-bell"><svg class="ic"><use href="#i-bell"/></svg><em>8</em></span></div></div>
+            <div class="fa-body">
+              <div>
+                <div class="fa-sec">Companies</div>
+                <div class="fa-ents">
+                  <div class="fa-ent hot"><div class="ph" style="background-image:url(/falcon-crm/img/ent-fc.jpg)"><span class="fa-note"><svg class="ic"><use href="#i-bell"/></svg>5</span></div><div class="bd"><div class="cd">FC</div><div class="tt">Falcon Cranes</div><div class="st">12 open</div></div><div class="ft"><div class="fa-obtn">Open</div><svg class="fa-cursor" style="left:3.6em;top:1.25em" viewBox="0 0 24 24"><path d="M5 2.2 L5 19.2 L9.3 15.1 L11.9 21.2 L14.8 19.9 L12.2 14 L18.7 14 Z" fill="#fff" stroke="#061A45" stroke-width="1.5" stroke-linejoin="round"/></svg></div></div>
+                  <div class="fa-ent"><div class="ph" style="background-image:url(/falcon-crm/img/ent-tes.jpg)"><span class="fa-note"><svg class="ic"><use href="#i-bell"/></svg>2</span></div><div class="bd"><div class="cd">TES</div><div class="tt">Total Equipment Sales</div><div class="st">7 open</div></div><div class="ft"><div class="fa-obtn">Open</div></div></div>
+                  <div class="fa-ent"><div class="ph" style="background-image:url(/falcon-crm/img/ent-ff.jpg)"></div><div class="bd"><div class="cd">FF</div><div class="tt">Fabrication</div><div class="st">3 open</div></div><div class="ft"><div class="fa-obtn">Open</div></div></div>
+                  <div class="fa-ent"><div class="ph" style="background-image:url(/falcon-crm/img/ent-eng.jpg)"><span class="fa-note"><svg class="ic"><use href="#i-bell"/></svg>1</span></div><div class="bd"><div class="cd">ENG</div><div class="tt">Engineering</div><div class="st">2 open</div></div><div class="ft"><div class="fa-obtn">Open</div></div></div>
+                </div>
+              </div>
+              <div class="fa-rail">
+                <div class="fa-railh">Due Today<svg class="ic"><use href="#i-chevron-up"/></svg></div>
+                <div class="fa-dueit"><span class="id">E-FC-0013</span><span class="w warn">Client C &middot; overdue</span></div>
+                <div class="fa-railh">Due Soon<svg class="ic"><use href="#i-chevron-up"/></svg></div>
+                <div>
+                  <div class="fa-dueit"><span class="id">E-FC-0015</span><span class="w">Client A &middot; 24 Sep</span></div>
+                  <div class="fa-dueit"><span class="id">E-TES-0042</span><span class="w">Client F &middot; 25 Sep</span></div>
+                  <div class="fa-dueit"><span class="id">E-ENG-0003</span><span class="w">Client G &middot; Friday</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="facts" style="grid-template-columns:repeat(3,1fr)">
+      <div class="fact"><div class="fact-i"><svg class="ic"><use href="#i-users"/></svg></div><p>Built for 10 users to start. More are added by us.</p></div>
+      <div class="fact"><div class="fact-i"><svg class="ic"><use href="#i-cloud"/></svg></div><p>Hosted on AWS in Sydney, so your data stays in Australia</p></div>
+      <div class="fact"><div class="fact-i"><svg class="ic"><use href="#i-history"/></svg></div><p>Automated backups every night, so nothing is lost</p></div>
+      <div class="fact"><div class="fact-i"><svg class="ic"><use href="#i-split"/></svg></div><p>Each company is isolated, so one can be added or removed on its own</p></div>
+      <div class="fact"><div class="fact-i"><svg class="ic"><use href="#i-forward"/></svg></div><p>Your data comes out whenever you ask, as files you can open</p></div>
+      <div class="fact"><div class="fact-i"><svg class="ic"><use href="#i-link"/></svg></div><p>Each company gets its own API connections: Xero, Employment Hero, Mitti</p></div>
+    </div>
+  </div>
+  <div class="slide-foot"><span>SingSingh AI</span><span>04</span></div>
+</div>
+
+<!-- 05 COMPANY HOME -->
+<div class="slide" id="s5">
+  <div class="wrap">
+    <h2>Each company gets its own home</h2>
+    <div class="rule"></div>
+    <p class="say"><span>Once you are in Falcon Cranes, everything for it is here. Each enquiry is due two business days after it comes in.</span></p>
+
+    <div class="mock">
+      <div class="shot-bar"><i></i><i></i><i></i><span class="path">/fc</span></div>
+      <div class="fa fa-co">
+        <div class="fa-top"><span class="fa-home"><svg class="ic"><use href="#i-home"/></svg></span><span class="fa-crumb">Companies<svg class="ic"><use href="#i-chevron-down"/></svg></span><span class="fa-vr"></span><span class="fa-ttl">Falcon Cranes &bull; <b>FC</b></span><span class="fa-grow"></span><span class="fa-bellw"><svg class="ic"><use href="#i-bell"/></svg><em>5</em></span><span class="fa-set"><svg class="ic"><use href="#i-clipboard"/></svg>Job register</span><span class="fa-set"><svg class="ic"><use href="#i-gear"/></svg>Settings</span><span class="fa-open">14 OPEN</span></div>
+        <div class="fa-tabsbar"><span class="fa-tb on">All jobs</span><span class="fa-vr2"></span><span class="fa-tb"><b class="fa-sn">1</b>Channels</span><svg class="ic fa-tarr"><use href="#i-chevron-right"/></svg><span class="fa-tb"><b class="fa-sn">2</b>Enquiry</span><svg class="ic fa-tarr"><use href="#i-chevron-right"/></svg><span class="fa-tb"><b class="fa-sn">3</b>Tender</span><svg class="ic fa-tarr"><use href="#i-chevron-right"/></svg><span class="fa-tb"><b class="fa-sn">4</b>Contract</span><svg class="ic fa-tarr"><use href="#i-chevron-right"/></svg><span class="fa-tb"><b class="fa-sn">5</b>Ops / Finance</span></div>
+        <div class="fa-banner" style="background-image:url(/falcon-crm/img/ent-fc.jpg)"><h4>Falcon Cranes</h4><span>FC</span></div>
+        <div class="fa-pane">
+            <div class="fa-card">
+              <div class="fa-cardhead"><h5>Jobs in progress</h5><div class="fa-tabs" style="margin-left:auto"><span class="fa-tab on">All 14</span><span class="fa-tab">Waiting on you 5</span><span class="fa-tab">Overdue 1</span></div></div>
+              <table class="fa-t">
+                <tr><th>Job</th><th>Client</th><th>Status</th><th>Progress</th><th>Due</th></tr>
+                <tr><td class="id">E-FC-0015</td><td>Client A</td><td>Enquiry</td><td class="wait"><span class="fa-trk"><i class="on"></i><i></i><i></i><i></i></span>New, not yet answered</td><td class="wait">24 Sep</td></tr>
+                <tr><td class="id">E-FC-0013</td><td>Client C</td><td>Enquiry</td><td class="warn"><span class="fa-trk"><i class="on"></i><i></i><i></i><i></i></span>No reply yet</td><td class="warn">16 Sep</td></tr>
+                <tr><td class="id">T-FC-0009</td><td>Client G</td><td>Tender &middot; Rev 3 accepted</td><td class="wait"><span class="fa-trk"><i class="on"></i><i class="on"></i><i></i><i></i></span>Ready for contract</td><td class="wait">Today</td></tr>
+                <tr><td class="id">C-FC-0005</td><td>Client I</td><td>Contract &middot; in review</td><td class="wait"><span class="fa-trk"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span>3 changes to review</td><td class="wait">23 Oct</td></tr>
+                <tr><td class="id">F-FC-0004</td><td>Client K</td><td>Finalised, in operations</td><td class="wait"><span class="fa-trk"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span>Completed</td><td class="wait">&ndash;</td></tr>
+              </table>
+            </div>
+          </div>
+      </div>
+    </div>
+
+    <div class="idbread">
+      <span class="idbread-k">Numbered when you accept an enquiry, then the same number throughout:</span>
+      <b>E-FC-0015</b><svg class="ic"><use href="#i-arrow"/></svg>
+      <b>T-FC-0015</b><svg class="ic"><use href="#i-arrow"/></svg>
+      <b>C-FC-0015</b><svg class="ic"><use href="#i-arrow"/></svg>
+      <b>F-FC-0015</b>
+    </div>
+
+    <div class="cbar">
+      <svg class="ic"><use href="#i-arrow"/></svg>
+      <p>Click a job and it opens at its step: Enquiry, Tender, or Contract where the terms are negotiated.</p>
+    </div>
+  </div>
+  <div class="slide-foot"><span>SingSingh AI</span><span>05</span></div>
+</div>
+
+<!-- 06 THE FIVE STEPS -->
+<div class="slide" id="s6">
+  <div class="wrap">
+    <h2>The five-step pipeline</h2>
+    <div class="rule"></div>
+    <p class="say"><span>The bar across the top of every company is the life of a job. It sits on one step at a time and moves left to right.</span></p>
+
+    <div class="mock">
+      <div class="shot-bar"><i></i><i></i><i></i><span class="path">/fc</span></div>
+      <div class="fa fa-co fa-pipe">
+        <div class="fa-top"><span class="fa-home"><svg class="ic"><use href="#i-home"/></svg></span><span class="fa-crumb">Companies<svg class="ic"><use href="#i-chevron-down"/></svg></span><span class="fa-vr"></span><span class="fa-ttl">Falcon Cranes &bull; <b>FC</b></span><span class="fa-grow"></span><span class="fa-bellw"><svg class="ic"><use href="#i-bell"/></svg><em>5</em><div class="bell-note"><h6><svg class="ic"><use href="#i-bell"/></svg>What needs you</h6><p>Everything waiting on an action. Click one and it takes you straight to that job.</p></div></span><span class="fa-set"><svg class="ic"><use href="#i-clipboard"/></svg>Job register</span><span class="fa-set"><svg class="ic"><use href="#i-gear"/></svg>Settings</span><span class="fa-open">14 OPEN</span></div>
+        <div class="fa-tabsbar pipe"><span class="fa-tb on">All jobs</span><span class="fa-tb"><b class="fa-sn">1</b>Channels</span><span class="fa-tb"><b class="fa-sn">2</b>Enquiry</span><span class="fa-tb"><b class="fa-sn">3</b>Tender</span><span class="fa-tb"><b class="fa-sn">4</b>Contract</span><span class="fa-tb"><b class="fa-sn">5</b>Ops / Finance</span></div>
+        <div class="pipe-stage">
+          <div class="pipe-back">
+            <div class="fa-banner" style="background-image:url(/falcon-crm/img/ent-fc.jpg)"><h4>Falcon Cranes</h4><span>FC</span></div>
+            <div class="fa-pane"><div class="fa-card"><div class="fa-cardhead"><h5>Jobs in progress</h5></div><table class="fa-t"><tr><th>Job</th><th>Client</th><th>Status</th><th>Due</th></tr><tr><td class="id">E-FC-0015</td><td>Client A</td><td>Enquiry</td><td>24 Sep</td></tr><tr><td class="id">T-FC-0009</td><td>Client G</td><td>Tender</td><td>Today</td></tr><tr><td class="id">C-FC-0005</td><td>Client I</td><td>Contract</td><td>23 Oct</td></tr></table></div></div>
+          </div>
+          <div class="pipe-notes">
+            <div></div>
+            <div class="pipe-note"><h6><span class="pipe-sn" style="background:var(--tbg);color:var(--teal)">1</span>Channels</h6><p>Everything that arrives, before anyone touches it. Accept it, or bin it.</p><ul class="pipe-tree"><li>Outlook &mdash; Falcon Cranes</li><li>Website form</li><li>EstimateOne API</li><li>Manual entry</li></ul></div>
+            <div class="pipe-note"><h6><span class="pipe-sn" style="background:var(--lblue);color:var(--blue)">2</span>Enquiry</h6><p>Accepted and given its ID. Due two business days after it came in.</p><ul class="pipe-tree"><li>Accepted from Channels</li><li>Given its unique ID</li><li>Allocated to an owner</li></ul></div>
+            <div class="pipe-note"><h6><span class="pipe-sn" style="background:#f0fdf4;color:var(--success)">3</span>Tender</h6><p>Quoted in your own tools. Every revision kept on the job.</p><ul class="pipe-tree"><li>FC quoting tool</li></ul></div>
+            <div class="pipe-note"><h6><span class="pipe-sn" style="background:var(--pbg);color:var(--purple)">4</span>Contract</h6><p>Price locked, terms negotiated, then both parties sign through Annature.</p><ul class="pipe-tree"><li>Contract editor tool</li><li>Annature</li></ul></div>
+            <div class="pipe-note"><h6><span class="pipe-sn" style="background:var(--obg);color:var(--orange)">5</span>Ops / Finance</h6><p>Finalised and in operations. Data goes out to Xero, Mitti and Employment Hero, so nothing is typed twice.</p><ul class="pipe-tree"><li>Employment Hero</li><li>Mitti</li><li>Xero</li></ul></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="slide-foot"><span>SingSingh AI</span><span>06</span></div>
+</div>
+
+<!-- 07 CHANNELS -->
+<div class="slide" id="s7">
+  <div class="wrap">
+    <h2>Step 1: Inbound channels</h2>
+    <div class="rule"></div>
+    <p class="say"><span>Email, website and EstimateOne all land here until a person accepts them.</span></p>
+
+    <div class="mock">
+      <div class="shot-bar"><i></i><i></i><i></i><span class="path">/fc/channels</span></div>
+      <div class="fa fa-co fa-ch fa-ch2">
+        <div class="fa-top"><span class="fa-home"><svg class="ic"><use href="#i-home"/></svg></span><span class="fa-crumb">Companies<svg class="ic"><use href="#i-chevron-down"/></svg></span><span class="fa-vr"></span><span class="fa-ttl">Falcon Cranes &bull; <b>FC</b></span><span class="fa-grow"></span><span class="fa-bellw"><svg class="ic"><use href="#i-bell"/></svg><em>5</em></span><span class="fa-set"><svg class="ic"><use href="#i-clipboard"/></svg>Job register</span><span class="fa-set"><svg class="ic"><use href="#i-gear"/></svg>Settings</span><span class="fa-open">14 OPEN</span></div>
+        <div class="fa-tabsbar"><span class="fa-tb">All jobs</span><span class="fa-vr2"></span><span class="fa-tb on"><b class="fa-sn">1</b>Channels</span><svg class="ic fa-tarr"><use href="#i-chevron-right"/></svg><span class="fa-tb"><b class="fa-sn">2</b>Enquiry</span><svg class="ic fa-tarr"><use href="#i-chevron-right"/></svg><span class="fa-tb"><b class="fa-sn">3</b>Tender</span><svg class="ic fa-tarr"><use href="#i-chevron-right"/></svg><span class="fa-tb"><b class="fa-sn">4</b>Contract</span><svg class="ic fa-tarr"><use href="#i-chevron-right"/></svg><span class="fa-tb"><b class="fa-sn">5</b>Ops / Finance</span></div>
+        <div class="fa-pane">
+            <div class="fa-srcs"><span class="fa-src on"><b>5</b>All<i>everything waiting</i></span><span class="fa-src"><b>3</b>Outlook<i>FC shared inbox</i></span><span class="fa-src"><b>1</b>EstimateOne<i>in by API</i></span><span class="fa-src" style="position:relative"><b>1</b>Manual entry<i>typed in here</i><svg class="fa-cursor" style="right:-.5em;bottom:-.7em" viewBox="0 0 24 24"><path d="M5 2.2 L5 19.2 L9.3 15.1 L11.9 21.2 L14.8 19.9 L12.2 14 L18.7 14 Z" fill="#fff" stroke="#061A45" stroke-width="1.5" stroke-linejoin="round"/></svg></span><span style="flex:1"></span><span class="fa-btn" style="display:inline-flex;align-items:center;gap:.4em;padding:.6em 1.1em"><svg class="ic" style="width:1.2em;height:1.2em"><use href="#i-plus"/></svg>New entry</span><div class="src-note"><h6><svg class="ic"><use href="#i-phone"/></svg>What this is for</h6><p>Anything that did not arrive by email &mdash; a phone call, word of mouth, a chat on site. Type it in and it joins the same queue.</p></div></div>
+            <div class="fa-tri">
+              <div class="fa-tl">
+                <div class="fa-ti on"><div class="top"><span class="ch"><svg class="ic"><use href="#i-mail"/></svg></span><b>Client H</b><span class="tm">9:40</span></div><div class="s">Tower crane hire, Brisbane CBD</div><div class="m"><span>Email</span><span class="fa-ol"><svg class="ic"><use href="#i-mail-open"/></svg>Outlook</span></div></div>
+                <div class="fa-ti"><div class="top"><span class="ch"><svg class="ic"><use href="#i-mail"/></svg></span><b>Client A</b><span class="tm">9:30</span></div><div class="s">RE: E-FC-0015 Tower crane, Brisbane CBD</div><div class="m"><span class="fa-hint blue">Follow-up on E-FC-0015</span><span class="fa-ol"><svg class="ic"><use href="#i-mail-open"/></svg>Outlook</span></div></div>
+                <div class="fa-ti"><div class="top"><span class="ch"><svg class="ic"><use href="#i-clipboard"/></svg></span><b>Client J</b><span class="tm">9:05</span></div><div class="s">Tender invite: Riverside tower</div><div class="m"><span>EstimateOne</span><span class="fa-ol"><svg class="ic"><use href="#i-mail-open"/></svg>EstimateOne</span></div></div>
+                <div class="fa-ti"><div class="top"><span class="ch"><svg class="ic"><use href="#i-mail"/></svg></span><b>Vendor</b><span class="tm">8:55</span></div><div class="s">Software subscription offer</div><div class="m"><span>Email</span><span class="fa-ol"><svg class="ic"><use href="#i-mail-open"/></svg>Outlook</span></div></div>
+                <div class="fa-ti"><div class="top"><span class="ch"><svg class="ic"><use href="#i-pen"/></svg></span><b>Client M</b><span class="tm">Yesterday</span></div><div class="s">Mobile crane, Gold Coast</div><div class="m"><span>Manual entry</span><span class="fa-ol">Phone call, typed in</span></div></div>
+              </div>
+              <div class="fa-dt">
+                <div class="fa-dth"><div><h5>Tower crane hire, Brisbane CBD</h5><p>From Client H &middot; site@clienth.example &middot; email to the Falcon Cranes inbox &middot; today, 9:40</p></div><span class="fa-btn2"><svg class="ic"><use href="#i-mail-open"/></svg>Open in Outlook</span></div>
+                <div class="fa-cols">
+                  <div class="fa-msg"><div class="h">Their message</div>Hi, we need a tower crane for 12 weeks at 88 Example St, Brisbane CBD, from 3 November. Site plan and program attached. Can you quote by Friday?<div class="fa-att"><span><svg class="ic"><use href="#i-paperclip"/></svg>Site plan.pdf</span><span><svg class="ic"><use href="#i-paperclip"/></svg>Program.xlsx</span></div></div>
+                  <div>
+                    <div class="fa-sh">Details for the enquiry<small>From the email. Edit if needed.</small></div>
+                    <div class="fa-fld">
+                      <span class="k">Client</span><span class="v">Client H</span>
+                      <span class="k">Contact</span><span class="v">site@clienth.example</span>
+                      <span class="k">About</span><span class="v">Tower crane hire, Brisbane CBD</span>
+                      <span class="k">Company</span><div class="fa-ent-pick">
+                        <div class="hd">Falcon Cranes (FC)<svg class="ic" style="width:1em;height:1em"><use href="#i-chevron-up"/></svg></div>
+                        <div class="op on"><b>FC</b>Falcon Cranes</div>
+                        <div class="op"><b>TES</b>Total Equipment Sales</div>
+                        <div class="op"><b>FF</b>Fabrication</div>
+                        <div class="op"><b>ENG</b>Engineering</div>
+                      </div>
+                      <span class="k">Reply by</span><span class="v">Fri 25 Sep</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="fa-actions"><span class="fa-btn">Accept as an enquiry</span><span class="fa-btn2"><svg class="ic"><use href="#i-mail-open"/></svg>Ask for more information</span><span class="sp"></span><span class="fa-btn2 danger">Not relevant</span></div>
+                <div class="fa-actnotes">
+                  <div class="act-note"><h6><svg class="ic"><use href="#i-file"/></svg>Accept</h6><p>Gives it ID <b>E-FC-0016</b>, moves it to Enquiry.</p></div>
+                  <div class="act-note"><h6><svg class="ic"><use href="#i-mail-open"/></svg>Ask for more</h6><p>Opens Outlook in reply mode on the same thread.</p></div>
+                  <span style="flex:1"></span>
+                  <div class="act-note bad"><h6><svg class="ic"><use href="#i-rotate"/></svg>Not relevant</h6><p>Recycle bin for 30 days.</p></div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="facts" style="grid-template-columns:repeat(3,1fr)">
+      <div class="fact"><div class="fact-i"><svg class="ic"><use href="#i-users"/></svg></div><p>Anyone can forward one in</p></div>
+      <div class="fact"><div class="fact-i"><svg class="ic"><use href="#i-history"/></svg></div><p>A follow-up joins its job, never a new ID</p></div>
+      <div class="fact"><div class="fact-i"><svg class="ic"><use href="#i-split"/></svg></div><p>Wrong company? Move it before accepting</p></div>
+    </div>
+  </div>
+  <div class="slide-foot"><span>SingSingh AI</span><span>07</span></div>
+</div>
+
+<!-- 08 ENQUIRIES -->
+<div class="slide" id="s8">
+  <div class="wrap">
+    <h2>Step 2: Enquiry</h2>
+    <div class="rule"></div>
+    <p class="say"><span>Every accepted input from Channels, generated as an enquiry for Falcon Cranes and carrying what came in with it.</span></p>
+
+    <div class="mock">
+      <div class="shot-bar"><i></i><i></i><i></i><span class="path">/fc/enquiries</span></div>
+      <div class="fa fa-co fa-ch">
+        <div class="fa-top"><span class="fa-home"><svg class="ic"><use href="#i-home"/></svg></span><span class="fa-crumb">Companies<svg class="ic"><use href="#i-chevron-down"/></svg></span><span class="fa-vr"></span><span class="fa-ttl">Falcon Cranes &bull; <b>FC</b></span><span class="fa-grow"></span><span class="fa-bellw"><svg class="ic"><use href="#i-bell"/></svg><em>5</em></span><span class="fa-set"><svg class="ic"><use href="#i-clipboard"/></svg>Job register</span><span class="fa-set"><svg class="ic"><use href="#i-gear"/></svg>Settings</span><span class="fa-open">14 OPEN</span></div>
+        <div class="fa-tabsbar"><span class="fa-tb">All jobs</span><span class="fa-vr2"></span><span class="fa-tb"><b class="fa-sn">1</b>Channels</span><svg class="ic fa-tarr"><use href="#i-chevron-right"/></svg><span class="fa-tb on"><b class="fa-sn">2</b>Enquiry</span><svg class="ic fa-tarr"><use href="#i-chevron-right"/></svg><span class="fa-tb"><b class="fa-sn">3</b>Tender</span><svg class="ic fa-tarr"><use href="#i-chevron-right"/></svg><span class="fa-tb"><b class="fa-sn">4</b>Contract</span><svg class="ic fa-tarr"><use href="#i-chevron-right"/></svg><span class="fa-tb"><b class="fa-sn">5</b>Ops / Finance</span></div>
+        <div class="fa-pane">
+            <div class="fa-pagehead"><div><h4>Enquiries</h4><p>Every accepted enquiry, with its number and what it is about.</p></div><div class="fa-acts"><span class="fa-btn">New enquiry</span></div></div>
+            <div class="fa-card">
+              <div class="fa-cardhead"><h5>Open enquiries</h5><span class="dim">3 open</span></div>
+              <table class="fa-t">
+                <tr><th>ID</th><th>Client</th><th>About</th><th>Came in by</th><th>Owner</th><th>Due</th><th>Status</th></tr>
+                <tr><td class="id">E-FC-0015</td><td>Client A</td><td>Tower crane hire, Brisbane CBD, 12 weeks</td><td>Email</td><td>Chris W</td><td>24 Sep</td><td><span class="fa-pill blue">New</span></td></tr>
+                  <tr><td class="id">E-FC-0014</td><td>Client B</td><td>Tender: Riverside tower, tower crane</td><td>EstimateOne<span class="fa-api">API</span></td><td>Alex M</td><td>Today</td><td><span class="fa-pill grey">Followed up</span></td></tr>
+                  <tr><td class="id">E-FC-0013</td><td>Client C</td><td>Mobile crane, Gold Coast, 2 days</td><td>Website</td><td>Chris W</td><td>16 Sep</td><td><span class="fa-pill warm">Overdue</span></td></tr>
+              </table>
+              <div class="fa-actnotes" style="margin:.5em 0 0 11em">
+                <div class="act-note" style="flex:0 0 24em">
+                  <h6><svg class="ic"><use href="#i-file"/></svg>About carries the detail</h6>
+                  <p>Site, duration, requirements and project name, from the message or typed in.</p>
+                </div>
+                <span style="flex:1"></span>
+                <div class="act-note" style="flex:0 0 21em">
+                  <h6><svg class="ic"><use href="#i-user-check"/></svg>Owner</h6>
+                  <p>An admin allocates it. That person gets the reminders.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+
+    <div class="facts">
+      <div class="fact"><div class="fact-i"><svg class="ic"><use href="#i-bell"/></svg></div><p>Reminders when a follow-up is due</p></div>
+      <div class="fact"><div class="fact-i"><svg class="ic"><use href="#i-user-check"/></svg></div><p>The owner gets the alerts, not everyone</p></div>
+      <div class="fact"><div class="fact-i"><svg class="ic"><use href="#i-calendar"/></svg></div><p>Daily midday report on what is overdue</p></div>
+      <div class="fact"><div class="fact-i"><svg class="ic"><use href="#i-forward"/></svg></div><p>Forward any email with the job ID and it lands on that job</p></div>
+    </div>
+  </div>
+  <div class="slide-foot"><span>SingSingh AI</span><span>08</span></div>
+</div>
+
+<!-- 09 TENDERING -->
+<div class="slide" id="s9">
+  <div class="wrap">
+    <h2>Step 3: Tendering</h2>
+    <div class="rule"></div>
+    <p class="say"><span>Every job being quoted, and inside any of them, each client request becomes the next revision on the same job number.</span></p>
+
+    <div class="mock">
+      <div class="shot-bar"><i></i><i></i><i></i><span class="path">/fc/tenders/T-FC-0015</span></div>
+      <div class="fa fa-co fa-ch fa-ch2 fa-ct">
+        <div class="fa-top"><span class="fa-home"><svg class="ic"><use href="#i-home"/></svg></span><span class="fa-crumb">Companies<svg class="ic"><use href="#i-chevron-down"/></svg></span><span class="fa-vr"></span><span class="fa-ttl">Falcon Cranes &bull; <b>FC</b></span><span class="fa-grow"></span><span class="fa-bellw"><svg class="ic"><use href="#i-bell"/></svg><em>5</em></span><span class="fa-set"><svg class="ic"><use href="#i-clipboard"/></svg>Job register</span><span class="fa-set"><svg class="ic"><use href="#i-gear"/></svg>Settings</span><span class="fa-open">14 OPEN</span></div>
+        <div class="fa-tabsbar"><span class="fa-tb">All jobs</span><span class="fa-vr2"></span><span class="fa-tb"><b class="fa-sn">1</b>Channels</span><svg class="ic fa-tarr"><use href="#i-chevron-right"/></svg><span class="fa-tb"><b class="fa-sn">2</b>Enquiry</span><svg class="ic fa-tarr"><use href="#i-chevron-right"/></svg><span class="fa-tb on"><b class="fa-sn">3</b>Tender</span><svg class="ic fa-tarr"><use href="#i-chevron-right"/></svg><span class="fa-tb"><b class="fa-sn">4</b>Contract</span><svg class="ic fa-tarr"><use href="#i-chevron-right"/></svg><span class="fa-tb"><b class="fa-sn">5</b>Ops / Finance</span></div>
+        <div class="fa-pane">
+            <div class="fa-card">
+              <div class="fa-cardhead"><h5>Tenders</h5><span class="dim">5 on this step &middot; click a row to open it</span></div>
+              <table class="fa-t">
+                <tr><th>ID</th><th>Client</th><th>About</th><th>Rev</th><th>Owner</th><th class="n">Total excl GST</th><th>Due</th><th>Status</th></tr>
+                <tr class="on"><td class="id">T-FC-0015</td><td>Client A</td><td>Tower crane hire, Brisbane CBD</td><td>Rev 3</td><td>Chris W</td><td class="n">$45,900</td><td class="wait">Today</td><td><span class="fa-pill blue">Drafting</span></td></tr>
+                <tr><td class="id">T-FC-0014</td><td>Client B</td><td>Riverside tower, tower crane</td><td>Rev 1</td><td>Alex M</td><td class="n">$128,400</td><td>9 Oct</td><td><span class="fa-pill grey">Issued</span></td></tr>
+                <tr><td class="id">T-FC-0012</td><td>Client D</td><td>Tower crane, Springfield</td><td>Rev 2</td><td>Chris W</td><td class="n">$71,200</td><td>13 Oct</td><td><span class="fa-pill grey">Awaiting sign-off</span></td></tr>
+                <tr><td class="id">T-FC-0009</td><td>Client G</td><td>Crane hire, Chermside</td><td>Rev 3</td><td>Alex M</td><td class="n">$38,750</td><td class="wait">Today</td><td><span class="fa-pill green">Accepted</span></td></tr>
+                <tr><td class="id">T-FC-0007</td><td>Client F</td><td>Mobile crane, Coomera</td><td>Rev 2</td><td>Chris W</td><td class="n">$52,000</td><td>&mdash;</td><td><span class="fa-pill grey">Lost</span></td></tr>
+              </table>
+            </div>
+
+            <div class="fa-cols" style="grid-template-columns:1fr 1fr;align-items:start">
+              <div class="fa-card">
+                <div class="fa-cardhead"><h5>T-FC-0015 &nbsp;·&nbsp; Client A</h5><span class="dim">open</span></div>
+                <div style="padding:.2em 0 .1em">
+                  <p style="color:var(--fa-ink2);line-height:1.5">Tower crane hire, Brisbane CBD, 12 weeks. The same job as enquiry <b>E-FC-0015</b>. Priced from <b>Rates 2026-09</b>.</p>
+                  <div class="btns" style="display:flex;gap:.8em;margin:.8em 0 .2em"><span class="fa-btn">Start Rev 3 &nbsp;&rarr;</span><span class="fa-btn2">Finalise and move to contract</span></div>
+                  <div class="act-note" style="margin:.9em 0 .2em 1.5em">
+                    <h6><svg class="ic"><use href="#i-tool"/></svg>Start Rev 3 opens the FC quoting tool</h6>
+                    <div style="display:flex;gap:.8em;align-items:flex-start;margin-top:.5em">
+                      <img src="/falcon-crm/img/tool-fc.jpg" alt="FC quoting tool" style="width:12em;border:1px solid var(--fa-line);border-radius:.4em;flex-shrink:0"/>
+                      <p style="margin:0">The tool you use now, with Rev 2 filled in. What you build comes back as Rev 3.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="fa-card">
+                <div class="fa-cardhead"><h5>Revisions</h5><span class="dim">what prompted each one, its total and when</span></div>
+                <table class="fa-t">
+                  <tr><th>Reference</th><th>Based on</th><th>Status</th><th class="n">Total</th></tr>
+                  <tr><td class="ref">T-FC-0015_rev3</td><td>Client A's email, 6 Oct: add a second crane<span class="fa-ol"><svg class="ic"><use href="#i-mail-open"/></svg>Outlook</span></td><td><span class="fa-p draft">Draft</span></td><td class="n">$45,900</td></tr>
+                  <tr><td class="ref">T-FC-0015_rev2</td><td>Client A's email, 1 Oct: lower rate<span class="fa-ol"><svg class="ic"><use href="#i-mail-open"/></svg>Outlook</span></td><td><span class="fa-p issued">Issued</span></td><td class="n">$45,900</td></tr>
+                  <tr><td class="ref">T-FC-0015_rev1</td><td>First quote, from enquiry E-FC-0015</td><td><span class="fa-p superseded">Superseded</span></td><td class="n">$48,200</td></tr>
+                </table>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+
+    <div class="facts" style="grid-template-columns:repeat(3,1fr)">
+      <div class="fact"><div class="fact-i"><svg class="ic"><use href="#i-inbox"/></svg></div><p>Follow-ups join this tender</p></div>
+      <div class="fact"><div class="fact-i"><svg class="ic"><use href="#i-user-check"/></svg></div><p>Manager signs off first</p></div>
+      <div class="fact"><div class="fact-i"><svg class="ic"><use href="#i-flag"/></svg></div><p>Lost? Kept with the reason</p></div>
+    </div>
+  </div>
+  <div class="slide-foot"><span>SingSingh AI</span><span>09</span></div>
+</div>
+
+<!-- 10 YOUR TOOLS -->
+<div class="slide" id="s10">
+  <div class="wrap">
+    <h2>Each company keeps its own tools</h2>
+    <div class="rule"></div>
+    <p class="say"><span>Falcon Cranes tenders open the FC quoting tool. TES tenders open the battery tool. Neither can see the other's rates or jobs.</span></p>
+
+    <div class="tools2">
+      <div>
+        <div class="shot"><div class="shot-bar"><i></i><i></i><i></i><span class="path">FC quoting tool</span></div><img src="/falcon-crm/img/tool-fc.jpg" alt="FC quoting tool"/></div>
+        <div class="tcap"><b>FC quoting tool</b><span>Falcon Cranes tenders only</span></div>
+      </div>
+      <div>
+        <div class="shot"><div class="shot-bar"><i></i><i></i><i></i><span class="path">TES battery tool</span></div><img src="/falcon-crm/img/tool-tes.jpg" alt="TES battery proposal tool"/></div>
+        <div class="tcap"><b>Battery calculator and proposal</b><span>TES tenders only</span></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="slide-foot"><span>SingSingh AI</span><span>10</span></div>
+</div>
+
+<!-- 11 CONTRACT -->
+<div class="slide" id="s11">
+  <div class="wrap">
+    <h2>Step 4: Contracts</h2>
+    <div class="rule"></div>
+    <p class="say"><span>Every contract in play. The accepted price is the baseline, and the terms are what is being negotiated.</span></p>
+
+    <div class="mock">
+      <div class="shot-bar"><i></i><i></i><i></i><span class="path">/fc/contracts/C-FC-0015</span></div>
+      <div class="fa fa-co fa-ch fa-ch2 fa-ct">
+        <div class="fa-top"><span class="fa-home"><svg class="ic"><use href="#i-home"/></svg></span><span class="fa-crumb">Companies<svg class="ic"><use href="#i-chevron-down"/></svg></span><span class="fa-vr"></span><span class="fa-ttl">Falcon Cranes &bull; <b>FC</b></span><span class="fa-grow"></span><span class="fa-bellw"><svg class="ic"><use href="#i-bell"/></svg><em>5</em></span><span class="fa-set"><svg class="ic"><use href="#i-clipboard"/></svg>Job register</span><span class="fa-set"><svg class="ic"><use href="#i-gear"/></svg>Settings</span><span class="fa-open">14 OPEN</span></div>
+        <div class="fa-tabsbar"><span class="fa-tb">All jobs</span><span class="fa-vr2"></span><span class="fa-tb"><b class="fa-sn">1</b>Channels</span><svg class="ic fa-tarr"><use href="#i-chevron-right"/></svg><span class="fa-tb"><b class="fa-sn">2</b>Enquiry</span><svg class="ic fa-tarr"><use href="#i-chevron-right"/></svg><span class="fa-tb"><b class="fa-sn">3</b>Tender</span><svg class="ic fa-tarr"><use href="#i-chevron-right"/></svg><span class="fa-tb on"><b class="fa-sn">4</b>Contract</span><svg class="ic fa-tarr"><use href="#i-chevron-right"/></svg><span class="fa-tb"><b class="fa-sn">5</b>Ops / Finance</span></div>
+        <div class="fa-pane">
+            <div class="fa-card">
+              <div class="fa-cardhead"><h5>Contracts</h5><span class="dim">4 on this step &middot; click a row to open it</span></div>
+              <table class="fa-t">
+                <tr><th>ID</th><th>Client</th><th>About</th><th>Version</th><th>Owner</th><th class="n">Price locked</th><th>Due</th><th>Status</th></tr>
+                <tr class="on"><td class="id">C-FC-0015</td><td>Client A</td><td>Tower crane hire, Brisbane CBD</td><td>rev 3</td><td>Chris W</td><td class="n">$45,900</td><td class="wait">21 Oct</td><td><span class="fa-pill blue">Under review</span></td></tr>
+                <tr><td class="id">C-FC-0009</td><td>Client G</td><td>Crane hire, Chermside</td><td>rev 1</td><td>Alex M</td><td class="n">$38,750</td><td class="wait">Today</td><td><span class="fa-pill grey">Out for signature</span></td></tr>
+                <tr><td class="id">C-FC-0005</td><td>Client I</td><td>Tower crane, Woolloongabba</td><td>rev 2</td><td>Chris W</td><td class="n">$96,300</td><td>23 Oct</td><td><span class="fa-pill grey">3 changes to review</span></td></tr>
+                <tr><td class="id">C-FC-0002</td><td>Client C</td><td>Mobile crane, Milton</td><td>rev 1</td><td>Alex M</td><td class="n">$18,400</td><td>&mdash;</td><td><span class="fa-pill green">Signed</span></td></tr>
+              </table>
+            </div>
+
+            <div class="fa-cols" style="grid-template-columns:1.05fr 1fr;align-items:start">
+              <div class="fa-card">
+                <div class="fa-cardhead"><h5>C-FC-0015 &nbsp;·&nbsp; Client A</h5><span class="dim">open</span></div>
+                <div style="padding:.2em 0 .1em">
+                  <p style="color:var(--fa-ink2);line-height:1.5">Price locked at <b>$45,900</b>, and your terms carried in from quote Rev 3. Only the terms are negotiated now.</p>
+                  <div class="btns" style="display:flex;gap:.8em;margin:.8em 0 .2em"><span class="fa-btn">Finalise and send for signature &nbsp;&rarr;</span><span class="fa-btn2"><svg class="ic"><use href="#i-mail-open"/></svg>Open latest in Outlook</span></div>
+                  <div style="margin-top:.9em;border:1px solid var(--pbg);border-radius:.5em;overflow:hidden">
+                    <div style="display:flex;align-items:center;gap:.45em;background:var(--pbg);padding:.4em .7em;font-weight:700;color:var(--purple)"><svg class="ic" style="width:1.1em;height:1.1em"><use href="#i-pen"/></svg>Terms editor &nbsp;&middot;&nbsp; Payment terms &nbsp;&middot;&nbsp; Falcon Cranes</div>
+                    <div style="padding:.55em .7em;display:grid;grid-template-columns:1fr 1fr;gap:.6em">
+                      <div><div class="grp-k" style="font-size:.78em;margin-bottom:.2em">Falcon standard, v3.4</div><div style="background:#f8fafc;border-radius:.35em;padding:.35em .5em;color:var(--fa-ink2)">Payment 30 days from invoice.</div></div>
+                      <div><div class="grp-k" style="font-size:.78em;margin-bottom:.2em;color:var(--purple)">This contract only</div><div style="background:var(--pbg);border-radius:.35em;padding:.35em .5em;color:var(--navy);font-weight:600">Payment 45 days from invoice.</div></div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:.4em;background:var(--wbg);padding:.38em .7em;color:var(--warning);font-weight:600"><svg class="ic" style="width:1em;height:1em"><use href="#i-warn"/></svg>Outside your standard. Logged, and a manager signs off.</div>
+                  </div>
+                  <div class="act-note flat" style="margin:.8em 0 .2em">
+                    <h6><svg class="ic"><use href="#i-pen"/></svg>The terms editor is a new tool</h6>
+                    <p>A second tool beside the FC quoting tool, for terms not price.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="fa-card">
+                <div class="fa-cardhead"><h5>Change log</h5><span class="dim">every clause that has moved, newest first</span></div>
+                <table class="fa-t">
+                  <tr><th>When</th><th>Version</th><th>What changed</th><th>Decision</th></tr>
+                  <tr><td class="wait">19 Oct</td><td>rev 3</td><td>Payment terms, 30 days &rarr; 60 days</td><td><span class="fa-p draft">Push back</span></td></tr>
+                  <tr><td class="wait">19 Oct</td><td>rev 3</td><td>Schedule of rates, 2 differ from Quote Rev 3</td><td><span class="fa-p draft">Push back</span></td></tr>
+                  <tr><td class="wait">19 Oct</td><td>rev 3</td><td>Liquidated damages added, none in our terms</td><td><span class="fa-p draft">Manager to decide</span></td></tr>
+                  <tr><td>14 Oct</td><td>rev 2</td><td>Payment terms reworded, this contract only</td><td><span class="fa-p issued">Logged</span></td></tr>
+                </table>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+
+    <div class="facts" style="grid-template-columns:repeat(3,1fr)">
+      <div class="fact"><div class="fact-i"><svg class="ic"><use href="#i-history"/></svg></div><p>Each version joins this job, in order</p></div>
+      <div class="fact"><div class="fact-i"><svg class="ic"><use href="#i-lock"/></svg></div><p>Changes to price or scope need an approved revision</p></div>
+      <div class="fact"><div class="fact-i"><svg class="ic"><use href="#i-user-check"/></svg></div><p>The check flags, a person decides</p></div>
+    </div>
+  </div>
+  <div class="slide-foot"><span>SingSingh AI</span><span>11</span></div>
+</div>
+
+<!-- 12 SIGN ONCE -->
+<div class="slide" id="s12">
+  <div class="wrap">
+    <h2>Sign once, at the end</h2>
+    <div class="rule"></div>
+    <p class="say"><span>One click on the same screen. The pack goes to the client through your own Annature account, and the status comes back here.</span></p>
+
+    <div class="mock">
+      <div class="shot-bar"><i></i><i></i><i></i><span class="path">/fc/contracts/C-FC-0015/sign</span></div>
+      <div class="fa fa-co fa-ch fa-ch2">
+        <div class="fa-top"><span class="fa-home"><svg class="ic"><use href="#i-home"/></svg></span><span class="fa-crumb">Companies<svg class="ic"><use href="#i-chevron-down"/></svg></span><span class="fa-vr"></span><span class="fa-ttl">Falcon Cranes &bull; <b>FC</b></span><span class="fa-grow"></span><span class="fa-bellw"><svg class="ic"><use href="#i-bell"/></svg><em>5</em></span><span class="fa-set"><svg class="ic"><use href="#i-clipboard"/></svg>Job register</span><span class="fa-set"><svg class="ic"><use href="#i-gear"/></svg>Settings</span><span class="fa-open">14 OPEN</span></div>
+        <div class="fa-tabsbar"><span class="fa-tb">All jobs</span><span class="fa-vr2"></span><span class="fa-tb"><b class="fa-sn">1</b>Channels</span><svg class="ic fa-tarr"><use href="#i-chevron-right"/></svg><span class="fa-tb"><b class="fa-sn">2</b>Enquiry</span><svg class="ic fa-tarr"><use href="#i-chevron-right"/></svg><span class="fa-tb"><b class="fa-sn">3</b>Tender</span><svg class="ic fa-tarr"><use href="#i-chevron-right"/></svg><span class="fa-tb on"><b class="fa-sn">4</b>Contract</span><svg class="ic fa-tarr"><use href="#i-chevron-right"/></svg><span class="fa-tb"><b class="fa-sn">5</b>Ops / Finance</span></div>
+        <div class="sign-stage">
+          <div class="sign-back">
+        <div class="fa-pane">
+            <div class="fa-card">
+              <div class="fa-cardhead"><h5>Contracts</h5><span class="dim">4 on this step &middot; click a row to open it</span></div>
+              <table class="fa-t">
+                <tr><th>ID</th><th>Client</th><th>About</th><th>Version</th><th>Owner</th><th class="n">Price locked</th><th>Due</th><th>Status</th></tr>
+                <tr class="on"><td class="id">C-FC-0015</td><td>Client A</td><td>Tower crane hire, Brisbane CBD</td><td>rev 3</td><td>Chris W</td><td class="n">$45,900</td><td class="wait">21 Oct</td><td><span class="fa-pill blue">Under review</span></td></tr>
+                <tr><td class="id">C-FC-0009</td><td>Client G</td><td>Crane hire, Chermside</td><td>rev 1</td><td>Alex M</td><td class="n">$38,750</td><td class="wait">Today</td><td><span class="fa-pill grey">Out for signature</span></td></tr>
+                <tr><td class="id">C-FC-0005</td><td>Client I</td><td>Tower crane, Woolloongabba</td><td>rev 2</td><td>Chris W</td><td class="n">$96,300</td><td>23 Oct</td><td><span class="fa-pill grey">3 changes to review</span></td></tr>
+                <tr><td class="id">C-FC-0002</td><td>Client C</td><td>Mobile crane, Milton</td><td>rev 1</td><td>Alex M</td><td class="n">$18,400</td><td>&mdash;</td><td><span class="fa-pill green">Signed</span></td></tr>
+              </table>
+            </div>
+
+            <div class="fa-cols" style="grid-template-columns:1.05fr 1fr;align-items:start">
+              <div class="fa-card">
+                <div class="fa-cardhead"><h5>C-FC-0015 &nbsp;·&nbsp; Client A</h5><span class="dim">open</span></div>
+                <div style="padding:.2em 0 .1em">
+                  <p style="color:var(--fa-ink2);line-height:1.5">Price locked at <b>$45,900</b>, and your terms carried in from quote Rev 3. Only the terms are negotiated now.</p>
+                  <div class="btns" style="display:flex;gap:.8em;margin:.8em 0 .2em"><span class="fa-btn">Finalise and send for signature &nbsp;&rarr;</span><span class="fa-btn2"><svg class="ic"><use href="#i-mail-open"/></svg>Open latest in Outlook</span></div>
+                  <div style="margin-top:.9em;border:1px solid var(--pbg);border-radius:.5em;overflow:hidden">
+                    <div style="display:flex;align-items:center;gap:.45em;background:var(--pbg);padding:.4em .7em;font-weight:700;color:var(--purple)"><svg class="ic" style="width:1.1em;height:1.1em"><use href="#i-pen"/></svg>Terms editor &nbsp;&middot;&nbsp; Payment terms &nbsp;&middot;&nbsp; Falcon Cranes</div>
+                    <div style="padding:.55em .7em;display:grid;grid-template-columns:1fr 1fr;gap:.6em">
+                      <div><div class="grp-k" style="font-size:.78em;margin-bottom:.2em">Falcon standard, v3.4</div><div style="background:#f8fafc;border-radius:.35em;padding:.35em .5em;color:var(--fa-ink2)">Payment 30 days from invoice.</div></div>
+                      <div><div class="grp-k" style="font-size:.78em;margin-bottom:.2em;color:var(--purple)">This contract only</div><div style="background:var(--pbg);border-radius:.35em;padding:.35em .5em;color:var(--navy);font-weight:600">Payment 45 days from invoice.</div></div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:.4em;background:var(--wbg);padding:.38em .7em;color:var(--warning);font-weight:600"><svg class="ic" style="width:1em;height:1em"><use href="#i-warn"/></svg>Outside your standard. Logged, and a manager signs off.</div>
+                  </div>
+                  <div class="act-note flat" style="margin:.8em 0 .2em">
+                    <h6><svg class="ic"><use href="#i-pen"/></svg>The terms editor is a new tool</h6>
+                    <p>A second tool beside the FC quoting tool, for terms not price.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="fa-card">
+                <div class="fa-cardhead"><h5>Change log</h5><span class="dim">every clause that has moved, newest first</span></div>
+                <table class="fa-t">
+                  <tr><th>When</th><th>Version</th><th>What changed</th><th>Decision</th></tr>
+                  <tr><td class="wait">19 Oct</td><td>rev 3</td><td>Payment terms, 30 days &rarr; 60 days</td><td><span class="fa-p draft">Push back</span></td></tr>
+                  <tr><td class="wait">19 Oct</td><td>rev 3</td><td>Schedule of rates, 2 differ from Quote Rev 3</td><td><span class="fa-p draft">Push back</span></td></tr>
+                  <tr><td class="wait">19 Oct</td><td>rev 3</td><td>Liquidated damages added, none in our terms</td><td><span class="fa-p draft">Manager to decide</span></td></tr>
+                  <tr><td>14 Oct</td><td>rev 2</td><td>Payment terms reworded, this contract only</td><td><span class="fa-p issued">Logged</span></td></tr>
+                </table>
+              </div>
+            </div>
+          </div>
+          </div>
+          <div class="sign-modal">
+            <div class="sign-card">
+              <div class="hd"><svg class="ic"><use href="#i-pen"/></svg>Sending through Annature<span class="fa-api" style="margin-left:auto">API</span></div>
+              <div class="bd">
+                <div class="ln"><svg class="ic"><use href="#i-file-check"/></svg><span><b>C-FC-0015 &middot; Client A</b> goes out as one pack: the agreed version, the quote, the rates schedule and your terms.</span></div>
+                <div class="ln"><svg class="ic"><use href="#i-mail"/></svg><span>Sent from <b>Falcon Cranes</b> on your own account and signing template, not from us.</span></div>
+                <div class="ln"><svg class="ic"><use href="#i-clock"/></svg><span>Sent 22 Oct 9:41 &nbsp;&middot;&nbsp; Opened 22 Oct 10:15 &nbsp;&middot;&nbsp; <b>waiting on Client A to sign</b></span></div>
+                <div class="ln"><svg class="ic"><use href="#i-check-circle"/></svg><span>When both have signed, the copy is filed on <b>F-FC-0015</b> and the hand-off starts on its own.</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="facts" style="grid-template-columns:repeat(3,1fr)">
+      <div class="fact"><div class="fact-i"><svg class="ic"><use href="#i-pen"/></svg></div><p>Sign once on the final version, not every round</p></div>
+      <div class="fact"><div class="fact-i"><svg class="ic"><use href="#i-link"/></svg></div><p>Your Annature account, your template, your branding</p></div>
+      <div class="fact"><div class="fact-i"><svg class="ic"><use href="#i-info"/></svg></div><p>How much we track depends on what Annature&rsquo;s API gives us</p></div>
+    </div>
+  </div>
+  <div class="slide-foot"><span>SingSingh AI</span><span>12</span></div>
+</div>
+
+<!-- 13 STEP 5 FINANCE AND OPS -->
+<div class="slide" id="s13">
+  <div class="wrap">
+    <h2>Step 5: Ops / Finance</h2>
+    <div class="rule"></div>
+    <p class="say"><span>Everything captured in steps 1 to 4 is already here. Step 5 pushes it out through the API so nobody types it again.</span></p>
+
+    <div class="mock">
+      <div class="shot-bar"><i></i><i></i><i></i><span class="path">/fc/connections</span></div>
+      <div class="fa fa-co">
+        <div class="fa-top"><span class="fa-home"><svg class="ic"><use href="#i-home"/></svg></span><span class="fa-crumb">Companies<svg class="ic"><use href="#i-chevron-down"/></svg></span><span class="fa-vr"></span><span class="fa-ttl">Falcon Cranes &bull; <b>FC</b></span><span class="fa-grow"></span><span class="fa-bellw"><svg class="ic"><use href="#i-bell"/></svg><em>5</em></span><span class="fa-set"><svg class="ic"><use href="#i-clipboard"/></svg>Job register</span><span class="fa-set"><svg class="ic"><use href="#i-gear"/></svg>Settings</span><span class="fa-open">14 OPEN</span></div>
+        <div class="fa-tabsbar"><span class="fa-tb">All jobs</span><span class="fa-vr2"></span><span class="fa-tb"><b class="fa-sn">1</b>Channels</span><svg class="ic fa-tarr"><use href="#i-chevron-right"/></svg><span class="fa-tb"><b class="fa-sn">2</b>Enquiry</span><svg class="ic fa-tarr"><use href="#i-chevron-right"/></svg><span class="fa-tb"><b class="fa-sn">3</b>Tender</span><svg class="ic fa-tarr"><use href="#i-chevron-right"/></svg><span class="fa-tb"><b class="fa-sn">4</b>Contract</span><svg class="ic fa-tarr"><use href="#i-chevron-right"/></svg><span class="fa-tb on"><b class="fa-sn">5</b>Ops / Finance</span></div>
+        <div class="fa-pane">
+            <div class="fa-big">
+              <h3>Connected through the API</h3>
+              <p>A signed job goes out on its own, and whatever happens in each system comes back here.</p>
+            </div>
+            <div class="fa-split">
+              <div class="fa-grp">
+                <div class="fa-grph">Finance</div>
+                <div class="fa-blk">
+                  <h6>Xero<span class="fa-api">API</span></h6>
+                  <div class="io"><i>Out</i><span>The customer, the job number on every invoice, the rates and payment terms, and the signed documents.</span></div>
+                  <div class="io back"><i>Back</i><span>Draft, sent, paid and overdue, against the job.</span></div>
+                  <div class="st" style="color:var(--warning)"><svg class="ic"><use href="#i-clock"/></svg>Scoped in the discovery, after Contract</div>
+                </div>
+              </div>
+              <div class="fa-grp">
+                <div class="fa-grph">Ops &mdash; connected first</div>
+                <div class="fa-blk">
+                  <h6>Employment Hero<span class="fa-api">API</span></h6>
+                  <div class="io"><i>Out</i><span>The job coded to its number, and the crew from the contract.</span></div>
+                  <div class="io back"><i>Back</i><span>Published shifts and approved timesheets, against the job.</span></div>
+                  <div class="st"><svg class="ic"><use href="#i-check"/></svg>Connected &nbsp;&middot;&nbsp; checked 2 minutes ago</div>
+                </div>
+                <div class="fa-blk">
+                  <h6>Mitti<span class="fa-api">API</span></h6>
+                  <div class="io"><i>Out</i><span>The site and the crane for the job.</span></div>
+                  <div class="io back"><i>Back</i><span>Asset moves, and what is on hire. So when you allocate a crane that is all out, the job warns you, and tells you the first date one is free.</span></div>
+                  <div class="st"><svg class="ic"><use href="#i-check"/></svg>Connected &nbsp;&middot;&nbsp; checked 2 minutes ago</div>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+
+    <div class="notes">
+      <span class="muted"><svg class="ic"><use href="#i-info"/></svg>Xero and Annature tell us straight away. What Employment Hero and Mitti send is confirmed before Stage 4.</span>
+      <span class="muted"><svg class="ic"><use href="#i-warn"/></svg>The availability warning is set up with whoever runs Mitti, once we can see how &ldquo;on hire&rdquo; is recorded there.</span>
+    </div>
+
+    <div class="cbar">
+      <svg class="ic"><use href="#i-link"/></svg>
+      <p>Minimal data entry is the whole point. Employment Hero and Mitti go in first; Xero and whatever the discovery turns up are quoted separately, after Contract.</p>
+    </div>
+  </div>
+  <div class="slide-foot"><span>SingSingh AI</span><span>13</span></div>
+</div>
+
+<!-- 14 JOB REGISTER -->
+<div class="slide" id="s14">
+  <div class="wrap">
+    <h2>The job register</h2>
+    <div class="rule"></div>
+    <p class="say"><span>One register across all four companies. The status is the step it is sitting on right now, from enquiry through to completed.</span></p>
+
+    <div class="mock">
+      <div class="shot-bar"><i></i><i></i><i></i><span class="path">/jobs</span></div>
+      <div class="fa fa-co fa-ch fa-ch2 fa-ct">
+        <div class="fa-top"><span class="fa-home"><svg class="ic"><use href="#i-home"/></svg></span><span class="fa-crumb">Falcon Group<svg class="ic"><use href="#i-chevron-down"/></svg></span><span class="fa-vr"></span><span class="fa-ttl">Job register</span><span class="fa-grow"></span><span class="fa-bellw"><svg class="ic"><use href="#i-bell"/></svg><em>8</em></span><span class="fa-set"><svg class="ic"><use href="#i-search"/></svg>Find a job</span><span class="fa-set"><svg class="ic"><use href="#i-gear"/></svg>Settings</span><span class="fa-open">86 JOBS</span></div>
+        <div class="fa-pane">
+            <div class="fa-srcs" style="margin-bottom:.9em">
+              <span class="fa-src on"><b>86</b>All jobs<i>every company</i></span>
+              <span class="fa-src"><b>4</b>In enquiry<i>not yet quoted</i></span>
+              <span class="fa-src"><b>5</b>In tender<i>being priced</i></span>
+              <span class="fa-src"><b>4</b>In contract<i>terms in play</i></span>
+              <span class="fa-src"><b>4</b>Finalised<i>in operations</i></span><span class="fa-src"><b>12</b>Completed<i>closed out</i></span><span class="fa-src"><b>57</b>Not won<i>lost or stopped</i></span>
+              <span style="flex:1"></span>
+              <span class="fa-btn2"><svg class="ic"><use href="#i-forward"/></svg>Export</span>
+            </div>
+            <div class="fa-card">
+              <div class="fa-cardhead"><h5>Register</h5><span class="dim">newest first &middot; click a row for the whole history back to the first email</span></div>
+              <table class="fa-t">
+                <tr><th>Job</th><th>Company</th><th>Client</th><th>Site</th><th>Last moved</th><th class="n">Value</th><th>Status</th></tr>
+                <tr><td class="id">E-FC-0016</td><td>FC</td><td>Client H</td><td>Brisbane CBD</td><td>23 Sep</td><td class="n">&mdash;</td><td><span class="fa-pill grey">In enquiry</span></td></tr>
+                <tr class="on"><td class="id">T-FC-0015</td><td>FC</td><td>Client A</td><td>Brisbane CBD</td><td>Today</td><td class="n">$45,900</td><td><span class="fa-pill blue">In tender</span></td></tr>
+                <tr><td class="id">T-FC-0014</td><td>FC</td><td>Client B</td><td>South Brisbane</td><td>2 Oct</td><td class="n">$128,400</td><td><span class="fa-pill blue">In tender</span></td></tr>
+                <tr><td class="id">C-FC-0005</td><td>FC</td><td>Client I</td><td>Woolloongabba</td><td>6 Oct</td><td class="n">$96,300</td><td><span class="fa-pill blue">In contract</span></td></tr>
+                <tr><td class="id">F-FC-0012</td><td>FC</td><td>Client G</td><td>Chermside</td><td>12 Sep</td><td class="n">$38,750</td><td><span class="fa-pill green">Finalised, in operations</span></td></tr>
+                <tr><td class="id">F-TES-0031</td><td>TES</td><td>Client H</td><td>Yatala</td><td>22 Aug</td><td class="n">$86,400</td><td><span class="fa-pill green">Finalised, in operations</span></td></tr>
+                <tr><td class="id">F-FC-0006</td><td>FC</td><td>Client D</td><td>Woolloongabba</td><td>Aug 2026</td><td class="n">$71,200</td><td><span class="fa-pill green">Completed</span></td></tr>
+                <tr><td class="id">T-FC-0007</td><td>FC</td><td>Client F</td><td>Coomera</td><td>Mar 2026</td><td class="n">$52,000</td><td><span class="fa-pill grey">Lost</span></td></tr>
+                <tr class="tot"><td colspan="5"><b>86 jobs on the register</b></td><td class="n"><b>$1,284,300</b></td><td>finalised to date</td></tr>
+              </table>
+            </div>
+          </div>
+      </div>
+    </div>
+
+    <div class="facts" style="grid-template-columns:repeat(3,1fr)">
+      <div class="fact"><div class="fact-i"><svg class="ic"><use href="#i-layers"/></svg></div><p>All four companies on one register</p></div>
+      <div class="fact"><div class="fact-i"><svg class="ic"><use href="#i-history"/></svg></div><p>Completed and lost jobs stay on it</p></div>
+      <div class="fact"><div class="fact-i"><svg class="ic"><use href="#i-search"/></svg></div><p>Search a number and get the whole job</p></div>
+    </div>
+  </div>
+  <div class="slide-foot"><span>SingSingh AI</span><span>14</span></div>
+</div>
+
+<!-- 15 THE FUNNEL -->
+<div class="slide" id="s15">
+  <div class="wrap">
+    <h2>Everything funnels down to a job</h2>
+    <div class="rule"></div>
+    <p class="say"><span>A job keeps the ID it was given, and only the letter in front of it changes.</span></p>
+
+    <div class="fnl">
+      <div class="fnl-row">
+        <div class="fnl-s">Email, website, EstimateOne</div>
+        <div class="fnl-wrap"><div class="fnl-bar" style="width:100%;background:#F2F6FC"><span class="n">124</span><span class="t">Everything that comes in</span></div></div>
+        <div class="fnl-id none">&mdash;<small>No ID yet</small></div>
+      </div>
+      <div class="fnl-row">
+        <div class="fnl-s">A person accepted it</div>
+        <div class="fnl-wrap"><div class="fnl-bar" style="width:82%;background:#E7EDFA"><span class="n">86</span><span class="t">Enquiries</span></div></div>
+        <div class="fnl-id ">E-FC-0015<small>ID issued here</small></div>
+      </div>
+      <div class="fnl-row">
+        <div class="fnl-s">Quoted and revised</div>
+        <div class="fnl-wrap"><div class="fnl-bar" style="width:64%;background:#D9E3F6"><span class="n">41</span><span class="t">Tenders</span></div></div>
+        <div class="fnl-id ">T-FC-0015<small>Same 0015</small></div>
+      </div>
+      <div class="fnl-row">
+        <div class="fnl-s">Price locked, terms agreed</div>
+        <div class="fnl-wrap"><div class="fnl-bar" style="width:48%;background:#C9D8F1"><span class="n">19</span><span class="t">Contracts</span></div></div>
+        <div class="fnl-id ">C-FC-0015<small>Same 0015</small></div>
+      </div>
+      <div class="fnl-row">
+        <div class="fnl-s">Finalised and in operations</div>
+        <div class="fnl-wrap"><div class="fnl-bar" style="width:36%;background:#B9CCEC"><span class="n">16</span><span class="t">Finalised</span></div></div>
+        <div class="fnl-id ">F-FC-0015<small>Same 0015</small></div>
+      </div>
+    </div>
+
+    <div class="cbar">
+      <svg class="ic"><use href="#i-search"/></svg>
+      <p>Type 0015 and you get the whole story: the email it came in on, every quote revision, the signed contract and the job.</p>
+    </div>
+  </div>
+  <div class="slide-foot"><span>SingSingh AI</span><span>15</span></div>
+</div>
+
+<!-- 16 TIMELINE -->
+<div class="slide" id="s16">
+  <div class="wrap">
+    <h2>One stage at a time, over three months</h2>
+    <div class="rule"></div>
+    <p class="say"><span>Each stage is tested and fixed on your real work while the next is being built, so a stage is right before the one after it lands.</span></p>
+
+    <div>
+      <div class="tl">
+        <div class="tl-row">
+          <div class="tl-l"><div class="badge">1</div>Enquiry</div>
+          <div class="tl-track" style="grid-template-columns:repeat(13,1fr)">
+            <div class="tl-bar only bld" style="grid-column:1/span 5">Build &nbsp;5 wks</div>
+            <div class="tl-bar only tst" style="grid-column:6/span 3">Test and fixes</div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-l"><div class="badge">2</div>Tender</div>
+          <div class="tl-track" style="grid-template-columns:repeat(13,1fr)">
+            <div class="tl-bar only bld" style="grid-column:6/span 3">Build &nbsp;3 wks</div>
+            <div class="tl-bar only tst" style="grid-column:9/span 3">Test and fixes</div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-l"><div class="badge">3</div>Contract</div>
+          <div class="tl-track" style="grid-template-columns:repeat(13,1fr)">
+            <div class="tl-bar only bld" style="grid-column:9/span 3">Build &nbsp;3 wks</div>
+            <div class="tl-bar only tst" style="grid-column:12/span 2">Test and fixes</div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-l"><div class="badge" style="background:var(--success)">4</div>Ops / Finance<span class="tag tag-amber" style="margin-left:.1rem">1st pass</span></div>
+          <div class="tl-track" style="grid-template-columns:repeat(13,1fr)">
+            <div class="tl-bar only bld" style="grid-column:12/span 2">Build &nbsp;2 wks</div>
+          </div>
+        </div>
+        <div class="tl-axis"><span></span><div><span>From kick-off</span><span>13 weeks &middot; three months</span></div></div>
+      </div>
+      <div class="tl-note"><svg class="ic"><use href="#i-check-circle"/></svg>Testing overlaps the next build: before Tender is handed over, everything in Enquiry is already working on your real jobs.</div>
+      <div class="tl-note" style="margin-top:.7rem"><svg class="ic"><use href="#i-info"/></svg><span><b>1st pass</b> means Stage 4 connects Employment Hero and Mitti only. Xero and anything else for Ops / Finance come later, after a discovery call with you.</span></div>
+      <div class="tl-note" style="margin-top:.7rem;color:var(--grey);font-size:12.5px"><svg class="ic" style="color:var(--lgrey)"><use href="#i-calendar"/></svg>FC and TES go the whole way through. FF and ENG get the Enquiry stage only, for now. Everything is counted from kick-off, so the dates move with the start date. They also depend on access, files and sign-offs from your side arriving on time.</div>
+    </div>
+
+    <div class="cbar">
+      <svg class="ic"><use href="#i-flag"/></svg>
+      <p>Enquiry is in your hands in five weeks, Tender by eight, and the whole build is done in thirteen.</p>
+    </div>
+  </div>
+  <div class="slide-foot"><span>SingSingh AI</span><span>16</span></div>
+</div>
+
+<!-- 17 STAGE 1 PRICE -->
+<div class="slide" id="s17">
+  <div class="wrap">
+    <h2>Stage 1: Enquiry <span style="color:var(--grey);font-weight:600">(Steps 1&ndash;2)</span></h2>
+    <div class="rule"></div>
+    <div>
+      <div class="sp-head"><div><div class="sp-k">Stage 1 &nbsp;·&nbsp; 5 weeks &nbsp;·&nbsp; foundation, inbound channels and the enquiry log<br>Every feature is priced on its own. Optional ones can come out by agreement; the foundation stays</div></div><div class="sp-n">$18,400<span>ex GST</span></div></div>
+      <div class="rate-wrap">
+        <table class="rate feat dense">
+          <tr><th>Feature</th><th>What it covers</th><th class="n">Price ex GST</th></tr>
+          <tr class="grp"><td colspan="2">Foundation &mdash; built once, under all five steps</td><td class="n">$7,000</td></tr>
+          <tr><td><b>Authentication (single sign-on)</b></td><td>Microsoft Entra ID, OAuth2 / OIDC. Existing M365 accounts; MFA follows your tenant.</td><td class="n">$600</td></tr>
+          <tr><td><b>Role-based access control and audit log</b></td><td>Who can see, edit, price and approve, per company; every change recorded with who and when.</td><td class="n">$1,200</td></tr>
+          <tr><td><b>Multi-entity data isolation</b></td><td>Row-level tenancy for FC, TES, FF and ENG. Any one company can be added or lifted out on its own.</td><td class="n">$1,400</td></tr>
+          <tr><td><b>Unique job ID and lifecycle tracking</b></td><td>One ID per job per company, prefixed E / T / C / F as it moves, with its history linked.</td><td class="n">$800</td></tr>
+          <tr><td><b>Hosting, security and backups</b></td><td>AWS Sydney: EC2 and RDS Postgres, TLS throughout, automated nightly snapshots.</td><td class="n">$800</td></tr>
+          <tr><td><b>Home screens and job register</b></td><td>Group home, company home, find a job, the notification bell, and the register of every job.</td><td class="n">$2,200</td></tr>
+          <tr class="grp"><td colspan="2">Step 1 &mdash; Inbound channels</td><td class="n">$6,400</td></tr>
+          <tr><td><b>Email integration (Microsoft Graph)</b></td><td>Shared mailboxes, delta sync, Outlook deep links, thread matching, forward parsing.</td><td class="n">$2,400</td></tr>
+          <tr><td><b>Website form integration</b></td><td>Webhook endpoint for the FC and TES website forms.</td><td class="n">$400</td></tr>
+          <tr><td><b>EstimateOne integration</b></td><td>Partner API polled every 24 hours, with email as the fallback if access is refused.</td><td class="n">$800</td></tr>
+          <tr><td><b>Document storage (SharePoint)</b></td><td>Site plans and programs filed in your SharePoint library through the Graph API.</td><td class="n">$600</td></tr>
+          <tr><td><b>Inbound triage and manual entry</b></td><td>Accept, ask for more, move entity, or bin with a 30-day soft delete; phone and mobile entry.</td><td class="n">$2,200</td></tr>
+          <tr class="grp"><td colspan="2">Step 2 &mdash; Enquiry</td><td class="n">$5,000</td></tr>
+          <tr><td><b>Enquiry and client records</b></td><td>ID on accept; client, contact, project, duration and due date held against the job.</td><td class="n">$1,000</td></tr>
+          <tr><td><b>Keyword-based field extraction</b></td><td>Client, project, duration and dates read from the email by rules. No AI.</td><td class="n">$1,200</td></tr>
+          <tr><td><b>Enquiry register</b></td><td>Open, waiting-on-you and overdue views; &ldquo;not proceeding&rdquo; exit keeps the ID.</td><td class="n">$800</td></tr>
+          <tr><td><b>Reminders, alerts and scheduled report</b></td><td>Due dates two business days out, automated follow-ups, email alerts and the midday report.</td><td class="n">$1,400</td></tr>
+          <tr><td><b>Assignment and ownership</b></td><td>An admin allocates each enquiry; the owner gets the alerts and reminders.</td><td class="n">$600</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="slide-foot"><span>SingSingh AI</span><span>17</span></div>
+</div>
+
+<!-- 18 STAGE 2 PRICE -->
+<div class="slide" id="s18">
+  <div class="wrap">
+    <h2>Stage 2: Tender <span style="color:var(--grey);font-weight:600">(Step 3)</span></h2>
+    <div class="rule"></div>
+    <p class="say">Your quoting tools plugged in, and every revision kept on the job.</p>
+    <div>
+      <div class="sp-head"><div><div class="sp-k">Stage 2 &nbsp;·&nbsp; 3 weeks &nbsp;·&nbsp; step 3 of the pipeline</div></div><div class="sp-n">$5,000<span>ex GST</span></div></div>
+      <div class="rate-wrap">
+        <table class="rate feat">
+          <tr><th>Feature</th><th>What it covers</th><th class="n">Price ex GST</th></tr>
+          <tr><td><b>Tender records and revision control</b></td><td>Revision chain on the job, each revision pre-filled from the last, won and lost kept with the reason.</td><td class="n">$1,800</td></tr>
+          <tr><td><b>FC quoting tool integration</b></td><td>API hand-off: job ID and client out, total and PDF back as the next revision.</td><td class="n">$1,200</td></tr>
+          <tr><td><b>TES battery tool integration</b></td><td>The same API contract, pointed at the battery calculator and proposal.</td><td class="n">$1,200</td></tr>
+          <tr><td><b>Approval workflow</b></td><td>Manager sign-off gate; no tender issues until the commercial call is approved.</td><td class="n">$600</td></tr>
+          <tr><td><b>Stage transition to Contract</b></td><td>Finalise moves the job on with the accepted price locked.</td><td class="n">$200</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="cbar"><svg class="ic"><use href="#i-link"/></svg><p>The tools are already built. This is the wiring that puts them on the job and keeps the revisions.</p></div>
+  </div>
+  <div class="slide-foot"><span>SingSingh AI</span><span>18</span></div>
+</div>
+
+<!-- 19 STAGE 3 PRICE -->
+<div class="slide" id="s19">
+  <div class="wrap">
+    <h2>Stage 3: Contract <span style="color:var(--grey);font-weight:600">(Step 4)</span></h2>
+    <div class="rule"></div>
+    <p class="say">The price locked, the terms read and edited, and the signing done through Annature.</p>
+    <div>
+      <div class="sp-head"><div><div class="sp-k">Stage 3 &nbsp;·&nbsp; 3 weeks &nbsp;·&nbsp; step 4 of the pipeline</div></div><div class="sp-n">$7,200<span>ex GST</span></div></div>
+      <div class="rate-wrap">
+        <table class="rate feat">
+          <tr><th>Feature</th><th>What it covers</th><th class="n">Price ex GST</th></tr>
+          <tr><td><b>Contract records and version control</b></td><td>Each version the client sends joins the job in order. The accepted revision sets the price; a change to price, scope or duration needs an approved revision.</td><td class="n">$800</td></tr>
+          <tr><td><b>Rates and key terms check</b></td><td>Compares their PDF contract with the quote: flags different rates, longer payment terms and any LDs. A manager checks the rest from a list.</td><td class="n">$1,600</td></tr>
+          <tr><td><b>Terms editor tool</b></td><td>A second tool beside the quoting tool, for the terms. FC and TES kept apart; per-contract rewording logged.</td><td class="n">$3,000</td></tr>
+          <tr><td><b>Flagging and approval gates</b></td><td>Warnings on what to push back on, manager decisions, and a finalise gate that opens only when every item is agreed.</td><td class="n">$800</td></tr>
+          <tr><td><b>E-signature integration (Annature API)</b></td><td>Send for signature, status back by webhook, signed PDF filed on the job.</td><td class="n">$1,000</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="cbar"><svg class="ic"><use href="#i-pen"/></svg><p>The terms editor is the big build in this stage. The check covers rates and key terms, and a manager covers the rest.</p></div>
+  </div>
+  <div class="slide-foot"><span>SingSingh AI</span><span>19</span></div>
+</div>
+
+<!-- 20 STAGE 4 PRICE -->
+<div class="slide" id="s20">
+  <div class="wrap">
+    <h2>Stage 4: Ops / Finance <span style="color:var(--grey);font-weight:600">(Step 5)</span></h2>
+    <div class="rule"></div>
+    <p class="say">Employment Hero and Mitti connected now. The rest is quoted after Contract, once we have been through Ops / Finance with you. Both links are checked against real access before this stage starts.</p>
+    <div>
+      <div class="sp-head"><div><div class="sp-k">Stage 4 &nbsp;·&nbsp; 2 weeks &nbsp;·&nbsp; step 5 of the pipeline</div></div><div class="sp-n">$4,200<span>ex GST</span></div></div>
+      <div class="rate-wrap">
+        <table class="rate feat">
+          <tr><th>Feature</th><th>What it covers</th><th class="n">Price ex GST</th></tr>
+          <tr><td><b>Employment Hero integration</b></td><td>API: job and crew out; shifts and approved timesheets back, live or on a schedule, depending on what its API sends. Needs the Platinum plan.</td><td class="n">$1,800</td></tr>
+          <tr><td><b>Mitti integration</b></td><td>API: site and asset out; asset moves and on-hire status back.</td><td class="n">$1,800</td></tr>
+          <tr><td><b>Hand-off automation and monitoring</b></td><td>Signature triggers the hand-off; a health screen shows each connection and when it last ran.</td><td class="n">$600</td></tr>
+          <tr class="tbq"><td><b>Xero and anything else from discovery</b></td><td>Quoted after Contract, once we have been inside those systems with you.</td><td class="n">Quoted later</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="cbar"><svg class="ic"><use href="#i-link"/></svg><p>Nothing from steps 1 to 4 is re-entered. It goes out through the API, and what happens there comes back.</p></div>
+  </div>
+  <div class="slide-foot"><span>SingSingh AI</span><span>20</span></div>
+</div>
+
+<!-- 21 INVESTMENT -->
+<div class="slide" id="s21">
+  <div class="wrap">
+    <h2>Priced stage by stage</h2>
+    <p class="invsub">Each stage is priced on its own, in the order we build it.</p>
+
+    <div class="g2" style="grid-template-columns:1fr 1fr;gap:2.4rem;margin-top:1.4rem">
+      <div>
+        <div class="sec-h">Build, per stage</div>
+
+        <div class="icard">
+          <div class="icirc"><svg class="ic"><use href="#i-inbox"/></svg></div>
+          <div><div class="icard-t">Stage 1 &nbsp;·&nbsp; Enquiry</div><div class="icard-p">The foundation, Channels and the enquiry log.</div></div>
+          <div class="icard-n">$18,400</div>
+        </div>
+        <div class="icard">
+          <div class="icirc"><svg class="ic"><use href="#i-file"/></svg></div>
+          <div><div class="icard-t">Stage 2 &nbsp;·&nbsp; Tender</div><div class="icard-p">Tender page, revisions, sign-off, both tools in.</div></div>
+          <div class="icard-n">$5,000</div>
+        </div>
+        <div class="icard">
+          <div class="icirc"><svg class="ic"><use href="#i-lock"/></svg></div>
+          <div><div class="icard-t">Stage 3 &nbsp;·&nbsp; Contract</div><div class="icard-p">Price locked, versions, the rates and terms check, the new terms editor, Annature.</div></div>
+          <div class="icard-n">$7,200</div>
+        </div>
+        <div class="icard">
+          <div class="icirc"><svg class="ic"><use href="#i-truck"/></svg></div>
+          <div><div class="icard-t">Stage 4 &nbsp;·&nbsp; Ops / Finance <span class="tag tag-amber">First pass</span></div><div class="icard-p"><b style="color:var(--navy)">First pass</b> means Employment Hero and Mitti are connected in this stage. Xero and anything else from Ops / Finance come after a discovery call.</div></div>
+          <div class="icard-n">$4,200</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="totbox" style="padding:1.1rem 1.2rem">
+          <div class="totbox-k">Total build, all four stages</div>
+          <div class="totbox-n" style="font-size:38px">$34,800 <span>ex GST</span></div>
+          <div style="margin-top:.75rem;padding-top:.75rem;border-top:1px solid #c6d6f4;font-size:12.5px;color:var(--charcoal);line-height:1.55;text-align:left">
+            <b style="color:var(--navy)">Stages 1&ndash;3 come to $30,600.</b> Stage 4 connects Employment Hero and Mitti for $4,200. Mitti already does the job, so there is no need to rebuild it from scratch. If you want more from Ops / Finance, such as Xero, we quote it after a discovery call on what it needs to do.
+          </div>
+        </div>
+
+        <div class="sec-h" style="margin-top:1.4rem">Also</div>
+        <div class="note"><span class="ast">*</span><span><b>What is in it.</b> FC and TES get every stage, through to the first Ops / Finance links. FF and ENG get the Enquiry stage in this phase.</span></div>
+        <div class="note"><span class="ast">*</span><span><b>Changing the scope.</b> This price includes every feature listed on the stage pages. If you want to focus on the core, some can come out, before a stage starts or during the build. Anything taken out comes off the price and the timeline. We check what depends on it first; sign-in, security and hosting stay.</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-foot"><span>SingSingh AI</span><span>21</span></div>
+</div>
+
+<!-- 22 MAINTENANCE AND CHANGES -->
+<div class="slide" id="s22">
+  <div class="wrap">
+    <h2>Maintenance and changes</h2>
+    <div class="rule"></div>
+    <p class="say"><span>The operating costs of running the CRM, how changes are charged after handover, and what sits outside this proposal.</span></p>
+
+    <div class="g2" style="grid-template-columns:1.2fr 1fr;gap:2.4rem;align-items:start">
+      <div>
+        <div class="sec-h">Operating costs, every month <span class="tag tag-amber">Indicative</span></div>
+        <table class="cost tight">
+          <tr><td>Hosting, on your account: server, the shared database behind the CRM and your tools, storage and backups. AWS Sydney is our recommendation, not a fixed choice &mdash; happy to decide it with Pranjal</td><td class="n">about $70 to $100</td></tr>
+          <tr><td>Annature, per contract sent. The API costs nothing extra (annature.com.au, Sep 2026)</td><td class="n">$1.75</td></tr>
+          <tr><td>Employment Hero Platinum, needed for Stage 4 &mdash; paid to them</td><td class="n">their price</td></tr>
+        </table>
+      </div>
+
+      <div>
+        <div class="sec-h">Changes after handover</div>
+        <div class="icard">
+          <div class="icirc"><svg class="ic"><use href="#i-tool"/></svg></div>
+          <div><div class="icard-t">Small changes</div><div class="icard-p">Once the free fix period ends, small changes are charged by the hour. You only pay for what you ask for.</div></div>
+          <div class="icard-n">$99<span style="display:block;font-size:10.5px;color:var(--grey);font-weight:500;text-align:right">an hour</span></div>
+        </div>
+        <div class="icard">
+          <div class="icirc"><svg class="ic"><use href="#i-plus"/></svg></div>
+          <div><div class="icard-t">Bigger changes</div><div class="icard-p">New features and larger work are scoped and priced separately, and start only once you agree in writing.</div></div>
+        </div>
+
+        <div class="sec-h" style="margin-top:1.4rem">Not in this proposal</div>
+        <div class="note"><span class="ast">*</span><span><b>Not included.</b> The sales platform, onboarding and offboarding, and job tracking inside the CRM. Each is quoted separately if you want it later.</span></div>
+      </div>
+    </div>
+
+    <div class="cbar"><svg class="ic"><use href="#i-cloud"/></svg><p>Operating costs are indicative. They go up and down as your data grows and as the number of enquiries and tenders changes, and are billed through your own accounts, at the providers&rsquo; price.</p></div>
+  </div>
+  <div class="slide-foot"><span>SingSingh AI</span><span>22</span></div>
+</div>
+
+<!-- 23 PAYMENT TERMS -->
+<div class="slide" id="s23">
+  <div class="wrap">
+    <h2>Payment terms</h2>
+    <div class="rule"></div>
+    <p class="say"><span>Half of each stage is paid when it starts, half when it is handed over. Weeks count from kick-off.</span></p>
+
+    <div class="g2" style="grid-template-columns:1.2fr 1fr;gap:2.4rem;align-items:start">
+      <div>
+        <div class="sec-h">When you pay, ex GST</div>
+        <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden">
+        <table class="g tight boxed">
+          <tr><th>When</th><th>What it covers</th><th class="n">You pay</th></tr>
+          <tr><td><b>At kick-off</b></td><td>Stage 1 first half</td><td class="n">$9,200</td></tr>
+          <tr><td><b>End of week 5</b><br><span style="color:var(--grey);font-size:.92em">Enquiry handed over</span></td><td>Stage 1 second half $9,200<br>+ Stage 2 first half $2,500</td><td class="n">$11,700</td></tr>
+          <tr><td><b>End of week 8</b><br><span style="color:var(--grey);font-size:.92em">Tender handed over</span></td><td>Stage 2 second half $2,500<br>+ Stage 3 first half $3,600</td><td class="n">$6,100</td></tr>
+          <tr><td><b>End of week 11</b><br><span style="color:var(--grey);font-size:.92em">Contract handed over</span></td><td>Stage 3 second half $3,600<br>+ Stage 4 first half $2,100</td><td class="n">$5,700</td></tr>
+          <tr><td><b>End of week 13</b><br><span style="color:var(--grey);font-size:.92em">Ops / Finance handed over</span></td><td>Stage 4 second half</td><td class="n">$2,100</td></tr>
+          <tr class="tot"><td>Total build</td><td></td><td class="n">$34,800</td></tr>
+        </table>
+        </div>
+        <div class="note" style="margin-top:.8rem"><span class="ast">*</span><span>GST (10%) is added to each invoice.</span></div>
+      </div>
+
+      <div>
+        <div class="sec-h">How it works</div>
+        <div class="rows" style="gap:1rem">
+          <div class="row"><svg class="ic"><use href="#i-dollar"/></svg>Each stage starts when its first half is paid</div>
+          <div class="row"><svg class="ic"><use href="#i-check-circle"/></svg>If a stage is handed over later, its payment moves with it</div>
+          <div class="row"><svg class="ic"><use href="#i-pen"/></svg>Changes are priced before we start, and invoiced with their stage</div>
+          <div class="row"><svg class="ic"><use href="#i-cloud"/></svg>Hosting, Annature and Employment Hero are paid to them, on your account</div>
+          <div class="row"><svg class="ic"><use href="#i-rotate"/></svg>After handover, small changes are $99 an hour; bigger ones are scoped separately</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cbar"><svg class="ic"><use href="#i-check"/></svg><p>A stage is handed over when it works as described and is in your team&rsquo;s hands, as in the timeline.</p></div>
+  </div>
+  <div class="slide-foot"><span>SingSingh AI</span><span>23</span></div>
+</div>
+
+<!-- 24 SLA: FIXES AND RESPONSE -->
+<div class="slide" id="s24">
+  <div class="wrap">
+    <h2>Service level agreement</h2>
+    <div class="rule"></div>
+    <p class="say"><span>What we fix at no charge, and how fast we get back to you.</span></p>
+
+    <div class="g2" style="grid-template-columns:1fr 1fr;gap:2.4rem;align-items:start">
+      <div>
+        <div class="sec-h">Fixed at no charge</div>
+        <div class="icard">
+          <div class="icirc"><svg class="ic"><use href="#i-tool"/></svg></div>
+          <div><div class="icard-t">While we build</div><div class="icard-p">Anything that does not work as the proposal describes.</div></div>
+        </div>
+        <div class="icard">
+          <div class="icirc"><svg class="ic"><use href="#i-calendar"/></svg></div>
+          <div><div class="icard-t">30 days after each stage</div><div class="icard-p">The same again, for 30 days after a stage is handed over.</div></div>
+        </div>
+        <div class="icard">
+          <div class="icirc"><svg class="ic"><use href="#i-split"/></svg></div>
+          <div><div class="icard-t">Fix or change?</div><div class="icard-p">A fix is something in the proposal that does not work. A change is anything new or different, and is priced before we start.</div></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="totbox" style="padding:1.1rem 1.2rem">
+          <div class="totbox-k">We get back to you within</div>
+          <div class="totbox-n" style="font-size:38px">2 <span>business days</span></div>
+          <div style="margin-top:.75rem;padding-top:.75rem;border-top:1px solid #c6d6f4;font-size:12.5px;color:var(--charcoal);line-height:1.55;text-align:left">
+            A person confirms we have it and tells you what happens next. <b style="color:var(--navy)">Urgent problems come first:</b> the CRM is down, nobody can sign in, or enquiries have stopped coming in.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cbar"><svg class="ic"><use href="#i-clock"/></svg><p>The same 2 business days applies during the build and after it.</p></div>
+  </div>
+  <div class="slide-foot"><span>SingSingh AI</span><span>24</span></div>
+</div>
+
+<!-- 25 SLA: HOSTING AND YOUR DATA -->
+<div class="slide" id="s25">
+  <div class="wrap">
+    <h2>Hosting and your data</h2>
+    <div class="rule"></div>
+    <p class="say"><span>Hosted on your account, backed up every night, and your data stays yours.</span></p>
+
+    <div class="facts">
+      <div class="fact"><div class="fact-i"><svg class="ic"><use href="#i-cloud"/></svg></div><p>Hosted on your account. AWS Sydney is our recommendation, decided with Pranjal</p></div>
+      <div class="fact"><div class="fact-i"><svg class="ic"><use href="#i-rotate"/></svg></div><p>Backups every night, kept for 30 days, with a test restore when Stage 1 is handed over</p></div>
+      <div class="fact"><div class="fact-i"><svg class="ic"><use href="#i-zap"/></svg></div><p>Updates go in without interrupting a live job. Any downtime is out of hours, with a day&rsquo;s notice</p></div>
+      <div class="fact"><div class="fact-i"><svg class="ic"><use href="#i-globe"/></svg></div><p>Your data stays in Australia, and comes out whenever you ask, as files you can open</p></div>
+      <div class="fact"><div class="fact-i"><svg class="ic"><use href="#i-lock"/></svg></div><p>Your Microsoft account is the login. Turn it off and access goes straight away</p></div>
+      <div class="fact"><div class="fact-i"><svg class="ic"><use href="#i-history"/></svg></div><p>Every change is recorded: who did it, and when</p></div>
+      <div class="fact"><div class="fact-i"><svg class="ic"><use href="#i-alert"/></svg></div><p>If a security problem affects your data, we tell you within one business day</p></div>
+      <div class="fact"><div class="fact-i"><svg class="ic"><use href="#i-link"/></svg></div><p>Microsoft, Annature, Employment Hero, Mitti and EstimateOne are not ours to run. If one breaks, we work around it and help you raise it</p></div>
+    </div>
+
+    <div class="cbar"><svg class="ic"><use href="#i-info"/></svg><p>We do not promise a set uptime figure. If the CRM goes down in business hours, it comes first.</p></div>
+  </div>
+  <div class="slide-foot"><span>SingSingh AI</span><span>25</span></div>
+</div>
+
+<!-- 26 NEXT STEPS -->
+<div class="slide" id="s26">
+  <div class="wrap">
+    <h2>Next steps</h2>
+    <div class="rule"></div>
+
+    <div class="g2" style="gap:3.4rem;align-items:center">
+      <div class="rows" style="gap:1.2rem">
+        <div class="row"><div class="badge" style="background:var(--navy)">1</div>Lock the price</div>
+        <div class="row"><div class="badge">2</div>We send the SLA and the contract</div>
+        <div class="row"><div class="badge">3</div>Annexure: what we need from you</div>
+        <div class="row"><div class="badge" style="background:var(--success)">4</div>Get started on the project</div>
+      </div>
+
+      <div>
+        <div style="padding:2.2rem;text-align:center;border-radius:14px;background:var(--lblue)">
+          <div class="kicker" style="color:var(--grey);margin-bottom:1.2rem">Prepared by</div>
+          <img src="/falcon-crm/img/logo-singsinghai-512.png" alt="SingSingh AI" style="height:68px;width:auto;margin-bottom:.8rem"/>
+          <div style="font-size:22px;font-weight:800;color:var(--navy);letter-spacing:-.02em">SingSingh AI</div>
+          <div class="kicker" style="margin-top:.3rem">singsinghai.com.au</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-foot"><span>SingSingh AI &nbsp;·&nbsp; Falcon Group</span><span>26</span></div>
+</div>
+
+<script>
+  var bar = document.getElementById('bar');
+  function progress() {
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
+  }
+  window.addEventListener('scroll', progress, { passive: true });
+  window.addEventListener('resize', progress);
+  progress();
+
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  function go(dir) {
+    var target = null;
+    if (dir > 0) {
+      for (var i = 0; i < slides.length; i++) {
+        if (slides[i].offsetTop > window.scrollY + 4) { target = slides[i]; break; }
+      }
+    } else {
+      for (var j = slides.length - 1; j >= 0; j--) {
+        if (slides[j].offsetTop < window.scrollY - 4) { target = slides[j]; break; }
+      }
+    }
+    if (target) window.scrollTo({ top: target.offsetTop, behavior: 'smooth' });
+  }
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowDown' || e.key === 'PageDown') { e.preventDefault(); go(1); }
+    if (e.key === 'ArrowUp'   || e.key === 'PageUp')   { e.preventDefault(); go(-1); }
+  });
+</script>
+
+</body>
+</html>

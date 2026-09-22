@@ -28,11 +28,20 @@
       ]
     },
     {
-      "source": "/(TES_Crane_Configurator|TES_SingSinghAI_Proposal|TES_SingSinghAI_Proposal_Revamp|TES_Scoping_Form|FalconCranes_Proposal|solomon-kings-proposal)\\.html",
+      "source": "/(TES_Crane_Configurator|TES_SingSinghAI_Proposal|TES_SingSinghAI_Proposal_Revamp|TES_Scoping_Form|FalconCranes_Proposal|solomon-kings-proposal|falcon-crm-proposal)\\.html",
       "headers": [
         {
           "key": "Cache-Control",
           "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/(falcon-crm-proposal)(\\.html)?",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
         }
       ]
     }
@@ -65,6 +74,10 @@
     {
       "source": "/falcon-cranes-proposal",
       "destination": "/FalconCranes_Proposal.html"
+    },
+    {
+      "source": "/falcon-crm-proposal",
+      "destination": "/falcon-crm-proposal.html"
     },
     {
       "source": "/(.*)",
