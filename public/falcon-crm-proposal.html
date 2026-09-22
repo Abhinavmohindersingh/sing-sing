@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta name="viewport" content="width=1280"/>
   <title>The Falcon CRM · SingSingh AI × Falcon Group</title>
   <meta name="description" content="A CRM built around the life of a job, from the first enquiry through to finance and operations. Proposal by SingSingh AI for Falcon Group, September 2026."/>
   <meta name="author" content="SingSingh AI"/>
@@ -1027,6 +1027,15 @@
       .fa-split { grid-template-columns: 1fr; }
       .fa-card { overflow-x: auto; }
       .tl-row, .tl-axis { grid-template-columns: 1fr; }
+    }
+    /* Phones and tablets get the desktop layout: the viewport is fixed at 1280px
+       wide, so the page is scaled to fit and can be pinch-zoomed. vh there is
+       measured on that scaled page and comes out very tall, so each slide is
+       pinned to a 1280 x 800 laptop screen instead. */
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    @media screen and (hover: none) and (pointer: coarse) {
+      .slide { min-height: 800px; padding: 48px 0; }
+      .board { min-height: 528px; }
     }
   </style>
 </head>
