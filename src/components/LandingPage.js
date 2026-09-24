@@ -17,7 +17,6 @@ import SolutionSection from "./sections/SolutionSection";
 import HowItWorks from "./sections/HowItWorks";
 import CaseStudies from "./sections/CaseStudies";
 import ProofSection from "./sections/ProofSection";
-import TestimonialsSection from "./sections/TestimonialsSection";
 import FAQSection from "./sections/FAQSection";
 import CTASection from "./sections/CTASection";
 
@@ -156,9 +155,7 @@ const LandingPage = () => {
         <CaseStudies t={tFn} />
         <ZoneDivider fromZone="04" toZone="05" />
         <ProofSection t={tFn} />
-        <ZoneDivider fromZone="05" toZone="05.5" />
-        <TestimonialsSection t={tFn} />
-        <ZoneDivider fromZone="05.5" toZone="06" />
+        <ZoneDivider fromZone="05" toZone="06" />
         <FAQSection t={tFn} />
         <ZoneDivider fromZone="06" toZone="07" />
         <CTASection

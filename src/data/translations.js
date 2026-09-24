@@ -231,46 +231,6 @@ export const translations = {
       "Data-driven insights enabling informed decisions in real time",
       "Scale your operations without scaling your headcount",
     ],
-    // Testimonials Section
-    testimonialsTitle: "What Our Clients Say",
-    testimonialsSubtitle: "Real results from businesses that have adopted personalised AI with SingSingh AI.",
-    testimonials: [
-      {
-        userName: "Jessica T.",
-        review: "SingSingh AI reduced our accounting team's manual workload by more than 20 hours per week. Our records are always audit-ready and the team can focus on advisory work rather than data entry.",
-        designation: "CFO, Financial Services",
-        avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face",
-        handle: "@jessicaT",
-      },
-      {
-        userName: "Marcus L.",
-        review: "Client onboarding went from two weeks to two days. The personalised AI handles document collection, compliance checks, and scheduling - effectively replacing three full-time roles.",
-        designation: "Director, Professional Services",
-        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
-        handle: "@marcusL",
-      },
-      {
-        userName: "Sarah K.",
-        review: "Our marketing is now consistent and automated. What previously required daily manual effort now runs on schedule without intervention. The difference in output quality has been significant.",
-        designation: "Owner, E-commerce Retail",
-        avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face",
-        handle: "@sarahK",
-      },
-      {
-        userName: "David P.",
-        review: "The AI they built actually understands our business. It knows our processes, our clients, and our terminology. We stopped getting generic responses the moment we switched from off-the-shelf tools.",
-        designation: "Managing Director, Property Management",
-        avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
-        handle: "@davidP",
-      },
-      {
-        userName: "Priya N.",
-        review: "Compliance documentation used to take our team days every month. SingSingh AI automated the entire process - now it takes minutes, and the records are always accurate and complete.",
-        designation: "Operations Manager, Healthcare",
-        avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&h=150&fit=crop&crop=face",
-        handle: "@priyaN",
-      },
-    ],
     // FAQ Section
     faqTitle: "Frequently Asked Questions",
     faqs: [
@@ -455,25 +415,6 @@ export const translations = {
       "报告即时生成，随时可用",
       "AI处理5倍的工作量",
       "数据驱动洞察，助力增长",
-    ],
-    testimonialsTitle: "客户怎么说",
-    testimonialsSubtitle: "来自我们帮助转型的企业的真实反馈。",
-    testimonials: [
-      {
-        userName: "Jessica T.",
-        review: "SingSingh AI每周为我们的会计团队节省了20多个小时。我们的账目现在随时可以审计，团队可以专注于咨询工作而不是数据录入。",
-        designation: "首席财务官，金融服务",
-      },
-      {
-        userName: "Marcus L.",
-        review: "客户入职从两周缩短到两天。AI处理文件收集、合规检查和排期--就像多了3个员工。",
-        designation: "总监，专业服务",
-      },
-      {
-        userName: "Sarah K.",
-        review: "我们终于能在进货前知道什么产品会卖。营销花费效率提高了40%，我们触达的都是真正会购买的客户。",
-        designation: "老板，电商零售",
-      },
     ],
     faqTitle: "常见问题",
     faqs: [
