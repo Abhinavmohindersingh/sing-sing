@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Bronxnation PNG · Prototype walkthrough</title>
+    <meta name="description" content="The Bronxnation PNG member app prototype, for review. Sing Singh AI." />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Sing Singh AI" />
+    <meta property="og:title" content="Bronxnation PNG · Prototype walkthrough" />
+    <meta property="og:description" content="The member app prototype, for review." />
+    <meta property="og:url" content="https://www.singsinghai.com.au/bronxnation-review" />
+    <meta property="og:image" content="https://www.singsinghai.com.au/bronxnation/og.jpg?v=1" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="theme-color" content="#1a040d" />
+    <link rel="icon" href="/bronxnation/logo-shield.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --m950: #12030a; --m900: #1a040d; --m800: #3a0716; --m600: #6a1330;
+        --gold: #f7c335; --ink: #1a040d; --soft: #6b5a61; --line: #e9e2dc;
+        --display: "Barlow Condensed", "Arial Narrow", Arial, sans-serif;
+        --body: "Barlow", "Helvetica Neue", Arial, sans-serif;
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; }
+      body { background: var(--m950); color: #fff; font-family: var(--body); font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+      .wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+
+      header { position: relative; overflow: hidden; border-bottom: 1px solid rgba(247, 195, 53, 0.25); }
+      header .bg { position: absolute; inset: 0; background: url("/bronxnation/poster.jpg?v=1") center 40% / cover; filter: blur(14px) saturate(1.1); transform: scale(1.1); opacity: 0.45; }
+      header .veil { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(18, 3, 10, 0.55), var(--m950)); }
+      header .wrap { position: relative; padding-top: 40px; padding-bottom: 34px; display: flex; align-items: center; gap: 22px; }
+      header .shield { width: 64px; flex: none; }
+      header .word { width: 220px; display: block; }
+      .eyebrow { font-family: var(--display); font-weight: 600; font-size: 13px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); }
+      h1 { font-family: var(--display); font-weight: 700; font-size: clamp(34px, 5.4vw, 54px); line-height: 1; text-transform: uppercase; margin: 10px 0 0; text-wrap: balance; }
+      .lede { color: rgba(255, 255, 255, 0.78); max-width: 62ch; margin: 12px 0 0; font-size: 17px; }
+
+      .video { margin: 30px 0 0; border: 1px solid rgba(247, 195, 53, 0.35); background: #000; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55); }
+      .video video { display: block; width: 100%; aspect-ratio: 16 / 9; background: #000; }
+      .meta { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 12px 0 0; font-size: 14px; color: rgba(255, 255, 255, 0.62); }
+      .meta b { color: #fff; font-weight: 600; }
+
+      .panel { background: #fff; color: var(--ink); margin-top: 44px; }
+      .panel .wrap { padding-top: 40px; padding-bottom: 44px; }
+      .panel h2 { font-family: var(--display); font-weight: 700; font-size: 28px; text-transform: uppercase; margin: 0 0 16px; }
+      .panel .eyebrow { color: var(--m600); }
+      .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+      .grid3 div { background: #fff; padding: 18px; }
+      .grid3 b { display: block; font-family: var(--display); font-size: 19px; text-transform: uppercase; letter-spacing: 0.02em; margin-bottom: 4px; }
+      .grid3 p { margin: 0; color: var(--soft); font-size: 15px; }
+
+      .screens { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 8px; }
+      .screens figure { margin: 0; }
+      .screens img { width: 100%; display: block; border: 1px solid var(--line); background: var(--m900); }
+      .screens figcaption { font-size: 13px; font-weight: 600; margin-top: 8px; color: var(--ink); }
+
+      .ask { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+      .ask div { background: #fff; padding: 16px 18px; display: flex; gap: 12px; }
+      .ask .n { width: 28px; height: 28px; flex: none; display: grid; place-items: center; background: var(--gold); color: var(--m950); font-family: var(--display); font-weight: 700; }
+      .ask b { display: block; }
+      .ask span { color: var(--soft); font-size: 15px; }
+
+      .note { margin-top: 18px; padding: 14px 16px; border-left: 3px solid var(--gold); background: #fff8e6; font-size: 15px; color: #5a4507; }
+
+      footer { padding: 26px 0 40px; font-size: 13px; color: rgba(255, 255, 255, 0.5); }
+      footer .wrap { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+      footer b { color: var(--gold); font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; font-size: 12px; }
+
+      @media (max-width: 760px) {
+        header .wrap { flex-direction: column; align-items: flex-start; gap: 14px; }
+        .grid3, .ask { grid-template-columns: 1fr; }
+        .screens { grid-template-columns: repeat(2, 1fr); }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="bg"></div><div class="veil"></div>
+      <div class="wrap">
+        <img class="shield" src="/bronxnation/logo-shield.png" alt="" />
+        <div>
+          <img class="word" src="/bronxnation/logo-wordmark.png" alt="Bronxnation PNG" />
+          <div class="eyebrow" style="margin-top: 12px">Prototype walkthrough · for review</div>
+        </div>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <h1>A member app for Broncos fans in PNG</h1>
+      <p class="lede">This is a working prototype of the Bronxnation PNG app, recorded as a short narrated walkthrough. It shows the member experience from joining to match day, and the site the team uses to run it.</p>
+
+      <div class="video">
+        <video controls playsinline webkit-playsinline preload="metadata" poster="/bronxnation/poster.jpg?v=1">
+          <source src="/bronxnation/bronxnation-walkthrough.mp4?v=1" type="video/mp4" />
+        </video>
+      </div>
+      <div class="meta"><span><b>2:09</b> · narrated, with captions</span><span>Built from the working prototype</span><span>Sample data only</span></div>
+    </main>
+
+    <section class="panel">
+      <div class="wrap">
+        <div class="eyebrow">What you are looking at</div>
+        <h2>The idea in three parts</h2>
+        <div class="grid3">
+          <div><b>For members</b><p>Join with a mobile number and a membership card, then get content, Stories and match day in one place.</p></div>
+          <div><b>A direct line</b><p>Members can send questions to players, and the club can reach every member, a town, or one person.</p></div>
+          <div><b>For the club</b><p>A simple site to run it day to day, and for the first time a clear view of its fans in PNG.</p></div>
+        </div>
+
+        <div class="eyebrow" style="margin-top: 34px">Key screens</div>
+        <h2>From the prototype</h2>
+        <div class="screens">
+          <figure><img src="/bronxnation/img/p06_home.jpg?v=1" alt="Home" loading="lazy" /><figcaption>Home and Stories</figcaption></figure>
+          <figure><img src="/bronxnation/img/p06b_feed.jpg?v=1" alt="Members feed" loading="lazy" /><figcaption>Members feed</figcaption></figure>
+          <figure><img src="/bronxnation/img/p13_ask.jpg?v=1" alt="Ask Bronxnation" loading="lazy" /><figcaption>Ask Bronxnation</figcaption></figure>
+          <figure><img src="/bronxnation/img/p15_answer.jpg?v=1" alt="The answer" loading="lazy" /><figcaption>A player answers</figcaption></figure>
+          <figure><img src="/bronxnation/img/p07_card.jpg?v=1" alt="My membership" loading="lazy" /><figcaption>My membership</figcaption></figure>
+          <figure><img src="/bronxnation/img/p10b_data.jpg?v=1" alt="Video quality and data" loading="lazy" /><figcaption>Built for PNG data</figcaption></figure>
+          <figure><img src="/bronxnation/img/p18_match.jpg?v=1" alt="Match Centre" loading="lazy" /><figcaption>Match Centre</figcaption></figure>
+          <figure><img src="/bronxnation/img/p21_more.jpg?v=1" alt="More" loading="lazy" /><figcaption>Everything in one place</figcaption></figure>
+        </div>
+
+        <div class="eyebrow" style="margin-top: 34px">For the review</div>
+        <h2>What we would like your thoughts on</h2>
+        <div class="ask">
+          <div><span class="n">1</span><span><b>The story</b>Does the video make the value clear, for fans and for the club?</span></div>
+          <div><span class="n">2</span><span><b>The look and feel</b>Does it feel premium and right for the Broncos brand?</span></div>
+          <div><span class="n">3</span><span><b>The features</b>Anything missing for a first version, or anything we could leave out?</span></div>
+          <div><span class="n">4</span><span><b>Anything unclear</b>Any screen or line that needs explaining.</span></div>
+        </div>
+        <div class="note">This is a concept prototype. The voice is a placeholder, the numbers are sample data, and the club imagery will be replaced with official assets.</div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="wrap"><b>Sing Singh AI × Bronxnation PNG</b><span>Prototype for internal review · September 2026</span></div>
+    </footer>
+  </body>
+</html>
