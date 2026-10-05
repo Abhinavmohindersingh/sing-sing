@@ -44,9 +44,35 @@
           "value": "noindex, nofollow"
         }
       ]
+    },
+    {
+      "source": "/bronxnation-app(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/bronxnation-app/(index\\.html)?",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
     }
   ],
   "rewrites": [
+    {
+      "source": "/bronxnation-app",
+      "destination": "/bronxnation-app/index.html"
+    },
+    {
+      "source": "/bronxnation-app/admin",
+      "destination": "/bronxnation-app/index.html"
+    },
     {
       "source": "/bronxnation-review",
       "destination": "/bronxnation-review.html"

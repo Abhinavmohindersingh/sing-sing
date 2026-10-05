@@ -1,0 +1,13 @@
+{
+  "short_name": "Bronxnation",
+  "name": "Bronxnation PNG",
+  "icons": [
+    { "src": "bn/app-icon.png", "type": "image/png", "sizes": "234x234" }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#2a0510",
+  "background_color": "#2a0510",
+  "description": "A concept for a Broncos member app for fans in Papua New Guinea.",
+  "orientation": "portrait"
+}
