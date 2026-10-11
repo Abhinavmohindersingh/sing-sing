@@ -689,4 +689,4 @@ var cb=document.getElementById('showhl');
 try{ if(localStorage.getItem('kumiHl')==='0') cb.checked=false }catch(e){}
 function hl(){ root.classList.toggle('nohl', !cb.checked); try{localStorage.setItem('kumiHl', cb.checked?'1':'0')}catch(e){} }
 cb.addEventListener('change', hl); hl();
-})();</script><script>window.hypothesisConfig=function(){return {openSidebar:false, showHighlights:"always", theme:"clean"};};</script><script src="https://hypothes.is/embed.js" async></script></body></html>
+})();</script><script>window.hypothesisConfig=function(){return {openSidebar:true, showHighlights:"always", theme:"clean"};};</script><script src="https://hypothes.is/embed.js" async></script></body></html>
