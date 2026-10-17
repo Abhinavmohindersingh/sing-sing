@@ -47,7 +47,7 @@ COND = {
  'B1': 'twoway', 'B2': {0: 'lessons', 3: 'tprec'}, 'B3': {2: 'ownspeech', 3: 'tprec'}, 'B4': 'tprec', 'B5': 'tprec',
  'B6': {2: 'ownspeech', 3: 'tprec'}, 'B7': 'speechrun', 'B8': 'twoway', 'B9': {2: 'speechrun', 3: 'tprec'}, 'B10': 'mode',
  'C1': 'PER', 'C2': ('PER', 'content_own'), 'C3': 'PER', 'C5': 'lessons', 'C6': ('PER', 'content_own'),
- 'D1': 'claude', 'D2': 'cur', 'D3': 'cur', 'D4': 'review', 'D5': 'ownai', 'D6': 'retrain',
+ 'D1': 'claude', 'D2': 'cur', 'D3': 'curoff', 'D4': 'review', 'D5': 'ownai', 'D6': 'retrain',
  'E1': 'teacher', 'E2': 'tests',
  'G1': {0: 'found', 2: 'twoway'}, 'G2': {0: 'found', 2: 'twoway'}, 'G3': {0: 'found', 2: 'twoway'}, 'G4': {0: 'found', 2: 'twoway'},
  'G5': 'found', 'G6': 'cur', 'G7': 'expert', 'G8': 'found', 'G9': 'found', 'P1': 'found'}
@@ -113,7 +113,7 @@ ALL = dict(found=1, desktop=1, online=1, offline=1, login=1, teacher=1, lessons=
            hwbuy=0, hwlease=0, trrent=0, trbuy=0, oneway=0, twoway=1, eleven=1, ownspeech=1, review=1, expert=1, retrain=0)
 def preds(S):
     p = {k: bool(v) for k, v in S.items()}
-    p.update(both_net=p['online'] and p['offline'], online_only=p['online'] and not p['offline'], cur=p['claude'] or p['ownai'], mode=p['oneway'] or p['twoway'], tprec=p['ownspeech'] and p['twoway'],
+    p.update(both_net=p['online'] and p['offline'], online_only=p['online'] and not p['offline'], cur=p['claude'] or p['ownai'], curoff=(p['claude'] or p['ownai']) and p['offline'], mode=p['oneway'] or p['twoway'], tprec=p['ownspeech'] and p['twoway'],
              speechrun=p['twoway'] or p['ownspeech'], eleven_mode=p['eleven'] and (p['oneway'] or p['twoway']),
              eleven_own=p['eleven'] and p['ownspeech'], buy=p['ownai'] and p['hwbuy'], lease=p['ownai'] and p['hwlease'], test=True, retrain_rent=p['retrain'] and p['trrent'])
     return p
@@ -288,7 +288,7 @@ HOW = f'''<h2>How Kumi works</h2><ol class="how">
 <li><b>Desktop application.</b> Runs on the Windows computers the school already has. Installs from a USB stick and updates itself when online.</li>
 <li><b>Online and offline support.</b> Pick one or both:
 <span class="sub"><b>Online</b> {ON} Works while the school has internet. Every answer goes straight to the cloud, lessons load from the cloud, and the teacher screen and live AI help work.</span>
-<span class="sub"><b>Offline</b> {OFF} Works with no internet. Lessons, questions and student login run on the computer, Kumi still talks from saved lines, and everything is saved on the computer first, so a power cut loses nothing. Offline only (without Online) needs our own AI model and our own speech model, because Claude and ElevenLabs need the internet; they are ticked for you and stay ticked.</span>
+<span class="sub"><b>Offline</b> {OFF} Works with no internet. Lessons, questions and student login run on the computer, Kumi still talks from saved lines, and everything is saved on the computer first, so a power cut loses nothing. Offline only (without Online): Claude, the English voice (ElevenLabs), the teacher screen and the weekly AI check need the internet, so they are locked. Our own AI model and Tok Pisin speech work offline, if you want them.</span>
 <span class="sub"><b>Both</b> Works either way. Saved work is sent by itself when the internet is back, with nothing lost and nothing doubled. Kumi switches between live and saved help by itself.</span></li>
 <li><b>Individual student login and profiles.</b> Every student has their own profile and signs in with a picture and a PIN. Their progress is kept in their profile, and one student cannot open another student’s work.</li>
 <li><b>Lessons.</b> <span class="nl">20</span> one-hour lessons with pictures, animations and practice questions, in English and Tok Pisin. Pick the subjects (numeracy, literacy, personal development) and set the hours for each in the left panel; the cost follows the hours. If the content is provided to us, our designer turns it into animated lessons. If we have to prepare the content ourselves, that is a separate tick with its own cost.</li>
@@ -335,12 +335,12 @@ STEPS = [  # (number, title, hint, rows); a row is (id, label, badge HTML) or ('
   [('-', 'Language · one or both'), ('eleven', 'English', '<span class="mode on">ElevenLabs · Online</span>'), ('ownspeech', 'Tok Pisin', '<span class="mode off">Our own speech model · no ElevenLabs</span>'),
    ('-', 'Mode · pick one'), ('oneway', 'One-way', '<span class="req">Kumi talks</span>'), ('twoway', 'Two-way', '<span class="req">the child talks too</span>')]),
  ('6', 'Extras', '', [('review', 'Weekly AI check', ''), ('expert', 'Expert teacher check', ''), ('retrain', 'Retrain on pilot data', '<span class="mode off">Own AI</span>')])]
-REQ = {'found': [], 'desktop': [], 'online': [['desktop']], 'offline': [['desktop']], 'login': [['desktop']], 'teacher': [['online']],
-       'lessons': [['desktop']], 'content_own': [['lessons']], 'tests': [['desktop']], 'expert': [['lessons']],
-       'claude': [['online']], 'ownai': [['desktop'], ['hwbuy', 'hwlease'], ['trrent', 'trbuy']], 'hwbuy': [['ownai']], 'hwlease': [['ownai']],
-       'oneway': [['desktop'], ['eleven', 'ownspeech']], 'twoway': [['desktop'], ['eleven', 'ownspeech'], ['claude', 'ownai']],
+REQ = {'found': [], 'desktop': [], 'online': [['desktop']], 'offline': [['desktop']], 'login': [['desktop']], 'teacher': [['online'], ['lessons']],
+       'lessons': [['desktop']], 'content_own': [['lessons']], 'tests': [['lessons']], 'expert': [['lessons']],
+       'claude': [['online'], ['lessons']], 'ownai': [['lessons'], ['hwbuy', 'hwlease'], ['trrent', 'trbuy']], 'hwbuy': [['ownai']], 'hwlease': [['ownai']],
+       'oneway': [['lessons'], ['eleven', 'ownspeech']], 'twoway': [['lessons'], ['eleven', 'ownspeech'], ['claude', 'ownai']],
        'eleven': [['oneway', 'twoway']], 'ownspeech': [['oneway', 'twoway']], 'review': [['claude', 'ownai']], 'trrent': [['ownai']], 'trbuy': [['ownai']], 'retrain': [['ownai']]}
-LOCK = {'claude': {}, 'teacher': {}, 'eleven': {}}   # need the internet, so locked until Online is ticked
+LOCK = {'claude': {}, 'teacher': {}, 'eleven': {}, 'review': {}}   # need the internet, so locked until Online is ticked
 GROUP = {'claude': 'cur', 'ownai': 'cur', 'hwbuy': 'hw', 'hwlease': 'hw', 'trrent': 'tr', 'trbuy': 'tr', 'oneway': 'mode', 'twoway': 'mode'}
 assert set(REQ) == set(ALL)
 def rail_html():
@@ -394,7 +394,7 @@ function feat(p,nl){var v=0;for(var c in D.tasks)D.tasks[c].parts.forEach(functi
 function fac(p,nl){return D.scale.floor+D.scale.k*feat(p,nl)/D.scale.pool;}   // release testing: a share of the feature work
 function ownLab(T,nl){var p=preds(T),o={},F=0;for(var c in D.tasks)D.tasks[c].parts.forEach(function(pt){if(p[pt.c]&&pt.c!=='found'&&pt.c!=='test'&&!pt.per){
   var w=OWN[pt.c]?OWN[pt.c](T):pt.c,v=pc(pt,nl,1);o[w]=(o[w]||0)+v;F+=v;}});return {by:o,F:F};}   // each step's own build work, which its testing follows
-function preds(S){var p={};for(var k in S)p[k]=!!S[k];p.both_net=p.online&&p.offline;p.online_only=p.online&&!p.offline;p.cur=p.claude||p.ownai;p.mode=p.oneway||p.twoway;p.tprec=p.ownspeech&&p.twoway;
+function preds(S){var p={};for(var k in S)p[k]=!!S[k];p.both_net=p.online&&p.offline;p.online_only=p.online&&!p.offline;p.cur=p.claude||p.ownai;p.curoff=p.cur&&p.offline;p.mode=p.oneway||p.twoway;p.tprec=p.ownspeech&&p.twoway;
  p.speechrun=p.twoway||p.ownspeech;p.eleven_mode=p.eleven&&p.mode;p.eleven_own=p.eleven&&p.ownspeech;p.buy=p.ownai&&p.hwbuy;p.lease=p.ownai&&p.hwlease;p.retrain_rent=p.retrain&&p.trrent;p.test=true;return p;}
 var ALLON=preds((function(){var a={};D.items.forEach(function(k){a[k]=true;});return a;})());
 function amt(pt,f){return pt.amt==='pcbuy'?f.pcs*D.pcBuy:pt.amt;}
@@ -402,7 +402,7 @@ function build(S,f){var p=preds(S),lab=0,wks=0,tp=0,nl=nlOf(S,f),fa=fac(p,nl);
  for(var c in D.tasks)D.tasks[c].parts.forEach(function(pt){if(p[pt.c]){lab+=pc(pt,nl,fa);wks+=pw(pt,nl,fa);}});
  D.tps.forEach(function(r){r.parts.forEach(function(pt){if(p[pt.c])tp+=amt(pt,f);});});
  var direct=lab+tp,mg=0.10*lab,ct=0.15*direct;return {lab:lab,wks:wks,tp:tp,mg:mg,ct:ct,total:direct+mg+ct};}
-var OWN={both_net:function(){return 'offline';},online_only:function(){return 'online';},cur:function(S){return S.claude?'claude':'ownai';},mode:function(S){return S.twoway?'twoway':'oneway';},tprec:function(){return 'ownspeech';},
+var OWN={both_net:function(){return 'offline';},curoff:function(S){return S.claude?'claude':'ownai';},online_only:function(){return 'online';},cur:function(S){return S.claude?'claude':'ownai';},mode:function(S){return S.twoway?'twoway':'oneway';},tprec:function(){return 'ownspeech';},
  speechrun:function(S){return S.twoway?'twoway':'ownspeech';},eleven_mode:function(){return 'eleven';},eleven_own:function(){return 'ownspeech';},
  buy:function(){return 'hwbuy';},lease:function(){return 'hwlease';},retrain_rent:function(){return 'retrain';}};
 function shares(S,f){var p=preds(S),sh={},nl=nlOf(S,f),fa=fac(p,nl),L=ownLab(S,nl);function add(c,v){
@@ -462,7 +462,7 @@ function locked(id,T){var l=D.lock[id];return !!l&&!T.online&&(!l.when||!!T[l.wh
 function tick(T,id){T[id]=true;var gp=D.group[id];if(gp)for(var k in D.group)if(k!==id&&D.group[k]===gp)T[k]=false;
  (D.req[id]||[]).forEach(function(r){if(!sat(r,T)){var ok=r.filter(function(x){return !locked(x,T);});tick(T,ok.length?ok[0]:r[0]);}});}   // auto-pick an option that is not locked
 function offlineOnly(T){return !!T.offline&&!T.online;}
-var FORCED=['ownai','ownspeech'];   // offline only: Claude and ElevenLabs cannot work, so our own AI and speech models are required
+var FORCED=[];   // offline only: Claude, English voice, the teacher screen and the weekly review are locked; our own AI and Tok Pisin speech stay optional
 function forced(id,T){return offlineOnly(T)&&FORCED.indexOf(id)>=0;}
 function settle(T){var ch=true;while(ch){ch=false;for(var k in T)if(T[k]&&(locked(k,T)||(D.req[k]||[]).some(function(r){return !sat(r,T);}))){T[k]=false;ch=true;}
  if(offlineOnly(T))FORCED.forEach(function(k){if(!T[k]){tick(T,k);ch=true;}});}return T;}
@@ -482,6 +482,12 @@ var CONTENT={'1.1':1,'C1':1,'C2':1,'C3':1,'C4':1,'C5':1,'E2':1,'UX':1,'TC':1};  
 function andList(a){return a.length<2?a.join(''):a.slice(0,-1).join(', ')+' and '+a[a.length-1];}
 function subjText(){var f=fields(),n=f.subj.map(function(s){return s[1].toLowerCase();});return {list:andList(n),
  each:f.subj.every(function(s){return s[2]===f.subj[0][2];})?(f.subj.length?f.subj[0][2]:0)+' lessons each in '+andList(n):andList(f.subj.map(function(s){return s[2]+' lessons in '+s[1].toLowerCase();}))};}
+function voiceNote(p){return p.eleven&&p.ownspeech?'English and Tok Pisin':p.eleven?'English; Tok Pisin on screen':p.ownspeech?'Tok Pisin; English on screen':'';}
+function langText(h,p){var v=voiceNote(p);   // what Kumi speaks, and where profiles live, as ticked
+ h=h.replace(/\s*\(Kumi’s voice is English; Tok Pisin is shown on screen\)/g,'').replace(/(screens, lessons and Kumi all follow that choice)/,'$1'+(v?' (Kumi’s voice: '+v+')':' (Kumi does not speak in this build)'))
+  .replace(/, and voiced in Kumi’s voice( \(English; Tok Pisin on screen\))?/,v?', and voiced in Kumi’s voice ('+v+')':'');
+ if(!p.online)h=h.replace('Profiles held in the central student database','Profiles held in the local database on each computer');
+ return h;}
 function lessonText(h,nl){var st=subjText();
  return h.replace(/10 lessons each in (numeracy, literacy and personal development|numeracy and literacy)/g,st.each)
  .replace(/numeracy, literacy and personal development|numeracy and literacy/g,st.list).replace(/\b20 one-hour lessons/g,nl+' one-hour lessons')
@@ -490,7 +496,7 @@ function lessonText(h,nl){var st=subjText();
  .replace(/about 600 approved lines/g,'about '+(nl*30).toLocaleString('en-AU')+' approved lines');}
 function words(p){var f=fields(),nl=f.hrs;var Ts=p.tprec?3:(p.twoway||p.ownspeech||p.review||p.expert)?2:(p.cur||p.mode)?1:0,
  Tc=p.twoway?2:(p.cur||p.mode)?1:0,Tn=p.ownspeech?2:(p.cur||p.mode)?1:0;function T(k){return k==='C1'?Tn:CONTENT[k]?Tc:Ts;}   // C1's narration follows the language: ElevenLabs for English only, Kumi's own voice once Tok Pisin is ticked
- [].forEach.call(document.querySelectorAll('tr[data-code]'),function(tr){var k=tr.dataset.code,v=D.labels[k];if(v)tr.cells[1].innerHTML=lessonText(pick(v,T(k)),nl);});
+ [].forEach.call(document.querySelectorAll('tr[data-code]'),function(tr){var k=tr.dataset.code,v=D.labels[k];if(v)tr.cells[1].innerHTML=langText(lessonText(pick(v,T(k)),nl),p);});
  [].forEach.call(document.querySelectorAll('tr[data-role]'),function(tr){var k=tr.dataset.role,v=D.resps[k];if(v)tr.cells[1].innerHTML=lessonText(pick(v,T(k)),nl);});
  [].forEach.call(document.querySelectorAll('.nl'),function(e){e.textContent=nl;});
  [].forEach.call(document.querySelectorAll('.main .card'),function(card){var r=card.querySelector('tr[data-code]'),v=r&&D.titles[r.dataset.code];if(v)card.querySelector('.card-h .t').innerHTML=pick(v,T(r.dataset.code));});

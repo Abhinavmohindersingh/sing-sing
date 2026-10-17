@@ -159,6 +159,7 @@ if os.environ.get('PLATFORM'):   # quote builder: Sing Singh AI builds the platf
     _edit('B10', text=('|The Tok Pisin list is built from the English–Tok Pisin dictionary, then the linguist records and checks every word', '|The Tok Pisin list is built from Sing Singh AI’s English–Tok Pisin dictionary'))
     _edit('D3', text=('checked by the content developer (English) and the linguist (Tok Pisin), and voiced', 'checked by the content developer, with Tok Pisin from the dictionary, and voiced'))
     _edit('G4', text=('checked in Tok Pisin inside the app by the linguist', 'checked inside the app against the Tok Pisin dictionary'))
+    _edit('E1', text=(' feeds the pre- and post-pilot reports written in Phase 5', ' feeds the partner’s pre- and post-pilot reports'))   # the reports are the partner's
     _edit('G6', text=(', including slang, led by the linguist', ', including slang'))
     _edit('D5', text=(' and checked by the linguist', ''))
     _edit('1.5', text=('|Criminal record and reference checks for anyone who will work with children', '|Criminal record and reference checks for anyone who will work with children (the school partner’s staff)'))

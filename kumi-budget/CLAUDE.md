@@ -34,6 +34,8 @@ python3 build_tiers.py       # the live budget page -> ../public/kumi-pilot-budg
 - **Retrain on pilot data** (Extras, D6, needs Own AI model): anonymised pilot records with consent, about 10,000 labelled with Claude, retrained and released only if it beats the held-out test set. 1.5 wk AI engineer + 0.5 wk content developer, 30 rented GPU-hours (none if the GPU is bought).
 - Totals (20 hours of content, content prepared by us): Core **$164,103**; everything at 30 hours **$285,472** (the live budget page's Tier 1 and Tier 3 are unchanged).
 
+- **Consistency rules:** the offline help bank (D3) needs Offline; benchmark tests, AI curation, Kumi's speech and the teacher screen need Subjects; the weekly AI check needs Online (it reads conversation logs). Offline only locks Claude, English voice, the teacher screen and the weekly check, and no longer forces our own AI or Tok Pisin speech. Kumi's voice wording (A2, D3) and where profiles live (A2) follow the ticks. E1's report data feeds the partner's reports.
+
 ## Open items
 - The live page (`/kumi-pilot-budget`) is older than the generator: the Tier 1 "English voice only, Tok Pisin on screen" change is built but not published (it would make Tier 1 $239,420).
 - Check "no major provider supports Tok Pisin speech" and have a native speaker confirm the Tok Pisin keywords before an investor sees them.
