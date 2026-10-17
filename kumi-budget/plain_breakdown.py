@@ -23,8 +23,8 @@ RETRAIN_LABEL = round(10000*(3000*2 + 300*10)/1e6*0.5*1.55)   # 10,000 pilot rec
 OWN_DATA = round(30000*((4000*2 + 1500*10) + (3000*2 + 300*10))/1e6*0.5*1.55)   # 30,000 examples written, then each checked, by Claude Sonnet 5.5 in batches (half price) ≈ US$480 at A$1.55
 AI1 = (5*(1500*0.10 + 500*1.00 + 150*5.00) + (3000*1.00 + 300*5.00))/1e6   # Claude per one-hour session, one-way: 5 help requests (1,500 cached + 500 new input, 150 output tokens each) plus 1 curation call (3,000 in, 300 out)
 AI2 = (30*(1500*0.10 + 500*1.00 + 150*5.00) + (3000*1.00 + 300*5.00))/1e6   # two-way: about 30 spoken exchanges a session
-BEDROCK_AU = 1.10   # allowance for processing in Australia (Amazon Bedrock au. profile); Japan's in-country profile costs 10% more
-POWER = round(0.25*6*22*1.0*0.38)   # A$ a month: 250 W x 6 h x 22 school days = 33 kWh, at about K1 per kWh (PNG Power industrial rate), K1 = about A$0.38
+BEDROCK_AU = 1.10   # processing in Australia (Amazon Bedrock au. profile): Anthropic's docs put regional endpoints at a 10% premium over global
+POWER = round(0.25*6*22*1.0*0.38)   # A$ a month: 250 W x 6 h x 22 school days = 33 kWh, at K1 per kWh (conservative: domestic Easipay is 78.68 toea after the 9-toea rise), K1 = about A$0.38
 SRC_PC = [("NVIDIA RTX PRO 4000 Blackwell 24 GB (Mwave)", "https://www.mwave.com.au/product/nvidia-rtx-pro-4000-blackwell-24gb-professional-video-card-ac86467"),
           ("NVIDIA workstation cards (PLE Computers)", "https://www.ple.com.au/Categories/671/Nvidia-Workstation"),
           ("Runpod GPU pricing (official)", "https://www.runpod.io/pricing"),
@@ -335,8 +335,8 @@ S_LORA = ('NVIDIA LoRA throughput, Llama 3 8B', 'https://catalog.ngc.nvidia.com/
 S_FW = ('faster-whisper benchmark', 'https://pypi.org/project/faster-whisper/')
 S_MT = ('Tok Pisin translation study, 2026', 'https://arxiv.org/pdf/2609.13615')
 S_MMS = ('MMS voices: non-commercial', 'https://huggingface.co/facebook/mms-tts')
-S_BR = ('Bedrock in Australia', 'https://aws.amazon.com/blogs/machine-learning/introducing-amazon-bedrock-cross-region-inference-for-claude-sonnet-4-5-and-haiku-4-5-in-japan-and-australia/')
-S_PNG = ('PNG Power rates', 'https://www.thenational.com.pg/?p=202943')
+S_BR = ('Claude in Amazon Bedrock (Anthropic)', 'https://platform.claude.com/docs/en/build-with-claude/claude-in-amazon-bedrock')
+S_PNG = ('PNG Power tariff rise', 'https://www.thenational.com.pg/iccc-queries-power-tariff-hike/')
 S_QWEN = ('Qwen3.5-4B', 'https://huggingface.co/Qwen')
 TECH = [  # (group, item, number, basis)
  ('Our own AI model', 'Base model', 'Qwen3.5-4B (Apache 2.0, Feb 2026, 201 languages); Gemma 4 E4B (Apache 2.0) as the fallback',
@@ -350,11 +350,11 @@ TECH = [  # (group, item, number, basis)
  ('', 'Demand', 'One-way: about 5 requests per child an hour. Two-way: about 30. Thirty children in two-way: about 15 requests a minute, about 40 output tokens a second',
   'A small fraction of the card’s capacity, so there is headroom for a second class or longer answers.'),
  ('', 'Running cost', f'About A${POWER} a month in power; no per-token cost',
-  '250 W for 6 hours a school day, about 33 kWh a month, at about K1 per kWh. ' + srcs(S_PNG)),
+  '250 W for 6 hours a school day, about 33 kWh a month, at K1 per kWh: a conservative allowance, since the domestic rate is 78.68 toea after the latest 9-toea rise. ' + srcs(S_PNG)),
  ('', 'Weak spot: Tok Pisin', 'Small open models write Tok Pisin poorly',
   'Even a 31B model scored below a dedicated translation model in a 2026 study. So Kumi’s Tok Pisin comes from the approved lines and the dictionary, open answers are checked against the glossary, and English is the model’s strong language. ' + srcs(S_MT)),
  ('Claude', 'Model and region', 'Claude Haiku 4.5 through Amazon Bedrock’s Australian profile, US$1 in and US$5 out per million tokens, plus a 10% allowance',
-  'Requests stay in Australia; Japan’s in-country profile costs 10% more, so we allow the same. ' + srcs(S_BR)),
+  'Requests stay in Australia. Anthropic’s documentation says regional endpoints cost 10% more than global ones, so we add 10%. ' + srcs(S_BR)),
  ('', 'Tokens per child', 'One-way: about 220 input and 18 output tokens a minute (13,000 and 1,050 a one-hour session). Two-way: about 1,050 and 80 a minute (63,000 and 4,800 a session)',
   'Five help requests a session for one-way, about 30 spoken exchanges for two-way, plus one curation call; the lesson context is cached.'),
  ('', 'Cost per child a month', f'One-way: about A${AI1*g["SESS"]*FX*BEDROCK_AU:.2f}. Two-way: about A${AI2*g["SESS"]*FX*BEDROCK_AU:.2f}. For 100 children: about A${AI1*g["SESS"]*FX*BEDROCK_AU*100:.0f} or A${AI2*g["SESS"]*FX*BEDROCK_AU*100:.0f} a month',
