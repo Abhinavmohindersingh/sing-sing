@@ -37,7 +37,7 @@ NAME = {r: v[0].replace('Pijin', 'Tok Pisin') for r, v in DFAT.items()}
 # A task's allocation can grow by tier; each step of growth belongs to the feature that needs it.
 COND = {
  '1.1': 'found', '1.2': 'found', '1.3': 'found', '1.4': {0: 'desktop', 2: 'twoway'}, '1.5': 'found',
- 'A1': {0: 'desktop', 1: 'cur'}, 'A2': 'login', 'A3': 'SPLIT', 'A4': 'online', 'A5': 'found', 'A6': 'found', 'A7': 'desktop',
+ 'A1': {0: 'desktop', 1: 'cur'}, 'A2': 'login', 'A3': 'SPLIT', 'A4': 'online', 'A5': 'online', 'A6': 'found', 'A7': 'desktop',
  'B1': 'twoway', 'B2': {0: 'lessons', 3: 'tprec'}, 'B3': {2: 'ownspeech', 3: 'tprec'}, 'B4': 'tprec', 'B5': 'tprec',
  'B6': {2: 'ownspeech', 3: 'tprec'}, 'B7': 'speechrun', 'B8': 'twoway', 'B9': {2: 'speechrun', 3: 'tprec'}, 'B10': 'mode',
  'C1': 'PER', 'C2': ('PER', 'content_own'), 'C3': 'PER', 'C5': 'lessons', 'C6': ('PER', 'content_own'),
@@ -121,6 +121,29 @@ def gen_total(t):   # the generator's own total for a tier (without our own AI m
     return json.loads(subprocess.run([sys.executable, 'gen_v2.py'], cwd=HERE, env=env, capture_output=True, text=True, check=True).stdout)['grand_exact']
 assert abs(build_total(OLD_CORE) - gen_total(1)) < 0.5, (build_total(OLD_CORE), gen_total(1))   # the agreed Core = Tier 1 (one-way, Claude, ElevenLabs)
 assert abs(build_total(ALL, nl=30) - gen_total(3)) < 0.5, (build_total(ALL, nl=30), gen_total(3))   # everything, 30 lessons = Tier 3
+
+# ---- 2b. planning, testing and project management grow with the build ----
+# The budget prices them for one build size. Here they keep a minimum and grow with the feature work ticked,
+# set so the agreed Core still matches Tier 1. Lesson hours do not drive them: the designer's hourly work needs little extra testing.
+POOL = ['1.2', '1.3', 'G1', 'G2', 'G3', 'G4', 'G5', 'G8', 'G9', 'P1']
+FLOOR_SHARE = 0.35   # the minimum any release needs: 35% of the Core amount
+POOL_CORE = sum(pt['cost'] for c in POOL for pt in TASKS[c]['parts'] if pt['c'] == 'found')
+for c in POOL:   # their two-way steps are replaced by the growth below
+    TASKS[c]['parts'] = [dict(pt, s=1) for pt in TASKS[c]['parts'] if pt['c'] == 'found']
+def feat(S, nl):   # feature labour: everything but the foundation itself and the per-hour lesson work
+    p = preds(S)
+    return sum(pcost(pt, nl) for t in TASKS.values() for pt in t['parts'] if p[pt['c']] and pt['c'] != 'found' and 'per' not in pt)
+FEAT_CORE = feat(OLD_CORE, 20)
+K = (1 - FLOOR_SHARE)*POOL_CORE/FEAT_CORE   # about 32% of the feature work
+def factor(S, nl): return FLOOR_SHARE + K*feat(S, nl)/POOL_CORE
+def pcost(pt, nl, fa=1): return (pt['per']*nl*5*RATE[pt['r']] if 'per' in pt else pt['cost'])*(fa if pt.get('s') else 1)
+def build_total(S, pcs=20, nl=20):
+    p = preds(S); fa = factor(S, nl)
+    lab = sum(pcost(pt, nl, fa) for t in TASKS.values() for pt in t['parts'] if p[pt['c']])
+    tp = sum((pcs*PC_BUY if pt['amt'] == 'pcbuy' else pt['amt']) for r in TPS + OWN_TP for pt in r['parts'] if p[pt['c']])
+    direct = lab + tp
+    return direct + 0.10*lab + 0.15*direct
+assert abs(build_total(OLD_CORE) - gen_total(1)) < 0.5, (build_total(OLD_CORE), gen_total(1))   # Core still = Tier 1
 
 # ---- 3. the breakdown body: keep the cost tables, tag rows for the script ----
 def drop_div(h, opener):
@@ -251,7 +274,7 @@ HOW = f'''<h2>How Kumi works</h2><ol class="how">
 <span class="sub"><b>Offline</b> {OFF} Works with no internet. Lessons, questions and student login run on the computer, Kumi still talks from saved lines, and everything is saved on the computer first, so a power cut loses nothing. Offline only (without Online) needs our own AI model and our own speech model, because Claude and ElevenLabs need the internet; they are ticked for you and stay ticked.</span>
 <span class="sub"><b>Both</b> Works either way. Saved work is sent by itself when the internet is back, with nothing lost and nothing doubled. Kumi switches between live and saved help by itself.</span></li>
 <li><b>Individual student login and profiles.</b> Every student has their own profile and signs in with a picture and a PIN. Their progress is kept in their profile, and one student cannot open another student’s work.</li>
-<li><b>Lessons.</b> <span class="nl">20</span> one-hour lessons with pictures, animations and practice questions, in English and Tok Pisin. Set the hours of content in the left panel; the cost follows the hours. If the content is provided to us, our designer turns it into animated lessons. If we have to prepare the content ourselves, that is a separate tick with its own cost.</li>
+<li><b>Lessons.</b> <span class="nl">20</span> one-hour lessons with pictures, animations and practice questions, in English and Tok Pisin. Pick the subjects (numeracy, literacy, personal development) and set the hours for each in the left panel; the cost follows the hours. If the content is provided to us, our designer turns it into animated lessons. If we have to prepare the content ourselves, that is a separate tick with its own cost.</li>
 <li><b>AI content curation.</b> Every child gets the same lessons, but Kumi watches every answer and chooses what comes next. <i>Mary gets three answers wrong, so she gets easier questions and a hint. Dura answers fast, so he gets harder ones.</i> Two ways to run it (pick one):
 <span class="sub"><b>Way 1: Claude AI</b> {ON} Best quality answers, processed in Australia. Needs the internet, so it needs the Online option; offline, Kumi uses its saved help. Monthly usage cost.</span>
 <span class="sub"><b>Way 2: our own AI model</b> {OFF} Runs on the school computer, no usage cost. Simpler answers than Claude, and it needs 16 GB computers (buy or lease).</span></li>
@@ -281,11 +304,12 @@ OPS_HTML = ('<h2>Operating cost per month</h2><p class="h2sub">What it costs to 
             '; '.join(f"<a href='{u}'>{t}</a>" for t, u in SRC_PC) + '. Get a live quote before contract.</div></div>')
 
 # ---- 5. the rail ----
+SUBJECTS = [('num', 'Numeracy', True), ('lit', 'Literacy', True), ('pd', 'Personal development', False)]   # each with its own hours of content; Core is numeracy and literacy, 10 hours each
 STEPS = [  # (number, title, hint, rows); a row is (id, label, badge HTML) or ('-', sub-heading)
  ('1', 'Project foundation', '', [('found', 'Planning, backend, testing', '<span class="req">required</span>')]),
  ('2', 'App', '', [('desktop', 'Desktop application', ''), ('-', 'Online + offline · one or both'), ('online', 'Online', '<span class="mode on">Online</span>', 'sub'),
                       ('offline', 'Offline', '<span class="mode off">Offline</span>', 'sub'), ('login', 'Individual student login & profiles', ''), ('teacher', 'Teacher screen', '')]),
- ('3', 'Lessons', 'Content provided to us unless ticked', [('lessons', 'Animated lessons', ''), ('=', 'hours'),
+ ('3', 'Lessons', 'Tick Subjects, then the subjects and their hours. Content is provided to us unless ticked.', [('lessons', 'Subjects', ''), ('=', 'subjects'),
                            ('content_own', 'We prepare the content', '', 'sub'), ('tests', 'Benchmark tests', '')]),
  ('4', 'AI content curation', 'Pick one', [('claude', 'Claude AI', '<span class="mode on">Online</span>'), ('ownai', 'Own AI model', '<span class="mode off">Offline</span>'),
                                           ('hwbuy', 'Buy computers', '', 'sub'), ('hwlease', 'Lease computers', '', 'sub')]),
@@ -310,8 +334,11 @@ def rail_html():
         for row in rows:
             if row[0] == '-': out.append(f'<div class="subh">{row[1]}</div>'); continue
             if row[0] == '=':   # one hours field for every subject, shown once a subject is ticked
-                out.append('<div class="hrsrow" id="hrs-row"><span>Hours of content</span><input class="hrs" id="h-all" type="number" min="1" max="200" step="1" value="20" aria-label="Hours of content">'
-                           '<span class="hu" id="h-tot"></span></div>'); continue
+                out.append('<div class="subjs" id="hrs-row">' + ''.join(
+                    f'<div class="opt sub subj" id="subj-{k}"><label class="nm"><input type="checkbox" data-subj="{k}"{" checked" if on else ""}><span>{nm}</span></label>'
+                    f'<input class="hrs" data-hrs="{k}" type="number" min="1" max="200" step="1" value="10" aria-label="Hours of {nm.lower()}"><span class="hu">h</span>'
+                    f'<span class="pc" id="pc-s-{k}"></span></div>' for k, nm, on in SUBJECTS) +
+                    '<div class="hu htot" id="h-tot"></div></div>'); continue
             rid, label, badge = row[:3]; kind = row[3] if len(row) > 3 else ''
             out.append(f'<div class="opt{" sub" if kind == "sub" else ""}" id="row-{rid}"><label class="nm"><input type="checkbox" data-id="{rid}"><span>{label} {badge}</span></label>'
                        f'<span class="pc" id="pc-{rid}"></span><button class="dd" type="button" data-dd="{rid}" title="Show what this costs">▾</button></div><div class="det" id="det-{rid}" hidden></div>')
@@ -325,7 +352,7 @@ TTL = {code: g['plain'](task.split('|')[0]).replace('Pijin', 'Tok Pisin') for ph
 for r in TPS + OWN_TP: r['short'] = re.split(r' — | \(|: ', r['item'])[0]
 DATA = dict(partLabel=PART_LABEL, ttl=TTL, tasks=TASKS, roles={r: dict(name=NAME[r], rate=RATE[r]) for r in RATE}, tps=TPS + OWN_TP,
             req=REQ, group=GROUP, lock=LOCK, items=list(ALL), steps={num: [r[0] for r in rows if r[0] not in '-='] for num, _, _, rows in STEPS},
-            ops=[dict(id=i, c=c) for i, n, h, c in OPS], elevenSrc=g['SRC']['elevenlabs'][1], labels=LABELS, resps=RESPS, titles=TITLES, teamp=TEAMP, pcBuy=PC_BUY, pcLease=PC_LEASE,
+            ops=[dict(id=i, c=c) for i, n, h, c in OPS], subjects=[[k, nm] for k, nm, on in SUBJECTS], scale=dict(floor=FLOOR_SHARE, k=K, pool=POOL_CORE), elevenSrc=g['SRC']['elevenlabs'][1], labels=LABELS, resps=RESPS, titles=TITLES, teamp=TEAMP, pcBuy=PC_BUY, pcLease=PC_LEASE,
             run=dict(host=150, lic=g['LIC'], aiStu=g['AI_PER']*g['SESS']*FX, sess=g['SESS'], support=g['SUPPORT'], seRate=RATE['SE'],
                      credits=5*150*g['SESS']*0.5, voice=[[500000, 99*FX, 'Pro'], [2000000, 330*FX, 'Scale'], [None, 1320*FX, 'Business']]))
 JS = r"""<script>(function(){
@@ -333,26 +360,33 @@ var D=__DATA__, S={}, root=document.documentElement, body=document.body;
 D.items.forEach(function(k){S[k]=false;});
 function fmt(n){return '$'+Math.round(n).toLocaleString('en-AU');}
 function wk(x){return String(Math.round(x*100)/100);}
-function fields(){var n=Math.max(1,+document.getElementById('f-stu').value||100), pcs=Math.max(1,+document.getElementById('f-pc').value||20),
- hrs=Math.max(1,Math.round(+document.getElementById('h-all').value||20));return {n:n,pcs:pcs,hrs:hrs};}
+function fields(){var n=Math.max(1,+document.getElementById('f-stu').value||100), pcs=Math.max(1,+document.getElementById('f-pc').value||20),subj=[],hrs=0;
+ D.subjects.forEach(function(s){var h=Math.max(1,Math.round(+document.querySelector('input[data-hrs="'+s[0]+'"]').value||10));
+  if(document.querySelector('input[data-subj="'+s[0]+'"]').checked){subj.push([s[0],s[1],h]);hrs+=h;}});   // hours of content = the ticked subjects' hours
+ return {n:n,pcs:pcs,hrs:hrs,subj:subj};}
+function hourRate(){return perHour('lessons')+(S.content_own?perHour('content_own'):0);}
+function subjHtml(f){if(!S.lessons)return '';var r=hourRate();return '<div class="drow g"><span>Hourly work, by subject</span></div>'+f.subj.map(function(s){return '<div class="drow"><span>'+s[1]+' · '+s[2]+' h × '+fmt(r)+'</span><span>'+fmt(s[2]*r)+'</span></div>';}).join('')
+ +'<div class="dnote">Part of the total below; the rest is set-up work that does not change with hours.</div>';}
 function nlOf(S,f){return S.lessons?f.hrs:0;}   // one-hour lessons = hours of content
 function nlAll(f){return f.hrs;}
 function perHour(c){var v=0;for(var k in D.tasks)D.tasks[k].parts.forEach(function(pt){if(pt.c===c&&pt.per)v+=pt.per*5*D.roles[pt.r].rate*1.25;});return v;}   // cost of one more hour of content, with fee and contingency
-function pw(pt,nl){return pt.per?pt.per*nl:pt.w;}function pc(pt,nl){return pt.per?pt.per*nl*5*D.roles[pt.r].rate:pt.cost;}   // per-lesson parts scale with the lessons
+function pw(pt,nl,fa){return (pt.per?pt.per*nl:pt.w)*(pt.s?fa:1);}function pc(pt,nl,fa){return (pt.per?pt.per*nl*5*D.roles[pt.r].rate:pt.cost)*(pt.s?fa:1);}   // per-lesson parts scale with the lessons
+function feat(p,nl){var v=0;for(var c in D.tasks)D.tasks[c].parts.forEach(function(pt){if(p[pt.c]&&pt.c!=='found'&&!pt.per)v+=pc(pt,nl,1);});return v;}
+function fac(p,nl){return D.scale.floor+D.scale.k*feat(p,nl)/D.scale.pool;}   // planning, testing and project management: a minimum, plus a share of the feature work
 function preds(S){var p={};for(var k in S)p[k]=!!S[k];p.both_net=p.online&&p.offline;p.online_only=p.online&&!p.offline;p.cur=p.claude||p.ownai;p.mode=p.oneway||p.twoway;p.tprec=p.ownspeech&&p.twoway;
  p.speechrun=p.twoway||p.ownspeech;p.eleven_mode=p.eleven&&p.mode;p.eleven_own=p.eleven&&p.ownspeech;p.buy=p.ownai&&p.hwbuy;p.lease=p.ownai&&p.hwlease;return p;}
 var ALLON=preds((function(){var a={};D.items.forEach(function(k){a[k]=true;});return a;})());
 function amt(pt,f){return pt.amt==='pcbuy'?f.pcs*D.pcBuy:pt.amt;}
-function build(S,f){var p=preds(S),lab=0,wks=0,tp=0,nl=nlOf(S,f);
- for(var c in D.tasks)D.tasks[c].parts.forEach(function(pt){if(p[pt.c]){lab+=pc(pt,nl);wks+=pw(pt,nl);}});
+function build(S,f){var p=preds(S),lab=0,wks=0,tp=0,nl=nlOf(S,f),fa=fac(p,nl);
+ for(var c in D.tasks)D.tasks[c].parts.forEach(function(pt){if(p[pt.c]){lab+=pc(pt,nl,fa);wks+=pw(pt,nl,fa);}});
  D.tps.forEach(function(r){r.parts.forEach(function(pt){if(p[pt.c])tp+=amt(pt,f);});});
  var direct=lab+tp,mg=0.10*lab,ct=0.15*direct;return {lab:lab,wks:wks,tp:tp,mg:mg,ct:ct,total:direct+mg+ct};}
 var OWN={both_net:function(){return 'offline';},online_only:function(){return 'online';},cur:function(S){return S.claude?'claude':'ownai';},mode:function(S){return S.twoway?'twoway':'oneway';},tprec:function(){return 'ownspeech';},
  speechrun:function(S){return S.twoway?'twoway':'ownspeech';},eleven_mode:function(){return 'eleven';},eleven_own:function(){return 'ownspeech';},
  buy:function(){return 'hwbuy';},lease:function(){return 'hwlease';}};
-function shares(S,f){var p=preds(S),sh={},nl=nlOf(S,f);function add(c,v){
+function shares(S,f){var p=preds(S),sh={},nl=nlOf(S,f),fa=fac(p,nl);function add(c,v){
   var o=OWN[c]?OWN[c](S):c;sh[o]=(sh[o]||0)+v;}
- for(var c in D.tasks)D.tasks[c].parts.forEach(function(pt){if(p[pt.c])add(pt.c,pc(pt,nl)*1.25);});      // labour carries the 10% fee and 15% contingency
+ for(var c in D.tasks)D.tasks[c].parts.forEach(function(pt){if(p[pt.c])add(pt.c,pc(pt,nl,fa)*1.25);});      // labour carries the 10% fee and 15% contingency
  D.tps.forEach(function(r){r.parts.forEach(function(pt){if(p[pt.c])add(pt.c,amt(pt,f)*1.15);});});   // purchases carry the contingency
  return sh;}
 function adds(id,f){var A=withTick(id),gp=D.group[id],swap=false;
@@ -364,22 +398,23 @@ var GROUPS=[['1.','Planning & design'],['A','App & backend'],['B','Speech'],['C'
 function ttl(c){var b=document.querySelector('tr[data-code="'+c+'"] td:nth-child(2) b');return b?b.textContent:D.ttl[c];}   // the task's title as the page currently words it
 function grp(c){for(var i=0;i<GROUPS.length;i++)if(c.indexOf(GROUPS[i][0])===0)return GROUPS[i][1];return 'Other';}
 function delta(id,f){var A=withTick(id),gp=D.group[id],swap=false;if(gp)for(var k in D.group)if(D.group[k]===gp&&S[k])swap=true;
- var B0=swap?S:Object.assign({},A);if(!swap)B0[id]=false;var pa=preds(A),pb=preds(B0),na=nlOf(A,f),nb=nlOf(B0,f),G={},order=[],tot=0;
+ var B0=swap?S:Object.assign({},A);if(!swap)B0[id]=false;var pa=preds(A),pb=preds(B0),na=nlOf(A,f),nb=nlOf(B0,f),fa=fac(pa,na),fb=fac(pb,nb),G={},order=[],tot=0;
  function add(g,label,v){if(!G[g]){G[g]={t:0,rows:[]};order.push(g);}G[g].t+=v;G[g].rows.push([label,v]);tot+=v;}
- for(var c in D.tasks)D.tasks[c].parts.forEach(function(pt){var v=(pa[pt.c]?pc(pt,na):0)-(pb[pt.c]?pc(pt,nb):0);
+ for(var c in D.tasks)D.tasks[c].parts.forEach(function(pt){var v=(pa[pt.c]?pc(pt,na,fa):0)-(pb[pt.c]?pc(pt,nb,fb):0);
   if(Math.abs(v)>0.5)add(grp(c),c+' '+(D.partLabel[c+'|'+pt.c]||ttl(c)),v*1.25);});
  D.tps.forEach(function(r){var v=0;r.parts.forEach(function(pt){v+=(pa[pt.c]?amt(pt,f):0)-(pb[pt.c]?amt(pt,f):0);});if(Math.abs(v)>0.5)add('Licences & equipment',r.short,v*1.15);});
  return {G:G,order:order,tot:tot};}
-function detail(id,f){if(!S[id]&&id!=='hwlease'){var X=delta(id,f);if(!X.order.length)return '<div class="dnote">No cost of its own</div>';
+function detail(id,f){var h=detail0(id,f);return id==='lessons'?subjHtml(f)+h:h;}
+function detail0(id,f){if(!S[id]&&id!=='hwlease'){var X=delta(id,f);if(!X.order.length)return '<div class="dnote">No cost of its own</div>';
   return X.order.map(function(g){var rows={};X.G[g].rows.forEach(function(r){rows[r[0]]=(rows[r[0]]||0)+r[1];});
    return '<div class="drow g"><span>'+g+'</span><b>'+(X.G[g].t<0?'−':'')+fmt(Math.abs(X.G[g].t))+'</b></div>'+Object.keys(rows).map(function(k){return '<div class="drow"><span>'+k+'</span><span>'+(rows[k]<0?'−':'')+fmt(Math.abs(rows[k]))+'</span></div>';}).join('');}).join('')
    +'<div class="drow tt"><span>Ticking it adds</span><b>'+(X.tot<0?'−':'+')+fmt(Math.abs(X.tot))+'</b></div><div class="dnote">Includes fee and contingency.</div>';}
- var T=S,p=preds(T),nl=nlOf(T,f),G={},order=[],tot=0;
+ var T=S,p=preds(T),nl=nlOf(T,f),fa=fac(p,nl),G={},order=[],tot=0;
  function add(g,label,v){if(!G[g]){G[g]={t:0,rows:[]};order.push(g);}G[g].t+=v;G[g].rows.push([label,v]);tot+=v;}
- for(var c in D.tasks){var sum=0;D.tasks[c].parts.forEach(function(pt){if(!p[pt.c])return;var v=pc(pt,nl)*1.25;
+ for(var c in D.tasks){var sum=0;D.tasks[c].parts.forEach(function(pt){if(!p[pt.c])return;var v=pc(pt,nl,fa)*1.25;
    var o=OWN[pt.c]?OWN[pt.c](T):pt.c;if(o===id)sum+=v;});
   if(Math.abs(sum)>0.5){var named=D.tasks[c].parts.filter(function(pt){return D.partLabel[c+'|'+pt.c];});
-   if(named.length)named.forEach(function(pt){if(p[pt.c]&&(OWN[pt.c]?OWN[pt.c](T):pt.c)===id)add(grp(c),c+' '+D.partLabel[c+'|'+pt.c],pc(pt,nl)*1.25);});   // one line per piece of work
+   if(named.length)named.forEach(function(pt){if(p[pt.c]&&(OWN[pt.c]?OWN[pt.c](T):pt.c)===id)add(grp(c),c+' '+D.partLabel[c+'|'+pt.c],pc(pt,nl,fa)*1.25);});   // one line per piece of work
    else add(grp(c),c+' '+ttl(c),sum);}}
  D.tps.forEach(function(r){var sum=0;r.parts.forEach(function(pt){if(p[pt.c]&&(OWN[pt.c]?OWN[pt.c](T):pt.c)===id)sum+=amt(pt,f)*1.15;});
   if(sum>0.5)add('Licences & equipment',r.short,sum);});
@@ -405,7 +440,7 @@ function settle(T){var ch=true;while(ch){ch=false;for(var k in T)if(T[k]&&(locke
 function withTick(id){var T=Object.assign({},S);tick(T,id);return settle(T);}
 function withUntick(id){var T=Object.assign({},S);T[id]=false;return settle(T);}
 // the breakdown
-function partsHtml(t,p,nl){var by={};t.parts.forEach(function(pt){if(p[pt.c])by[pt.r]=(by[pt.r]||0)+pw(pt,nl);});
+function partsHtml(t,p,nl){var by={},fa=fac(p,nl);t.parts.forEach(function(pt){if(p[pt.c])by[pt.r]=(by[pt.r]||0)+pw(pt,nl,fa);});
  var ls=t.order.filter(function(r){return Math.abs(by[r]||0)>1e-9;}).map(function(r){return [r,by[r],by[r]*5*D.roles[r].rate];});return ls;}
 function setRow(tr,ls,off){var c=tr.cells;
  c[2].textContent=ls.map(function(l){return D.roles[l[0]].name;}).join(' + ');
@@ -416,8 +451,11 @@ function setRow(tr,ls,off){var c=tr.cells;
 function pick(m,T){var best=null;for(var k in m){k=+k;if(k<=T&&(best===null||k>best))best=k;}if(best===null)for(var k2 in m){k2=+k2;if(best===null||k2<best)best=k2;}return m[best];}
 var CONTENT={'1.1':1,'C1':1,'C2':1,'C3':1,'C4':1,'C5':1,'E2':1,'UX':1,'TC':1};   // lesson wording follows the lesson ticks; the rest follows the AI and speech ticks
 function andList(a){return a.length<2?a.join(''):a.slice(0,-1).join(', ')+' and '+a[a.length-1];}
-function lessonText(h,nl){
- return h.replace(/\b20 one-hour lessons/g,nl+' one-hour lessons')
+function subjText(){var f=fields(),n=f.subj.map(function(s){return s[1].toLowerCase();});return {list:andList(n),
+ each:f.subj.every(function(s){return s[2]===f.subj[0][2];})?(f.subj.length?f.subj[0][2]:0)+' lessons each in '+andList(n):andList(f.subj.map(function(s){return s[2]+' lessons in '+s[1].toLowerCase();}))};}
+function lessonText(h,nl){var st=subjText();
+ return h.replace(/10 lessons each in (numeracy, literacy and personal development|numeracy and literacy)/g,st.each)
+ .replace(/numeracy, literacy and personal development|numeracy and literacy/g,st.list).replace(/\b20 one-hour lessons/g,nl+' one-hour lessons')
  .replace(/around 800 in total/g,'around '+(nl*40).toLocaleString('en-AU')+' in total').replace(/\b20 lessons mapped/g,nl+' lessons mapped').replace(/into 20 animated lessons/g,'into '+nl+' animated lessons')
  .replace(/One lesson per subject per week: 2 hours of learning per child each week/g,'About '+(Math.round(nl/10*10)/10)+(nl===10?' hour':' hours')+' of learning per child each week')
  .replace(/about 600 approved lines/g,'about '+(nl*30).toLocaleString('en-AU')+' approved lines');}
@@ -478,7 +516,9 @@ function render(){var f=fields(),p=preds(S),B=build(S,f),R=running(S,f),role={},
   el.textContent=txt;document.getElementById('row-'+id).classList.toggle('on',!!S[id]);});
  [].forEach.call(document.querySelectorAll('li[data-c]'),function(li){li.classList.toggle('xoff',!p[li.dataset.c]);});
  document.getElementById('hrs-row').classList.toggle('show',!!S.lessons);
- document.getElementById('h-tot').textContent=fmt(perHour('lessons'))+' an hour'+(S.content_own?' + '+fmt(perHour('content_own'))+' to prepare':'');
+ document.getElementById('h-tot').textContent=f.hrs+' hours · '+fmt(perHour('lessons'))+' an hour'+(S.content_own?' + '+fmt(perHour('content_own'))+' to prepare':'');
+ var hr=hourRate();D.subjects.forEach(function(s){var on=document.querySelector('input[data-subj="'+s[0]+'"]').checked,h=+document.querySelector('input[data-hrs="'+s[0]+'"]').value||10;
+  document.getElementById('subj-'+s[0]).classList.toggle('on',on);document.getElementById('pc-s-'+s[0]).textContent=(on?'':'+')+fmt(h*hr);});
  for(var num in D.steps)document.getElementById('done-'+num).textContent=D.steps[num].some(function(id){return S[id];})?'✓':'';
  ['hwbuy','hwlease'].forEach(function(k){document.getElementById('row-'+k).style.display=S.ownai?'':'none';if(!S.ownai)document.getElementById('det-'+k).hidden=true;});
  document.getElementById('total').textContent=fmt(B.total);document.getElementById('tabtotal').textContent=fmt(B.total);
@@ -486,8 +526,13 @@ function render(){var f=fields(),p=preds(S),B=build(S,f),R=running(S,f),role={},
  document.getElementById('banner').innerHTML=B.total?'<b>Struck-through lines are not in this build.</b> Lines marked <span class="oos">Not in our scope</span> are on-ground pilot work, run by the partner.'
   :'<b>Nothing selected yet.</b> Tick the steps on the left to build the quote. Every line below stays struck through until you add it.';}
 [].forEach.call(document.querySelectorAll('.rail input[data-id]'),function(b){b.addEventListener('change',function(){
- var id=b.dataset.id;S=b.checked?withTick(id):withUntick(id);render();});});
-['f-stu','f-pc','h-all'].forEach(function(i){document.getElementById(i).addEventListener('input',render);});
+ var id=b.dataset.id;S=b.checked?withTick(id):withUntick(id);
+ if(S.lessons&&!fields().subj.length)D.subjects.forEach(function(x,i){document.querySelector('input[data-subj="'+x[0]+'"]').checked=i<2;});   // back to numeracy and literacy
+ render();});});
+['f-stu','f-pc'].forEach(function(i){document.getElementById(i).addEventListener('input',render);});
+[].forEach.call(document.querySelectorAll('.rail input[data-hrs]'),function(b){b.addEventListener('input',render);});
+[].forEach.call(document.querySelectorAll('.rail input[data-subj]'),function(b){b.addEventListener('change',function(){
+ if(!fields().subj.length)S=withUntick('lessons');render();});});   // no subject left: no lessons
 [].forEach.call(document.querySelectorAll('.rail .dd'),function(b){b.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();
  var dv=document.getElementById('det-'+b.dataset.dd);dv.hidden=!dv.hidden;b.classList.toggle('open',!dv.hidden);if(!dv.hidden)dv.innerHTML=detail(b.dataset.dd,fields());});});
 // resize and hide the rail
@@ -537,7 +582,7 @@ ol.how{padding-left:20px;margin:6px 0}ol.how li{margin:8px 0}ol.how .sub{display
 .rail .req{font-size:10px;color:#777;font-weight:400}
 .rail .opt .nm input{margin:0 5px 0 0}.rail label.nm{display:flex;align-items:center;cursor:pointer}
 .rail .hrsrow{display:none;align-items:center;gap:8px;margin:4px 0 4px 25px;padding:6px 8px;border:2px solid #111;background:#fffbe6;font-size:12px;font-weight:700}
-.rail .hrsrow.show{display:flex}.rail .hrs{width:52px;font:inherit;padding:1px 4px}.rail .hu{font-size:11px;color:#666;font-weight:400}
+.rail .hrsrow.show{display:flex}.rail .subjs{display:none;margin:2px 0 4px}.rail .subjs.show{display:block}.rail .subj .hrs{margin-left:4px}.rail .htot{margin:2px 0 0 45px}.rail .hrs{width:52px;font:inherit;padding:1px 4px}.rail .hu{font-size:11px;color:#666;font-weight:400}
 .rail .opt.locked{opacity:.45;cursor:not-allowed}.rail .opt.forced .nm::after{content:'required offline';font-size:10px;color:#8a1c1c;font-weight:700}.rail .opt.locked .pc{font-style:italic}
 .rail .total{border-top:2px solid #111;padding:10px 14px;background:#f7f7f7}.rail .total span{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#555}
 .rail .total b#total{display:block;font-size:24px;font-variant-numeric:tabular-nums}.rail .total small{color:#444;font-size:12px}
