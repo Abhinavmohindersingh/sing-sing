@@ -85,8 +85,8 @@ for ph, code, t0, task, alloc in W:
     TASKS[code] = dict(parts=parts, order=order)
 assert set(TASKS) == set(COND), set(TASKS) ^ set(COND)
 
-TP_COND = [("code-signing", "found"), ("ElevenLabs", None), ("voice actor", "ownspeech"), ("Tok Pisin speakers", "tprec"),
-           ("recording kit", "ownspeech"), ("Claude API", "cur"), ("Cloud hosting during build", "found"), ("laptop", "found"),
+TP_COND = [("code-signing", "desktop"), ("ElevenLabs", None), ("voice actor", "ownspeech"), ("Tok Pisin speakers", "tprec"),
+           ("recording kit", "ownspeech"), ("Claude API", "cur"), ("Cloud hosting during build", "online"), ("laptop", "desktop"),
            ("Criminal record", "found"), ("IARPA", "tprec"), ("speech recognition training", "tprec"), ("Kumi’s voice training", "ownspeech")]
 TPS = []   # purchase rows: id, parts [{c, amt}] ('amt' may be the string 'pcbuy': GPU servers × buy price)
 for item, amt, basis, src, t in g['TP_IN']:
@@ -110,7 +110,7 @@ def preds(S):
     p = {k: bool(v) for k, v in S.items()}
     p.update(both_net=p['online'] and p['offline'], online_only=p['online'] and not p['offline'], cur=p['claude'] or p['ownai'], mode=p['oneway'] or p['twoway'], tprec=p['ownspeech'] and p['twoway'],
              speechrun=p['twoway'] or p['ownspeech'], eleven_mode=p['eleven'] and (p['oneway'] or p['twoway']),
-             eleven_own=p['eleven'] and p['ownspeech'], buy=p['ownai'] and p['hwbuy'], lease=p['ownai'] and p['hwlease'], retrain_rent=p['retrain'] and p['trrent'])
+             eleven_own=p['eleven'] and p['ownspeech'], buy=p['ownai'] and p['hwbuy'], lease=p['ownai'] and p['hwlease'], test=True, retrain_rent=p['retrain'] and p['trrent'])
     return p
 def pcost(pt, nl): return pt['per']*nl*5*RATE[pt['r']] if 'per' in pt else pt['cost']
 def build_total(S, pcs=1, nl=20):
@@ -137,10 +137,10 @@ POOL = ['G1', 'G2', 'G3', 'G4', 'G5', 'G8', 'G9']
 FLOOR_SHARE = 0      # nothing to test until a feature is ticked
 POOL_CORE = sum(pt['cost'] for c in POOL for pt in TASKS[c]['parts'] if pt['c'] == 'found')
 for c in POOL:   # their two-way steps are replaced by the share below
-    TASKS[c]['parts'] = [dict(pt, s=1) for pt in TASKS[c]['parts'] if pt['c'] == 'found']
+    TASKS[c]['parts'] = [dict(pt, s=1, c='test') for pt in TASKS[c]['parts'] if pt['c'] == 'found']   # 'test' is always on; its size follows the features
 def feat(S, nl):   # feature labour: everything but the foundation itself and the per-hour lesson work
     p = preds(S)
-    return sum(pcost(pt, nl) for t in TASKS.values() for pt in t['parts'] if p[pt['c']] and pt['c'] != 'found' and 'per' not in pt)
+    return sum(pcost(pt, nl) for t in TASKS.values() for pt in t['parts'] if p[pt['c']] and pt['c'] not in ('found', 'test') and 'per' not in pt)
 FEAT_CORE = feat(OLD_CORE, 20)
 K = (1 - FLOOR_SHARE)*POOL_CORE/FEAT_CORE   # about 28% of each feature's build work
 def factor(S, nl): return FLOOR_SHARE + K*feat(S, nl)/POOL_CORE
@@ -296,14 +296,14 @@ HOW = f'''<h2>How Kumi works</h2><ol class="how">
 <span class="sub"><b>Way 2: our own speech models</b> {L("Tok Pisin")} {OFF} No major provider supports Tok Pisin speech, so we build Kumi’s own Tok Pisin voice and a model that understands children speaking Tok Pisin. No per-minute cost.</span></li>
 <li><b>Teacher screen.</b> See how the whole class is doing and which students need help.</li></ol>'''
 OPS = [  # id, name, how it is worked out (filled in by the script where it depends on the fields), condition
- ('host', 'Cloud hosting', 'App server, database, storage and backups, AWS Sydney', 'found'),
- ('lic', 'Code-signing certificate', 'A$341 a year, spread over 12 months', 'found'),
+ ('host', 'Cloud hosting', 'App server, database, storage and backups, AWS Sydney', 'online'),
+ ('lic', 'Code-signing certificate', 'A$341 a year, spread over 12 months', 'desktop'),
  ('claude', 'Claude AI usage', '', 'claude'),
  ('eleven', 'ElevenLabs voice', '', 'eleven_mode'),
  ('ownai', 'Our own AI model', 'Runs on the school’s GPU server: no usage cost', 'ownai'),
  ('lease', 'Leased GPU server', '', 'lease'),
  ('ownspeech', 'Our own speech models', 'Run on the school computers: no per-minute cost', 'ownspeech'),
- ('support', 'Support and maintenance', '', 'found')]
+ ('support', 'Support and maintenance', '', 'desktop')]
 OPS_HTML = ('<h2>Operating cost per month</h2><p class="h2sub">What it costs to keep Kumi running once it is built. Change the numbers to see it move.</p>'
             '<div class="fields"><label>Students <input id="f-stu" type="number" min="1" step="10" value="100"></label>'
             '<label>Schools <input id="f-pc" type="number" min="1" step="1" value="1"></label></div>'
@@ -318,7 +318,7 @@ OPS_HTML = ('<h2>Operating cost per month</h2><p class="h2sub">What it costs to 
 # ---- 5. the rail ----
 SUBJECTS = [('num', 'Numeracy', True), ('lit', 'Literacy', True), ('pd', 'Personal development', False)]   # each with its own hours of content; Core is numeracy and literacy, 10 hours each
 STEPS = [  # (number, title, hint, rows); a row is (id, label, badge HTML) or ('-', sub-heading)
- ('1', 'Project foundation', 'Each feature below carries its own backend and release testing.', [('found', 'Planning & project management', '<span class="req">required</span>')]),
+ ('1', 'Project foundation', 'Optional. Each feature below carries its own backend and release testing.', [('found', 'Planning & project management', '')]),
  ('2', 'App', '', [('desktop', 'Desktop application', ''), ('-', 'Online + offline · one or both'), ('online', 'Online', '<span class="mode on">Online</span>', 'sub'),
                       ('offline', 'Offline', '<span class="mode off">Offline</span>', 'sub'), ('login', 'Individual student login & profiles', ''), ('teacher', 'Teacher screen', '')]),
  ('3', 'Lessons', 'Tick Subjects, then the subjects and their hours. Content is provided to us unless ticked.', [('lessons', 'Subjects', ''), ('=', 'subjects'),
@@ -328,7 +328,7 @@ STEPS = [  # (number, title, hint, rows); a row is (id, label, badge HTML) or ('
  ('5', 'AI speech', '', [('-', 'Mode · pick one'), ('oneway', 'One-way', ''), ('twoway', 'Two-way', ''),
                          ('-', 'Voice'), ('eleven', 'ElevenLabs', L('English')), ('ownspeech', 'Own speech model', L('Tok Pisin'))]),
  ('6', 'Extras', '', [('review', 'Weekly AI check', ''), ('expert', 'Expert teacher check', ''), ('retrain', 'Retrain on pilot data', '<span class="mode off">Own AI</span>')])]
-REQ = {'found': [], 'desktop': [['found']], 'online': [['desktop']], 'offline': [['desktop']], 'login': [['desktop']], 'teacher': [['online']],
+REQ = {'found': [], 'desktop': [], 'online': [['desktop']], 'offline': [['desktop']], 'login': [['desktop']], 'teacher': [['online']],
        'lessons': [['desktop']], 'content_own': [['lessons']], 'tests': [['desktop']], 'expert': [['lessons']],
        'claude': [['online']], 'ownai': [['desktop'], ['hwbuy', 'hwlease'], ['trrent', 'trbuy']], 'hwbuy': [['ownai']], 'hwlease': [['ownai']],
        'oneway': [['desktop'], ['eleven', 'ownspeech']], 'twoway': [['desktop'], ['eleven', 'ownspeech'], ['claude', 'ownai']],
@@ -383,12 +383,12 @@ function nlOf(S,f){return S.lessons?f.hrs:0;}   // one-hour lessons = hours of c
 function nlAll(f){return f.hrs;}
 function perHour(c){var v=0;for(var k in D.tasks)D.tasks[k].parts.forEach(function(pt){if(pt.c===c&&pt.per)v+=pt.per*5*D.roles[pt.r].rate*1.25;});return v;}   // cost of one more hour of content, with fee and contingency
 function pw(pt,nl,fa){return (pt.per?pt.per*nl:pt.w)*(pt.s?fa:1);}function pc(pt,nl,fa){return (pt.per?pt.per*nl*5*D.roles[pt.r].rate:pt.cost)*(pt.s?fa:1);}   // per-lesson parts scale with the lessons
-function feat(p,nl){var v=0;for(var c in D.tasks)D.tasks[c].parts.forEach(function(pt){if(p[pt.c]&&pt.c!=='found'&&!pt.per)v+=pc(pt,nl,1);});return v;}
+function feat(p,nl){var v=0;for(var c in D.tasks)D.tasks[c].parts.forEach(function(pt){if(p[pt.c]&&pt.c!=='found'&&pt.c!=='test'&&!pt.per)v+=pc(pt,nl,1);});return v;}
 function fac(p,nl){return D.scale.floor+D.scale.k*feat(p,nl)/D.scale.pool;}   // release testing: a share of the feature work
-function ownLab(T,nl){var p=preds(T),o={},F=0;for(var c in D.tasks)D.tasks[c].parts.forEach(function(pt){if(p[pt.c]&&pt.c!=='found'&&!pt.per){
+function ownLab(T,nl){var p=preds(T),o={},F=0;for(var c in D.tasks)D.tasks[c].parts.forEach(function(pt){if(p[pt.c]&&pt.c!=='found'&&pt.c!=='test'&&!pt.per){
   var w=OWN[pt.c]?OWN[pt.c](T):pt.c,v=pc(pt,nl,1);o[w]=(o[w]||0)+v;F+=v;}});return {by:o,F:F};}   // each step's own build work, which its testing follows
 function preds(S){var p={};for(var k in S)p[k]=!!S[k];p.both_net=p.online&&p.offline;p.online_only=p.online&&!p.offline;p.cur=p.claude||p.ownai;p.mode=p.oneway||p.twoway;p.tprec=p.ownspeech&&p.twoway;
- p.speechrun=p.twoway||p.ownspeech;p.eleven_mode=p.eleven&&p.mode;p.eleven_own=p.eleven&&p.ownspeech;p.buy=p.ownai&&p.hwbuy;p.lease=p.ownai&&p.hwlease;p.retrain_rent=p.retrain&&p.trrent;return p;}
+ p.speechrun=p.twoway||p.ownspeech;p.eleven_mode=p.eleven&&p.mode;p.eleven_own=p.eleven&&p.ownspeech;p.buy=p.ownai&&p.hwbuy;p.lease=p.ownai&&p.hwlease;p.retrain_rent=p.retrain&&p.trrent;p.test=true;return p;}
 var ALLON=preds((function(){var a={};D.items.forEach(function(k){a[k]=true;});return a;})());
 function amt(pt,f){return pt.amt==='pcbuy'?f.pcs*D.pcBuy:pt.amt;}
 function build(S,f){var p=preds(S),lab=0,wks=0,tp=0,nl=nlOf(S,f),fa=fac(p,nl);
@@ -445,8 +445,8 @@ function detail0(id,f){if(!S[id]&&id!=='hwlease'){var X=delta(id,f);if(!X.order.
   +(order.length>1||G[order[0]].rows.length>1?'<div class="drow tt"><span>Total</span><b>'+fmt(tot)+'</b></div>':'')+(id==='ownai'?'<div class="dnote">The GPU server (buy or lease) is priced on its own line.</div>':'');}
 function plan(n){var c=n*D.run.credits;for(var i=0;i<D.run.voice.length;i++){var v=D.run.voice[i];if(v[0]===null||c<=v[0])return v;}}
 function running(S,f){var p=preds(S),o={},n=f.n;
- o.host=p.found?D.run.host:0;o.lic=p.found?D.run.lic:0;o.claude=p.claude?D.run.aiStu*n:0;o.eleven=p.eleven_mode?plan(n)[1]:0;
- o.ownai=0;o.lease=p.lease?f.pcs*D.pcLease:0;o.ownspeech=0;o.support=p.found?D.run.support*Math.ceil(n/300):0;
+ o.host=p.online?D.run.host:0;o.lic=p.desktop?D.run.lic:0;o.claude=p.claude?D.run.aiStu*n:0;o.eleven=p.eleven_mode?plan(n)[1]:0;
+ o.ownai=0;o.lease=p.lease?f.pcs*D.pcLease:0;o.ownspeech=0;o.support=p.desktop?D.run.support*Math.ceil(n/300):0;
  var t=0;for(var k in o)t+=o[k];o.total=t;return o;}
 // ticking: exclusive groups, and each step's requirements (auto-ticked) and dependants (auto-cleared)
 function sat(r,T){return r.some(function(x){return T[x];});}
