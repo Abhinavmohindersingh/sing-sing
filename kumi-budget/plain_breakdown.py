@@ -384,8 +384,8 @@ STEPS = [  # (number, title, hint, rows); a row is (id, label, badge HTML) or ('
  ('5', 'AI speech', 'Pick the languages first, then the mode. Two-way applies to every language ticked.',
   [('-', 'Language · one or both'), ('eleven', 'English', '<span class="mode on">ElevenLabs · Online</span>'), ('ownspeech', 'Tok Pisin', '<span class="mode off">Our own speech model · no ElevenLabs</span>'),
    ('-', 'Mode · pick one'), ('oneway', 'One-way', '<span class="req">Kumi talks</span>'), ('twoway', 'Two-way', '<span class="req">the child talks too</span>')]),
- ('7', 'Training GPU', 'For our own AI model and Tok Pisin speech: rent by the hour, or buy one workstation that trains both.', [('trrent', 'Rent GPU to train (cloud)', ''), ('trbuy', 'Buy GPU to train', '')]),
- ('6', 'Extras', '', [('review', 'Weekly AI check', ''), ('expert', 'Expert teacher check', ''), ('retrain', 'Retrain on pilot data', '<span class="mode off">Own AI</span>')])]
+ ('6', 'Extras', '', [('review', 'Weekly AI check', ''), ('expert', 'Expert teacher check', ''), ('retrain', 'Retrain on pilot data', '<span class="mode off">Own AI</span>')]),
+ ('7', 'Training GPU', 'For our own AI model and Tok Pisin speech: rent by the hour, or buy one workstation that trains both.', [('trrent', 'Rent GPU to train (cloud)', ''), ('trbuy', 'Buy GPU to train', '')])]
 REQ = {'found': [], 'desktop': [], 'online': [['desktop']], 'offline': [['desktop']], 'login': [['desktop']], 'teacher': [['online'], ['lessons']],
        'lessons': [['desktop']], 'content_own': [['lessons']], 'tests': [['lessons']], 'expert': [['lessons']],
        'claude': [['online'], ['lessons']], 'ownai': [['lessons'], ['hwbuy', 'hwlease'], ['trrent', 'trbuy']], 'hwbuy': [['ownai']], 'hwlease': [['ownai']],
@@ -657,7 +657,7 @@ function render0(){var f=fields(),p=preds(S),B=build(S,f),R=running(S,f),role={}
  document.getElementById('total').textContent=fmt(B.total);document.getElementById('tabtotal').textContent=fmt(B.total);
  document.getElementById('run-total').textContent=fmt(R.total);document.getElementById('run-stu').textContent=f.n;
  if(window.cmtReapply)window.cmtReapply();   // keep comment highlights after the text changes
- document.getElementById('banner').innerHTML=B.total?'<b>Struck-through lines are not in this build.</b> Lines marked <span class="oos">Not in our scope</span> are on-ground pilot work, run by the partner.<br>After each tick: <span class="chg-key" style="background:#e3f6e6"></span>now in the build <span class="chg-key" style="background:#fde8e8"></span>now out <span class="chg-key" style="background:#fff6cc"></span>changed. Use ▲ ▼ at the top right to step through them.'
+ document.getElementById('banner').innerHTML=B.total?'<b>Struck-through lines are not in this build.</b> Lines marked <span class="oos">Not in our scope</span> are on-ground pilot work, run by the partner.<br>After each tick: <span class="chg-key" style="border-color:#1a7f37"></span>now in the build <span class="chg-key" style="border-color:#c62828"></span>now out <span class="chg-key" style="border-color:#d9a400"></span>changed. Use ▲ ▼ at the top right to step through them.'
   :'<b>Nothing selected yet.</b> Tick the steps on the left to build the quote. Every line below stays struck through until you add it.';}
 document.querySelector('.rail').addEventListener('change',function(e){if(e.target.type==='checkbox')jumpNext=true;},true);   // a tick jumps to what it changed
 document.getElementById('chg-prev').addEventListener('click',function(){go(CI<0?CHG.length-1:CI-1);});
@@ -704,9 +704,9 @@ ol.how{padding-left:20px;margin:6px 0}ol.how li{margin:8px 0}ol.how .sub{display
 #chg-nav{position:fixed;top:10px;right:16px;z-index:8;display:flex;align-items:center;gap:6px;background:#111;color:#fff;border-radius:999px;padding:6px 8px 6px 14px;font:600 12px -apple-system,Segoe UI,Arial,sans-serif;box-shadow:0 4px 14px rgba(0,0,0,.25)}
 #chg-nav button{border:0;background:#333;color:#fff;border-radius:50%;width:26px;height:26px;cursor:pointer;font-size:12px}#chg-nav button:hover{background:#555}
 #chg-nav:not(.has) button{opacity:.4;pointer-events:none}#chg-nav label{display:flex;align-items:center;gap:4px;font-weight:400;color:#ccc;margin-left:4px;cursor:pointer}
-tr.chg td,li.chg{background:#fff6cc}tr.chg-on td,li.chg-on{background:#e3f6e6}tr.chg-off td,li.chg-off{background:#fde8e8}
+tr.chg,li.chg{outline:2px solid #d9a400;outline-offset:-2px}tr.chg-on,li.chg-on{outline:2px solid #1a7f37;outline-offset:-2px}tr.chg-off,li.chg-off{outline:2px solid #c62828;outline-offset:-2px}
 .chg-flash{outline:3px solid #f0b400;outline-offset:2px}
-.chg-key{display:inline-block;width:10px;height:10px;border-radius:2px;margin:0 3px 0 8px;vertical-align:-1px}
+.chg-key{display:inline-block;width:10px;height:10px;border-radius:2px;margin:0 3px 0 8px;vertical-align:-1px;border:2px solid;box-sizing:border-box}
 @media (max-width:900px){#chg-nav{top:auto;bottom:70px;right:8px}}
 /* rail */
 .rail{position:fixed;top:0;left:0;bottom:0;width:var(--rw,300px);background:#fff;border-right:1px solid #999;display:flex;flex-direction:column;z-index:5;transition:transform .2s}
