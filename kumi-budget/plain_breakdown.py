@@ -13,16 +13,16 @@ os.environ.update(PLATFORM='1',   # platform-only wording; project management 3 
                   CUT=','.join(CUT_CODES + ['headsets', 'transport', 'allowance', 'criminal', 'travel', 'pilot_run', 'bridge']))
 
 # Hardware for our own AI model: one GPU server per school, on the lab network. Provisional: confirm with a live quote.
-PC_BUY = 3300    # A$ each: desktop with a 16 GB graphics card (RTX 4060 Ti 16 GB; the card alone is about A$1,500–2,250 in Australia, Oct 2026), plus a network switch
-PC_LEASE = 110   # A$ a month each, 36-month lease: estimate (buy price over 36 months, plus finance and support)
+PC_BUY = 6500    # A$ each: business workstation with an NVIDIA RTX PRO 4000 Blackwell 24 GB (the card alone is A$3,199 at PLE to A$4,999 at Mwave, Oct 2026), plus a network switch
+PC_LEASE = 210   # A$ a month each, 36-month lease: estimate (buy price over 36 months, plus finance and support)
 GPU_HR = 6       # A$ an hour for a rented H100: on-demand list prices US$1.99–3.99 at specialist clouds, rising (Oct 2026)
 OWN_GPU = 100*GPU_HR  # 100 GPU-hours: several tuning runs, evaluation on the validation and test sets, and 4-bit compression
-TRAIN_BUY = 11700  # A$: workstation with an RTX 5090 32 GB to train in-house instead of renting (PLE Apex RTX 5090 listed at A$11,639; the card alone is about A$9,000, Oct 2026)
+TRAIN_BUY = 6500  # A$: the same RTX PRO 4000 Blackwell 24 GB workstation, to train in-house instead of renting (about 3 times slower per run than a rented H100)
 RETRAIN_GPU = 30*GPU_HR   # 30 GPU-hours to retrain on pilot data
 RETRAIN_LABEL = round(10000*(3000*2 + 300*10)/1e6*0.5*1.55)   # 10,000 pilot records labelled by Claude Sonnet 5.5 in batches
 OWN_DATA = round(30000*((4000*2 + 1500*10) + (3000*2 + 300*10))/1e6*0.5*1.55)   # 30,000 examples written, then each checked, by Claude Sonnet 5.5 in batches (half price) ≈ US$480 at A$1.55
-SRC_PC = [("NVIDIA GeForce RTX 4060 Ti (official)", "https://www.nvidia.com/en-au/geforce/graphics-cards/40-series/rtx-4060-4060ti/"),
-          ("NVIDIA GeForce RTX 5090 (official)", "https://www.nvidia.com/en-au/geforce/graphics-cards/50-series/rtx-5090/"),
+SRC_PC = [("NVIDIA RTX PRO 4000 Blackwell 24 GB (Mwave)", "https://www.mwave.com.au/product/nvidia-rtx-pro-4000-blackwell-24gb-professional-video-card-ac86467"),
+          ("NVIDIA workstation cards (PLE Computers)", "https://www.ple.com.au/Categories/671/Nvidia-Workstation"),
           ("Runpod GPU pricing (official)", "https://www.runpod.io/pricing"),
           ("HP Australia business leasing terms", "https://www.hp.com/au-en/shop/hp-business-leasing"),
 ]
@@ -99,10 +99,10 @@ for item, amt, basis, src, t in g['TP_IN']:
         parts = [dict(c=c, amt=amt)]
     TPS.append(dict(id=f"tp{len(TPS)}", key=key, item=item, parts=parts, url=g['SRC'][src][1] if src in g['SRC'] else None))
 U_H100 = "https://www.runpod.io/pricing"   # official provider pricing page
-U_5090 = "https://www.nvidia.com/en-au/geforce/graphics-cards/50-series/rtx-5090/"   # official NVIDIA page
+U_PRO = SRC_PC[0][1]   # the RTX PRO 4000 Blackwell product page
 U_CLAUDE = "https://platform.claude.com/docs/en/about-claude/pricing"
 OWN_TP = [dict(id='tpgpu', item='GPU rental to tune our own AI model: about 100 GPU-hours', basis=f'~A${GPU_HR}/hr: H100 on-demand. Several tuning runs, evaluation and compression', url=U_H100, parts=[dict(c='trrent', amt=OWN_GPU)]),
-          dict(id='tptrbuy', item='Training workstation, bought: RTX 5090 32 GB, to tune our own AI model in-house', basis=f'About A${TRAIN_BUY:,} (PLE Apex RTX 5090 PC, A$11,639). Kept after the build for retraining', url=U_5090, parts=[dict(c='trbuy', amt=TRAIN_BUY)]),
+          dict(id='tptrbuy', item='Training workstation, bought: NVIDIA RTX PRO 4000 Blackwell 24 GB, to tune our own AI model in-house', basis=f'About A${TRAIN_BUY:,}. About 3 times slower per run than a rented H100; kept after the build for retraining', url=U_PRO, parts=[dict(c='trbuy', amt=TRAIN_BUY)]),
           dict(id='tprtgpu', item='GPU rental to retrain on pilot data: about 30 GPU-hours', basis=f'~A${GPU_HR}/hr: H100 on-demand', url=U_H100, parts=[dict(c='retrain_rent', amt=RETRAIN_GPU)]),
           dict(id='tprtlab', item='Labelling about 10,000 pilot records with Claude', basis='Claude Sonnet 5.5 in batches', url=U_CLAUDE, parts=[dict(c='retrain', amt=RETRAIN_LABEL)]),
           dict(id='tpdata', item='Training data for our own AI model: about 30,000 example lessons-and-help conversations written and checked with Claude', basis='Claude Sonnet 5.5 in batches, about 260M tokens', url=U_CLAUDE, parts=[dict(c='ownai', amt=OWN_DATA)]),
@@ -523,7 +523,7 @@ function render(){var f=fields(),p=preds(S),B=build(S,f),R=running(S,f),role={},
   r.parts.forEach(function(pt){if(p[pt.c])a+=amt(pt,f);if(ALLON[pt.c])all+=amt(pt,f);});
   tr.classList.toggle('xoff',a===0);tr.cells[2].textContent=fmt(a||all);
   if(r.key==='ElevenLabs')tr.cells[1].innerHTML=(p.eleven_own?'US$330/mo Scale plan, ~2M credits (English voice cloned from the voice actor)':'US$99/mo Pro plan, 500k credits')+' <span class="src">[<a href="'+D.elevenSrc+'">source</a>]</span>';});
- document.getElementById('pc-basis').textContent=f.pcs+' × A$'+D.pcBuy.toLocaleString('en-AU')+' (desktop with a 16 GB graphics card, plus a network switch)';
+ document.getElementById('pc-basis').textContent=f.pcs+' × A$'+D.pcBuy.toLocaleString('en-AU')+' (workstation with an NVIDIA RTX PRO 4000 Blackwell 24 GB, plus a network switch)';
  document.getElementById('tp-tot').textContent=fmt(B.tp);
  // cost summary
  document.getElementById('cs-wk').textContent=wk(B.wks);document.getElementById('cs-lab').textContent=fmt(B.lab);
