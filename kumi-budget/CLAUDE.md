@@ -38,6 +38,8 @@ python3 build_tiers.py       # the live budget page -> ../public/kumi-pilot-budg
 
 - **Comments:** the quote builder has the comment tool (highlight text, plus an Overall feedback box). Comments stay in each reviewer's browser; Copy all / Download exports them with the ticks and total, to paste back here.
 
+- **Fixed lines:** every task's four wordings are merged into one fixed list of bullets (`union_label`), so ticking never adds or removes a line; bullets not in the current wording are struck. The changes navigator (top right) marks what each tick changed (green in, red out, yellow changed) and ▲ ▼ step through it; it jumps to the first change on each tick unless switched off.
+
 ## Open items
 - The live page (`/kumi-pilot-budget`) is older than the generator: the Tier 1 "English voice only, Tok Pisin on screen" change is built but not published (it would make Tier 1 $239,420).
 - Check "no major provider supports Tok Pisin speech" and have a native speaker confirm the Tok Pisin keywords before an investor sees them.

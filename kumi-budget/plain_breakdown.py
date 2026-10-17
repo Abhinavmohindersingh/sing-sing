@@ -369,9 +369,34 @@ def rail_html():
 # ---- 6. page ----
 TTL = {code: g['plain'](task.split('|')[0]).replace('Pijin', 'Tok Pisin') for ph, code, t0, task, alloc in W if code in TASKS}
 for r in TPS + OWN_TP: r['short'] = re.split(r' — | \(|: ', r['item'])[0]
+import difflib
+def union_label(by_tier):
+    """Merge a task's wordings (tiers 0-3) into one fixed list of bullets, so ticking never adds or removes a line:
+    each bullet keeps its wording per tier, and the page strikes the ones that are not in the current tier."""
+    def split(h):
+        m = re.match(r"(.*?)<ul class='sub'>(.*)</ul>(.*)$", h, re.S)
+        return (m.group(1), re.findall(r"<li[^>]*>.*?</li>", m.group(2), re.S), m.group(3)) if m else (h, [], '')
+    def norm(li): return re.sub(r'<[^>]+>', '', li).strip()
+    head, tail, items = {}, {}, []
+    for t in sorted(by_tier):
+        hd, lis, tl = split(by_tier[t]); head[t] = hd; tail[t] = tl
+        last = [norm(e[max(e)]) for e in items]; new = [norm(x) for x in lis]; out = []
+        for op, i1, i2, j1, j2 in difflib.SequenceMatcher(None, last, new, autojunk=False).get_opcodes():
+            if op == 'equal':
+                for k in range(i2 - i1): items[i1 + k][t] = lis[j1 + k]; out.append(items[i1 + k])
+            elif op == 'delete': out += items[i1:i2]
+            elif op == 'insert': out += [{t: x} for x in lis[j1:j2]]
+            else:   # the same bullet reworded pairs up; anything else is a bullet that comes or goes
+                old, nw = items[i1:i2], lis[j1:j2]; k = 0
+                while k < min(len(old), len(nw)) and difflib.SequenceMatcher(None, last[i1 + k], new[j1 + k]).ratio() > 0.45:
+                    old[k][t] = nw[k]; out.append(old[k]); k += 1
+                out += old[k:] + [{t: x} for x in nw[k:]]
+        items = out
+    return dict(head=head, tail=tail, items=items)
+ULAB = {code: union_label(v) for code, v in LABELS.items()}
 DATA = dict(partLabel=PART_LABEL, ttl=TTL, tasks=TASKS, roles={r: dict(name=NAME[r], rate=RATE[r]) for r in RATE}, tps=TPS + OWN_TP,
             req=REQ, group=GROUP, lock=LOCK, items=list(ALL), steps={num: [r[0] for r in rows if r[0] not in '-='] for num, _, _, rows in STEPS},
-            ops=[dict(id=i, c=c) for i, n, h, c in OPS], subjects=[[k, nm] for k, nm, on in SUBJECTS], scale=dict(floor=FLOOR_SHARE, k=K, pool=POOL_CORE), elevenSrc=g['SRC']['elevenlabs'][1], labels=LABELS, resps=RESPS, titles=TITLES, teamp=TEAMP, pcBuy=PC_BUY, pcLease=PC_LEASE,
+            ops=[dict(id=i, c=c) for i, n, h, c in OPS], subjects=[[k, nm] for k, nm, on in SUBJECTS], scale=dict(floor=FLOOR_SHARE, k=K, pool=POOL_CORE), elevenSrc=g['SRC']['elevenlabs'][1], ulab=ULAB, resps=RESPS, titles=TITLES, teamp=TEAMP, pcBuy=PC_BUY, pcLease=PC_LEASE,
             run=dict(host=150, lic=g['LIC'], aiStu=g['AI_PER']*g['SESS']*FX, sess=g['SESS'], support=g['SUPPORT'], seRate=RATE['SE'],
                      credits=5*150*g['SESS']*0.5, voice=[[500000, 99*FX, 'Pro'], [2000000, 330*FX, 'Scale'], [None, 1320*FX, 'Business']]))
 JS = r"""<script>(function(){
@@ -477,6 +502,10 @@ function setRow(tr,ls,off){var c=tr.cells;
  var sum=ls.reduce(function(a,l){return a+l[2];},0);
  c[4].innerHTML=ls.map(function(l){return fmt(l[2]);}).join(' + ')+(ls.length>1?'<br>= <b>'+fmt(sum)+'</b>':'');
  tr.classList.toggle('xoff',off);return sum;}
+function ulabel(k,T){var u=D.ulab[k],tt=pickKey(u.head,T);   // one fixed list of bullets; the ones not in this wording are struck, not removed
+ return u.head[tt]+"<ul class='sub'>"+u.items.map(function(e){if(e[tt]!==undefined)return e[tt];var best=null;for(var t in e)if(best===null||Math.abs(t-tt)<Math.abs(best-tt))best=t;
+  return e[best].replace(/^<li/,"<li class='xna'");}).join('')+'</ul>'+u.tail[tt];}
+function pickKey(m,T){var best=null;for(var k in m){k=+k;if(k<=T&&(best===null||k>best))best=k;}if(best===null)for(var k2 in m){k2=+k2;if(best===null||k2<best)best=k2;}return best;}
 function pick(m,T){var best=null;for(var k in m){k=+k;if(k<=T&&(best===null||k>best))best=k;}if(best===null)for(var k2 in m){k2=+k2;if(best===null||k2<best)best=k2;}return m[best];}
 var CONTENT={'1.1':1,'C1':1,'C2':1,'C3':1,'C4':1,'C5':1,'E2':1,'UX':1,'TC':1};   // lesson wording follows the lesson ticks; the rest follows the AI and speech ticks
 function andList(a){return a.length<2?a.join(''):a.slice(0,-1).join(', ')+' and '+a[a.length-1];}
@@ -496,14 +525,32 @@ function lessonText(h,nl){var st=subjText();
  .replace(/about 600 approved lines/g,'about '+(nl*30).toLocaleString('en-AU')+' approved lines');}
 function words(p){var f=fields(),nl=f.hrs;var Ts=p.tprec?3:(p.twoway||p.ownspeech||p.review||p.expert)?2:(p.cur||p.mode)?1:0,
  Tc=p.twoway?2:(p.cur||p.mode)?1:0,Tn=p.ownspeech?2:(p.cur||p.mode)?1:0;function T(k){return k==='C1'?Tn:CONTENT[k]?Tc:Ts;}   // C1's narration follows the language: ElevenLabs for English only, Kumi's own voice once Tok Pisin is ticked
- [].forEach.call(document.querySelectorAll('tr[data-code]'),function(tr){var k=tr.dataset.code,v=D.labels[k];if(v)tr.cells[1].innerHTML=langText(lessonText(pick(v,T(k)),nl),p);});
+ [].forEach.call(document.querySelectorAll('tr[data-code]'),function(tr){var k=tr.dataset.code;if(D.ulab[k])tr.cells[1].innerHTML=langText(lessonText(ulabel(k,T(k)),nl),p);});
  [].forEach.call(document.querySelectorAll('tr[data-role]'),function(tr){var k=tr.dataset.role,v=D.resps[k];if(v)tr.cells[1].innerHTML=lessonText(pick(v,T(k)),nl);});
  [].forEach.call(document.querySelectorAll('.nl'),function(e){e.textContent=nl;});
  [].forEach.call(document.querySelectorAll('.main .card'),function(card){var r=card.querySelector('tr[data-code]'),v=r&&D.titles[r.dataset.code];if(v)card.querySelector('.card-h .t').innerHTML=pick(v,T(r.dataset.code));});
  document.getElementById('team-p').innerHTML=pick(D.teamp,Ts);
  var a3=document.querySelector('tr[data-code="A3"] td:nth-child(2) b');   // the A3 title says what is actually being built
  a3.textContent=p.both_net?'Online and offline modes, with data synchronisation':p.offline?'Offline mode: a local database on each computer':p.online?'Online mode: answers sent straight to the cloud':'Online and offline modes, with data synchronisation';}
-function render(){var f=fields(),p=preds(S),B=build(S,f),R=running(S,f),role={},roleAll={};words(p);
+var CHG=[],CI=-1,jumpNext=false;
+function snap(){return [].map.call(document.querySelectorAll('.main tr'),function(r){return {off:r.classList.contains('xoff'),t:r.textContent,
+ li:[].map.call(r.querySelectorAll('li'),function(l){return (l.classList.contains('xoff')||l.classList.contains('xna')?'1':'0')+l.textContent;})};});}
+function markChanges(before){var rows=document.querySelectorAll('.main tr');CHG=[];CI=-1;
+ [].forEach.call(document.querySelectorAll('.chg,.chg-on,.chg-off'),function(e){e.classList.remove('chg','chg-on','chg-off');});
+ [].forEach.call(rows,function(r,i){var b=before[i];if(!b||b.t===r.textContent&&b.off===r.classList.contains('xoff'))return;
+  var off=r.classList.contains('xoff');r.classList.add('chg',b.off&&!off?'chg-on':!b.off&&off?'chg-off':'chg');
+  var lis=r.querySelectorAll('li'),any=false;[].forEach.call(lis,function(l,j){var was=b.li[j],now=(l.classList.contains('xoff')||l.classList.contains('xna')?'1':'0')+l.textContent;
+   if(was===now)return;any=true;l.classList.add(was&&was[0]==='1'&&now[0]==='0'?'chg-on':was&&was[0]==='0'&&now[0]==='1'?'chg-off':'chg');CHG.push(l);});
+  if(!any)CHG.push(r);});
+ var n=document.getElementById('chg-n');n.textContent=CHG.length?CHG.length+(CHG.length===1?' change':' changes')+' from your last tick':'No changes from your last tick';
+ document.getElementById('chg-nav').classList.toggle('has',CHG.length>0);
+ if(jumpNext&&CHG.length&&document.getElementById('chg-auto').checked)go(0);jumpNext=false;}
+function go(i){if(!CHG.length)return;CI=(i+CHG.length)%CHG.length;var e=CHG[CI];
+ e.scrollIntoView({block:'center',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+ [].forEach.call(document.querySelectorAll('.chg-flash'),function(x){x.classList.remove('chg-flash');});e.classList.add('chg-flash');clearTimeout(go.t);go.t=setTimeout(function(){e.classList.remove('chg-flash');},1600);
+ document.getElementById('chg-n').textContent=(CI+1)+' of '+CHG.length+(CHG.length===1?' change':' changes');}
+function render(){var before=snap();render0();markChanges(before);}
+function render0(){var f=fields(),p=preds(S),B=build(S,f),R=running(S,f),role={},roleAll={};words(p);
  // task rows and stage cards
  [].forEach.call(document.querySelectorAll('.main .card'),function(card){var rows=card.querySelectorAll('tr[data-code]'),cs=0,cw=0,fs=0,fw=0,any=false;
   [].forEach.call(rows,function(tr){var t=D.tasks[tr.dataset.code];if(!t)return;any=true;
@@ -559,8 +606,11 @@ function render(){var f=fields(),p=preds(S),B=build(S,f),R=running(S,f),role={},
  document.getElementById('total').textContent=fmt(B.total);document.getElementById('tabtotal').textContent=fmt(B.total);
  document.getElementById('run-total').textContent=fmt(R.total);document.getElementById('run-stu').textContent=f.n;
  if(window.cmtReapply)window.cmtReapply();   // keep comment highlights after the text changes
- document.getElementById('banner').innerHTML=B.total?'<b>Struck-through lines are not in this build.</b> Lines marked <span class="oos">Not in our scope</span> are on-ground pilot work, run by the partner.'
+ document.getElementById('banner').innerHTML=B.total?'<b>Struck-through lines are not in this build.</b> Lines marked <span class="oos">Not in our scope</span> are on-ground pilot work, run by the partner.<br>After each tick: <span class="chg-key" style="background:#e3f6e6"></span>now in the build <span class="chg-key" style="background:#fde8e8"></span>now out <span class="chg-key" style="background:#fff6cc"></span>changed. Use ▲ ▼ at the top right to step through them.'
   :'<b>Nothing selected yet.</b> Tick the steps on the left to build the quote. Every line below stays struck through until you add it.';}
+document.querySelector('.rail').addEventListener('change',function(e){if(e.target.type==='checkbox')jumpNext=true;},true);   // a tick jumps to what it changed
+document.getElementById('chg-prev').addEventListener('click',function(){go(CI<0?CHG.length-1:CI-1);});
+document.getElementById('chg-next').addEventListener('click',function(){go(CI+1);});
 [].forEach.call(document.querySelectorAll('.rail input[data-id]'),function(b){b.addEventListener('change',function(){
  var id=b.dataset.id;S=b.checked?withTick(id):withUntick(id);
  if(S.lessons&&!fields().subj.length)D.subjects.forEach(function(x,i){document.querySelector('input[data-subj="'+x[0]+'"]').checked=i<2;});   // back to numeracy and literacy
@@ -591,7 +641,7 @@ table{width:100%;border-collapse:collapse;margin:6px 0;font-size:13px}th,td{bord
 th{background:#f2f2f2;font-size:11px;text-transform:uppercase;letter-spacing:.04em}.n,th.n{text-align:right;white-space:nowrap}tr.tot td,tr.g td{font-weight:700;background:#f7f7f7}
 td.code{font-weight:700;white-space:nowrap}ul.sub,ul.plain{margin:4px 0 0;padding-left:18px}ul.sub li{margin:1px 0}.src,.why,.h2sub,.note{font-size:12px;color:#555}.why{display:block}
 .total-box table td:last-child{text-align:right;font-weight:700}p.h2sub{margin:4px 0 8px}
-.xoff,tr.xoff td,.xoff td,li.xoff{color:#9a9a9a;text-decoration:line-through}tr.xoff td *{color:#9a9a9a}
+.xoff,tr.xoff td,.xoff td,li.xoff,li.xna{color:#9a9a9a;text-decoration:line-through}tr.xoff td *{color:#9a9a9a}
 .cut,tr.cut td{color:#9a9a9a;text-decoration:line-through}
 .oos{display:inline-block;text-decoration:none;font-size:10px;font-weight:700;color:#8a1c1c;background:#fde3e3;border-radius:2px;padding:1px 5px;margin-left:6px;vertical-align:middle}
 .banner{border:2px solid #111;background:#fffbe6;padding:10px 12px;margin:10px 0 0;font-size:13px}
@@ -599,6 +649,14 @@ td.code{font-weight:700;white-space:nowrap}ul.sub,ul.plain{margin:4px 0 0;paddin
 .mode{font-size:10px;font-weight:700;padding:1px 5px;border-radius:2px;white-space:nowrap}.mode.on{background:#b9d8ff;color:#0b2a55}.mode.off{background:#ffd9b3;color:#5a2d00}
 ol.how{padding-left:20px;margin:6px 0}ol.how li{margin:8px 0}ol.how .sub{display:block;margin:4px 0 0;padding-left:8px;border-left:2px solid #ccc;color:#333}
 .fields{display:flex;gap:16px;flex-wrap:wrap;margin:6px 0}.fields label{font-weight:700;font-size:13px}.fields input{width:90px;margin-left:6px;font:inherit;padding:3px 6px}
+/* changes navigator */
+#chg-nav{position:fixed;top:10px;right:16px;z-index:8;display:flex;align-items:center;gap:6px;background:#111;color:#fff;border-radius:999px;padding:6px 8px 6px 14px;font:600 12px -apple-system,Segoe UI,Arial,sans-serif;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+#chg-nav button{border:0;background:#333;color:#fff;border-radius:50%;width:26px;height:26px;cursor:pointer;font-size:12px}#chg-nav button:hover{background:#555}
+#chg-nav:not(.has) button{opacity:.4;pointer-events:none}#chg-nav label{display:flex;align-items:center;gap:4px;font-weight:400;color:#ccc;margin-left:4px;cursor:pointer}
+tr.chg td,li.chg{background:#fff6cc}tr.chg-on td,li.chg-on{background:#e3f6e6}tr.chg-off td,li.chg-off{background:#fde8e8}
+.chg-flash{outline:3px solid #f0b400;outline-offset:2px}
+.chg-key{display:inline-block;width:10px;height:10px;border-radius:2px;margin:0 3px 0 8px;vertical-align:-1px}
+@media (max-width:900px){#chg-nav{top:auto;bottom:70px;right:8px}}
 /* rail */
 .rail{position:fixed;top:0;left:0;bottom:0;width:var(--rw,300px);background:#fff;border-right:1px solid #999;display:flex;flex-direction:column;z-index:5;transition:transform .2s}
 .rail .scroll{flex:1;overflow:auto;padding:14px 14px 10px}
@@ -635,6 +693,7 @@ page = f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name
 <h1>Kumi · Grade 3 pilot · quote builder</h1>
 <p class="h2sub">Sing Singh AI builds the platform. AUD, excluding GST. Task codes (1.1, A1, B5 …) match the full budget.</p>
 <div class="banner" id="banner"></div>
+<div id="chg-nav" data-cmt-ui><span id="chg-n">Tick a box to see what changes</span><button type="button" id="chg-prev" title="Previous change">▲</button><button type="button" id="chg-next" title="Next change">▼</button><label title="Jump to the first change after each tick"><input type="checkbox" id="chg-auto" checked> Jump on tick</label></div>
 {HOW}
 {body}
 {OPS_HTML}
