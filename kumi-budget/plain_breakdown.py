@@ -394,6 +394,7 @@ function adds(id,f){var A=withTick(id),gp=D.group[id],swap=false;
  if(swap)return id==='hwlease'?running(A,f).lease-running(S,f).lease:build(A,f).total-build(S,f).total;   // switching: the change in the total
  var A0=Object.assign({},A);A0[id]=false;                                                                   // adding: this step's own cost
  return id==='hwlease'?running(A,f).lease-running(A0,f).lease:build(A,f).total-build(A0,f).total;}
+var FD='Project foundation';
 var GROUPS=[['1.','Planning & design'],['A','App & backend'],['B','Speech'],['C','Lessons'],['D','AI'],['E','Dashboard & tests'],['G','Testing'],['P','Project management']];
 function ttl(c){var b=document.querySelector('tr[data-code="'+c+'"] td:nth-child(2) b');return b?b.textContent:D.ttl[c];}   // the task's title as the page currently words it
 function grp(c){for(var i=0;i<GROUPS.length;i++)if(c.indexOf(GROUPS[i][0])===0)return GROUPS[i][1];return 'Other';}
@@ -401,13 +402,16 @@ function delta(id,f){var A=withTick(id),gp=D.group[id],swap=false;if(gp)for(var 
  var B0=swap?S:Object.assign({},A);if(!swap)B0[id]=false;var pa=preds(A),pb=preds(B0),na=nlOf(A,f),nb=nlOf(B0,f),fa=fac(pa,na),fb=fac(pb,nb),G={},order=[],tot=0;
  function add(g,label,v){if(!G[g]){G[g]={t:0,rows:[]};order.push(g);}G[g].t+=v;G[g].rows.push([label,v]);tot+=v;}
  for(var c in D.tasks)D.tasks[c].parts.forEach(function(pt){var v=(pa[pt.c]?pc(pt,na,fa):0)-(pb[pt.c]?pc(pt,nb,fb):0);
-  if(Math.abs(v)>0.5)add(grp(c),c+' '+(D.partLabel[c+'|'+pt.c]||ttl(c)),v*1.25);});
+  if(Math.abs(v)>0.5)add(pt.s?FD:grp(c),c+' '+(D.partLabel[c+'|'+pt.c]||ttl(c)),v*1.25);});   // the foundation's growth is one line
  D.tps.forEach(function(r){var v=0;r.parts.forEach(function(pt){v+=(pa[pt.c]?amt(pt,f):0)-(pb[pt.c]?amt(pt,f):0);});if(Math.abs(v)>0.5)add('Licences & equipment',r.short,v*1.15);});
+ order=order.filter(function(g){return g!==FD;}).concat(G[FD]?[FD]:[]);   // the foundation's growth comes last
  return {G:G,order:order,tot:tot};}
 function detail(id,f){var h=detail0(id,f);return id==='lessons'?subjHtml(f)+h:h;}
 function detail0(id,f){if(!S[id]&&id!=='hwlease'){var X=delta(id,f);if(!X.order.length)return '<div class="dnote">No cost of its own</div>';
+  function m(v){return (v<0?'−':'')+fmt(Math.abs(v));}
   return X.order.map(function(g){var rows={};X.G[g].rows.forEach(function(r){rows[r[0]]=(rows[r[0]]||0)+r[1];});
-   return '<div class="drow g"><span>'+g+'</span><b>'+(X.G[g].t<0?'−':'')+fmt(Math.abs(X.G[g].t))+'</b></div>'+Object.keys(rows).map(function(k){return '<div class="drow"><span>'+k+'</span><span>'+(rows[k]<0?'−':'')+fmt(Math.abs(rows[k]))+'</span></div>';}).join('');}).join('')
+   var head='<span>'+g+'</span><b>'+m(X.G[g].t)+'</b>',list=Object.keys(rows).map(function(k){return '<div class="drow"><span>'+k+'</span><span>'+m(rows[k])+'</span></div>';}).join('');
+   return g===FD?'<details class="fd"><summary class="drow g">'+head+'</summary>'+list+'</details>':'<div class="drow g">'+head+'</div>'+list;}).join('')
    +'<div class="drow tt"><span>Ticking it adds</span><b>'+(X.tot<0?'−':'+')+fmt(Math.abs(X.tot))+'</b></div><div class="dnote">Includes fee and contingency.</div>';}
  var T=S,p=preds(T),nl=nlOf(T,f),fa=fac(p,nl),G={},order=[],tot=0;
  function add(g,label,v){if(!G[g]){G[g]={t:0,rows:[]};order.push(g);}G[g].t+=v;G[g].rows.push([label,v]);tot+=v;}
@@ -578,6 +582,7 @@ ol.how{padding-left:20px;margin:6px 0}ol.how li{margin:8px 0}ol.how .sub{display
 .rail .det{margin:2px 0 6px 25px;padding:6px 8px;background:#f6f6f6;border-left:2px solid #111;font-size:11px}
 .rail .drow{display:flex;justify-content:space-between;gap:8px;padding:1px 0;color:#333}.rail .drow span:first-child{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rail .drow>:last-child{flex:none}
 .rail .drow.g{font-weight:700;color:#111;margin-top:4px}.rail .drow.g:first-child{margin-top:0}.rail .drow.tt{border-top:1px solid #bbb;margin-top:4px;padding-top:3px;font-weight:700;color:#111}
+.rail details.fd summary{list-style:none;cursor:pointer;font-size:11px}.rail details.fd summary::-webkit-details-marker{display:none}.rail details.fd summary span::before{content:'▸ ';color:#777}.rail details.fd[open] summary span::before{content:'▾ '}.rail details.fd .drow:not(.g){padding-left:12px}
 .rail .dnote{color:#777;font-style:italic;margin-top:3px}.rail .opt .pc{font-size:12px;color:#777;white-space:nowrap;font-variant-numeric:tabular-nums}.rail .opt.on .pc{color:#111;font-weight:700}
 .rail .req{font-size:10px;color:#777;font-weight:400}
 .rail .opt .nm input{margin:0 5px 0 0}.rail label.nm{display:flex;align-items:center;cursor:pointer}
