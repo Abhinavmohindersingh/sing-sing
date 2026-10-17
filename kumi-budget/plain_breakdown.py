@@ -21,8 +21,9 @@ TRAIN_BUY = 11700  # A$: workstation with an RTX 5090 32 GB to train in-house in
 RETRAIN_GPU = 30*GPU_HR   # 30 GPU-hours to retrain on pilot data
 RETRAIN_LABEL = round(10000*(3000*2 + 300*10)/1e6*0.5*1.55)   # 10,000 pilot records labelled by Claude Sonnet 5.5 in batches
 OWN_DATA = round(30000*((4000*2 + 1500*10) + (3000*2 + 300*10))/1e6*0.5*1.55)   # 30,000 examples written, then each checked, by Claude Sonnet 5.5 in batches (half price) ≈ US$480 at A$1.55
-SRC_PC = [("RTX 4060 Ti 16 GB prices in Australia (GPUPrix)", "https://gpuprix.com/australia/gpus/geforce-rtx-4060-ti-16gb"),
-          ("RTX 4060 Ti prices in Australia (Lowpi)", "https://lowpi.com/australia/rtx-4060-ti-price"),
+SRC_PC = [("NVIDIA GeForce RTX 4060 Ti (official)", "https://www.nvidia.com/en-au/geforce/graphics-cards/40-series/rtx-4060-4060ti/"),
+          ("NVIDIA GeForce RTX 5090 (official)", "https://www.nvidia.com/en-au/geforce/graphics-cards/50-series/rtx-5090/"),
+          ("Runpod GPU pricing (official)", "https://www.runpod.io/pricing"),
           ("HP Australia business leasing terms", "https://www.hp.com/au-en/shop/hp-business-leasing"),
 ]
 
@@ -97,8 +98,8 @@ for item, amt, basis, src, t in g['TP_IN']:
     else:
         parts = [dict(c=c, amt=amt)]
     TPS.append(dict(id=f"tp{len(TPS)}", key=key, item=item, parts=parts, url=g['SRC'][src][1] if src in g['SRC'] else None))
-U_H100 = "https://intuitionlabs.ai/articles/h100-rental-prices-cloud-comparison"
-U_5090 = "https://ple.com.au/products/673126/ple-apex-rtx-5090-custom-built-gaming-pc"
+U_H100 = "https://www.runpod.io/pricing"   # official provider pricing page
+U_5090 = "https://www.nvidia.com/en-au/geforce/graphics-cards/50-series/rtx-5090/"   # official NVIDIA page
 U_CLAUDE = "https://platform.claude.com/docs/en/about-claude/pricing"
 OWN_TP = [dict(id='tpgpu', item='GPU rental to tune our own AI model: about 100 GPU-hours', basis=f'~A${GPU_HR}/hr: H100 on-demand. Several tuning runs, evaluation and compression', url=U_H100, parts=[dict(c='trrent', amt=OWN_GPU)]),
           dict(id='tptrbuy', item='Training workstation, bought: RTX 5090 32 GB, to tune our own AI model in-house', basis=f'About A${TRAIN_BUY:,} (PLE Apex RTX 5090 PC, A$11,639). Kept after the build for retraining', url=U_5090, parts=[dict(c='trbuy', amt=TRAIN_BUY)]),
@@ -630,5 +631,11 @@ page = f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name
 {OPS_HTML}
 </div>{JS}</body></html>"""
 page = page.replace('Pijin', 'Tok Pisin').replace('Kingi', 'Kumi')
+OFFICIAL = {   # the quote builder links to official product and pricing pages, not price trackers or blogs
+ 'https://intuitionlabs.ai/articles/h100-rental-prices-cloud-comparison': 'https://www.runpod.io/pricing',
+ 'https://pricepertoken.com/pricing-page/model/anthropic-claude-haiku-4.5': 'https://platform.claude.com/docs/en/about-claude/pricing',
+ 'https://smallest.ai/blog/elevenlabs-pricing-plans-cost-what-you-get-in-2026': 'https://elevenlabs.io/pricing',
+ 'https://sslinsights.com/digicert-vs-sectigo-code-signing/': 'https://www.sectigo.com/ssl-certificates-tls/code-signing'}
+for old, new in OFFICIAL.items(): page = page.replace(old, new)
 open(OUT, 'w', encoding='utf8').write(page)
 print(OUT, len(page), '| Core, 20 lessons', round(build_total(OLD_CORE)), '| everything, 30 lessons', round(build_total(ALL, nl=30)), '| per hour of content', round(build_total(dict(OLD_CORE), nl=21) - build_total(OLD_CORE)))
