@@ -16,6 +16,9 @@ os.environ.update(PLATFORM='1',   # platform-only wording; project management 3 
 PC_BUY = 3000    # A$ each: desktop with a 16 GB graphics card (RTX 4060 Ti 16 GB class; the card alone is about A$730–2,250 in Australia, Oct 2026), plus a network switch
 PC_LEASE = 110   # A$ a month each, 36-month lease: estimate (buy price over 36 months, plus finance and support)
 OWN_GPU = 100*5  # 100 GPU-hours at ~A$5/hour: several tuning runs, evaluation on the validation and test sets, and 4-bit compression (same rate as the speech training)
+TRAIN_BUY = 7500  # A$: workstation with an RTX 5090 32 GB to train our own model in-house instead of renting (provisional)
+RETRAIN_GPU = 30*5   # 30 GPU-hours at ~A$5/hour to retrain on pilot data
+RETRAIN_LABEL = round(10000*(3000*2 + 300*10)/1e6*0.5*1.55)   # 10,000 pilot records labelled by Claude Sonnet 5.5 in batches
 OWN_DATA = round(30000*((4000*2 + 1500*10) + (3000*2 + 300*10))/1e6*0.5*1.55)   # 30,000 examples written, then each checked, by Claude Sonnet 5.5 in batches (half price) ≈ US$480 at A$1.55
 SRC_PC = [("RTX 4060 Ti 16 GB prices in Australia (GPUPrix)", "https://gpuprix.com/de/australia/gpus/geforce-rtx-4060-ti-16gb"),
           ("RTX 4060 Ti cards and builds (PLE Computers)", "https://ple.com.au/RTX40Series/RTX4060Ti"),
@@ -42,7 +45,7 @@ COND = {
  'B1': 'twoway', 'B2': {0: 'lessons', 3: 'tprec'}, 'B3': {2: 'ownspeech', 3: 'tprec'}, 'B4': 'tprec', 'B5': 'tprec',
  'B6': {2: 'ownspeech', 3: 'tprec'}, 'B7': 'speechrun', 'B8': 'twoway', 'B9': {2: 'speechrun', 3: 'tprec'}, 'B10': 'mode',
  'C1': 'PER', 'C2': ('PER', 'content_own'), 'C3': 'PER', 'C5': 'lessons', 'C6': ('PER', 'content_own'),
- 'D1': 'claude', 'D2': 'cur', 'D3': 'cur', 'D4': 'review', 'D5': 'ownai',
+ 'D1': 'claude', 'D2': 'cur', 'D3': 'cur', 'D4': 'review', 'D5': 'ownai', 'D6': 'retrain',
  'E1': 'teacher', 'E2': 'tests',
  'G1': {0: 'found', 2: 'twoway'}, 'G2': {0: 'found', 2: 'twoway'}, 'G3': {0: 'found', 2: 'twoway'}, 'G4': {0: 'found', 2: 'twoway'},
  'G5': 'found', 'G6': 'cur', 'G7': 'expert', 'G8': 'found', 'G9': 'found', 'P1': 'found'}
@@ -93,18 +96,21 @@ for item, amt, basis, src, t in g['TP_IN']:
     else:
         parts = [dict(c=c, amt=amt)]
     TPS.append(dict(id=f"tp{len(TPS)}", key=key, item=item, parts=parts))
-OWN_TP = [dict(id='tpgpu', item='GPU rental to tune our own AI model: about 100 GPU-hours', basis='~A$5/hr: H100 on-demand. Several tuning runs, evaluation and compression', parts=[dict(c='ownai', amt=OWN_GPU)]),
+OWN_TP = [dict(id='tpgpu', item='GPU rental to tune our own AI model: about 100 GPU-hours', basis='~A$5/hr: H100 on-demand. Several tuning runs, evaluation and compression', parts=[dict(c='trrent', amt=OWN_GPU)]),
+          dict(id='tptrbuy', item='Training workstation, bought: RTX 5090 32 GB, to tune our own AI model in-house', basis=f'Provisional, about A${TRAIN_BUY:,}. Kept after the build for retraining', parts=[dict(c='trbuy', amt=TRAIN_BUY)]),
+          dict(id='tprtgpu', item='GPU rental to retrain on pilot data: about 30 GPU-hours', basis='~A$5/hr: H100 on-demand', parts=[dict(c='retrain_rent', amt=RETRAIN_GPU)]),
+          dict(id='tprtlab', item='Labelling about 10,000 pilot records with Claude', basis='Claude Sonnet 5.5 in batches', parts=[dict(c='retrain', amt=RETRAIN_LABEL)]),
           dict(id='tpdata', item='Training data for our own AI model: about 30,000 example lessons-and-help conversations written and checked with Claude', basis='Claude Sonnet 5.5 in batches, about 260M tokens', parts=[dict(c='ownai', amt=OWN_DATA)]),
           dict(id='tppc', item='GPU server to run our own AI model, bought: one per school, on the lab network', basis='', parts=[dict(c='buy', amt='pcbuy')])]
 
 # check: with everything on, the parts add back up to the generator's own totals
 ALL = dict(found=1, desktop=1, online=1, offline=1, login=1, teacher=1, lessons=1, content_own=1, tests=1, claude=1, ownai=0,
-           hwbuy=0, hwlease=0, oneway=0, twoway=1, eleven=1, ownspeech=1, review=1, expert=1)
+           hwbuy=0, hwlease=0, trrent=0, trbuy=0, oneway=0, twoway=1, eleven=1, ownspeech=1, review=1, expert=1, retrain=0)
 def preds(S):
     p = {k: bool(v) for k, v in S.items()}
     p.update(both_net=p['online'] and p['offline'], online_only=p['online'] and not p['offline'], cur=p['claude'] or p['ownai'], mode=p['oneway'] or p['twoway'], tprec=p['ownspeech'] and p['twoway'],
              speechrun=p['twoway'] or p['ownspeech'], eleven_mode=p['eleven'] and (p['oneway'] or p['twoway']),
-             eleven_own=p['eleven'] and p['ownspeech'], buy=p['ownai'] and p['hwbuy'], lease=p['ownai'] and p['hwlease'])
+             eleven_own=p['eleven'] and p['ownspeech'], buy=p['ownai'] and p['hwbuy'], lease=p['ownai'] and p['hwlease'], retrain_rent=p['retrain'] and p['trrent'])
     return p
 def pcost(pt, nl): return pt['per']*nl*5*RATE[pt['r']] if 'per' in pt else pt['cost']
 def build_total(S, pcs=1, nl=20):
@@ -318,17 +324,17 @@ STEPS = [  # (number, title, hint, rows); a row is (id, label, badge HTML) or ('
  ('3', 'Lessons', 'Tick Subjects, then the subjects and their hours. Content is provided to us unless ticked.', [('lessons', 'Subjects', ''), ('=', 'subjects'),
                            ('content_own', 'We prepare the content', '', 'sub'), ('tests', 'Benchmark tests', '')]),
  ('4', 'AI content curation', 'Pick one', [('claude', 'Claude AI', '<span class="mode on">Online</span>'), ('ownai', 'Own AI model', '<span class="mode off">Offline</span>'),
-                                          ('hwbuy', 'Buy GPU server', '', 'sub'), ('hwlease', 'Lease GPU server', '', 'sub')]),
+                                          ('hwbuy', 'Buy GPU server', '', 'sub'), ('hwlease', 'Lease GPU server', '', 'sub'), ('trrent', 'Rent GPU to train (cloud)', '', 'sub'), ('trbuy', 'Buy GPU to train', '', 'sub')]),
  ('5', 'AI speech', '', [('-', 'Mode · pick one'), ('oneway', 'One-way', ''), ('twoway', 'Two-way', ''),
                          ('-', 'Voice'), ('eleven', 'ElevenLabs', L('English')), ('ownspeech', 'Own speech model', L('Tok Pisin'))]),
- ('6', 'Extras', '', [('review', 'Weekly AI check', ''), ('expert', 'Expert teacher check', '')])]
+ ('6', 'Extras', '', [('review', 'Weekly AI check', ''), ('expert', 'Expert teacher check', ''), ('retrain', 'Retrain on pilot data', '<span class="mode off">Own AI</span>')])]
 REQ = {'found': [], 'desktop': [['found']], 'online': [['desktop']], 'offline': [['desktop']], 'login': [['desktop']], 'teacher': [['online']],
        'lessons': [['desktop']], 'content_own': [['lessons']], 'tests': [['desktop']], 'expert': [['lessons']],
-       'claude': [['online']], 'ownai': [['desktop'], ['hwbuy', 'hwlease']], 'hwbuy': [['ownai']], 'hwlease': [['ownai']],
+       'claude': [['online']], 'ownai': [['desktop'], ['hwbuy', 'hwlease'], ['trrent', 'trbuy']], 'hwbuy': [['ownai']], 'hwlease': [['ownai']],
        'oneway': [['desktop'], ['eleven', 'ownspeech']], 'twoway': [['desktop'], ['eleven', 'ownspeech'], ['claude', 'ownai']],
-       'eleven': [['oneway', 'twoway']], 'ownspeech': [['oneway', 'twoway']], 'review': [['claude', 'ownai']]}
+       'eleven': [['oneway', 'twoway']], 'ownspeech': [['oneway', 'twoway']], 'review': [['claude', 'ownai']], 'trrent': [['ownai']], 'trbuy': [['ownai']], 'retrain': [['ownai']]}
 LOCK = {'claude': {}, 'teacher': {}, 'eleven': {}}   # need the internet, so locked until Online is ticked
-GROUP = {'claude': 'cur', 'ownai': 'cur', 'hwbuy': 'hw', 'hwlease': 'hw', 'oneway': 'mode', 'twoway': 'mode'}
+GROUP = {'claude': 'cur', 'ownai': 'cur', 'hwbuy': 'hw', 'hwlease': 'hw', 'trrent': 'tr', 'trbuy': 'tr', 'oneway': 'mode', 'twoway': 'mode'}
 assert set(REQ) == set(ALL)
 def rail_html():
     out = ['<button class="reopen" id="reopen" type="button" title="Show the build panel">▶ <span id="tabtotal"></span></button>',
@@ -382,7 +388,7 @@ function fac(p,nl){return D.scale.floor+D.scale.k*feat(p,nl)/D.scale.pool;}   //
 function ownLab(T,nl){var p=preds(T),o={},F=0;for(var c in D.tasks)D.tasks[c].parts.forEach(function(pt){if(p[pt.c]&&pt.c!=='found'&&!pt.per){
   var w=OWN[pt.c]?OWN[pt.c](T):pt.c,v=pc(pt,nl,1);o[w]=(o[w]||0)+v;F+=v;}});return {by:o,F:F};}   // each step's own build work, which its testing follows
 function preds(S){var p={};for(var k in S)p[k]=!!S[k];p.both_net=p.online&&p.offline;p.online_only=p.online&&!p.offline;p.cur=p.claude||p.ownai;p.mode=p.oneway||p.twoway;p.tprec=p.ownspeech&&p.twoway;
- p.speechrun=p.twoway||p.ownspeech;p.eleven_mode=p.eleven&&p.mode;p.eleven_own=p.eleven&&p.ownspeech;p.buy=p.ownai&&p.hwbuy;p.lease=p.ownai&&p.hwlease;return p;}
+ p.speechrun=p.twoway||p.ownspeech;p.eleven_mode=p.eleven&&p.mode;p.eleven_own=p.eleven&&p.ownspeech;p.buy=p.ownai&&p.hwbuy;p.lease=p.ownai&&p.hwlease;p.retrain_rent=p.retrain&&p.trrent;return p;}
 var ALLON=preds((function(){var a={};D.items.forEach(function(k){a[k]=true;});return a;})());
 function amt(pt,f){return pt.amt==='pcbuy'?f.pcs*D.pcBuy:pt.amt;}
 function build(S,f){var p=preds(S),lab=0,wks=0,tp=0,nl=nlOf(S,f),fa=fac(p,nl);
@@ -391,7 +397,7 @@ function build(S,f){var p=preds(S),lab=0,wks=0,tp=0,nl=nlOf(S,f),fa=fac(p,nl);
  var direct=lab+tp,mg=0.10*lab,ct=0.15*direct;return {lab:lab,wks:wks,tp:tp,mg:mg,ct:ct,total:direct+mg+ct};}
 var OWN={both_net:function(){return 'offline';},online_only:function(){return 'online';},cur:function(S){return S.claude?'claude':'ownai';},mode:function(S){return S.twoway?'twoway':'oneway';},tprec:function(){return 'ownspeech';},
  speechrun:function(S){return S.twoway?'twoway':'ownspeech';},eleven_mode:function(){return 'eleven';},eleven_own:function(){return 'ownspeech';},
- buy:function(){return 'hwbuy';},lease:function(){return 'hwlease';}};
+ buy:function(){return 'hwbuy';},lease:function(){return 'hwlease';},retrain_rent:function(){return 'retrain';}};
 function shares(S,f){var p=preds(S),sh={},nl=nlOf(S,f),fa=fac(p,nl),L=ownLab(S,nl);function add(c,v){
   var o=OWN[c]?OWN[c](S):c;sh[o]=(sh[o]||0)+v;}
  for(var c in D.tasks)D.tasks[c].parts.forEach(function(pt){if(!p[pt.c])return;var v=pc(pt,nl,fa)*1.25;
@@ -535,7 +541,7 @@ function render(){var f=fields(),p=preds(S),B=build(S,f),R=running(S,f),role={},
  var hr=hourRate();D.subjects.forEach(function(s){var on=document.querySelector('input[data-subj="'+s[0]+'"]').checked,h=+document.querySelector('input[data-hrs="'+s[0]+'"]').value||10;
   document.getElementById('subj-'+s[0]).classList.toggle('on',on);document.getElementById('pc-s-'+s[0]).textContent=(on?'':'+')+fmt(h*hr);});
  for(var num in D.steps)document.getElementById('done-'+num).textContent=D.steps[num].some(function(id){return S[id];})?'✓':'';
- ['hwbuy','hwlease'].forEach(function(k){document.getElementById('row-'+k).style.display=S.ownai?'':'none';if(!S.ownai)document.getElementById('det-'+k).hidden=true;});
+ ['hwbuy','hwlease','trrent','trbuy'].forEach(function(k){document.getElementById('row-'+k).style.display=S.ownai?'':'none';if(!S.ownai)document.getElementById('det-'+k).hidden=true;});
  document.getElementById('total').textContent=fmt(B.total);document.getElementById('tabtotal').textContent=fmt(B.total);
  document.getElementById('run-total').textContent=fmt(R.total);document.getElementById('run-stu').textContent=f.n;
  document.getElementById('banner').innerHTML=B.total?'<b>Struck-through lines are not in this build.</b> Lines marked <span class="oos">Not in our scope</span> are on-ground pilot work, run by the partner.'

@@ -29,6 +29,8 @@ python3 build_tiers.py       # the live budget page -> ../public/kumi-pilot-budg
 - **Project foundation is planning only:** setup, requirements, architecture, safeguarding and project management, fixed. The cloud backend (A5) and security, backup and monitoring (A6) come with Online. Release testing (`POOL`: G1–G5, G8, G9) is priced with each feature as about 28% of its build work (lesson hours excluded), shown as one ▸ Release testing line in each step's ▾; G6 AI safety testing stays with the AI. Set so Core still = Tier 1.
 - **Claude during the build** is priced from the workload (prompt tuning, ~18,000 test lessons, ~15,000 safety tests graded by Sonnet 5.5 in batches, load tests, help bank, +50% re-runs): about A$2,500, set in `gen_v2.py` under `PLATFORM` only, so the live page is untouched.
 - **Our own AI model:** 30,000 training examples written and checked with Sonnet 5.5 (~A$745), 100 GPU-hours to tune (A$500), plus data prep in D5 (80/10/10 split, 500-example hand-checked test set: +1 wk AI engineer, +1 wk content developer).
+- **Training GPU:** rent (cloud H100, default) or buy (RTX 5090 32 GB workstation, about A$7,500, provisional), shown side by side under Own AI model.
+- **Retrain on pilot data** (Extras, D6, needs Own AI model): anonymised pilot records with consent, about 10,000 labelled with Claude, retrained and released only if it beats the held-out test set. 1.5 wk AI engineer + 0.5 wk content developer, 30 rented GPU-hours (none if the GPU is bought).
 - Totals (20 hours of content, content prepared by us): Core **$164,103**; everything at 30 hours **$285,472** (the live budget page's Tier 1 and Tier 3 are unchanged).
 
 ## Open items
