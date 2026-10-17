@@ -44,9 +44,11 @@ python3 build_tiers.py       # the live budget page -> ../public/kumi-pilot-budg
 - **Claude running cost** is priced per mode: one-way about 13,000 in / 1,050 out tokens a session (A$0.25 a child a month), two-way about 63,000 / 4,800 (A$1.03), both with 10% for Australian processing. Our own AI model's running cost is power, about A$13 a month per server.
 - **Technical numbers** section (end of the quote builder): base model (Qwen3.5-4B, Apache 2.0), tuning, card, capacity, tokens per child, speech models and licences, with sources. Omnilingual ASR (Apache 2.0) lists Tok Pisin; B5 now starts from it. MMS voices are non-commercial.
 
+- Checked: Anthropic's docs put Bedrock regional endpoints at +10% over global (our Australian allowance). PNG Power domestic Easipay is 78.68 toea/kWh after the 9-toea rise; K1 is our conservative allowance.
+
 ## Open items
 - The live page (`/kumi-pilot-budget`) is older than the generator: the Tier 1 "English voice only, Tok Pisin on screen" change is built but not published (it would make Tier 1 $239,420).
-- Verify that no commercial cloud voice offers Tok Pisin (Google, Microsoft, Amazon); the live budget page still says "no major provider supports Tok Pisin speech", and Meta's Omnilingual ASR (Apache 2.0) now covers Tok Pisin listening. Check and have a native speaker confirm the Tok Pisin keywords before an investor sees them.
+- Both pages now say: no commercial Tok Pisin voice found (Kumi's voice is our own); listening starts from Meta's Omnilingual ASR (Apache 2.0), which covers Tok Pisin. Still worth confirming Google, Microsoft and Amazon have no Tok Pisin voice. Have a native speaker confirm the Tok Pisin keywords before an investor sees them.
 - The GPU server needs a local lab network (no internet needed). The network is the partner's job, so no line for it in the quote.
 - GPU choice: professional RTX PRO 4000 Blackwell 24 GB (A$3,199 PLE to A$4,999 Mwave for the card, Oct 2026). The RTX PRO 6000 96 GB (A$20,000–28,000) and an H100 are overkill.
 - "Teacher support" was taken to mean the Grade 3 Teacher role (removed). The optional Expert teacher check stays.
