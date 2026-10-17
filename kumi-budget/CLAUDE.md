@@ -34,6 +34,7 @@ python3 build_tiers.py       # the live budget page -> ../public/kumi-pilot-budg
 ## Open items
 - The live page (`/kumi-pilot-budget`) is older than the generator: the Tier 1 "English voice only, Tok Pisin on screen" change is built but not published (it would make Tier 1 $239,420).
 - Check "no major provider supports Tok Pisin speech" and have a native speaker confirm the Tok Pisin keywords before an investor sees them.
-- The GPU server needs a working lab network; confirm the school has one (or add a switch and cabling).
+- The GPU server needs a local lab network (no internet needed). The network is the partner's job, so no line for it in the quote.
+- GPU size: the RTX 4060 Ti 16 GB suits one class (~20 at once); for ~100 at once use an RTX 5090 32 GB, or two smaller servers for a backup. An H100 is overkill. Not yet in the quote.
 - "Teacher support" was taken to mean the Grade 3 Teacher role (removed). The optional Expert teacher check stays.
 - Pricing context: PNG Government proposal is $550k for 15 schools (development about $225k, $259k with 15% contingency); Brian Bell Tier 1 is about $240k.
