@@ -13,15 +13,16 @@ os.environ.update(PLATFORM='1',   # platform-only wording; project management 3 
                   CUT=','.join(CUT_CODES + ['headsets', 'transport', 'allowance', 'criminal', 'travel', 'pilot_run', 'bridge']))
 
 # Hardware for our own AI model: one GPU server per school, on the lab network. Provisional: confirm with a live quote.
-PC_BUY = 3000    # A$ each: desktop with a 16 GB graphics card (RTX 4060 Ti 16 GB class; the card alone is about A$730–2,250 in Australia, Oct 2026), plus a network switch
+PC_BUY = 3300    # A$ each: desktop with a 16 GB graphics card (RTX 4060 Ti 16 GB; the card alone is about A$1,500–2,250 in Australia, Oct 2026), plus a network switch
 PC_LEASE = 110   # A$ a month each, 36-month lease: estimate (buy price over 36 months, plus finance and support)
-OWN_GPU = 100*5  # 100 GPU-hours at ~A$5/hour: several tuning runs, evaluation on the validation and test sets, and 4-bit compression (same rate as the speech training)
-TRAIN_BUY = 7500  # A$: workstation with an RTX 5090 32 GB to train our own model in-house instead of renting (provisional)
-RETRAIN_GPU = 30*5   # 30 GPU-hours at ~A$5/hour to retrain on pilot data
+GPU_HR = 6       # A$ an hour for a rented H100: on-demand list prices US$1.99–3.99 at specialist clouds, rising (Oct 2026)
+OWN_GPU = 100*GPU_HR  # 100 GPU-hours: several tuning runs, evaluation on the validation and test sets, and 4-bit compression
+TRAIN_BUY = 11700  # A$: workstation with an RTX 5090 32 GB to train in-house instead of renting (PLE Apex RTX 5090 listed at A$11,639; the card alone is about A$9,000, Oct 2026)
+RETRAIN_GPU = 30*GPU_HR   # 30 GPU-hours to retrain on pilot data
 RETRAIN_LABEL = round(10000*(3000*2 + 300*10)/1e6*0.5*1.55)   # 10,000 pilot records labelled by Claude Sonnet 5.5 in batches
 OWN_DATA = round(30000*((4000*2 + 1500*10) + (3000*2 + 300*10))/1e6*0.5*1.55)   # 30,000 examples written, then each checked, by Claude Sonnet 5.5 in batches (half price) ≈ US$480 at A$1.55
-SRC_PC = [("RTX 4060 Ti 16 GB prices in Australia (GPUPrix)", "https://gpuprix.com/de/australia/gpus/geforce-rtx-4060-ti-16gb"),
-          ("RTX 4060 Ti cards and builds (PLE Computers)", "https://ple.com.au/RTX40Series/RTX4060Ti"),
+SRC_PC = [("RTX 4060 Ti 16 GB prices in Australia (GPUPrix)", "https://gpuprix.com/australia/gpus/geforce-rtx-4060-ti-16gb"),
+          ("RTX 4060 Ti prices in Australia (Lowpi)", "https://lowpi.com/australia/rtx-4060-ti-price"),
           ("HP Australia business leasing terms", "https://www.hp.com/au-en/shop/hp-business-leasing"),
 ]
 
@@ -95,13 +96,16 @@ for item, amt, basis, src, t in g['TP_IN']:
         parts = [dict(c='eleven_mode', amt=99*FX), dict(c='eleven_own', amt=(330-99)*FX)]
     else:
         parts = [dict(c=c, amt=amt)]
-    TPS.append(dict(id=f"tp{len(TPS)}", key=key, item=item, parts=parts))
-OWN_TP = [dict(id='tpgpu', item='GPU rental to tune our own AI model: about 100 GPU-hours', basis='~A$5/hr: H100 on-demand. Several tuning runs, evaluation and compression', parts=[dict(c='trrent', amt=OWN_GPU)]),
-          dict(id='tptrbuy', item='Training workstation, bought: RTX 5090 32 GB, to tune our own AI model in-house', basis=f'Provisional, about A${TRAIN_BUY:,}. Kept after the build for retraining', parts=[dict(c='trbuy', amt=TRAIN_BUY)]),
-          dict(id='tprtgpu', item='GPU rental to retrain on pilot data: about 30 GPU-hours', basis='~A$5/hr: H100 on-demand', parts=[dict(c='retrain_rent', amt=RETRAIN_GPU)]),
-          dict(id='tprtlab', item='Labelling about 10,000 pilot records with Claude', basis='Claude Sonnet 5.5 in batches', parts=[dict(c='retrain', amt=RETRAIN_LABEL)]),
-          dict(id='tpdata', item='Training data for our own AI model: about 30,000 example lessons-and-help conversations written and checked with Claude', basis='Claude Sonnet 5.5 in batches, about 260M tokens', parts=[dict(c='ownai', amt=OWN_DATA)]),
-          dict(id='tppc', item='GPU server to run our own AI model, bought: one per school, on the lab network', basis='', parts=[dict(c='buy', amt='pcbuy')])]
+    TPS.append(dict(id=f"tp{len(TPS)}", key=key, item=item, parts=parts, url=g['SRC'][src][1] if src in g['SRC'] else None))
+U_H100 = "https://intuitionlabs.ai/articles/h100-rental-prices-cloud-comparison"
+U_5090 = "https://ple.com.au/products/673126/ple-apex-rtx-5090-custom-built-gaming-pc"
+U_CLAUDE = "https://platform.claude.com/docs/en/about-claude/pricing"
+OWN_TP = [dict(id='tpgpu', item='GPU rental to tune our own AI model: about 100 GPU-hours', basis=f'~A${GPU_HR}/hr: H100 on-demand. Several tuning runs, evaluation and compression', url=U_H100, parts=[dict(c='trrent', amt=OWN_GPU)]),
+          dict(id='tptrbuy', item='Training workstation, bought: RTX 5090 32 GB, to tune our own AI model in-house', basis=f'About A${TRAIN_BUY:,} (PLE Apex RTX 5090 PC, A$11,639). Kept after the build for retraining', url=U_5090, parts=[dict(c='trbuy', amt=TRAIN_BUY)]),
+          dict(id='tprtgpu', item='GPU rental to retrain on pilot data: about 30 GPU-hours', basis=f'~A${GPU_HR}/hr: H100 on-demand', url=U_H100, parts=[dict(c='retrain_rent', amt=RETRAIN_GPU)]),
+          dict(id='tprtlab', item='Labelling about 10,000 pilot records with Claude', basis='Claude Sonnet 5.5 in batches', url=U_CLAUDE, parts=[dict(c='retrain', amt=RETRAIN_LABEL)]),
+          dict(id='tpdata', item='Training data for our own AI model: about 30,000 example lessons-and-help conversations written and checked with Claude', basis='Claude Sonnet 5.5 in batches, about 260M tokens', url=U_CLAUDE, parts=[dict(c='ownai', amt=OWN_DATA)]),
+          dict(id='tppc', item='GPU server to run our own AI model, bought: one per school, on the lab network', basis='', url=SRC_PC[0][1], parts=[dict(c='buy', amt='pcbuy')])]
 
 # check: with everything on, the parts add back up to the generator's own totals
 ALL = dict(found=1, desktop=1, online=1, offline=1, login=1, teacher=1, lessons=1, content_own=1, tests=1, claude=1, ownai=0,
@@ -254,7 +258,7 @@ def tag_tp(m):
     return f"<tr data-tp='{rid}'><td>{cell}"
 lic = re.sub(r"<tr( class='cut')?><td>(.*?)(?=</td>)", tag_tp, lic)
 own_rows = ''.join(f"<tr data-tp='{r['id']}'><td>{r['item']}</td><td>{r['basis'] or ''}" +
-                   ("<span id='pc-basis'></span> [<a href='" + SRC_PC[0][1] + "'>source</a>]" if r['id'] == 'tppc' else '') +
+                   ("<span id='pc-basis'></span>" if r['id'] == 'tppc' else '') + (f" <span class='src'>[<a href='{r['url']}'>source</a>]</span>" if r.get('url') else '') +
                    f"</td><td class='n'></td></tr>" for r in OWN_TP)
 lic = re.sub(r"(<tr class='tot'><td colspan='2'>Licences, services and equipment total</td><td class='n')>", own_rows + r"\1 id='tp-tot'>", lic)
 assert "id='tp-tot'" in lic and lic.count('data-tp=') == len(TPS) + len(OWN_TP)
@@ -410,6 +414,7 @@ function adds(id,f){var A=withTick(id),gp=D.group[id],swap=false;
  var A0=Object.assign({},A);A0[id]=false;                                                                   // adding: this step's own cost
  return id==='hwlease'?running(A,f).lease-running(A0,f).lease:build(A,f).total-build(A0,f).total;}
 var FD='Release testing';
+function tpl(r){return r.url?'<i class="tx">'+r.short+'</i><a class="lk" href="'+r.url+'" target="_blank" rel="noopener" title="Product or price source">↗</a>':r.short;}   // a purchase, with a link to its product or price page
 var GROUPS=[['1.','Planning & design'],['A','App & backend'],['B','Speech'],['C','Lessons'],['D','AI'],['E','Dashboard & tests'],['G','Testing'],['P','Project management']];
 function ttl(c){var b=document.querySelector('tr[data-code="'+c+'"] td:nth-child(2) b');return b?b.textContent:D.ttl[c];}   // the task's title as the page currently words it
 function grp(c){for(var i=0;i<GROUPS.length;i++)if(c.indexOf(GROUPS[i][0])===0)return GROUPS[i][1];return 'Other';}
@@ -418,7 +423,7 @@ function delta(id,f){var A=withTick(id),gp=D.group[id],swap=false;if(gp)for(var 
  function add(g,label,v){if(!G[g]){G[g]={t:0,rows:[]};order.push(g);}G[g].t+=v;G[g].rows.push([label,v]);tot+=v;}
  for(var c in D.tasks)D.tasks[c].parts.forEach(function(pt){var v=(pa[pt.c]?pc(pt,na,fa):0)-(pb[pt.c]?pc(pt,nb,fb):0);
   if(Math.abs(v)>0.5)add(pt.s?FD:grp(c),c+' '+(D.partLabel[c+'|'+pt.c]||ttl(c)),v*1.25);});   // release testing is one line
- D.tps.forEach(function(r){var v=0;r.parts.forEach(function(pt){v+=(pa[pt.c]?amt(pt,f):0)-(pb[pt.c]?amt(pt,f):0);});if(Math.abs(v)>0.5)add('Licences & equipment',r.short,v*1.15);});
+ D.tps.forEach(function(r){var v=0;r.parts.forEach(function(pt){v+=(pa[pt.c]?amt(pt,f):0)-(pb[pt.c]?amt(pt,f):0);});if(Math.abs(v)>0.5)add('Licences & equipment',tpl(r),v*1.15);});
  order=order.filter(function(g){return g!==FD;}).concat(G[FD]?[FD]:[]);   // release testing comes last
  return {G:G,order:order,tot:tot};}
 function detail(id,f){var h=detail0(id,f);return id==='lessons'?subjHtml(f)+h:h;}
@@ -436,7 +441,7 @@ function detail0(id,f){if(!S[id]&&id!=='hwlease'){var X=delta(id,f);if(!X.order.
    if(named.length)named.forEach(function(pt){if(p[pt.c]&&(OWN[pt.c]?OWN[pt.c](T):pt.c)===id)add(grp(c),c+' '+D.partLabel[c+'|'+pt.c],pc(pt,nl,fa)*1.25);});   // one line per piece of work
    else add(grp(c),c+' '+ttl(c),sum);}}
  D.tps.forEach(function(r){var sum=0;r.parts.forEach(function(pt){if(p[pt.c]&&(OWN[pt.c]?OWN[pt.c](T):pt.c)===id)sum+=amt(pt,f)*1.15;});
-  if(sum>0.5)add('Licences & equipment',r.short,sum);});
+  if(sum>0.5)add('Licences & equipment',tpl(r),sum);});
  if(L.by[id])for(var c2 in D.tasks){var tv=0;D.tasks[c2].parts.forEach(function(pt){if(pt.s&&p[pt.c])tv+=pc(pt,nl,fa)*1.25*L.by[id]/L.F;});if(tv>0.5)add(FD,c2+' '+ttl(c2),tv);}
  if(id==='hwlease')return '<div class="drow"><span>'+f.pcs+(f.pcs===1?' GPU server':' GPU servers')+' × A$'+D.pcLease+' a month</span><b>'+fmt(f.pcs*D.pcLease)+'/mo</b></div><div class="dnote">Running cost, not in the build total</div>';
  if(!order.length)return '<div class="dnote">No cost of its own</div>';
@@ -600,6 +605,7 @@ ol.how{padding-left:20px;margin:6px 0}ol.how li{margin:8px 0}ol.how .sub{display
 .rail .drow{display:flex;justify-content:space-between;gap:8px;padding:1px 0;color:#333}.rail .drow span:first-child{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rail .drow>:last-child{flex:none}
 .rail .drow.g{font-weight:700;color:#111;margin-top:4px}.rail .drow.g:first-child{margin-top:0}.rail .drow.tt{border-top:1px solid #bbb;margin-top:4px;padding-top:3px;font-weight:700;color:#111}
 .rail details.fd summary{list-style:none;cursor:pointer;font-size:11px}.rail details.fd summary::-webkit-details-marker{display:none}.rail details.fd summary span::before{content:'▸ ';color:#777}.rail details.fd[open] summary span::before{content:'▾ '}.rail details.fd .drow:not(.g){padding-left:12px}
+.rail .lk{color:#0b57d0;text-decoration:none;font-weight:700;flex:none;margin-left:4px}.rail .drow span:first-child:has(.lk){display:flex;align-items:baseline}.rail .drow .tx{font-style:normal;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
 .rail .dnote{color:#777;font-style:italic;margin-top:3px}.rail .opt .pc{font-size:12px;color:#777;white-space:nowrap;font-variant-numeric:tabular-nums}.rail .opt.on .pc{color:#111;font-weight:700}
 .rail .req{font-size:10px;color:#777;font-weight:400}
 .rail .opt .nm input{margin:0 5px 0 0}.rail label.nm{display:flex;align-items:center;cursor:pointer}
