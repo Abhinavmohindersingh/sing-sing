@@ -577,7 +577,7 @@ function lessonText(h,nl){var st=subjText();
 function words(p){var f=fields(),nl=f.hrs;var Ts=p.tprec?3:(p.twoway||p.ownspeech||p.review||p.expert)?2:(p.cur||p.mode)?1:0,
  Tc=p.twoway?2:(p.cur||p.mode)?1:0,Tn=p.ownspeech?2:(p.cur||p.mode)?1:0;function T(k){return k==='C1'?Tn:CONTENT[k]?Tc:Ts;}   // C1's narration follows the language: ElevenLabs for English only, Kumi's own voice once Tok Pisin is ticked
  [].forEach.call(document.querySelectorAll('tr[data-code]'),function(tr){var k=tr.dataset.code;if(D.ulab[k])tr.cells[1].innerHTML=langText(lessonText(ulabel(k,T(k)),nl),p);});
- [].forEach.call(document.querySelectorAll('tr[data-role]'),function(tr){var k=tr.dataset.role,v=D.resps[k];if(v)tr.cells[1].innerHTML=lessonText(pick(v,T(k)),nl);});
+ [].forEach.call(document.querySelectorAll('tr[data-role]'),function(tr){var k=tr.dataset.role,v=D.resps[k];if(v)tr.cells[1].innerHTML=lessonText(pick(v,T(k))||pick(v,3),nl);});   // a role with no work yet still says what it does
  [].forEach.call(document.querySelectorAll('.nl'),function(e){e.textContent=nl;});
  [].forEach.call(document.querySelectorAll('.main .card'),function(card){var r=card.querySelector('tr[data-code]'),v=r&&D.titles[r.dataset.code];if(v)card.querySelector('.card-h .t').innerHTML=pick(v,T(r.dataset.code));});
  document.getElementById('team-p').innerHTML=pick(D.teamp,Ts);
@@ -657,11 +657,16 @@ function render0(){var f=fields(),p=preds(S),B=build(S,f),R=running(S,f),role={}
  document.getElementById('total').textContent=fmt(B.total);document.getElementById('tabtotal').textContent=fmt(B.total);
  document.getElementById('run-total').textContent=fmt(R.total);document.getElementById('run-stu').textContent=f.n;
  if(window.cmtReapply)window.cmtReapply();   // keep comment highlights after the text changes
- document.getElementById('banner').innerHTML=B.total?'<b>Struck-through lines are not in this build.</b> Lines marked <span class="oos">Not in our scope</span> are on-ground pilot work, run by the partner.<br>After each tick: <span class="chg-key" style="border-color:#1a7f37"></span>now in the build <span class="chg-key" style="border-color:#c62828"></span>now out <span class="chg-key" style="border-color:#d9a400"></span>changed. Use ▲ ▼ at the top right to step through them.'
+ document.getElementById('banner').innerHTML=B.total?'<b>Struck-through lines are not in this build.</b> Lines marked <span class="oos">Not in our scope</span> are on-ground pilot work, run by the partner.<br>After each tick, the lines that changed get a grey border. Use ▲ ▼ at the top right to step through them.'
   :'<b>Nothing selected yet.</b> Tick the steps on the left to build the quote. Every line below stays struck through until you add it.';}
 document.querySelector('.rail').addEventListener('change',function(e){if(e.target.type==='checkbox')jumpNext=true;},true);   // a tick jumps to what it changed
 document.getElementById('chg-prev').addEventListener('click',function(){go(CI<0?CHG.length-1:CI-1);});
 document.getElementById('chg-next').addEventListener('click',function(){go(CI+1);});
+(function(){var b=document.getElementById('chg-show'),a=document.getElementById('chg-auto');   // remembered per browser
+ try{if(localStorage.getItem('kumiChgShow')==='0')b.checked=false;if(localStorage.getItem('kumiChgAuto')==='0')a.checked=false;}catch(e){}
+ function apply(){body.classList.toggle('chg-hide',!b.checked);}apply();
+ b.addEventListener('change',function(){apply();try{localStorage.setItem('kumiChgShow',b.checked?'1':'0');}catch(e){}});
+ a.addEventListener('change',function(){try{localStorage.setItem('kumiChgAuto',a.checked?'1':'0');}catch(e){}});})();
 [].forEach.call(document.querySelectorAll('.rail input[data-id]'),function(b){b.addEventListener('change',function(){
  var id=b.dataset.id;S=b.checked?withTick(id):withUntick(id);
  if(S.lessons&&!fields().subj.length)D.subjects.forEach(function(x,i){document.querySelector('input[data-subj="'+x[0]+'"]').checked=i<2;});   // back to numeracy and literacy
@@ -704,8 +709,8 @@ ol.how{padding-left:20px;margin:6px 0}ol.how li{margin:8px 0}ol.how .sub{display
 #chg-nav{position:fixed;top:10px;right:16px;z-index:8;display:flex;align-items:center;gap:6px;background:#111;color:#fff;border-radius:999px;padding:6px 8px 6px 14px;font:600 12px -apple-system,Segoe UI,Arial,sans-serif;box-shadow:0 4px 14px rgba(0,0,0,.25)}
 #chg-nav button{border:0;background:#333;color:#fff;border-radius:50%;width:26px;height:26px;cursor:pointer;font-size:12px}#chg-nav button:hover{background:#555}
 #chg-nav:not(.has) button{opacity:.4;pointer-events:none}#chg-nav label{display:flex;align-items:center;gap:4px;font-weight:400;color:#ccc;margin-left:4px;cursor:pointer}
-tr.chg,li.chg{outline:2px solid #d9a400;outline-offset:-2px}tr.chg-on,li.chg-on{outline:2px solid #1a7f37;outline-offset:-2px}tr.chg-off,li.chg-off{outline:2px solid #c62828;outline-offset:-2px}
-.chg-flash{outline:3px solid #f0b400;outline-offset:2px}
+body:not(.chg-hide) :is(tr,li):is(.chg,.chg-on,.chg-off){outline:2px solid #555;outline-offset:-2px}
+.chg-flash{outline:3px solid #111!important;outline-offset:2px!important}
 .chg-key{display:inline-block;width:10px;height:10px;border-radius:2px;margin:0 3px 0 8px;vertical-align:-1px;border:2px solid;box-sizing:border-box}
 @media (max-width:900px){#chg-nav{top:auto;bottom:70px;right:8px}}
 /* rail */
@@ -744,7 +749,7 @@ page = f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name
 <h1>Kumi · Grade 3 pilot · quote builder</h1>
 <p class="h2sub">Sing Singh AI builds the platform. AUD, excluding GST. Task codes (1.1, A1, B5 …) match the full budget.</p>
 <div class="banner" id="banner"></div>
-<div id="chg-nav" data-cmt-ui><span id="chg-n">Tick a box to see what changes</span><button type="button" id="chg-prev" title="Previous change">▲</button><button type="button" id="chg-next" title="Next change">▼</button><label title="Jump to the first change after each tick"><input type="checkbox" id="chg-auto" checked> Jump on tick</label></div>
+<div id="chg-nav" data-cmt-ui><span id="chg-n">Tick a box to see what changes</span><button type="button" id="chg-prev" title="Previous change">▲</button><button type="button" id="chg-next" title="Next change">▼</button><label title="Jump to the first change after each tick"><input type="checkbox" id="chg-auto" checked> Jump on tick</label><label title="Show a grey border on lines that changed"><input type="checkbox" id="chg-show" checked> Borders</label></div>
 {HOW}
 {body}
 {OPS_HTML}
