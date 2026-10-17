@@ -1,0 +1,285 @@
+<!-- cmt-widget:start -->
+<style>
+  mark.cmt{background:#ffe9a8;color:inherit;border-bottom:2px solid #e0a400;border-radius:2px;padding:0 1px;cursor:pointer}
+  mark.cmt.flash{background:#ffcf4d}
+  #cmt-pill{position:absolute;z-index:60;display:none;align-items:center;gap:6px;background:#0b1f3a;color:#fff;border:0;border-radius:999px;padding:7px 14px;font:600 13px/1 'Helvetica Neue',Helvetica,Arial,sans-serif;box-shadow:0 4px 14px rgba(11,31,58,.28);cursor:pointer}
+  #cmt-pill:hover{background:#163a6b}
+  #cmt-pop{position:absolute;z-index:61;display:none;width:340px;max-width:calc(100vw - 24px);background:#fff;border:1px solid #d6dbe3;border-radius:10px;box-shadow:0 10px 30px rgba(11,31,58,.18);padding:12px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}
+  #cmt-pop .q,#cmt-panel .q{font-size:12px;color:#4a4f57;background:#fff8e1;border-left:3px solid #e0a400;padding:6px 8px;border-radius:4px;max-height:84px;overflow:auto;white-space:pre-wrap;margin-bottom:8px}
+  #cmt-pop textarea,#cmt-panel textarea{width:100%;box-sizing:border-box;min-height:84px;font:13px/1.45 'Helvetica Neue',Helvetica,Arial,sans-serif;border:1px solid #c9ced6;border-radius:6px;padding:8px;resize:vertical;color:#1b1d21}
+  #cmt-pop textarea:focus,#cmt-panel textarea:focus{outline:2px solid #0b1f3a;outline-offset:0;border-color:#0b1f3a}
+  .cmt-row{display:flex;gap:8px;justify-content:flex-end;margin-top:8px;flex-wrap:wrap}
+  .cmt-btn{font:600 12.5px/1 'Helvetica Neue',Helvetica,Arial,sans-serif;border-radius:6px;padding:8px 12px;cursor:pointer;border:1px solid #c9ced6;background:#fff;color:#0b1f3a}
+  .cmt-btn.pri{background:#0b1f3a;color:#fff;border-color:#0b1f3a}
+  .cmt-btn.dan{color:#b42318;border-color:#f1c4bf}
+  .cmt-btn:focus-visible,#cmt-fab:focus-visible,#cmt-pill:focus-visible{outline:2px solid #b5680a;outline-offset:2px}
+  .cmt-hint{font-size:11.5px;color:#8a9099;margin-top:6px}
+  #cmt-fab{position:fixed;right:18px;bottom:18px;z-index:62;display:inline-flex;align-items:center;gap:8px;background:#0b1f3a;color:#fff;border:0;border-radius:999px;padding:11px 16px;font:700 13px/1 'Helvetica Neue',Helvetica,Arial,sans-serif;box-shadow:0 6px 18px rgba(11,31,58,.3);cursor:pointer}
+  #cmt-fab .n{background:#e0a400;color:#0b1f3a;border-radius:999px;padding:3px 7px;font-size:12px}
+  #cmt-panel{position:fixed;top:0;right:0;bottom:0;width:380px;max-width:100vw;background:#fff;border-left:1px solid #d6dbe3;box-shadow:-10px 0 30px rgba(11,31,58,.12);z-index:63;display:flex;flex-direction:column;transform:translateX(105%);transition:transform .2s ease;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}
+  #cmt-panel.open{transform:none}
+  #cmt-panel header{padding:14px 16px;border-bottom:1px solid #e3e5e8;display:flex;justify-content:space-between;align-items:center;margin:0}
+  #cmt-panel header b{font-size:15px;color:#0b1f3a}
+  #cmt-panel .tools{padding:10px 16px;border-bottom:1px solid #eceef0;display:flex;gap:8px;flex-wrap:wrap}
+  #cmt-list{flex:1;overflow:auto;padding:12px 16px;display:flex;flex-direction:column;gap:12px}
+  .cmt-item{border:1px solid #e3e5e8;border-radius:8px;padding:10px 12px;scroll-margin:12px}
+  .cmt-item.flash{border-color:#e0a400;box-shadow:0 0 0 3px #fff1c2}
+  .cmt-item .sec{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:#8a9099;font-weight:700;margin-bottom:6px}
+  .cmt-item .q{cursor:pointer}
+  .cmt-item .txt{font-size:13.5px;color:#1b1d21;white-space:pre-wrap;line-height:1.5}
+  .cmt-item .lost{font-size:11.5px;color:#b42318;margin-top:6px}
+  .cmt-empty{font-size:13px;color:#6b7280;line-height:1.55}
+  #cmt-copybox{display:none;margin:0 16px 12px;min-height:140px}
+  @media (prefers-reduced-motion:reduce){#cmt-panel{transition:none}}
+  #cmt-print{display:none}
+  @media print{
+    #cmt-root{display:none!important}
+    mark.cmt{background:none;border:0;padding:0}
+    body.cmt-print-on mark.cmt{background:#fff1c2;border-bottom:1.5px solid #e0a400}
+    body.cmt-print-on #cmt-print{display:block;break-before:page}
+    #cmt-print h2{margin-top:0}
+    #cmt-print ol{padding-left:20px;font-size:12px;line-height:1.5}
+    #cmt-print li{margin-bottom:10px;break-inside:avoid}
+    #cmt-print .pq{color:#4a4f57;border-left:3px solid #e0a400;padding-left:8px;margin:3px 0}
+  }
+</style>
+<div id="cmt-root" data-cmt-ui>
+  <button id="cmt-pill" type="button">&#128172; Comment</button>
+  <div id="cmt-pop" role="dialog" aria-label="Add a comment">
+    <div class="q" id="cmt-pop-q"></div>
+    <label for="cmt-pop-ta" style="position:absolute;left:-9999px">Your comment</label>
+    <textarea id="cmt-pop-ta" placeholder="Type your comment…"></textarea>
+    <div class="cmt-row"><button class="cmt-btn" type="button" id="cmt-pop-cancel">Cancel</button><button class="cmt-btn pri" type="button" id="cmt-pop-save">Save comment</button></div>
+    <div class="cmt-hint">Ctrl/⌘ + Enter to save · Esc to cancel</div>
+  </div>
+  <button id="cmt-fab" type="button" aria-controls="cmt-panel">&#128172; Comments <span class="n" id="cmt-count">0</span></button>
+  <aside id="cmt-panel" aria-label="Comments">
+    <header><b>Comments</b><button class="cmt-btn" type="button" id="cmt-close">Close</button></header>
+    <div class="tools">
+      <button class="cmt-btn pri" type="button" id="cmt-copy">Copy all</button>
+      <button class="cmt-btn" type="button" id="cmt-dl">Download</button>
+      <button class="cmt-btn" type="button" id="cmt-print-btn">Print with comments</button>
+      <button class="cmt-btn dan" type="button" id="cmt-clear">Clear all</button>
+    </div>
+    <textarea id="cmt-copybox" readonly aria-label="All comments as text"></textarea>
+    <div id="cmt-list"></div>
+  </aside>
+<script>
+(function () {
+  var KEY = 'kumi-budget-v2-comments';
+  var $ = function (id) { return document.getElementById(id); };
+  var pill = $('cmt-pill'), pop = $('cmt-pop'), popQ = $('cmt-pop-q'), popTa = $('cmt-pop-ta');
+  var fab = $('cmt-fab'), panel = $('cmt-panel'), list = $('cmt-list'), count = $('cmt-count'), copybox = $('cmt-copybox');
+  var store = load(), pending = null, timer = null, clearArmed = false;
+
+  function load() { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch (e) { return []; } }
+  function persist() { try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {} }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function inUI(n) { for (; n; n = n.parentNode) { if (n.nodeType === 1 && (n.hasAttribute('data-cmt-ui') || n.tagName === 'SCRIPT' || n.tagName === 'STYLE')) return true; } return false; }
+
+  function textMap() {
+    var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null), n, nodes = [], cum = [], F = '';
+    while ((n = w.nextNode())) { if (inUI(n.parentNode)) continue; nodes.push(n); cum.push(F.length); F += n.data; }
+    return { nodes: nodes, cum: cum, F: F };
+  }
+  function rangeToGlobal(range) {
+    var m = textMap(), gs = -1, ge = -1;
+    for (var i = 0; i < m.nodes.length; i++) {
+      var n = m.nodes[i];
+      if (!range.intersectsNode(n)) continue;
+      var s = n === range.startContainer ? range.startOffset : 0;
+      var e = n === range.endContainer ? range.endOffset : n.length;
+      if (s >= e) continue;
+      if (gs < 0) gs = m.cum[i] + s;
+      ge = m.cum[i] + e;
+    }
+    if (gs < 0) return null;
+    while (gs < ge && /\s/.test(m.F[gs])) gs++;
+    while (ge > gs && /\s/.test(m.F[ge - 1])) ge--;
+    if (gs >= ge) return null;
+    var quote = m.F.slice(gs, ge), occ = 0, k = m.F.indexOf(quote);
+    while (k > -1 && k < gs) { occ++; k = m.F.indexOf(quote, k + 1); }
+    return { quote: quote, occ: occ, gs: gs, ge: ge };
+  }
+  function wrapGlobal(gs, ge, id) {
+    var m = textMap(), marks = [];
+    for (var i = 0; i < m.nodes.length; i++) {
+      var n = m.nodes[i], a = m.cum[i], b = a + n.length;
+      if (b <= gs || a >= ge) continue;
+      var s = Math.max(gs - a, 0), e = Math.min(ge - a, n.length);
+      if (!n.data.slice(s, e).trim()) continue;
+      var t = n;
+      if (s > 0) { t = n.splitText(s); e -= s; }
+      if (e < t.length) t.splitText(e);
+      var mk = document.createElement('mark');
+      mk.className = 'cmt'; mk.setAttribute('data-cid', id);
+      t.parentNode.insertBefore(mk, t); mk.appendChild(t); marks.push(mk);
+    }
+    return marks;
+  }
+  function locate(c) {
+    var F = textMap().F, k = -1, from = 0;
+    for (var i = 0; i <= c.occ; i++) { k = F.indexOf(c.quote, from); if (k < 0) return -1; from = k + 1; }
+    return k;
+  }
+  function unwrap(id) {
+    document.querySelectorAll('mark.cmt[data-cid="' + id + '"]').forEach(function (mk) {
+      var p = mk.parentNode; while (mk.firstChild) p.insertBefore(mk.firstChild, mk); p.removeChild(mk); p.normalize();
+    });
+  }
+  function sectionOf(el) {
+    if (!el) return 'Page';
+    var card = el.closest && el.closest('.card');
+    var t = card && card.querySelector('.card-h .t');
+    if (t) return t.textContent.trim();
+    var h, n = el;
+    while (n && n !== document.body) {
+      var p = n.previousElementSibling;
+      while (p) { if (p.tagName === 'H2' || p.tagName === 'H1') { h = p; break; } p = p.previousElementSibling; }
+      if (h) break; n = n.parentElement;
+    }
+    return h ? h.textContent.trim() : 'Page';
+  }
+
+  function render() {
+    count.textContent = store.length;
+    if (!store.length) { list.innerHTML = '<p class="cmt-empty">No comments yet. Highlight any text on the page and press <b>Comment</b>.</p>'; return; }
+    list.innerHTML = store.map(function (c, i) {
+      return '<div class="cmt-item" id="cmt-item-' + c.id + '" data-cid="' + c.id + '">' +
+        '<div class="sec">' + (i + 1) + ' · ' + esc(c.section) + '</div>' +
+        '<div class="q" data-go="' + c.id + '" title="Show on page">' + esc(c.quote.length > 220 ? c.quote.slice(0, 220) + '…' : c.quote) + '</div>' +
+        '<div class="txt">' + esc(c.text) + '</div>' +
+        (c.lost ? '<div class="lost">This text has changed on the page, so it is no longer highlighted.</div>' : '') +
+        '<div class="cmt-row"><button class="cmt-btn" type="button" data-edit="' + c.id + '">Edit</button><button class="cmt-btn dan" type="button" data-del="' + c.id + '">Delete</button></div></div>';
+    }).join('');
+  }
+  function flash(els) { els.forEach(function (e) { e.classList.add('flash'); }); setTimeout(function () { els.forEach(function (e) { e.classList.remove('flash'); }); }, 1400); }
+  function openPanel(focusId) {
+    panel.classList.add('open'); fab.setAttribute('aria-expanded', 'true');
+    if (focusId) { var it = $('cmt-item-' + focusId); if (it) { it.scrollIntoView({ block: 'nearest' }); flash([it]); } }
+  }
+  function closePanel() { panel.classList.remove('open'); fab.setAttribute('aria-expanded', 'false'); copybox.style.display = 'none'; }
+
+  function hidePill() { pill.style.display = 'none'; }
+  function placePill() {
+    if (pop.style.display === 'block') return;
+    var sel = document.getSelection();
+    if (!sel || sel.isCollapsed || !sel.rangeCount) { hidePill(); return; }
+    var r = sel.getRangeAt(0);
+    if (inUI(r.commonAncestorContainer) || !r.toString().trim()) { hidePill(); return; }
+    var rect = r.getBoundingClientRect();
+    pill.style.display = 'inline-flex';
+    var w = pill.offsetWidth, top = rect.top + scrollY - 44;
+    if (rect.top < 52) top = rect.bottom + scrollY + 8;
+    var left = Math.max(scrollX + 8, Math.min(rect.left + scrollX + rect.width / 2 - w / 2, scrollX + document.documentElement.clientWidth - w - 8));
+    pill.style.top = top + 'px'; pill.style.left = left + 'px';
+  }
+  document.addEventListener('mouseup', function (e) { if (!inUI(e.target)) setTimeout(placePill, 0); });
+  document.addEventListener('keyup', function (e) { if (e.shiftKey && !inUI(e.target)) setTimeout(placePill, 0); });
+  document.addEventListener('selectionchange', function () {
+    clearTimeout(timer);
+    var s = document.getSelection();
+    if (!s || s.isCollapsed) { hidePill(); return; }
+    timer = setTimeout(placePill, 450);
+  });
+  pill.addEventListener('mousedown', function (e) { e.preventDefault(); });
+  pill.addEventListener('click', function () {
+    var sel = document.getSelection();
+    if (!sel || !sel.rangeCount) return;
+    var g = rangeToGlobal(sel.getRangeAt(0));
+    if (!g) return;
+    pending = { g: g, section: sectionOf(sel.getRangeAt(0).startContainer.parentElement) };
+    var rect = pill.getBoundingClientRect();
+    hidePill();
+    popQ.textContent = g.quote.length > 300 ? g.quote.slice(0, 300) + '…' : g.quote;
+    popTa.value = '';
+    pop.style.display = 'block';
+    var w = pop.offsetWidth;
+    pop.style.top = (rect.bottom + scrollY + 6) + 'px';
+    pop.style.left = Math.max(scrollX + 8, Math.min(rect.left + scrollX, scrollX + document.documentElement.clientWidth - w - 8)) + 'px';
+    popTa.focus();
+  });
+  function cancelPop() { pop.style.display = 'none'; pending = null; }
+  function savePop() {
+    var text = popTa.value.trim();
+    if (!pending || !text) { popTa.focus(); return; }
+    var id = 'c' + Date.now().toString(36);
+    var c = { id: id, quote: pending.g.quote, occ: pending.g.occ, text: text, section: pending.section, at: new Date().toISOString() };
+    wrapGlobal(pending.g.gs, pending.g.ge, id);
+    store.push(c); persist(); render();
+    pop.style.display = 'none'; pending = null;
+    var s = document.getSelection(); if (s) s.removeAllRanges();
+  }
+  $('cmt-pop-cancel').addEventListener('click', cancelPop);
+  $('cmt-pop-save').addEventListener('click', savePop);
+  popTa.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') cancelPop();
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); savePop(); }
+  });
+
+  document.addEventListener('click', function (e) {
+    var mk = e.target.closest && e.target.closest('mark.cmt');
+    if (mk && !inUI(mk)) { openPanel(mk.getAttribute('data-cid')); return; }
+    var go = e.target.closest && e.target.closest('[data-go]');
+    if (go) { var id = go.getAttribute('data-go'), ms = document.querySelectorAll('mark.cmt[data-cid="' + id + '"]'); if (ms.length) { ms[0].scrollIntoView({ block: 'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); flash([].slice.call(ms)); } return; }
+    var del = e.target.closest && e.target.closest('[data-del]');
+    if (del) { var d = del.getAttribute('data-del'); unwrap(d); store = store.filter(function (c) { return c.id !== d; }); persist(); render(); return; }
+    var ed = e.target.closest && e.target.closest('[data-edit]');
+    if (ed) {
+      var eid = ed.getAttribute('data-edit'), c = store.filter(function (x) { return x.id === eid; })[0], item = $('cmt-item-' + eid);
+      if (!c || !item) return;
+      var txt = item.querySelector('.txt'), ta = document.createElement('textarea');
+      ta.value = c.text; txt.replaceWith(ta); ta.focus();
+      ed.textContent = 'Save'; ed.removeAttribute('data-edit'); ed.classList.add('pri');
+      ed.addEventListener('click', function () { var v = ta.value.trim(); if (v) { c.text = v; persist(); } render(); }, { once: true });
+    }
+  });
+
+  fab.addEventListener('click', function () { panel.classList.contains('open') ? closePanel() : openPanel(); });
+  $('cmt-close').addEventListener('click', closePanel);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && panel.classList.contains('open') && pop.style.display !== 'block') closePanel(); });
+
+  function asText() {
+    var head = 'Kumi Grade 3 pilot budget v2 — comments (' + store.length + ')\n\n';
+    return head + store.map(function (c, i) { return (i + 1) + '. [' + c.section + '] "' + c.quote + '"\n   → ' + c.text.replace(/\n/g, '\n     '); }).join('\n\n') + '\n';
+  }
+  $('cmt-copy').addEventListener('click', function () {
+    var t = asText(), btn = this;
+    function fallback() { copybox.value = t; copybox.style.display = 'block'; copybox.focus(); copybox.select(); btn.textContent = 'Select & copy below'; }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(t).then(function () { btn.textContent = 'Copied'; setTimeout(function () { btn.textContent = 'Copy all'; }, 1600); }, fallback);
+    } else fallback();
+  });
+  $('cmt-dl').addEventListener('click', function () {
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([asText()], { type: 'text/plain' }));
+    a.download = 'kumi-budget-v2-comments.txt';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000);
+  });
+  $('cmt-print-btn').addEventListener('click', function () {
+    $('cmt-print-list').innerHTML = store.map(function (c) {
+      return '<li><b>' + esc(c.section) + '</b><div class="pq">' + esc(c.quote) + '</div>' + esc(c.text).replace(/\n/g, '<br>') + '</li>';
+    }).join('') || '<li>No comments yet.</li>';
+    closePanel();
+    document.body.classList.add('cmt-print-on');
+    setTimeout(function () { window.print(); }, 50);
+  });
+  window.addEventListener('afterprint', function () { document.body.classList.remove('cmt-print-on'); });
+  $('cmt-clear').addEventListener('click', function () {
+    if (!store.length) return;
+    if (!clearArmed) { clearArmed = true; this.textContent = 'Tap again to delete all'; var b = this; setTimeout(function () { clearArmed = false; b.textContent = 'Clear all'; }, 3000); return; }
+    store.forEach(function (c) { unwrap(c.id); }); store = []; persist(); render(); clearArmed = false; this.textContent = 'Clear all';
+  });
+
+  store.forEach(function (c) {
+    var k = locate(c);
+    if (k < 0) { c.lost = true; return; }
+    c.lost = false; wrapGlobal(k, k + c.quote.length, c.id);
+  });
+  render();
+})();
+</script>
+</div>
+<div id="cmt-print" data-cmt-ui><h2>Review comments</h2><ol id="cmt-print-list"></ol></div>
+<!-- cmt-widget:end -->
