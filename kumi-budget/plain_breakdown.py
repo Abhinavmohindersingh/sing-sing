@@ -295,10 +295,11 @@ HOW = f'''<h2>How Kumi works</h2><ol class="how">
 <li><b>AI content curation.</b> Every child gets the same lessons, but Kumi watches every answer and chooses what comes next. <i>Mary gets three answers wrong, so she gets easier questions and a hint. Dura answers fast, so he gets harder ones.</i> Two ways to run it (pick one):
 <span class="sub"><b>Way 1: Claude AI</b> {ON} Best quality answers, processed in Australia. Needs the internet, so it needs the Online option; offline, Kumi uses its saved help. Monthly usage cost.</span>
 <span class="sub"><b>Way 2: our own AI model</b> {OFF} Runs on one GPU server in the school lab, which the computers reach over the lab network, so the school’s computers stay as they are. No usage cost. Simpler answers than Claude. If the server is down, Kumi uses its saved help.</span></li>
-<li><b>AI speech.</b> <span class="sub"><b>One-way</b> Kumi talks to the child. The child taps Kumi, or says a keyword like “help” (halivim), “again” (gen) or “next” (nekis), and Kumi explains the step out loud. The child answers by tapping.</span>
+<li><b>AI speech.</b> Pick the languages first (English, Tok Pisin, or both), then the mode. The mode applies to every language ticked: English and two-way means two-way in English; both languages and two-way means two-way in both.
+<span class="sub"><b>One-way</b> Kumi talks to the child. The child taps Kumi, or says a keyword like “help” (halivim), “again” (gen) or “next” (nekis), and Kumi explains the step out loud. The child answers by tapping.</span>
 <span class="sub"><b>Two-way</b> A real conversation, like talking to a teacher: the child speaks any question about the lesson and Kumi answers out loud.</span>
-<span class="sub"><b>Way 1: ElevenLabs</b> {L("English")} A natural English voice from a cloud service, so it needs the Online option. Monthly plan.</span>
-<span class="sub"><b>Way 2: our own speech models</b> {L("Tok Pisin")} {OFF} No major provider supports Tok Pisin speech, so we build Kumi’s own Tok Pisin voice and a model that understands children speaking Tok Pisin. No per-minute cost.</span></li>
+<span class="sub"><b>English: ElevenLabs</b> {L("English")} A natural English voice from a cloud service, so it needs the Online option. Monthly plan.</span>
+<span class="sub"><b>Tok Pisin: our own speech models</b> {L("Tok Pisin")} {OFF} No major provider supports Tok Pisin speech, so we build Kumi’s own Tok Pisin voice, and for two-way a model that understands children speaking Tok Pisin. No per-minute cost.</span></li>
 <li><b>Teacher screen.</b> See how the whole class is doing and which students need help.</li></ol>'''
 OPS = [  # id, name, how it is worked out (filled in by the script where it depends on the fields), condition
  ('host', 'Cloud hosting', 'App server, database, storage and backups, AWS Sydney', 'online'),
@@ -330,8 +331,9 @@ STEPS = [  # (number, title, hint, rows); a row is (id, label, badge HTML) or ('
                            ('content_own', 'We prepare the content', '', 'sub'), ('tests', 'Benchmark tests', '')]),
  ('4', 'AI content curation', 'Pick one', [('claude', 'Claude AI', '<span class="mode on">Online</span>'), ('ownai', 'Own AI model', '<span class="mode off">Offline</span>'),
                                           ('hwbuy', 'Buy GPU server', '', 'sub'), ('hwlease', 'Lease GPU server', '', 'sub'), ('trrent', 'Rent GPU to train (cloud)', '', 'sub'), ('trbuy', 'Buy GPU to train', '', 'sub')]),
- ('5', 'AI speech', '', [('-', 'Mode · pick one'), ('oneway', 'One-way', ''), ('twoway', 'Two-way', ''),
-                         ('-', 'Voice'), ('eleven', 'ElevenLabs', L('English')), ('ownspeech', 'Own speech model', L('Tok Pisin'))]),
+ ('5', 'AI speech', 'Pick the languages first, then the mode. Two-way applies to every language ticked.',
+  [('-', 'Language · one or both'), ('eleven', 'English', '<span class="mode on">ElevenLabs · Online</span>'), ('ownspeech', 'Tok Pisin', '<span class="mode off">Our own speech model</span>'),
+   ('-', 'Mode · pick one'), ('oneway', 'One-way', '<span class="req">Kumi talks</span>'), ('twoway', 'Two-way', '<span class="req">the child talks too</span>')]),
  ('6', 'Extras', '', [('review', 'Weekly AI check', ''), ('expert', 'Expert teacher check', ''), ('retrain', 'Retrain on pilot data', '<span class="mode off">Own AI</span>')])]
 REQ = {'found': [], 'desktop': [], 'online': [['desktop']], 'offline': [['desktop']], 'login': [['desktop']], 'teacher': [['online']],
        'lessons': [['desktop']], 'content_own': [['lessons']], 'tests': [['desktop']], 'expert': [['lessons']],
