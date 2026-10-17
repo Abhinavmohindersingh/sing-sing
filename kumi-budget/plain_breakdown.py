@@ -21,6 +21,10 @@ TRAIN_BUY = 6500  # A$: the same RTX PRO 4000 Blackwell 24 GB workstation, to tr
 RETRAIN_GPU = 30*GPU_HR   # 30 GPU-hours to retrain on pilot data
 RETRAIN_LABEL = round(10000*(3000*2 + 300*10)/1e6*0.5*1.55)   # 10,000 pilot records labelled by Claude Sonnet 5.5 in batches
 OWN_DATA = round(30000*((4000*2 + 1500*10) + (3000*2 + 300*10))/1e6*0.5*1.55)   # 30,000 examples written, then each checked, by Claude Sonnet 5.5 in batches (half price) ≈ US$480 at A$1.55
+AI1 = (5*(1500*0.10 + 500*1.00 + 150*5.00) + (3000*1.00 + 300*5.00))/1e6   # Claude per one-hour session, one-way: 5 help requests (1,500 cached + 500 new input, 150 output tokens each) plus 1 curation call (3,000 in, 300 out)
+AI2 = (30*(1500*0.10 + 500*1.00 + 150*5.00) + (3000*1.00 + 300*5.00))/1e6   # two-way: about 30 spoken exchanges a session
+BEDROCK_AU = 1.10   # allowance for processing in Australia (Amazon Bedrock au. profile); Japan's in-country profile costs 10% more
+POWER = round(0.25*6*22*1.0*0.38)   # A$ a month: 250 W x 6 h x 22 school days = 33 kWh, at about K1 per kWh (PNG Power industrial rate), K1 = about A$0.38
 SRC_PC = [("NVIDIA RTX PRO 4000 Blackwell 24 GB (Mwave)", "https://www.mwave.com.au/product/nvidia-rtx-pro-4000-blackwell-24gb-professional-video-card-ac86467"),
           ("NVIDIA workstation cards (PLE Computers)", "https://www.ple.com.au/Categories/671/Nvidia-Workstation"),
           ("Runpod GPU pricing (official)", "https://www.runpod.io/pricing"),
@@ -37,6 +41,7 @@ os.environ.update(TIER='3', PART='1', OUT=os.devnull)
 with contextlib.redirect_stdout(io.StringIO()):
     g = runpy.run_path(os.path.join(HERE, 'gen_v2.py'), run_name='gen')
 W, RATE, DFAT, FX = g['W'], g['RATE'], g['DFAT'], g['FX']
+assert abs(AI1 - g['AI_PER']) < 1e-12   # same per-session use as the budget
 NAME = {r: v[0].replace('Pijin', 'Tok Pisin') for r, v in DFAT.items()}
 
 # ---- 2. what each step buys. Conditions are named; the page works them out from the ticks (see preds() in the script) ----
@@ -89,7 +94,7 @@ assert set(TASKS) == set(COND), set(TASKS) ^ set(COND)
 
 TP_COND = [("code-signing", "desktop"), ("ElevenLabs", None), ("voice actor", "ownspeech"), ("Tok Pisin speakers", "tprec"),
            ("recording kit", "ownspeech"), ("Claude API", "cur"), ("Cloud hosting during build", "online"), ("laptop", "desktop"),
-           ("Criminal record", "found"), ("IARPA", "tprec"), ("speech recognition training", "tprec"), ("Kumi’s voice training", "ownspeech")]
+           ("Criminal record", "found"), ("IARPA", "tprec"), ("speech recognition training", "tprec_rent"), ("Kumi’s voice training", "ownspeech_rent")]
 TPS = []   # purchase rows: id, parts [{c, amt}] ('amt' may be the string 'pcbuy': GPU servers × buy price)
 for item, amt, basis, src, t in g['TP_IN']:
     key, c = next((k, c) for k, c in TP_COND if k.lower() in item.lower())
@@ -101,8 +106,8 @@ for item, amt, basis, src, t in g['TP_IN']:
 U_H100 = "https://www.runpod.io/pricing"   # official provider pricing page
 U_PRO = SRC_PC[0][1]   # the RTX PRO 4000 Blackwell product page
 U_CLAUDE = "https://platform.claude.com/docs/en/about-claude/pricing"
-OWN_TP = [dict(id='tpgpu', item='GPU rental to tune our own AI model: about 100 GPU-hours', basis=f'~A${GPU_HR}/hr: H100 on-demand. Several tuning runs, evaluation and compression', url=U_H100, parts=[dict(c='trrent', amt=OWN_GPU)]),
-          dict(id='tptrbuy', item='Training workstation, bought: NVIDIA RTX PRO 4000 Blackwell 24 GB, to tune our own AI model in-house', basis=f'About A${TRAIN_BUY:,}. About 3 times slower per run than a rented H100; kept after the build for retraining', url=U_PRO, parts=[dict(c='trbuy', amt=TRAIN_BUY)]),
+OWN_TP = [dict(id='tpgpu', item='GPU rental to tune our own AI model: about 100 GPU-hours', basis=f'~A${GPU_HR}/hr: H100 on-demand. Several tuning runs, evaluation and compression', url=U_H100, parts=[dict(c='ownai_rent', amt=OWN_GPU)]),
+          dict(id='tptrbuy', item='Training workstation, bought: NVIDIA RTX PRO 4000 Blackwell 24 GB, to tune our own AI model in-house', basis=f'About A${TRAIN_BUY:,}. Trains our own AI model and the speech models. About 3 times slower than a rented H100: about 300 hours for the AI model and about 1,050 for the speech models (about 6 weeks day and night), so it must start early. Kept for retraining', url=U_PRO, parts=[dict(c='trbuy', amt=TRAIN_BUY)]),
           dict(id='tprtgpu', item='GPU rental to retrain on pilot data: about 30 GPU-hours', basis=f'~A${GPU_HR}/hr: H100 on-demand', url=U_H100, parts=[dict(c='retrain_rent', amt=RETRAIN_GPU)]),
           dict(id='tprtlab', item='Labelling about 10,000 pilot records with Claude', basis='Claude Sonnet 5.5 in batches', url=U_CLAUDE, parts=[dict(c='retrain', amt=RETRAIN_LABEL)]),
           dict(id='tpdata', item='Training data for our own AI model: about 30,000 example lessons-and-help conversations written and checked with Claude', basis='Claude Sonnet 5.5 in batches, about 260M tokens', url=U_CLAUDE, parts=[dict(c='ownai', amt=OWN_DATA)]),
@@ -110,12 +115,13 @@ OWN_TP = [dict(id='tpgpu', item='GPU rental to tune our own AI model: about 100 
 
 # check: with everything on, the parts add back up to the generator's own totals
 ALL = dict(found=1, desktop=1, online=1, offline=1, login=1, teacher=1, lessons=1, content_own=1, tests=1, claude=1, ownai=0,
-           hwbuy=0, hwlease=0, trrent=0, trbuy=0, oneway=0, twoway=1, eleven=1, ownspeech=1, review=1, expert=1, retrain=0)
+           hwbuy=0, hwlease=0, trrent=1, trbuy=0, oneway=0, twoway=1, eleven=1, ownspeech=1, review=1, expert=1, retrain=0)
 def preds(S):
     p = {k: bool(v) for k, v in S.items()}
     p.update(both_net=p['online'] and p['offline'], online_only=p['online'] and not p['offline'], cur=p['claude'] or p['ownai'], curoff=(p['claude'] or p['ownai']) and p['offline'], mode=p['oneway'] or p['twoway'], tprec=p['ownspeech'] and p['twoway'],
              speechrun=p['twoway'] or p['ownspeech'], eleven_mode=p['eleven'] and (p['oneway'] or p['twoway']),
-             eleven_own=p['eleven'] and p['ownspeech'], buy=p['ownai'] and p['hwbuy'], lease=p['ownai'] and p['hwlease'], test=True, retrain_rent=p['retrain'] and p['trrent'])
+             eleven_own=p['eleven'] and p['ownspeech'], buy=p['ownai'] and p['hwbuy'], lease=p['ownai'] and p['hwlease'], test=True, retrain_rent=p['retrain'] and p['trrent'], ownai_rent=p['ownai'] and p['trrent'],
+             tprec_rent=p['ownspeech'] and p['twoway'] and p['trrent'], ownspeech_rent=p['ownspeech'] and p['trrent'])
     return p
 def pcost(pt, nl): return pt['per']*nl*5*RATE[pt['r']] if 'per' in pt else pt['cost']
 def build_total(S, pcs=1, nl=20):
@@ -299,14 +305,14 @@ HOW = f'''<h2>How Kumi works</h2><ol class="how">
 <span class="sub"><b>One-way</b> Kumi talks to the child. The child taps Kumi, or says a keyword like “help” (halivim), “again” (gen) or “next” (nekis), and Kumi explains the step out loud. The child answers by tapping.</span>
 <span class="sub"><b>Two-way</b> A real conversation, like talking to a teacher: the child speaks any question about the lesson and Kumi answers out loud.</span>
 <span class="sub"><b>English: ElevenLabs</b> {L("English")} A natural English voice from a cloud service, so it needs the Online option. Monthly plan.</span>
-<span class="sub"><b>Tok Pisin: our own speech models</b> {L("Tok Pisin")} {OFF} No major provider supports Tok Pisin speech, so we build Kumi’s own Tok Pisin voice, and for two-way a model that understands children speaking Tok Pisin. ElevenLabs is never used for Tok Pisin. No per-minute cost.</span></li>
+<span class="sub"><b>Tok Pisin: our own speech models</b> {L("Tok Pisin")} {OFF} We found no commercial Tok Pisin voice, so we build Kumi’s own (Piper, MIT licence, trained on our voice actor’s recordings). For two-way, listening starts from Meta’s open Omnilingual ASR, which already covers Tok Pisin, and is trained further on children’s speech. ElevenLabs is never used for Tok Pisin. No per-minute cost.</span></li>
 <li><b>Teacher screen.</b> See how the whole class is doing and which students need help.</li></ol>'''
 OPS = [  # id, name, how it is worked out (filled in by the script where it depends on the fields), condition
  ('host', 'Cloud hosting', 'App server, database, storage and backups, AWS Sydney', 'online'),
  ('lic', 'Code-signing certificate', 'A$341 a year, spread over 12 months', 'desktop'),
  ('claude', 'Claude AI usage', '', 'claude'),
  ('eleven', 'ElevenLabs voice', '', 'eleven_mode'),
- ('ownai', 'Our own AI model', 'Runs on the school’s GPU server: no usage cost', 'ownai'),
+ ('ownai', 'Our own AI model', f'No usage cost. Power for the GPU server: about 250 W for 6 hours a school day, about 33 kWh a month at about K1 per kWh', 'ownai'),
  ('lease', 'Leased GPU server', '', 'lease'),
  ('ownspeech', 'Our own speech models', 'Run on the school computers: no per-minute cost', 'ownspeech'),
  ('support', 'Support and maintenance', '', 'desktop')]
@@ -321,6 +327,50 @@ OPS_HTML = ('<h2>Operating cost per month</h2><p class="h2sub">What it costs to 
             f'<div class="note">GPU server prices are provisional: one per school, buy about A${PC_BUY:,} each, lease about A${PC_LEASE} a month each on 36 months. Sources: ' +
             '; '.join(f"<a href='{u}'>{t}</a>" for t, u in SRC_PC) + '. Get a live quote before contract.</div></div>')
 
+def srcs(*links): return ' '.join(f"<span class='src'>[<a href='{u}'>{t}</a>]</span>" for t, u in links)
+S_OMNI = ('Omnilingual ASR', 'https://github.com/facebookresearch/omnilingual-asr')
+S_BENCH = ('vLLM 8B benchmark on one A10', 'https://www.truefoundry.com/blog/vllm-benchmark')
+S_CARD = ('RTX PRO 4000 Blackwell specs', 'https://www.nvidia.com/en-au/products/workstations/professional-desktop-gpus/rtx-pro-4000/')
+S_LORA = ('NVIDIA LoRA throughput, Llama 3 8B', 'https://catalog.ngc.nvidia.com/orgs/nvidia/teams/dgxc-benchmarking/resources/ft-llama3-8b-dgxc-benchmarking-e')
+S_FW = ('faster-whisper benchmark', 'https://pypi.org/project/faster-whisper/')
+S_MT = ('Tok Pisin translation study, 2026', 'https://arxiv.org/pdf/2609.13615')
+S_MMS = ('MMS voices: non-commercial', 'https://huggingface.co/facebook/mms-tts')
+S_BR = ('Bedrock in Australia', 'https://aws.amazon.com/blogs/machine-learning/introducing-amazon-bedrock-cross-region-inference-for-claude-sonnet-4-5-and-haiku-4-5-in-japan-and-australia/')
+S_PNG = ('PNG Power rates', 'https://www.thenational.com.pg/?p=202943')
+S_QWEN = ('Qwen3.5-4B', 'https://huggingface.co/Qwen')
+TECH = [  # (group, item, number, basis)
+ ('Our own AI model', 'Base model', 'Qwen3.5-4B (Apache 2.0, Feb 2026, 201 languages); Gemma 4 E4B (Apache 2.0) as the fallback',
+  'Both licences allow commercial use with no user cap. At 4-bit the model is about 3 GB, so it fits one 24 GB card with room to spare. ' + srcs(S_QWEN)),
+ ('', 'Tuning', 'LoRA on about 30,000 examples (about 25M tokens a pass); one run takes about 1–2 H100-hours',
+  'NVIDIA measures about 18,000 tokens a second per H100 for LoRA on an 8B model; our model is half that size. The 100 GPU-hours cover about 40 runs plus evaluation and compression. ' + srcs(S_LORA)),
+ ('', 'Server card', 'NVIDIA RTX PRO 4000 Blackwell: 24 GB with error correction, 672 GB/s, 140 W',
+  'A professional card built to run all day; low power suits PNG supply. ' + srcs(S_CARD)),
+ ('', 'Capacity', '30 children asking at once: first words in about 1–2 s, a full answer in about 3–5 s. A normal class (2–5 asking at once): about 1–2 s. Planning ceiling: about 100 children',
+  'A 24 GB, 600 GB/s A10 served Qwen3-8B to 256 requests at once with none dropped; our card is faster and the model half the size. Load-tested with the real model before launch. ' + srcs(S_BENCH)),
+ ('', 'Demand', 'One-way: about 5 requests per child an hour. Two-way: about 30. Thirty children in two-way: about 15 requests a minute, about 40 output tokens a second',
+  'A small fraction of the card’s capacity, so there is headroom for a second class or longer answers.'),
+ ('', 'Running cost', f'About A${POWER} a month in power; no per-token cost',
+  '250 W for 6 hours a school day, about 33 kWh a month, at about K1 per kWh. ' + srcs(S_PNG)),
+ ('', 'Weak spot: Tok Pisin', 'Small open models write Tok Pisin poorly',
+  'Even a 31B model scored below a dedicated translation model in a 2026 study. So Kumi’s Tok Pisin comes from the approved lines and the dictionary, open answers are checked against the glossary, and English is the model’s strong language. ' + srcs(S_MT)),
+ ('Claude', 'Model and region', 'Claude Haiku 4.5 through Amazon Bedrock’s Australian profile, US$1 in and US$5 out per million tokens, plus a 10% allowance',
+  'Requests stay in Australia; Japan’s in-country profile costs 10% more, so we allow the same. ' + srcs(S_BR)),
+ ('', 'Tokens per child', 'One-way: about 220 input and 18 output tokens a minute (13,000 and 1,050 a one-hour session). Two-way: about 1,050 and 80 a minute (63,000 and 4,800 a session)',
+  'Five help requests a session for one-way, about 30 spoken exchanges for two-way, plus one curation call; the lesson context is cached.'),
+ ('', 'Cost per child a month', f'One-way: about A${AI1*g["SESS"]*FX*BEDROCK_AU:.2f}. Two-way: about A${AI2*g["SESS"]*FX*BEDROCK_AU:.2f}. For 100 children: about A${AI1*g["SESS"]*FX*BEDROCK_AU*100:.0f} or A${AI2*g["SESS"]*FX*BEDROCK_AU*100:.0f} a month',
+  f'{g["SESS"]} one-hour sessions a month. Even at four times the expected use, two-way stays near A$4 a child a month.'),
+ ('Speech', 'Listening (Tok Pisin and English)', 'Start from Meta’s Omnilingual ASR, which lists Tok Pisin (tpi_Latn), and compare with Whisper small; train the better one on children’s speech',
+  'Omnilingual ASR is Apache 2.0, so commercial use is allowed; this lowers our reliance on the IARPA Babel corpus, whose commercial terms are still unconfirmed. About 200 H100-hours. ' + srcs(S_OMNI)),
+ ('', 'Speed on school computers', 'Whisper small at 8-bit runs about 7 times faster than real time on a desktop processor',
+  'Measured on an i7-12700K; school 8 GB computers will be slower, so speed is measured from week 5. If they are too slow, listening moves to the GPU server. ' + srcs(S_FW)),
+ ('', 'Kumi’s voice', 'Piper (MIT licence) trained on our voice actor’s recordings, about 150 H100-hours',
+  'We own the recordings and the voice. Meta’s MMS has a Tok Pisin-capable voice set but its licence is non-commercial, so it is not used. ' + srcs(S_MMS)),
+ ('', 'English voice', 'ElevenLabs, US$99 a month (Pro, 500k credits), Online only', 'Never used for Tok Pisin.'),
+]
+TECH_HTML = ('<h2>Technical numbers</h2><p class="h2sub">The assumptions behind the AI and speech costs, with sources. Figures marked “about” are estimates from published benchmarks of similar hardware, to be confirmed by our own load tests.</p>'
+             '<div class="card"><table><tr><th></th><th>Item</th><th>Number</th><th>Basis</th></tr>' +
+             ''.join(f"<tr><td><b>{grp}</b></td><td>{it}</td><td>{num}</td><td>{basis}</td></tr>" for grp, it, num, basis in TECH) + '</table></div>')
+
 # ---- 5. the rail ----
 SUBJECTS = [('num', 'Numeracy', True), ('lit', 'Literacy', True), ('pd', 'Personal development', False)]   # each with its own hours of content; Core is numeracy and literacy, 10 hours each
 STEPS = [  # (number, title, hint, rows); a row is (id, label, badge HTML) or ('-', sub-heading)
@@ -330,16 +380,17 @@ STEPS = [  # (number, title, hint, rows); a row is (id, label, badge HTML) or ('
  ('3', 'Lessons', 'Tick Subjects, then the subjects and their hours. Content is provided to us unless ticked.', [('lessons', 'Subjects', ''), ('=', 'subjects'),
                            ('content_own', 'We prepare the content', '', 'sub'), ('tests', 'Benchmark tests', '')]),
  ('4', 'AI content curation', 'Pick one', [('claude', 'Claude AI', '<span class="mode on">Online</span>'), ('ownai', 'Own AI model', '<span class="mode off">Offline</span>'),
-                                          ('hwbuy', 'Buy GPU server', '', 'sub'), ('hwlease', 'Lease GPU server', '', 'sub'), ('trrent', 'Rent GPU to train (cloud)', '', 'sub'), ('trbuy', 'Buy GPU to train', '', 'sub')]),
+                                          ('hwbuy', 'Buy GPU server', '', 'sub'), ('hwlease', 'Lease GPU server', '', 'sub')]),
  ('5', 'AI speech', 'Pick the languages first, then the mode. Two-way applies to every language ticked.',
   [('-', 'Language · one or both'), ('eleven', 'English', '<span class="mode on">ElevenLabs · Online</span>'), ('ownspeech', 'Tok Pisin', '<span class="mode off">Our own speech model · no ElevenLabs</span>'),
    ('-', 'Mode · pick one'), ('oneway', 'One-way', '<span class="req">Kumi talks</span>'), ('twoway', 'Two-way', '<span class="req">the child talks too</span>')]),
+ ('7', 'Training GPU', 'For our own AI model and Tok Pisin speech: rent by the hour, or buy one workstation that trains both.', [('trrent', 'Rent GPU to train (cloud)', ''), ('trbuy', 'Buy GPU to train', '')]),
  ('6', 'Extras', '', [('review', 'Weekly AI check', ''), ('expert', 'Expert teacher check', ''), ('retrain', 'Retrain on pilot data', '<span class="mode off">Own AI</span>')])]
 REQ = {'found': [], 'desktop': [], 'online': [['desktop']], 'offline': [['desktop']], 'login': [['desktop']], 'teacher': [['online'], ['lessons']],
        'lessons': [['desktop']], 'content_own': [['lessons']], 'tests': [['lessons']], 'expert': [['lessons']],
        'claude': [['online'], ['lessons']], 'ownai': [['lessons'], ['hwbuy', 'hwlease'], ['trrent', 'trbuy']], 'hwbuy': [['ownai']], 'hwlease': [['ownai']],
        'oneway': [['lessons'], ['eleven', 'ownspeech']], 'twoway': [['lessons'], ['eleven', 'ownspeech'], ['claude', 'ownai']],
-       'eleven': [['oneway', 'twoway']], 'ownspeech': [['oneway', 'twoway']], 'review': [['claude', 'ownai']], 'trrent': [['ownai']], 'trbuy': [['ownai']], 'retrain': [['ownai']]}
+       'eleven': [['oneway', 'twoway']], 'ownspeech': [['oneway', 'twoway'], ['trrent', 'trbuy']], 'review': [['claude', 'ownai']], 'trrent': [['ownai', 'ownspeech']], 'trbuy': [['ownai', 'ownspeech']], 'retrain': [['ownai']]}
 LOCK = {'claude': {}, 'teacher': {}, 'eleven': {}, 'review': {}}   # need the internet, so locked until Online is ticked
 GROUP = {'claude': 'cur', 'ownai': 'cur', 'hwbuy': 'hw', 'hwlease': 'hw', 'trrent': 'tr', 'trbuy': 'tr', 'oneway': 'mode', 'twoway': 'mode'}
 assert set(REQ) == set(ALL)
@@ -397,7 +448,7 @@ ULAB = {code: union_label(v) for code, v in LABELS.items()}
 DATA = dict(partLabel=PART_LABEL, ttl=TTL, tasks=TASKS, roles={r: dict(name=NAME[r], rate=RATE[r]) for r in RATE}, tps=TPS + OWN_TP,
             req=REQ, group=GROUP, lock=LOCK, items=list(ALL), steps={num: [r[0] for r in rows if r[0] not in '-='] for num, _, _, rows in STEPS},
             ops=[dict(id=i, c=c) for i, n, h, c in OPS], subjects=[[k, nm] for k, nm, on in SUBJECTS], scale=dict(floor=FLOOR_SHARE, k=K, pool=POOL_CORE), elevenSrc=g['SRC']['elevenlabs'][1], ulab=ULAB, resps=RESPS, titles=TITLES, teamp=TEAMP, pcBuy=PC_BUY, pcLease=PC_LEASE,
-            run=dict(host=150, lic=g['LIC'], aiStu=g['AI_PER']*g['SESS']*FX, sess=g['SESS'], support=g['SUPPORT'], seRate=RATE['SE'],
+            run=dict(host=150, lic=g['LIC'], aiStu=AI1*g['SESS']*FX*BEDROCK_AU, aiStu2=AI2*g['SESS']*FX*BEDROCK_AU, power=POWER, sess=g['SESS'], support=g['SUPPORT'], seRate=RATE['SE'],
                      credits=5*150*g['SESS']*0.5, voice=[[500000, 99*FX, 'Pro'], [2000000, 330*FX, 'Scale'], [None, 1320*FX, 'Business']]))
 JS = r"""<script>(function(){
 var D=__DATA__, S={}, root=document.documentElement, body=document.body;
@@ -420,7 +471,7 @@ function fac(p,nl){return D.scale.floor+D.scale.k*feat(p,nl)/D.scale.pool;}   //
 function ownLab(T,nl){var p=preds(T),o={},F=0;for(var c in D.tasks)D.tasks[c].parts.forEach(function(pt){if(p[pt.c]&&pt.c!=='found'&&pt.c!=='test'&&!pt.per){
   var w=OWN[pt.c]?OWN[pt.c](T):pt.c,v=pc(pt,nl,1);o[w]=(o[w]||0)+v;F+=v;}});return {by:o,F:F};}   // each step's own build work, which its testing follows
 function preds(S){var p={};for(var k in S)p[k]=!!S[k];p.both_net=p.online&&p.offline;p.online_only=p.online&&!p.offline;p.cur=p.claude||p.ownai;p.curoff=p.cur&&p.offline;p.mode=p.oneway||p.twoway;p.tprec=p.ownspeech&&p.twoway;
- p.speechrun=p.twoway||p.ownspeech;p.eleven_mode=p.eleven&&p.mode;p.eleven_own=p.eleven&&p.ownspeech;p.buy=p.ownai&&p.hwbuy;p.lease=p.ownai&&p.hwlease;p.retrain_rent=p.retrain&&p.trrent;p.test=true;return p;}
+ p.speechrun=p.twoway||p.ownspeech;p.eleven_mode=p.eleven&&p.mode;p.eleven_own=p.eleven&&p.ownspeech;p.buy=p.ownai&&p.hwbuy;p.lease=p.ownai&&p.hwlease;p.retrain_rent=p.retrain&&p.trrent;p.ownai_rent=p.ownai&&p.trrent;p.tprec_rent=p.tprec&&p.trrent;p.ownspeech_rent=p.ownspeech&&p.trrent;p.test=true;return p;}
 var ALLON=preds((function(){var a={};D.items.forEach(function(k){a[k]=true;});return a;})());
 function amt(pt,f){return pt.amt==='pcbuy'?f.pcs*D.pcBuy:pt.amt;}
 function build(S,f){var p=preds(S),lab=0,wks=0,tp=0,nl=nlOf(S,f),fa=fac(p,nl);
@@ -429,7 +480,7 @@ function build(S,f){var p=preds(S),lab=0,wks=0,tp=0,nl=nlOf(S,f),fa=fac(p,nl);
  var direct=lab+tp,mg=0.10*lab,ct=0.15*direct;return {lab:lab,wks:wks,tp:tp,mg:mg,ct:ct,total:direct+mg+ct};}
 var OWN={both_net:function(){return 'offline';},curoff:function(S){return S.claude?'claude':'ownai';},online_only:function(){return 'online';},cur:function(S){return S.claude?'claude':'ownai';},mode:function(S){return S.twoway?'twoway':'oneway';},tprec:function(){return 'ownspeech';},
  speechrun:function(S){return S.twoway?'twoway':'ownspeech';},eleven_mode:function(){return 'eleven';},eleven_own:function(){return 'ownspeech';},
- buy:function(){return 'hwbuy';},lease:function(){return 'hwlease';},retrain_rent:function(){return 'retrain';}};
+ buy:function(){return 'hwbuy';},lease:function(){return 'hwlease';},retrain_rent:function(){return 'retrain';},ownai_rent:function(){return 'trrent';},tprec_rent:function(){return 'trrent';},ownspeech_rent:function(){return 'trrent';}};
 function shares(S,f){var p=preds(S),sh={},nl=nlOf(S,f),fa=fac(p,nl),L=ownLab(S,nl);function add(c,v){
   var o=OWN[c]?OWN[c](S):c;sh[o]=(sh[o]||0)+v;}
  for(var c in D.tasks)D.tasks[c].parts.forEach(function(pt){if(!p[pt.c])return;var v=pc(pt,nl,fa)*1.25;
@@ -478,8 +529,8 @@ function detail0(id,f){if(!S[id]&&id!=='hwlease'){var X=delta(id,f);if(!X.order.
   +(order.length>1||G[order[0]].rows.length>1?'<div class="drow tt"><span>Total</span><b>'+fmt(tot)+'</b></div>':'')+(id==='ownai'?'<div class="dnote">The GPU server (buy or lease) is priced on its own line.</div>':'');}
 function plan(n){var c=n*D.run.credits;for(var i=0;i<D.run.voice.length;i++){var v=D.run.voice[i];if(v[0]===null||c<=v[0])return v;}}
 function running(S,f){var p=preds(S),o={},n=f.n;
- o.host=p.online?D.run.host:0;o.lic=p.desktop?D.run.lic:0;o.claude=p.claude?D.run.aiStu*n:0;o.eleven=p.eleven_mode?plan(n)[1]:0;
- o.ownai=0;o.lease=p.lease?f.pcs*D.pcLease:0;o.ownspeech=0;o.support=p.desktop?D.run.support*Math.ceil(n/300):0;
+ o.host=p.online?D.run.host:0;o.lic=p.desktop?D.run.lic:0;o.claude=p.claude?(p.twoway?D.run.aiStu2:D.run.aiStu)*n:0;o.eleven=p.eleven_mode?plan(n)[1]:0;
+ o.ownai=p.ownai?D.run.power*f.pcs:0;o.lease=p.lease?f.pcs*D.pcLease:0;o.ownspeech=0;o.support=p.desktop?D.run.support*Math.ceil(n/300):0;
  var t=0;for(var k in o)t+=o[k];o.total=t;return o;}
 // ticking: exclusive groups, and each step's requirements (auto-ticked) and dependants (auto-cleared)
 function sat(r,T){return r.some(function(x){return T[x];});}
@@ -578,7 +629,7 @@ function render0(){var f=fields(),p=preds(S),B=build(S,f),R=running(S,f),role={}
  document.getElementById('cs-ct').textContent=fmt(B.ct);document.getElementById('cs-tot').textContent=fmt(B.total);
  // operating cost
  var pl=plan(f.n);
- document.getElementById('op-how-claude').textContent='About '+D.run.sess+' sessions per student a month, about A$'+D.run.aiStu.toFixed(2)+' per student';
+ document.getElementById('op-how-claude').textContent=(p.twoway?'Two-way: about 30 spoken exchanges a session, about 63,000 input and 4,800 output tokens (about 1,050 in and 80 out a minute)':'One-way: about 5 help requests a session, about 13,000 input and 1,050 output tokens (about 220 in and 18 out a minute)')+'. '+D.run.sess+' one-hour sessions a month on Claude Haiku 4.5, so about A$'+(p.twoway?D.run.aiStu2:D.run.aiStu).toFixed(2)+' per student, including 10% for processing in Australia';
  document.getElementById('op-how-eleven').textContent=pl[2]+' plan, sized to '+f.n+' students';
  document.getElementById('op-how-lease').textContent=f.pcs+(f.pcs===1?' GPU server':' GPU servers')+' × A$'+D.pcLease+' a month (36-month lease)';
  document.getElementById('op-how-support').textContent=(2*Math.ceil(f.n/300))+' days a month at A$'+D.run.seRate+'/day (2 days per 300 students)';
@@ -602,7 +653,7 @@ function render0(){var f=fields(),p=preds(S),B=build(S,f),R=running(S,f),role={}
  var hr=hourRate();D.subjects.forEach(function(s){var on=document.querySelector('input[data-subj="'+s[0]+'"]').checked,h=+document.querySelector('input[data-hrs="'+s[0]+'"]').value||10;
   document.getElementById('subj-'+s[0]).classList.toggle('on',on);document.getElementById('pc-s-'+s[0]).textContent=(on?'':'+')+fmt(h*hr);});
  for(var num in D.steps)document.getElementById('done-'+num).textContent=D.steps[num].some(function(id){return S[id];})?'✓':'';
- ['hwbuy','hwlease','trrent','trbuy'].forEach(function(k){document.getElementById('row-'+k).style.display=S.ownai?'':'none';if(!S.ownai)document.getElementById('det-'+k).hidden=true;});
+ ['hwbuy','hwlease','trrent','trbuy'].forEach(function(k){var vis=k[0]==='h'?S.ownai:S.ownai||S.ownspeech;document.getElementById('row-'+k).style.display=vis?'':'none';if(!vis)document.getElementById('det-'+k).hidden=true;});
  document.getElementById('total').textContent=fmt(B.total);document.getElementById('tabtotal').textContent=fmt(B.total);
  document.getElementById('run-total').textContent=fmt(R.total);document.getElementById('run-stu').textContent=f.n;
  if(window.cmtReapply)window.cmtReapply();   // keep comment highlights after the text changes
@@ -697,6 +748,7 @@ page = f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name
 {HOW}
 {body}
 {OPS_HTML}
+{TECH_HTML}
 </div>{JS}</body></html>"""
 page = page.replace('Pijin', 'Tok Pisin').replace('Kingi', 'Kumi')
 OFFICIAL = {   # the quote builder links to official product and pricing pages, not price trackers or blogs
