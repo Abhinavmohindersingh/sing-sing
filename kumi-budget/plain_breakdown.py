@@ -2,7 +2,7 @@
 The page starts at $0 with every line struck through. Ticking a step in the left rail adds its cost and
 un-strikes its lines in the breakdown; the build total and the monthly operating cost update as you go.
 Full scope comes from the Tier 3 run of gen_v2.py, with on-ground pilot work cut (always struck: "Not in our scope").
-Run: python3 plain_breakdown.py   ->  kumi-cost-breakdown-full.html (local file, not published)"""
+Run: python3 plain_breakdown.py   ->  kumi-cost-breakdown-full.html, and the live copy ../public/kumi-quote-builder.html (/kumi-quote-builder)"""
 import contextlib, html, io, json, math, os, re, runpy, subprocess, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, 'kumi-cost-breakdown-full.html')
@@ -558,6 +558,7 @@ function render(){var f=fields(),p=preds(S),B=build(S,f),R=running(S,f),role={},
  ['hwbuy','hwlease','trrent','trbuy'].forEach(function(k){document.getElementById('row-'+k).style.display=S.ownai?'':'none';if(!S.ownai)document.getElementById('det-'+k).hidden=true;});
  document.getElementById('total').textContent=fmt(B.total);document.getElementById('tabtotal').textContent=fmt(B.total);
  document.getElementById('run-total').textContent=fmt(R.total);document.getElementById('run-stu').textContent=f.n;
+ if(window.cmtReapply)window.cmtReapply();   // keep comment highlights after the text changes
  document.getElementById('banner').innerHTML=B.total?'<b>Struck-through lines are not in this build.</b> Lines marked <span class="oos">Not in our scope</span> are on-ground pilot work, run by the partner.'
   :'<b>Nothing selected yet.</b> Tick the steps on the left to build the quote. Every line below stays struck through until you add it.';}
 [].forEach.call(document.querySelectorAll('.rail input[data-id]'),function(b){b.addEventListener('change',function(){
@@ -645,5 +646,32 @@ OFFICIAL = {   # the quote builder links to official product and pricing pages, 
  'https://smallest.ai/blog/elevenlabs-pricing-plans-cost-what-you-get-in-2026': 'https://elevenlabs.io/pricing',
  'https://sslinsights.com/digicert-vs-sectigo-code-signing/': 'https://www.sectigo.com/ssl-certificates-tls/code-signing'}
 for old, new in OFFICIAL.items(): page = page.replace(old, new)
+# ---- 7. the comment tool: highlight text to comment, plus overall feedback; exports carry the ticks and the total ----
+cw = open(os.path.join(HERE, 'cmt_widget.html'), encoding='utf8').read()
+for old, new in [
+ ("var KEY = 'kumi-budget-v2-comments';", "var KEY = 'kumi-quote-builder-comments';"),
+ ("""    <textarea id="cmt-copybox" readonly""", """    <div class="cmt-overall"><label for="cmt-overall"><b>Overall feedback</b> <span class="cmt-hint">anything not tied to one line</span></label><textarea id="cmt-overall" placeholder="What should change before this is final?"></textarea></div>
+    <textarea id="cmt-copybox" readonly"""),
+ ("""    var head = 'Kumi Grade 3 pilot budget v2 — comments (' + store.length + ')\\n\\n';""",
+  """    var K = window.KUMI, S = K ? K.S() : {}, on = Object.keys(S).filter(function (k) { return S[k]; }).map(function (k) { var r = document.querySelector('#row-' + k + ' .nm span'); return r ? r.childNodes[0].textContent.trim() : k; });
+    var head = 'Kumi quote builder — feedback (' + store.length + ' comments)\\n\\nBuild: ' + (K ? '$' + Math.round(K.total()).toLocaleString('en-AU') : '') + ' · ticked: ' + (on.join(', ') || 'nothing') + '\\n\\n' +
+      (ov.value.trim() ? 'Overall feedback:\\n' + ov.value.trim() + '\\n\\n' : '');"""),
+ ("a.download = 'kumi-budget-v2-comments.txt';", "a.download = 'kumi-quote-builder-feedback.txt';"),
+ ("""  store.forEach(function (c) {
+    var k = locate(c);""", """  var ov = $('cmt-overall');
+  try { ov.value = localStorage.getItem(KEY + '-overall') || ''; } catch (e) {}
+  ov.addEventListener('input', function () { try { localStorage.setItem(KEY + '-overall', ov.value); } catch (e) {} });
+  window.cmtReapply = function () {   // the builder rewrites its text on every tick; put the highlights back
+    store.forEach(function (c) { if (document.querySelector('mark.cmt[data-cid="' + c.id + '"]')) return; var k = locate(c); c.lost = k < 0; if (k >= 0) wrapGlobal(k, k + c.quote.length, c.id); });
+    render();
+  };
+  store.forEach(function (c) {
+    var k = locate(c);"""),
+ ("#cmt-list{", ".cmt-overall{padding:10px 16px;border-bottom:1px solid #eceef0}.cmt-overall label{display:block;font-size:13px;color:#0b1f3a;margin-bottom:6px}\n  #cmt-list{"),
+]:
+    assert cw.count(old) == 1, old[:60]; cw = cw.replace(old, new)
+page = page.replace('</body></html>', cw + '</body></html>')
+assert 'cmt-overall' in page
 open(OUT, 'w', encoding='utf8').write(page)
+open(os.path.join(HERE, '..', 'public', 'kumi-quote-builder.html'), 'w', encoding='utf8').write(page)   # live at /kumi-quote-builder (noindex; shows day rates, published with the owner's OK)
 print(OUT, len(page), '| Core, 20 lessons', round(build_total(OLD_CORE)), '| everything, 30 lessons', round(build_total(ALL, nl=30)), '| per hour of content', round(build_total(dict(OLD_CORE), nl=21) - build_total(OLD_CORE)))

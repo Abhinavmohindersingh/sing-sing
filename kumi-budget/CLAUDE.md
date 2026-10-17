@@ -6,7 +6,7 @@ Never mention Solomon Kings, Kingi or "the club" anywhere. Write **Tok Pisin**, 
 ## Run it
 ```
 cd kumi-budget
-python3 plain_breakdown.py   # the quote builder -> kumi-cost-breakdown-full.html (open it in a browser; it holds internal day rates, do not publish)
+python3 plain_breakdown.py   # the quote builder -> kumi-cost-breakdown-full.html, plus the live copy ../public/kumi-quote-builder.html (/kumi-quote-builder, noindex). It shows internal day rates; the owner OK'd publishing it
 python3 build_tiers.py       # the live budget page -> ../public/kumi-pilot-budget.html (no rates) + dist/ (with rates)
 ```
 `plain_breakdown.py` refuses to build if its totals drift from `gen_v2.py` (agreed Core = Tier 1; the raw task data must also add up to Tier 3 before the foundation scaling). Keep those checks passing.
@@ -35,6 +35,8 @@ python3 build_tiers.py       # the live budget page -> ../public/kumi-pilot-budg
 - Totals (20 hours of content, content prepared by us): Core **$164,103**; everything at 30 hours **$285,472** (the live budget page's Tier 1 and Tier 3 are unchanged).
 
 - **Consistency rules:** the offline help bank (D3) needs Offline; benchmark tests, AI curation, Kumi's speech and the teacher screen need Subjects; the weekly AI check needs Online (it reads conversation logs). Offline only locks Claude, English voice, the teacher screen and the weekly check, and no longer forces our own AI or Tok Pisin speech. Kumi's voice wording (A2, D3) and where profiles live (A2) follow the ticks. E1's report data feeds the partner's reports.
+
+- **Comments:** the quote builder has the comment tool (highlight text, plus an Overall feedback box). Comments stay in each reviewer's browser; Copy all / Download exports them with the ticks and total, to paste back here.
 
 ## Open items
 - The live page (`/kumi-pilot-budget`) is older than the generator: the Tier 1 "English voice only, Tok Pisin on screen" change is built but not published (it would make Tier 1 $239,420).
