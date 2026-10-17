@@ -15,8 +15,8 @@ os.environ.update(PLATFORM='1',   # platform-only wording; project management 3 
 # Hardware for our own AI model (16 GB computers). Provisional: confirm with a live quote.
 PC_BUY = 1100    # A$ each: Lenovo ThinkCentre Neo 50q Gen 4 (i5, 16 GB) listed at A$889–1,107 (Kickstart Computers, Oct 2026)
 PC_LEASE = 45    # A$ a month each, 36-month lease: estimate (Lenovo device-as-a-service from US$33.69/month ≈ A$52 incl. support; HP AU leases 24–60 months)
-OWN_GPU = 40*5   # 40 GPU-hours at ~A$5/hour to tune our own model (same rate as the speech training)
-OWN_DATA = 300   # about 30,000 training examples written with Claude Haiku 4.5 (about 30M tokens in and out ≈ US$180)
+OWN_GPU = 100*5  # 100 GPU-hours at ~A$5/hour: several tuning runs, evaluation on the validation and test sets, and 4-bit compression (same rate as the speech training)
+OWN_DATA = round(30000*((4000*2 + 1500*10) + (3000*2 + 300*10))/1e6*0.5*1.55)   # 30,000 examples written, then each checked, by Claude Sonnet 5.5 in batches (half price) ≈ US$480 at A$1.55
 SRC_PC = [("Lenovo ThinkCentre Neo 50q Gen 4, 16 GB (Kickstart Computers)", "https://kickstartcomputers.com.au/shop/desktop-notebooks/desktop-computers/lenovo-thinkcentre-neo-50q-g4-tiny-12ln007pau-intel-i5-13420h-16gb-3200mhz-512gb-ssd-w11p-3-3-3/"),
           ("HP Australia business leasing terms", "https://www.hp.com/au-en/shop/hp-business-leasing"),
           ("Lenovo device-as-a-service monthly pricing (US)", "https://lenovo.com/us/en/business/device-as-a-service")]
@@ -92,8 +92,8 @@ for item, amt, basis, src, t in g['TP_IN']:
     else:
         parts = [dict(c=c, amt=amt)]
     TPS.append(dict(id=f"tp{len(TPS)}", key=key, item=item, parts=parts))
-OWN_TP = [dict(id='tpgpu', item='GPU rental to tune our own AI model: about 40 GPU-hours', basis='~A$5/hr: H100 on-demand', parts=[dict(c='ownai', amt=OWN_GPU)]),
-          dict(id='tpdata', item='Training data for our own AI model: about 30,000 example lessons-and-help conversations written with Claude', basis='Claude Haiku 4.5, about 30M tokens', parts=[dict(c='ownai', amt=OWN_DATA)]),
+OWN_TP = [dict(id='tpgpu', item='GPU rental to tune our own AI model: about 100 GPU-hours', basis='~A$5/hr: H100 on-demand. Several tuning runs, evaluation and compression', parts=[dict(c='ownai', amt=OWN_GPU)]),
+          dict(id='tpdata', item='Training data for our own AI model: about 30,000 example lessons-and-help conversations written and checked with Claude', basis='Claude Sonnet 5.5 in batches, about 260M tokens', parts=[dict(c='ownai', amt=OWN_DATA)]),
           dict(id='tppc', item='16 GB computers to run our own AI model, bought', basis='', parts=[dict(c='buy', amt='pcbuy')])]
 
 # check: with everything on, the parts add back up to the generator's own totals

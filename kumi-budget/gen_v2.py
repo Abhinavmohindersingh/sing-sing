@@ -135,7 +135,7 @@ if os.environ.get('KEYWORDS'):   # platform-only view: the Core's one-way AI spe
 
 if os.environ.get('OWNAI'):   # quote-builder view: our own AI model as a priced task (the on-device add-on, made a choice)
     W.insert(next(k for k, w in enumerate(W) if w[1] == 'E1'),
-     ("D","D5",0,"Our own AI model on the school computer|A small open-source language model (1–4 billion parameters, licensed for commercial use) on each computer, so Kumi’s AI help works with no internet|Tuned on Kumi’s lessons and persona, using about 30,000 training examples written with Claude and checked by the linguist|Compressed to 4-bit to fit on the computer: needs 16 GB computers (bought or leased)|Safety-tested in English and Tok Pisin and compared with Claude before launch",[("AI",4.5),("PL",1.0),("QA",1.0)]))
+     ("D","D5",0,"Our own AI model on the school computer|A small open-source language model (1–4 billion parameters, licensed for commercial use) on each computer, so Kumi’s AI help works with no internet|Tuned on Kumi’s lessons and persona, using about 30,000 training examples written with Claude and checked by the linguist|Training data cleaned, de-duplicated and split into training (80%), validation (10%) and test (10%) sets, so the model is judged on examples it has never seen|A 500-example test set checked by hand by the content developer|Compressed to 4-bit to fit on the computer: needs 16 GB computers (bought or leased)|Safety-tested in English and Tok Pisin and compared with Claude before launch",[("AI",5.5),("UX",1.0),("PL",1.0),("QA",1.0)]))
 
 if os.environ.get('PLATFORM'):   # quote builder: Sing Singh AI builds the platform; the partner runs the school side of the pilot
     RESP['PL'] = RESP['PL'].replace(' The local on-call contact in Port Moresby during the pilot.', '')
@@ -276,6 +276,12 @@ TP = [  # item, AUD, basis, source, first tier
  ("Local transport for school visits in Port Moresby (provisional sum)", 15*40, "About 15 visits × A$40", None, 0),
  ("Teacher allowance for extra time during the pilot (provisional sum, agreed with the school)", 2*10*50, "2 teachers × 10 weeks × A$50", None, 0),
 ]
+if os.environ.get('PLATFORM'):   # quote builder: the Claude allowance worked out from the build and test workload
+    _conv = lambda i, o, pi, po: (i*pi + o*po)/1e6   # US$ per call, prices per million tokens
+    _kumi = _conv(9000, 1200, 1, 5); _grade = _conv(8000, 500, 2, 10)*0.5   # a 6-exchange test lesson on Haiku 4.5; graded by Sonnet 5.5 in a batch (half price)
+    _claude = (18000*_conv(6000, 800, 1, 5) + 18000*(_kumi + _grade) + 15000*(_kumi + _grade) + 3900*_kumi*0.6 + 1800*_conv(4000, 800, 2, 10))*1.5*FX
+    _i = next(i for i, t in enumerate(TP) if t[0].startswith("Claude API"))
+    TP[_i] = (TP[_i][0], _claude, "Prompt tuning (about 18,000 calls); about 18,000 automated test lessons and 15,000 safety tests, graded by Claude Sonnet 5.5 in batches; load tests; drafting the offline help bank. Plus 50% for re-runs after fixes. Claude Haiku 4.5 US$1/US$5, Sonnet 5.5 US$2/US$10 per million tokens", "claude", 1)
 TP_CUT_KEYS = {"Headsets": "headsets", "Local transport": "transport", "Teacher allowance": "allowance", "Criminal record": "criminal"}
 def tp_cut(name): return any(k in name and v in CUT for k, v in TP_CUT_KEYS.items())
 TP_IN = [x for x in TP if x[4] <= TIER and not tp_cut(x[0])]

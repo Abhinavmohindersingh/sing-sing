@@ -27,7 +27,9 @@ python3 build_tiers.py       # the live budget page -> ../public/kumi-pilot-budg
 - Cut from scope and shown struck as "Not in our scope": on-ground pilot work (installation, travel, pilot support, comparison class, reports), headsets, criminal checks.
 - Project management is 3 weeks at Core. Testing is trimmed to release readiness.
 - **Foundation grows with the build:** setup, safeguarding, and security and backup are fixed; the cloud backend (A5) comes with Online; requirements, architecture, testing, bug fixing and project management (`POOL`) are 35% of their Core amount plus about 32% of the feature work ticked (lesson hours excluded), set so Core still = Tier 1.
-- Totals (20 hours of content, content prepared by us): Core **$161,661**; everything at 30 hours **$286,935** (was $269,249 before the foundation scaling; the live budget page's Tier 3 is still $269,249).
+- **Claude during the build** is priced from the workload (prompt tuning, ~18,000 test lessons, ~15,000 safety tests graded by Sonnet 5.5 in batches, load tests, help bank, +50% re-runs): about A$2,500, set in `gen_v2.py` under `PLATFORM` only, so the live page is untouched.
+- **Our own AI model:** 30,000 training examples written and checked with Sonnet 5.5 (~A$745), 100 GPU-hours to tune (A$500), plus data prep in D5 (80/10/10 split, 500-example hand-checked test set: +1 wk AI engineer, +1 wk content developer).
+- Totals (20 hours of content, content prepared by us): Core **$164,103**; everything at 30 hours **$289,377** (the live budget page's Tier 1 and Tier 3 are unchanged).
 
 ## Open items
 - The live page (`/kumi-pilot-budget`) is older than the generator: the Tier 1 "English voice only, Tok Pisin on screen" change is built but not published (it would make Tier 1 $239,420).
