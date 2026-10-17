@@ -179,7 +179,7 @@ body = re.sub(r'<div class="runhead">.*?</div>', '', body, flags=re.S)
 body = drop_div(body, "<div class='outputs'>"); body = drop_div(body, "<div class='note pre'>")
 body = re.sub(r"<span class='chip c\d'>T\d</span>", '', body)
 body = re.sub(r"<span class='h\d'>(.*?)</span>", r'\1', body, flags=re.S)
-BULLET_COND = {('A1', 2): 'twoway', ('C2', 1): 'cur', ('C1', 2): 'ownspeech', ('G3', 1): 'cur'}   # bullets whose tier is not a step in COND
+BULLET_COND = {('A1', 2): 'twoway', ('C2', 1): 'cur', ('C1', 1): 'eleven', ('C1', 2): 'ownspeech', ('G3', 1): 'cur'}   # bullets whose tier is not a step in COND
 def tag_bullets(m):
     code, spec = m.group(2), COND.get(m.group(2))
     def one(b):
@@ -299,7 +299,7 @@ HOW = f'''<h2>How Kumi works</h2><ol class="how">
 <span class="sub"><b>One-way</b> Kumi talks to the child. The child taps Kumi, or says a keyword like “help” (halivim), “again” (gen) or “next” (nekis), and Kumi explains the step out loud. The child answers by tapping.</span>
 <span class="sub"><b>Two-way</b> A real conversation, like talking to a teacher: the child speaks any question about the lesson and Kumi answers out loud.</span>
 <span class="sub"><b>English: ElevenLabs</b> {L("English")} A natural English voice from a cloud service, so it needs the Online option. Monthly plan.</span>
-<span class="sub"><b>Tok Pisin: our own speech models</b> {L("Tok Pisin")} {OFF} No major provider supports Tok Pisin speech, so we build Kumi’s own Tok Pisin voice, and for two-way a model that understands children speaking Tok Pisin. No per-minute cost.</span></li>
+<span class="sub"><b>Tok Pisin: our own speech models</b> {L("Tok Pisin")} {OFF} No major provider supports Tok Pisin speech, so we build Kumi’s own Tok Pisin voice, and for two-way a model that understands children speaking Tok Pisin. ElevenLabs is never used for Tok Pisin. No per-minute cost.</span></li>
 <li><b>Teacher screen.</b> See how the whole class is doing and which students need help.</li></ol>'''
 OPS = [  # id, name, how it is worked out (filled in by the script where it depends on the fields), condition
  ('host', 'Cloud hosting', 'App server, database, storage and backups, AWS Sydney', 'online'),
@@ -332,7 +332,7 @@ STEPS = [  # (number, title, hint, rows); a row is (id, label, badge HTML) or ('
  ('4', 'AI content curation', 'Pick one', [('claude', 'Claude AI', '<span class="mode on">Online</span>'), ('ownai', 'Own AI model', '<span class="mode off">Offline</span>'),
                                           ('hwbuy', 'Buy GPU server', '', 'sub'), ('hwlease', 'Lease GPU server', '', 'sub'), ('trrent', 'Rent GPU to train (cloud)', '', 'sub'), ('trbuy', 'Buy GPU to train', '', 'sub')]),
  ('5', 'AI speech', 'Pick the languages first, then the mode. Two-way applies to every language ticked.',
-  [('-', 'Language · one or both'), ('eleven', 'English', '<span class="mode on">ElevenLabs · Online</span>'), ('ownspeech', 'Tok Pisin', '<span class="mode off">Our own speech model</span>'),
+  [('-', 'Language · one or both'), ('eleven', 'English', '<span class="mode on">ElevenLabs · Online</span>'), ('ownspeech', 'Tok Pisin', '<span class="mode off">Our own speech model · no ElevenLabs</span>'),
    ('-', 'Mode · pick one'), ('oneway', 'One-way', '<span class="req">Kumi talks</span>'), ('twoway', 'Two-way', '<span class="req">the child talks too</span>')]),
  ('6', 'Extras', '', [('review', 'Weekly AI check', ''), ('expert', 'Expert teacher check', ''), ('retrain', 'Retrain on pilot data', '<span class="mode off">Own AI</span>')])]
 REQ = {'found': [], 'desktop': [], 'online': [['desktop']], 'offline': [['desktop']], 'login': [['desktop']], 'teacher': [['online']],
@@ -489,7 +489,7 @@ function lessonText(h,nl){var st=subjText();
  .replace(/One lesson per subject per week: 2 hours of learning per child each week/g,'About '+(Math.round(nl/10*10)/10)+(nl===10?' hour':' hours')+' of learning per child each week')
  .replace(/about 600 approved lines/g,'about '+(nl*30).toLocaleString('en-AU')+' approved lines');}
 function words(p){var f=fields(),nl=f.hrs;var Ts=p.tprec?3:(p.twoway||p.ownspeech||p.review||p.expert)?2:(p.cur||p.mode)?1:0,
- Tc=p.twoway?2:(p.cur||p.mode)?1:0;function T(k){return CONTENT[k]?Tc:Ts;}
+ Tc=p.twoway?2:(p.cur||p.mode)?1:0,Tn=p.ownspeech?2:(p.cur||p.mode)?1:0;function T(k){return k==='C1'?Tn:CONTENT[k]?Tc:Ts;}   // C1's narration follows the language: ElevenLabs for English only, Kumi's own voice once Tok Pisin is ticked
  [].forEach.call(document.querySelectorAll('tr[data-code]'),function(tr){var k=tr.dataset.code,v=D.labels[k];if(v)tr.cells[1].innerHTML=lessonText(pick(v,T(k)),nl);});
  [].forEach.call(document.querySelectorAll('tr[data-role]'),function(tr){var k=tr.dataset.role,v=D.resps[k];if(v)tr.cells[1].innerHTML=lessonText(pick(v,T(k)),nl);});
  [].forEach.call(document.querySelectorAll('.nl'),function(e){e.textContent=nl;});
