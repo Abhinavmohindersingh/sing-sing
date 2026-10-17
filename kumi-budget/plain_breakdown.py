@@ -12,14 +12,15 @@ os.environ.update(PLATFORM='1',   # platform-only wording; project management 3 
                   OWNAI='1',      # D5: our own AI model on the school computer
                   CUT=','.join(CUT_CODES + ['headsets', 'transport', 'allowance', 'criminal', 'travel', 'pilot_run', 'bridge']))
 
-# Hardware for our own AI model (16 GB computers). Provisional: confirm with a live quote.
-PC_BUY = 1100    # A$ each: Lenovo ThinkCentre Neo 50q Gen 4 (i5, 16 GB) listed at A$889–1,107 (Kickstart Computers, Oct 2026)
-PC_LEASE = 45    # A$ a month each, 36-month lease: estimate (Lenovo device-as-a-service from US$33.69/month ≈ A$52 incl. support; HP AU leases 24–60 months)
+# Hardware for our own AI model: one GPU server per school, on the lab network. Provisional: confirm with a live quote.
+PC_BUY = 3000    # A$ each: desktop with a 16 GB graphics card (RTX 4060 Ti 16 GB class; the card alone is about A$730–2,250 in Australia, Oct 2026), plus a network switch
+PC_LEASE = 110   # A$ a month each, 36-month lease: estimate (buy price over 36 months, plus finance and support)
 OWN_GPU = 100*5  # 100 GPU-hours at ~A$5/hour: several tuning runs, evaluation on the validation and test sets, and 4-bit compression (same rate as the speech training)
 OWN_DATA = round(30000*((4000*2 + 1500*10) + (3000*2 + 300*10))/1e6*0.5*1.55)   # 30,000 examples written, then each checked, by Claude Sonnet 5.5 in batches (half price) ≈ US$480 at A$1.55
-SRC_PC = [("Lenovo ThinkCentre Neo 50q Gen 4, 16 GB (Kickstart Computers)", "https://kickstartcomputers.com.au/shop/desktop-notebooks/desktop-computers/lenovo-thinkcentre-neo-50q-g4-tiny-12ln007pau-intel-i5-13420h-16gb-3200mhz-512gb-ssd-w11p-3-3-3/"),
+SRC_PC = [("RTX 4060 Ti 16 GB prices in Australia (GPUPrix)", "https://gpuprix.com/de/australia/gpus/geforce-rtx-4060-ti-16gb"),
+          ("RTX 4060 Ti cards and builds (PLE Computers)", "https://ple.com.au/RTX40Series/RTX4060Ti"),
           ("HP Australia business leasing terms", "https://www.hp.com/au-en/shop/hp-business-leasing"),
-          ("Lenovo device-as-a-service monthly pricing (US)", "https://lenovo.com/us/en/business/device-as-a-service")]
+]
 
 # ---- 1. the full-scope breakdown (HTML) and its numbers, from the same generator run ----
 part = os.path.join(HERE, 'part_plain.html')
@@ -84,7 +85,7 @@ assert set(TASKS) == set(COND), set(TASKS) ^ set(COND)
 TP_COND = [("code-signing", "found"), ("ElevenLabs", None), ("voice actor", "ownspeech"), ("Tok Pisin speakers", "tprec"),
            ("recording kit", "ownspeech"), ("Claude API", "cur"), ("Cloud hosting during build", "found"), ("laptop", "found"),
            ("Criminal record", "found"), ("IARPA", "tprec"), ("speech recognition training", "tprec"), ("Kumi’s voice training", "ownspeech")]
-TPS = []   # purchase rows: id, parts [{c, amt}] ('amt' may be the string 'pcbuy': computers × buy price)
+TPS = []   # purchase rows: id, parts [{c, amt}] ('amt' may be the string 'pcbuy': GPU servers × buy price)
 for item, amt, basis, src, t in g['TP_IN']:
     key, c = next((k, c) for k, c in TP_COND if k.lower() in item.lower())
     if key == "ElevenLabs":   # Pro plan for English narration; the Scale plan when Kumi's own voice is also cloned in English
@@ -94,7 +95,7 @@ for item, amt, basis, src, t in g['TP_IN']:
     TPS.append(dict(id=f"tp{len(TPS)}", key=key, item=item, parts=parts))
 OWN_TP = [dict(id='tpgpu', item='GPU rental to tune our own AI model: about 100 GPU-hours', basis='~A$5/hr: H100 on-demand. Several tuning runs, evaluation and compression', parts=[dict(c='ownai', amt=OWN_GPU)]),
           dict(id='tpdata', item='Training data for our own AI model: about 30,000 example lessons-and-help conversations written and checked with Claude', basis='Claude Sonnet 5.5 in batches, about 260M tokens', parts=[dict(c='ownai', amt=OWN_DATA)]),
-          dict(id='tppc', item='16 GB computers to run our own AI model, bought', basis='', parts=[dict(c='buy', amt='pcbuy')])]
+          dict(id='tppc', item='GPU server to run our own AI model, bought: one per school, on the lab network', basis='', parts=[dict(c='buy', amt='pcbuy')])]
 
 # check: with everything on, the parts add back up to the generator's own totals
 ALL = dict(found=1, desktop=1, online=1, offline=1, login=1, teacher=1, lessons=1, content_own=1, tests=1, claude=1, ownai=0,
@@ -106,7 +107,7 @@ def preds(S):
              eleven_own=p['eleven'] and p['ownspeech'], buy=p['ownai'] and p['hwbuy'], lease=p['ownai'] and p['hwlease'])
     return p
 def pcost(pt, nl): return pt['per']*nl*5*RATE[pt['r']] if 'per' in pt else pt['cost']
-def build_total(S, pcs=20, nl=20):
+def build_total(S, pcs=1, nl=20):
     p = preds(S)
     lab = sum(pcost(pt, nl) for t in TASKS.values() for pt in t['parts'] if p[pt['c']])
     tp = sum((pcs*PC_BUY if pt['amt'] == 'pcbuy' else pt['amt']) for r in TPS + OWN_TP for pt in r['parts'] if p[pt['c']])
@@ -138,7 +139,7 @@ FEAT_CORE = feat(OLD_CORE, 20)
 K = (1 - FLOOR_SHARE)*POOL_CORE/FEAT_CORE   # about 28% of each feature's build work
 def factor(S, nl): return FLOOR_SHARE + K*feat(S, nl)/POOL_CORE
 def pcost(pt, nl, fa=1): return (pt['per']*nl*5*RATE[pt['r']] if 'per' in pt else pt['cost'])*(fa if pt.get('s') else 1)
-def build_total(S, pcs=20, nl=20):
+def build_total(S, pcs=1, nl=20):
     p = preds(S); fa = factor(S, nl)
     lab = sum(pcost(pt, nl, fa) for t in TASKS.values() for pt in t['parts'] if p[pt['c']])
     tp = sum((pcs*PC_BUY if pt['amt'] == 'pcbuy' else pt['amt']) for r in TPS + OWN_TP for pt in r['parts'] if p[pt['c']])
@@ -282,7 +283,7 @@ HOW = f'''<h2>How Kumi works</h2><ol class="how">
 <li><b>Lessons.</b> <span class="nl">20</span> one-hour lessons with pictures, animations and practice questions, in English and Tok Pisin. Pick the subjects (numeracy, literacy, personal development) and set the hours for each in the left panel; the cost follows the hours. If the content is provided to us, our designer turns it into animated lessons. If we have to prepare the content ourselves, that is a separate tick with its own cost.</li>
 <li><b>AI content curation.</b> Every child gets the same lessons, but Kumi watches every answer and chooses what comes next. <i>Mary gets three answers wrong, so she gets easier questions and a hint. Dura answers fast, so he gets harder ones.</i> Two ways to run it (pick one):
 <span class="sub"><b>Way 1: Claude AI</b> {ON} Best quality answers, processed in Australia. Needs the internet, so it needs the Online option; offline, Kumi uses its saved help. Monthly usage cost.</span>
-<span class="sub"><b>Way 2: our own AI model</b> {OFF} Runs on the school computer, no usage cost. Simpler answers than Claude, and it needs 16 GB computers (buy or lease).</span></li>
+<span class="sub"><b>Way 2: our own AI model</b> {OFF} Runs on one GPU server in the school lab, which the computers reach over the lab network, so the school’s computers stay as they are. No usage cost. Simpler answers than Claude. If the server is down, Kumi uses its saved help.</span></li>
 <li><b>AI speech.</b> <span class="sub"><b>One-way</b> Kumi talks to the child. The child taps Kumi, or says a keyword like “help” (halivim), “again” (gen) or “next” (nekis), and Kumi explains the step out loud. The child answers by tapping.</span>
 <span class="sub"><b>Two-way</b> A real conversation, like talking to a teacher: the child speaks any question about the lesson and Kumi answers out loud.</span>
 <span class="sub"><b>Way 1: ElevenLabs</b> {L("English")} A natural English voice from a cloud service, so it needs the Online option. Monthly plan.</span>
@@ -293,19 +294,19 @@ OPS = [  # id, name, how it is worked out (filled in by the script where it depe
  ('lic', 'Code-signing certificate', 'A$341 a year, spread over 12 months', 'found'),
  ('claude', 'Claude AI usage', '', 'claude'),
  ('eleven', 'ElevenLabs voice', '', 'eleven_mode'),
- ('ownai', 'Our own AI model', 'Runs on the school computers: no usage cost', 'ownai'),
- ('lease', 'Leased 16 GB computers', '', 'lease'),
+ ('ownai', 'Our own AI model', 'Runs on the school’s GPU server: no usage cost', 'ownai'),
+ ('lease', 'Leased GPU server', '', 'lease'),
  ('ownspeech', 'Our own speech models', 'Run on the school computers: no per-minute cost', 'ownspeech'),
  ('support', 'Support and maintenance', '', 'found')]
 OPS_HTML = ('<h2>Operating cost per month</h2><p class="h2sub">What it costs to keep Kumi running once it is built. Change the numbers to see it move.</p>'
             '<div class="fields"><label>Students <input id="f-stu" type="number" min="1" step="10" value="100"></label>'
-            '<label>Computers in the lab <input id="f-pc" type="number" min="1" step="1" value="20"></label></div>'
+            '<label>Schools <input id="f-pc" type="number" min="1" step="1" value="1"></label></div>'
             '<div class="card"><table><tr><th>Per month, AUD</th><th>How it’s worked out</th><th class="n">Cost</th></tr>' +
             ''.join(f"<tr data-op='{i}'><td>{n}</td><td id='op-how-{i}'>{h}</td><td class='n' id='op-{i}'></td></tr>" for i, n, h, c in OPS) +
             '<tr class="tot"><td colspan="2">Total per month</td><td class="n" id="op-tot"></td></tr>'
             '<tr><td colspan="2">Per student, per month</td><td class="n" id="op-per"></td></tr>'
             '<tr><td colspan="2">Per year</td><td class="n" id="op-year"></td></tr></table>'
-            f'<div class="note">Computer prices are provisional: buy about A${PC_BUY:,} each, lease about A${PC_LEASE} a month each on 36 months. Sources: ' +
+            f'<div class="note">GPU server prices are provisional: one per school, buy about A${PC_BUY:,} each, lease about A${PC_LEASE} a month each on 36 months. Sources: ' +
             '; '.join(f"<a href='{u}'>{t}</a>" for t, u in SRC_PC) + '. Get a live quote before contract.</div></div>')
 
 # ---- 5. the rail ----
@@ -317,7 +318,7 @@ STEPS = [  # (number, title, hint, rows); a row is (id, label, badge HTML) or ('
  ('3', 'Lessons', 'Tick Subjects, then the subjects and their hours. Content is provided to us unless ticked.', [('lessons', 'Subjects', ''), ('=', 'subjects'),
                            ('content_own', 'We prepare the content', '', 'sub'), ('tests', 'Benchmark tests', '')]),
  ('4', 'AI content curation', 'Pick one', [('claude', 'Claude AI', '<span class="mode on">Online</span>'), ('ownai', 'Own AI model', '<span class="mode off">Offline</span>'),
-                                          ('hwbuy', 'Buy computers', '', 'sub'), ('hwlease', 'Lease computers', '', 'sub')]),
+                                          ('hwbuy', 'Buy GPU server', '', 'sub'), ('hwlease', 'Lease GPU server', '', 'sub')]),
  ('5', 'AI speech', '', [('-', 'Mode · pick one'), ('oneway', 'One-way', ''), ('twoway', 'Two-way', ''),
                          ('-', 'Voice'), ('eleven', 'ElevenLabs', L('English')), ('ownspeech', 'Own speech model', L('Tok Pisin'))]),
  ('6', 'Extras', '', [('review', 'Weekly AI check', ''), ('expert', 'Expert teacher check', '')])]
@@ -365,7 +366,7 @@ var D=__DATA__, S={}, root=document.documentElement, body=document.body;
 D.items.forEach(function(k){S[k]=false;});
 function fmt(n){return '$'+Math.round(n).toLocaleString('en-AU');}
 function wk(x){return String(Math.round(x*100)/100);}
-function fields(){var n=Math.max(1,+document.getElementById('f-stu').value||100), pcs=Math.max(1,+document.getElementById('f-pc').value||20),subj=[],hrs=0;
+function fields(){var n=Math.max(1,+document.getElementById('f-stu').value||100), pcs=Math.max(1,+document.getElementById('f-pc').value||1),subj=[],hrs=0;
  D.subjects.forEach(function(s){var h=Math.max(1,Math.round(+document.querySelector('input[data-hrs="'+s[0]+'"]').value||10));
   if(document.querySelector('input[data-subj="'+s[0]+'"]').checked){subj.push([s[0],s[1],h]);hrs+=h;}});   // hours of content = the ticked subjects' hours
  return {n:n,pcs:pcs,hrs:hrs,subj:subj};}
@@ -431,11 +432,11 @@ function detail0(id,f){if(!S[id]&&id!=='hwlease'){var X=delta(id,f);if(!X.order.
  D.tps.forEach(function(r){var sum=0;r.parts.forEach(function(pt){if(p[pt.c]&&(OWN[pt.c]?OWN[pt.c](T):pt.c)===id)sum+=amt(pt,f)*1.15;});
   if(sum>0.5)add('Licences & equipment',r.short,sum);});
  if(L.by[id])for(var c2 in D.tasks){var tv=0;D.tasks[c2].parts.forEach(function(pt){if(pt.s&&p[pt.c])tv+=pc(pt,nl,fa)*1.25*L.by[id]/L.F;});if(tv>0.5)add(FD,c2+' '+ttl(c2),tv);}
- if(id==='hwlease')return '<div class="drow"><span>'+f.pcs+' computers × A$'+D.pcLease+' a month</span><b>'+fmt(f.pcs*D.pcLease)+'/mo</b></div><div class="dnote">Running cost, not in the build total</div>';
+ if(id==='hwlease')return '<div class="drow"><span>'+f.pcs+(f.pcs===1?' GPU server':' GPU servers')+' × A$'+D.pcLease+' a month</span><b>'+fmt(f.pcs*D.pcLease)+'/mo</b></div><div class="dnote">Running cost, not in the build total</div>';
  if(!order.length)return '<div class="dnote">No cost of its own</div>';
  return order.map(function(g){var head='<span>'+g+'</span><b>'+fmt(G[g].t)+'</b>',list=G[g].rows.map(function(r){return '<div class="drow"><span>'+r[0]+'</span><span>'+fmt(r[1])+'</span></div>';}).join('');
   return g===FD?'<details class="fd"><summary class="drow g">'+head+'</summary>'+list+'</details>':'<div class="drow g">'+head+'</div>'+list;}).join('')
-  +(order.length>1||G[order[0]].rows.length>1?'<div class="drow tt"><span>Total</span><b>'+fmt(tot)+'</b></div>':'')+(id==='ownai'?'<div class="dnote">Computers (buy or lease) are priced on their own line.</div>':'');}
+  +(order.length>1||G[order[0]].rows.length>1?'<div class="drow tt"><span>Total</span><b>'+fmt(tot)+'</b></div>':'')+(id==='ownai'?'<div class="dnote">The GPU server (buy or lease) is priced on its own line.</div>':'');}
 function plan(n){var c=n*D.run.credits;for(var i=0;i<D.run.voice.length;i++){var v=D.run.voice[i];if(v[0]===null||c<=v[0])return v;}}
 function running(S,f){var p=preds(S),o={},n=f.n;
  o.host=p.found?D.run.host:0;o.lic=p.found?D.run.lic:0;o.claude=p.claude?D.run.aiStu*n:0;o.eleven=p.eleven_mode?plan(n)[1]:0;
@@ -502,7 +503,7 @@ function render(){var f=fields(),p=preds(S),B=build(S,f),R=running(S,f),role={},
   r.parts.forEach(function(pt){if(p[pt.c])a+=amt(pt,f);if(ALLON[pt.c])all+=amt(pt,f);});
   tr.classList.toggle('xoff',a===0);tr.cells[2].textContent=fmt(a||all);
   if(r.key==='ElevenLabs')tr.cells[1].innerHTML=(p.eleven_own?'US$330/mo Scale plan, ~2M credits (English voice cloned from the voice actor)':'US$99/mo Pro plan, 500k credits')+' <span class="src">[<a href="'+D.elevenSrc+'">source</a>]</span>';});
- document.getElementById('pc-basis').textContent=f.pcs+' × A$'+D.pcBuy.toLocaleString('en-AU')+' (16 GB mini PC)';
+ document.getElementById('pc-basis').textContent=f.pcs+' × A$'+D.pcBuy.toLocaleString('en-AU')+' (desktop with a 16 GB graphics card, plus a network switch)';
  document.getElementById('tp-tot').textContent=fmt(B.tp);
  // cost summary
  document.getElementById('cs-wk').textContent=wk(B.wks);document.getElementById('cs-lab').textContent=fmt(B.lab);
@@ -512,7 +513,7 @@ function render(){var f=fields(),p=preds(S),B=build(S,f),R=running(S,f),role={},
  var pl=plan(f.n);
  document.getElementById('op-how-claude').textContent='About '+D.run.sess+' sessions per student a month, about A$'+D.run.aiStu.toFixed(2)+' per student';
  document.getElementById('op-how-eleven').textContent=pl[2]+' plan, sized to '+f.n+' students';
- document.getElementById('op-how-lease').textContent=f.pcs+' computers × A$'+D.pcLease+' a month (36-month lease)';
+ document.getElementById('op-how-lease').textContent=f.pcs+(f.pcs===1?' GPU server':' GPU servers')+' × A$'+D.pcLease+' a month (36-month lease)';
  document.getElementById('op-how-support').textContent=(2*Math.ceil(f.n/300))+' days a month at A$'+D.run.seRate+'/day (2 days per 300 students)';
  D.ops.forEach(function(o){var tr=document.querySelector('tr[data-op="'+o.id+'"]'),on=p[o.c];tr.classList.toggle('xoff',!on);
   document.getElementById('op-'+o.id).textContent=on?fmt(R[o.id]):'—';});

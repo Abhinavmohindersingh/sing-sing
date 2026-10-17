@@ -23,7 +23,7 @@ python3 build_tiers.py       # the live budget page -> ../public/kumi-pilot-budg
 - **Online and Offline** are separate ticks. Both together adds the sync engine. Claude, ElevenLabs and the teacher screen are locked until Online is ticked. Offline only forces our own AI model and our own speech model.
 - **Lessons:** "Subjects" is the main tick (its ▾ shows the cost by subject); under it Numeracy, Literacy and Personal development, each with its own hours (default 10, 10, off). Hours of content = the ticked subjects' hours. Content is provided to us by default (the designer animates it, $518 an hour). Ticking "We prepare the content" adds $518 an hour. No PNG teacher help.
 - **AI speech:** one-way (Core) or two-way (add-on). English via ElevenLabs; Tok Pisin needs our own speech models. Keyword listening (halivim, gen, nekis, mi no save, pinis) is a Core task, B10.
-- **Hardware for our own AI model:** buy (A$1,100 each) or lease (A$45 a month each). Provisional: get real quotes.
+- **Hardware for our own AI model:** one GPU server per school (desktop with a 16 GB graphics card, on the lab network; the school's 8 GB computers stay). Buy about A$3,000 or lease about A$110 a month. The "Schools" field sets how many. Provisional: get real quotes.
 - Cut from scope and shown struck as "Not in our scope": on-ground pilot work (installation, travel, pilot support, comparison class, reports), headsets, criminal checks.
 - Project management is 3 weeks at Core. Testing is trimmed to release readiness.
 - **Project foundation is planning only:** setup, requirements, architecture, safeguarding and project management, fixed. The cloud backend (A5) and security, backup and monitoring (A6) come with Online. Release testing (`POOL`: G1–G5, G8, G9) is priced with each feature as about 28% of its build work (lesson hours excluded), shown as one ▸ Release testing line in each step's ▾; G6 AI safety testing stays with the AI. Set so Core still = Tier 1.
@@ -34,6 +34,6 @@ python3 build_tiers.py       # the live budget page -> ../public/kumi-pilot-budg
 ## Open items
 - The live page (`/kumi-pilot-budget`) is older than the generator: the Tier 1 "English voice only, Tok Pisin on screen" change is built but not published (it would make Tier 1 $239,420).
 - Check "no major provider supports Tok Pisin speech" and have a native speaker confirm the Tok Pisin keywords before an investor sees them.
-- Our own AI model needs 16 GB computers; the budget assumes 8 GB school computers.
+- The GPU server needs a working lab network; confirm the school has one (or add a switch and cabling).
 - "Teacher support" was taken to mean the Grade 3 Teacher role (removed). The optional Expert teacher check stays.
 - Pricing context: PNG Government proposal is $550k for 15 schools (development about $225k, $259k with 15% contingency); Brian Bell Tier 1 is about $240k.
