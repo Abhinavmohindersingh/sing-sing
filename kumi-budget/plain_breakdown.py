@@ -37,7 +37,7 @@ NAME = {r: v[0].replace('Pijin', 'Tok Pisin') for r, v in DFAT.items()}
 # A task's allocation can grow by tier; each step of growth belongs to the feature that needs it.
 COND = {
  '1.1': 'found', '1.2': 'found', '1.3': 'found', '1.4': {0: 'desktop', 2: 'twoway'}, '1.5': 'found',
- 'A1': {0: 'desktop', 1: 'cur'}, 'A2': 'login', 'A3': 'SPLIT', 'A4': 'online', 'A5': 'online', 'A6': 'found', 'A7': 'desktop',
+ 'A1': {0: 'desktop', 1: 'cur'}, 'A2': 'login', 'A3': 'SPLIT', 'A4': 'online', 'A5': 'online', 'A6': 'online', 'A7': 'desktop',
  'B1': 'twoway', 'B2': {0: 'lessons', 3: 'tprec'}, 'B3': {2: 'ownspeech', 3: 'tprec'}, 'B4': 'tprec', 'B5': 'tprec',
  'B6': {2: 'ownspeech', 3: 'tprec'}, 'B7': 'speechrun', 'B8': 'twoway', 'B9': {2: 'speechrun', 3: 'tprec'}, 'B10': 'mode',
  'C1': 'PER', 'C2': ('PER', 'content_own'), 'C3': 'PER', 'C5': 'lessons', 'C6': ('PER', 'content_own'),
@@ -122,19 +122,20 @@ def gen_total(t):   # the generator's own total for a tier (without our own AI m
 assert abs(build_total(OLD_CORE) - gen_total(1)) < 0.5, (build_total(OLD_CORE), gen_total(1))   # the agreed Core = Tier 1 (one-way, Claude, ElevenLabs)
 assert abs(build_total(ALL, nl=30) - gen_total(3)) < 0.5, (build_total(ALL, nl=30), gen_total(3))   # everything, 30 lessons = Tier 3
 
-# ---- 2b. planning, testing and project management grow with the build ----
-# The budget prices them for one build size. Here they keep a minimum and grow with the feature work ticked,
-# set so the agreed Core still matches Tier 1. Lesson hours do not drive them: the designer's hourly work needs little extra testing.
-POOL = ['1.2', '1.3', 'G1', 'G2', 'G3', 'G4', 'G5', 'G8', 'G9', 'P1']
-FLOOR_SHARE = 0.35   # the minimum any release needs: 35% of the Core amount
+# ---- 2b. release testing is priced with each feature ----
+# The project foundation is planning only (setup, requirements, architecture, safeguarding, project management).
+# Release testing is a share of each ticked feature's build work, set so the agreed Core still matches Tier 1.
+# Lesson hours do not drive it: the designer's hourly work needs little extra testing.
+POOL = ['G1', 'G2', 'G3', 'G4', 'G5', 'G8', 'G9']
+FLOOR_SHARE = 0      # nothing to test until a feature is ticked
 POOL_CORE = sum(pt['cost'] for c in POOL for pt in TASKS[c]['parts'] if pt['c'] == 'found')
-for c in POOL:   # their two-way steps are replaced by the growth below
+for c in POOL:   # their two-way steps are replaced by the share below
     TASKS[c]['parts'] = [dict(pt, s=1) for pt in TASKS[c]['parts'] if pt['c'] == 'found']
 def feat(S, nl):   # feature labour: everything but the foundation itself and the per-hour lesson work
     p = preds(S)
     return sum(pcost(pt, nl) for t in TASKS.values() for pt in t['parts'] if p[pt['c']] and pt['c'] != 'found' and 'per' not in pt)
 FEAT_CORE = feat(OLD_CORE, 20)
-K = (1 - FLOOR_SHARE)*POOL_CORE/FEAT_CORE   # about 32% of the feature work
+K = (1 - FLOOR_SHARE)*POOL_CORE/FEAT_CORE   # about 28% of each feature's build work
 def factor(S, nl): return FLOOR_SHARE + K*feat(S, nl)/POOL_CORE
 def pcost(pt, nl, fa=1): return (pt['per']*nl*5*RATE[pt['r']] if 'per' in pt else pt['cost'])*(fa if pt.get('s') else 1)
 def build_total(S, pcs=20, nl=20):
@@ -230,6 +231,10 @@ LABELS['A3'] = {t: tag_a3(v) for t, v in LABELS['A3'].items()}
 PART_LABEL = {'A3|offline': 'Offline mode: a local database on each computer', 'A3|both_net': 'Sync between online and offline',
               'A3|online_only': 'Online mode: answers sent straight to the cloud'}
 body = body.replace('<h2>Project team</h2>\n<p class="h2sub">', '<h2>Project team</h2>\n<p class="h2sub" id="team-p">', 1)
+TEST_NOTE = (f"<p class='h2sub'>Release testing (G1–G5, G8, G9) is priced with each feature: about {K:.0%} of its build work, "
+             "so these lines grow and shrink with the ticks. G6 AI safety testing comes with the AI.</p>")
+body, n = re.subn(r'(<div class="t">Testing &amp; release readiness</div>.*?</div></div></div>)', lambda m: m.group(1) + TEST_NOTE, body, count=1, flags=re.S)
+assert n == 1
 assert 'id="team-p"' in body
 body = re.sub(r'(<div class="t[^"]*">.*?</div></div><div class="r">)', lambda m: m.group(1), body)
 # licences: tag rows, add the own-AI rows, id the total
@@ -306,7 +311,7 @@ OPS_HTML = ('<h2>Operating cost per month</h2><p class="h2sub">What it costs to 
 # ---- 5. the rail ----
 SUBJECTS = [('num', 'Numeracy', True), ('lit', 'Literacy', True), ('pd', 'Personal development', False)]   # each with its own hours of content; Core is numeracy and literacy, 10 hours each
 STEPS = [  # (number, title, hint, rows); a row is (id, label, badge HTML) or ('-', sub-heading)
- ('1', 'Project foundation', '', [('found', 'Planning, backend, testing', '<span class="req">required</span>')]),
+ ('1', 'Project foundation', 'Each feature below carries its own backend and release testing.', [('found', 'Planning & project management', '<span class="req">required</span>')]),
  ('2', 'App', '', [('desktop', 'Desktop application', ''), ('-', 'Online + offline · one or both'), ('online', 'Online', '<span class="mode on">Online</span>', 'sub'),
                       ('offline', 'Offline', '<span class="mode off">Offline</span>', 'sub'), ('login', 'Individual student login & profiles', ''), ('teacher', 'Teacher screen', '')]),
  ('3', 'Lessons', 'Tick Subjects, then the subjects and their hours. Content is provided to us unless ticked.', [('lessons', 'Subjects', ''), ('=', 'subjects'),
@@ -372,7 +377,9 @@ function nlAll(f){return f.hrs;}
 function perHour(c){var v=0;for(var k in D.tasks)D.tasks[k].parts.forEach(function(pt){if(pt.c===c&&pt.per)v+=pt.per*5*D.roles[pt.r].rate*1.25;});return v;}   // cost of one more hour of content, with fee and contingency
 function pw(pt,nl,fa){return (pt.per?pt.per*nl:pt.w)*(pt.s?fa:1);}function pc(pt,nl,fa){return (pt.per?pt.per*nl*5*D.roles[pt.r].rate:pt.cost)*(pt.s?fa:1);}   // per-lesson parts scale with the lessons
 function feat(p,nl){var v=0;for(var c in D.tasks)D.tasks[c].parts.forEach(function(pt){if(p[pt.c]&&pt.c!=='found'&&!pt.per)v+=pc(pt,nl,1);});return v;}
-function fac(p,nl){return D.scale.floor+D.scale.k*feat(p,nl)/D.scale.pool;}   // planning, testing and project management: a minimum, plus a share of the feature work
+function fac(p,nl){return D.scale.floor+D.scale.k*feat(p,nl)/D.scale.pool;}   // release testing: a share of the feature work
+function ownLab(T,nl){var p=preds(T),o={},F=0;for(var c in D.tasks)D.tasks[c].parts.forEach(function(pt){if(p[pt.c]&&pt.c!=='found'&&!pt.per){
+  var w=OWN[pt.c]?OWN[pt.c](T):pt.c,v=pc(pt,nl,1);o[w]=(o[w]||0)+v;F+=v;}});return {by:o,F:F};}   // each step's own build work, which its testing follows
 function preds(S){var p={};for(var k in S)p[k]=!!S[k];p.both_net=p.online&&p.offline;p.online_only=p.online&&!p.offline;p.cur=p.claude||p.ownai;p.mode=p.oneway||p.twoway;p.tprec=p.ownspeech&&p.twoway;
  p.speechrun=p.twoway||p.ownspeech;p.eleven_mode=p.eleven&&p.mode;p.eleven_own=p.eleven&&p.ownspeech;p.buy=p.ownai&&p.hwbuy;p.lease=p.ownai&&p.hwlease;return p;}
 var ALLON=preds((function(){var a={};D.items.forEach(function(k){a[k]=true;});return a;})());
@@ -384,9 +391,10 @@ function build(S,f){var p=preds(S),lab=0,wks=0,tp=0,nl=nlOf(S,f),fa=fac(p,nl);
 var OWN={both_net:function(){return 'offline';},online_only:function(){return 'online';},cur:function(S){return S.claude?'claude':'ownai';},mode:function(S){return S.twoway?'twoway':'oneway';},tprec:function(){return 'ownspeech';},
  speechrun:function(S){return S.twoway?'twoway':'ownspeech';},eleven_mode:function(){return 'eleven';},eleven_own:function(){return 'ownspeech';},
  buy:function(){return 'hwbuy';},lease:function(){return 'hwlease';}};
-function shares(S,f){var p=preds(S),sh={},nl=nlOf(S,f),fa=fac(p,nl);function add(c,v){
+function shares(S,f){var p=preds(S),sh={},nl=nlOf(S,f),fa=fac(p,nl),L=ownLab(S,nl);function add(c,v){
   var o=OWN[c]?OWN[c](S):c;sh[o]=(sh[o]||0)+v;}
- for(var c in D.tasks)D.tasks[c].parts.forEach(function(pt){if(p[pt.c])add(pt.c,pc(pt,nl,fa)*1.25);});      // labour carries the 10% fee and 15% contingency
+ for(var c in D.tasks)D.tasks[c].parts.forEach(function(pt){if(!p[pt.c])return;var v=pc(pt,nl,fa)*1.25;
+  if(pt.s){for(var k in L.by)sh[k]=(sh[k]||0)+v*L.by[k]/L.F;}else add(pt.c,v);});   // release testing goes to the steps it tests      // labour carries the 10% fee and 15% contingency
  D.tps.forEach(function(r){r.parts.forEach(function(pt){if(p[pt.c])add(pt.c,amt(pt,f)*1.15);});});   // purchases carry the contingency
  return sh;}
 function adds(id,f){var A=withTick(id),gp=D.group[id],swap=false;
@@ -394,7 +402,7 @@ function adds(id,f){var A=withTick(id),gp=D.group[id],swap=false;
  if(swap)return id==='hwlease'?running(A,f).lease-running(S,f).lease:build(A,f).total-build(S,f).total;   // switching: the change in the total
  var A0=Object.assign({},A);A0[id]=false;                                                                   // adding: this step's own cost
  return id==='hwlease'?running(A,f).lease-running(A0,f).lease:build(A,f).total-build(A0,f).total;}
-var FD='Project foundation';
+var FD='Release testing';
 var GROUPS=[['1.','Planning & design'],['A','App & backend'],['B','Speech'],['C','Lessons'],['D','AI'],['E','Dashboard & tests'],['G','Testing'],['P','Project management']];
 function ttl(c){var b=document.querySelector('tr[data-code="'+c+'"] td:nth-child(2) b');return b?b.textContent:D.ttl[c];}   // the task's title as the page currently words it
 function grp(c){for(var i=0;i<GROUPS.length;i++)if(c.indexOf(GROUPS[i][0])===0)return GROUPS[i][1];return 'Other';}
@@ -402,9 +410,9 @@ function delta(id,f){var A=withTick(id),gp=D.group[id],swap=false;if(gp)for(var 
  var B0=swap?S:Object.assign({},A);if(!swap)B0[id]=false;var pa=preds(A),pb=preds(B0),na=nlOf(A,f),nb=nlOf(B0,f),fa=fac(pa,na),fb=fac(pb,nb),G={},order=[],tot=0;
  function add(g,label,v){if(!G[g]){G[g]={t:0,rows:[]};order.push(g);}G[g].t+=v;G[g].rows.push([label,v]);tot+=v;}
  for(var c in D.tasks)D.tasks[c].parts.forEach(function(pt){var v=(pa[pt.c]?pc(pt,na,fa):0)-(pb[pt.c]?pc(pt,nb,fb):0);
-  if(Math.abs(v)>0.5)add(pt.s?FD:grp(c),c+' '+(D.partLabel[c+'|'+pt.c]||ttl(c)),v*1.25);});   // the foundation's growth is one line
+  if(Math.abs(v)>0.5)add(pt.s?FD:grp(c),c+' '+(D.partLabel[c+'|'+pt.c]||ttl(c)),v*1.25);});   // release testing is one line
  D.tps.forEach(function(r){var v=0;r.parts.forEach(function(pt){v+=(pa[pt.c]?amt(pt,f):0)-(pb[pt.c]?amt(pt,f):0);});if(Math.abs(v)>0.5)add('Licences & equipment',r.short,v*1.15);});
- order=order.filter(function(g){return g!==FD;}).concat(G[FD]?[FD]:[]);   // the foundation's growth comes last
+ order=order.filter(function(g){return g!==FD;}).concat(G[FD]?[FD]:[]);   // release testing comes last
  return {G:G,order:order,tot:tot};}
 function detail(id,f){var h=detail0(id,f);return id==='lessons'?subjHtml(f)+h:h;}
 function detail0(id,f){if(!S[id]&&id!=='hwlease'){var X=delta(id,f);if(!X.order.length)return '<div class="dnote">No cost of its own</div>';
@@ -413,18 +421,20 @@ function detail0(id,f){if(!S[id]&&id!=='hwlease'){var X=delta(id,f);if(!X.order.
    var head='<span>'+g+'</span><b>'+m(X.G[g].t)+'</b>',list=Object.keys(rows).map(function(k){return '<div class="drow"><span>'+k+'</span><span>'+m(rows[k])+'</span></div>';}).join('');
    return g===FD?'<details class="fd"><summary class="drow g">'+head+'</summary>'+list+'</details>':'<div class="drow g">'+head+'</div>'+list;}).join('')
    +'<div class="drow tt"><span>Ticking it adds</span><b>'+(X.tot<0?'−':'+')+fmt(Math.abs(X.tot))+'</b></div><div class="dnote">Includes fee and contingency.</div>';}
- var T=S,p=preds(T),nl=nlOf(T,f),fa=fac(p,nl),G={},order=[],tot=0;
+ var T=S,p=preds(T),nl=nlOf(T,f),fa=fac(p,nl),L=ownLab(T,nl),G={},order=[],tot=0;
  function add(g,label,v){if(!G[g]){G[g]={t:0,rows:[]};order.push(g);}G[g].t+=v;G[g].rows.push([label,v]);tot+=v;}
- for(var c in D.tasks){var sum=0;D.tasks[c].parts.forEach(function(pt){if(!p[pt.c])return;var v=pc(pt,nl,fa)*1.25;
+ for(var c in D.tasks){var sum=0;D.tasks[c].parts.forEach(function(pt){if(!p[pt.c]||pt.s)return;var v=pc(pt,nl,fa)*1.25;
    var o=OWN[pt.c]?OWN[pt.c](T):pt.c;if(o===id)sum+=v;});
   if(Math.abs(sum)>0.5){var named=D.tasks[c].parts.filter(function(pt){return D.partLabel[c+'|'+pt.c];});
    if(named.length)named.forEach(function(pt){if(p[pt.c]&&(OWN[pt.c]?OWN[pt.c](T):pt.c)===id)add(grp(c),c+' '+D.partLabel[c+'|'+pt.c],pc(pt,nl,fa)*1.25);});   // one line per piece of work
    else add(grp(c),c+' '+ttl(c),sum);}}
  D.tps.forEach(function(r){var sum=0;r.parts.forEach(function(pt){if(p[pt.c]&&(OWN[pt.c]?OWN[pt.c](T):pt.c)===id)sum+=amt(pt,f)*1.15;});
   if(sum>0.5)add('Licences & equipment',r.short,sum);});
+ if(L.by[id])for(var c2 in D.tasks){var tv=0;D.tasks[c2].parts.forEach(function(pt){if(pt.s&&p[pt.c])tv+=pc(pt,nl,fa)*1.25*L.by[id]/L.F;});if(tv>0.5)add(FD,c2+' '+ttl(c2),tv);}
  if(id==='hwlease')return '<div class="drow"><span>'+f.pcs+' computers × A$'+D.pcLease+' a month</span><b>'+fmt(f.pcs*D.pcLease)+'/mo</b></div><div class="dnote">Running cost, not in the build total</div>';
  if(!order.length)return '<div class="dnote">No cost of its own</div>';
- return order.map(function(g){return '<div class="drow g"><span>'+g+'</span><b>'+fmt(G[g].t)+'</b></div>'+G[g].rows.map(function(r){return '<div class="drow"><span>'+r[0]+'</span><span>'+fmt(r[1])+'</span></div>';}).join('');}).join('')
+ return order.map(function(g){var head='<span>'+g+'</span><b>'+fmt(G[g].t)+'</b>',list=G[g].rows.map(function(r){return '<div class="drow"><span>'+r[0]+'</span><span>'+fmt(r[1])+'</span></div>';}).join('');
+  return g===FD?'<details class="fd"><summary class="drow g">'+head+'</summary>'+list+'</details>':'<div class="drow g">'+head+'</div>'+list;}).join('')
   +(order.length>1||G[order[0]].rows.length>1?'<div class="drow tt"><span>Total</span><b>'+fmt(tot)+'</b></div>':'')+(id==='ownai'?'<div class="dnote">Computers (buy or lease) are priced on their own line.</div>':'');}
 function plan(n){var c=n*D.run.credits;for(var i=0;i<D.run.voice.length;i++){var v=D.run.voice[i];if(v[0]===null||c<=v[0])return v;}}
 function running(S,f){var p=preds(S),o={},n=f.n;
